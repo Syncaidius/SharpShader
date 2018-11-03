@@ -5,9 +5,20 @@ namespace SharpShader
 	public struct Double4
 	{
 		public double X;
+
 		public double Y;
+
 		public double Z;
+
 		public double W;
+
+		public Double4(double x, double y, double z, double w)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+			W = w;
+		}
 
 		public double R
 		{

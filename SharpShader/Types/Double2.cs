@@ -5,9 +5,14 @@ namespace SharpShader
 	public struct Double2
 	{
 		public double X;
+
 		public double Y;
-		public double Z;
-		public double W;
+
+		public Double2(double x, double y)
+		{
+			X = x;
+			Y = y;
+		}
 
 		public double R
 		{
@@ -19,18 +24,6 @@ namespace SharpShader
 		{
 			get => Y;
 			set => Y = value;
-		}
-
-		public double B
-		{
-			get => Z;
-			set => Z = value;
-		}
-
-		public double A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}

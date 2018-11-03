@@ -20,19 +20,41 @@ using System.Runtime.InteropServices;
 
 namespace SharpShader
 {
-	public struct <#=vectorNames[t] + i#>
+<#
+	string name = vectorNames[t] + i;
+	string constructorParams = "";
+	for(int c = 0; c < i; c++)
+	{
+		if(c > 0) constructorParams += ", ";
+		constructorParams += $"{vectorTypes[t]} {componentNames[c].ToLower()}";
+	}
+#>
+	public struct <#=name#>
 	{
 <#
-		for(int j = 0; j < componentNames.Length; j++)
+		for(int j = 0; j < i; j++)
 		{
 #>
 		public <#=vectorTypes[t]#> <#=componentNames[j]#>;
-<#
-		}
-#>
 
 <#
-		for(int j = 0; j < componentNames.Length; j++)
+		}
+
+#>
+		public <#=name#>(<#=constructorParams#>)
+		{
+<#
+			for(int j = 0; j < i; j++)
+			{
+#>
+			<#=componentNames[j]#> = <#=componentNames[j].ToLower()#>;
+<#
+			}
+#>
+		}
+
+<#
+		for(int j = 0; j < i; j++)
 		{
 #>
 		public <#=vectorTypes[t]#> <#=channelNames[j]#>

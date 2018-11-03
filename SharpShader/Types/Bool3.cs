@@ -5,9 +5,17 @@ namespace SharpShader
 	public struct Bool3
 	{
 		public bool X;
+
 		public bool Y;
+
 		public bool Z;
-		public bool W;
+
+		public Bool3(bool x, bool y, bool z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 
 		public bool R
 		{
@@ -25,12 +33,6 @@ namespace SharpShader
 		{
 			get => Z;
 			set => Z = value;
-		}
-
-		public bool A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}

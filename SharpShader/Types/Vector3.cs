@@ -5,9 +5,17 @@ namespace SharpShader
 	public struct Vector3
 	{
 		public float X;
+
 		public float Y;
+
 		public float Z;
-		public float W;
+
+		public Vector3(float x, float y, float z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 
 		public float R
 		{
@@ -25,12 +33,6 @@ namespace SharpShader
 		{
 			get => Z;
 			set => Z = value;
-		}
-
-		public float A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}

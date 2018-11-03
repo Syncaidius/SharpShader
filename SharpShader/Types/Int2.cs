@@ -5,9 +5,14 @@ namespace SharpShader
 	public struct Int2
 	{
 		public int X;
+
 		public int Y;
-		public int Z;
-		public int W;
+
+		public Int2(int x, int y)
+		{
+			X = x;
+			Y = y;
+		}
 
 		public int R
 		{
@@ -19,18 +24,6 @@ namespace SharpShader
 		{
 			get => Y;
 			set => Y = value;
-		}
-
-		public int B
-		{
-			get => Z;
-			set => Z = value;
-		}
-
-		public int A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}

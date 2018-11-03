@@ -5,9 +5,20 @@ namespace SharpShader
 	public struct Int4
 	{
 		public int X;
+
 		public int Y;
+
 		public int Z;
+
 		public int W;
+
+		public Int4(int x, int y, int z, int w)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+			W = w;
+		}
 
 		public int R
 		{

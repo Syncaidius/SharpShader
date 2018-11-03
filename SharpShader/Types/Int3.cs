@@ -5,9 +5,17 @@ namespace SharpShader
 	public struct Int3
 	{
 		public int X;
+
 		public int Y;
+
 		public int Z;
-		public int W;
+
+		public Int3(int x, int y, int z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 
 		public int R
 		{
@@ -25,12 +33,6 @@ namespace SharpShader
 		{
 			get => Z;
 			set => Z = value;
-		}
-
-		public int A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}

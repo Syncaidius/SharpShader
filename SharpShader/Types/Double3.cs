@@ -5,9 +5,17 @@ namespace SharpShader
 	public struct Double3
 	{
 		public double X;
+
 		public double Y;
+
 		public double Z;
-		public double W;
+
+		public Double3(double x, double y, double z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 
 		public double R
 		{
@@ -25,12 +33,6 @@ namespace SharpShader
 		{
 			get => Z;
 			set => Z = value;
-		}
-
-		public double A
-		{
-			get => W;
-			set => W = value;
 		}
 
 	}
