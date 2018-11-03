@@ -1,0 +1,14 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<#
+void SaveOutput(string outputFileName)
+{
+    string templateDirectory = Path.GetDirectoryName(this.Host.TemplateFile);
+    string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+    File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+
+    this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+}
+#>
