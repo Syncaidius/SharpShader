@@ -1,5 +1,4 @@
 ﻿using SharpShader;
-using System.Threading.Tasks;
 
 namespace SharpShaderSample
 {    
