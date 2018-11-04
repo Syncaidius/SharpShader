@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace SharpShader
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Bool3
+	public struct Bool3 : IIntrinsicValue<bool>
 	{
         /// <summary>
         /// The X component.

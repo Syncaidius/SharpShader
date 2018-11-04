@@ -187,52 +187,83 @@
   <ItemGroup>
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
+    <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
+    <Compile Include="CSharpShader.cs" />
+    <Compile Include="IIntrinsicValue.cs" />
     <Compile Include="ShaderOutput.cs" />
     <Compile Include="ShaderConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\Bool1x1.cs" />
+    <Compile Include="Types\Bool1x2.cs" />
+    <Compile Include="Types\Bool1x3.cs" />
+    <Compile Include="Types\Bool1x4.cs" />
     <Compile Include="Types\Bool2.cs" />
+    <Compile Include="Types\Bool2x1.cs" />
     <Compile Include="Types\Bool2x2.cs" />
     <Compile Include="Types\Bool2x3.cs" />
     <Compile Include="Types\Bool2x4.cs" />
     <Compile Include="Types\Bool3.cs" />
+    <Compile Include="Types\Bool3x1.cs" />
     <Compile Include="Types\Bool3x2.cs" />
     <Compile Include="Types\Bool3x3.cs" />
     <Compile Include="Types\Bool3x4.cs" />
     <Compile Include="Types\Bool4.cs" />
+    <Compile Include="Types\Bool4x1.cs" />
     <Compile Include="Types\Bool4x2.cs" />
     <Compile Include="Types\Bool4x3.cs" />
     <Compile Include="Types\Bool4x4.cs" />
+    <Compile Include="Types\Double1x1.cs" />
+    <Compile Include="Types\Double1x2.cs" />
+    <Compile Include="Types\Double1x3.cs" />
+    <Compile Include="Types\Double1x4.cs" />
     <Compile Include="Types\Double2.cs" />
+    <Compile Include="Types\Double2x1.cs" />
     <Compile Include="Types\Double2x2.cs" />
     <Compile Include="Types\Double2x3.cs" />
     <Compile Include="Types\Double2x4.cs" />
     <Compile Include="Types\Double3.cs" />
+    <Compile Include="Types\Double3x1.cs" />
     <Compile Include="Types\Double3x2.cs" />
     <Compile Include="Types\Double3x3.cs" />
     <Compile Include="Types\Double3x4.cs" />
     <Compile Include="Types\Double4.cs" />
+    <Compile Include="Types\Double4x1.cs" />
     <Compile Include="Types\Double4x2.cs" />
     <Compile Include="Types\Double4x3.cs" />
     <Compile Include="Types\Double4x4.cs" />
+    <Compile Include="Types\Int1x1.cs" />
+    <Compile Include="Types\Int1x2.cs" />
+    <Compile Include="Types\Int1x3.cs" />
+    <Compile Include="Types\Int1x4.cs" />
     <Compile Include="Types\Int2.cs" />
+    <Compile Include="Types\Int2x1.cs" />
     <Compile Include="Types\Int2x2.cs" />
     <Compile Include="Types\Int2x3.cs" />
     <Compile Include="Types\Int2x4.cs" />
     <Compile Include="Types\Int3.cs" />
+    <Compile Include="Types\Int3x1.cs" />
     <Compile Include="Types\Int3x2.cs" />
     <Compile Include="Types\Int3x3.cs" />
     <Compile Include="Types\Int3x4.cs" />
     <Compile Include="Types\Int4.cs" />
+    <Compile Include="Types\Int4x1.cs" />
     <Compile Include="Types\Int4x2.cs" />
     <Compile Include="Types\Int4x3.cs" />
     <Compile Include="Types\Int4x4.cs" />
+    <Compile Include="Types\Matrix1x1.cs" />
+    <Compile Include="Types\Matrix1x2.cs" />
+    <Compile Include="Types\Matrix1x3.cs" />
+    <Compile Include="Types\Matrix1x4.cs" />
+    <Compile Include="Types\Matrix2x1.cs" />
     <Compile Include="Types\Matrix2x2.cs" />
     <Compile Include="Types\Matrix2x3.cs" />
     <Compile Include="Types\Matrix2x4.cs" />
+    <Compile Include="Types\Matrix3x1.cs" />
     <Compile Include="Types\Matrix3x2.cs" />
     <Compile Include="Types\Matrix3x3.cs" />
     <Compile Include="Types\Matrix3x4.cs" />
+    <Compile Include="Types\Matrix4x1.cs" />
     <Compile Include="Types\Matrix4x2.cs" />
     <Compile Include="Types\Matrix4x3.cs" />
     <Compile Include="Types\Matrix4x4.cs" />
@@ -241,15 +272,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MultipleOutput.tt</DependentUpon>
     </Compile>
+    <Compile Include="Types\UInt1x1.cs" />
+    <Compile Include="Types\UInt1x2.cs" />
+    <Compile Include="Types\UInt1x3.cs" />
+    <Compile Include="Types\UInt1x4.cs" />
     <Compile Include="Types\UInt2.cs" />
+    <Compile Include="Types\UInt2x1.cs" />
     <Compile Include="Types\UInt2x2.cs" />
     <Compile Include="Types\UInt2x3.cs" />
     <Compile Include="Types\UInt2x4.cs" />
     <Compile Include="Types\UInt3.cs" />
+    <Compile Include="Types\UInt3x1.cs" />
     <Compile Include="Types\UInt3x2.cs" />
     <Compile Include="Types\UInt3x3.cs" />
     <Compile Include="Types\UInt3x4.cs" />
     <Compile Include="Types\UInt4.cs" />
+    <Compile Include="Types\UInt4x1.cs" />
     <Compile Include="Types\UInt4x2.cs" />
     <Compile Include="Types\UInt4x3.cs" />
     <Compile Include="Types\UInt4x4.cs" />
@@ -292,5 +330,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,37 +2,42 @@
 
 namespace SharpShaderSample
 {    
-    class SampleShader
+    class SampleShader : CSharpShader
     {
         [ConstantBuffer(0)]
-        public struct WvpBuffer
+        public struct ObjectBuffer
         {
-           
+            public Matrix4x4 Wvp;
         }
 
         public struct VertexInput
         {
-            public Vector3 Position;
+            public Vector4 Position;
+            public Vector4 Color;
         }
 
         public struct PixelInput
         {
             public Vector4 Position;
+            public Vector4 Color;
         }
+
+        public ObjectBuffer cbObject = new ObjectBuffer();
 
         [VertexShader]
         public PixelInput VertexFunc(VertexInput input)
         {
             return new PixelInput()
             {
-                Position = new Vector4(),
+                Position = Mul(input.Position, cbObject.Wvp),
+                Color = input.Color,
             };
         }
 
         [FragmentShader]
         public Vector4 FragFunc(PixelInput input)
         {
-            return new Vector4(1.0f, 0.5f, 0, 1.0f);
+            return input.Color;
         }
     }
 }

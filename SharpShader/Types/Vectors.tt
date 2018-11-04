@@ -34,7 +34,7 @@ namespace SharpShader
 	}
 #>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#>
+	public struct <#=name#> : IIntrinsicValue<<#=vectorTypes[t]#>>
 	{
 <#
 		for(int j = 0; j < i; j++)

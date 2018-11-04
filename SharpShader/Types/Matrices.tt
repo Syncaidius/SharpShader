@@ -17,27 +17,30 @@
 
 	for(int t = 0; t < matTypes.Length; t++)
 	{
-		for(int sizeX = 2; sizeX <= 4; sizeX++)
+		for(int colCount = 1; colCount <= 4; colCount++)
 		{
-			for(int sizeY = 2; sizeY <= 4; sizeY++)
+			for(int rowCount = 1; rowCount <= 4; rowCount++)
 			{
-				string name = $"{matNames[t]}{sizeX}x{sizeY}";
+				string name = $"{matNames[t]}{rowCount}x{colCount}";
 #>
 using System.Runtime.InteropServices;
 
 namespace SharpShader
 {
+	/// <summary>
+	///	A <#=$"{rowCount} row, {colCount} column matrix."#>
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#>
+	public struct <#=name#> : IIntrinsicValue<<#=matTypes[t]#>>
 	{
 <#	
-	for(int y = 1; y <= sizeY; y++)
+	for(int y = 1; y <= rowCount; y++)
 	{
-		for(int x = 1; x <= sizeX; x++)
+		for(int x = 1; x <= colCount; x++)
 		{
 #>
 			/// <summary>
-			///	The value at row <#=y#> column <#=x#> of the matrix.
+			///	The value at row <#=y#>, column <#=x#> of the matrix.
 			/// </summary>
 			public <#=$"{matTypes[t]} M{y}{x}"#>;
 
