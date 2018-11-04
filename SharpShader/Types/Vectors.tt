@@ -33,18 +33,25 @@ namespace SharpShader
 		constructorParams += $"{vectorTypes[t]} {componentNames[c].ToLower()}";
 	}
 #>
+	[StructLayout(LayoutKind.Sequential)]
 	public struct <#=name#>
 	{
 <#
 		for(int j = 0; j < i; j++)
 		{
 #>
+        /// <summary>
+        /// The <#=componentNames[j]#> component.
+        /// </summary>
 		public <#=vectorTypes[t]#> <#=componentNames[j]#>;
 
 <#
 		}
 
 #>
+        /// <summary>
+        /// Creates a new instance of <see cref="<#=name#>"/>.
+        /// </summary>
 		public <#=name#>(<#=constructorParams#>)
 		{
 <#
@@ -58,7 +65,7 @@ namespace SharpShader
 		}
 
 <#
-		// Generate Swizzles
+		// Generate component swizzles
 		IEnumerable<string> swizzlePermutations = null;
 		IEnumerable<string> compNames = componentNames.Take(i);
 		for(int s = 2; s <= 4; s++)
@@ -89,13 +96,11 @@ namespace SharpShader
 
 			foreach(string pName in swizzlePermutations)
 			{
-				int len = pName.Length;
-				string pReturnType = $"{vectorNames[t]}{len}";
+				char[] chars = pName.ToCharArray();
+				string pReturnType = $"{vectorNames[t]}{chars.Length}";
+
 #>
-		public <#=pReturnType#> <#=pName#>
-		{
-			get => new <#=pReturnType#>(<#=string.Join(",", pName.ToCharArray())#>);
-		}
+		public <#=pReturnType#> <#=pName#> => new <#=pReturnType#>(<#=string.Join(",", chars)#>);
 
 <#
 			}
@@ -114,6 +119,48 @@ namespace SharpShader
 <#
 		}#>
 <#
+
+		// Generate RGBA swizzles.
+		IEnumerable<string> chanNames = channelNames.Take(i);
+		for(int s = 2; s <= 4; s++)
+		{
+			switch (s)
+			{
+				case 2:
+					swizzlePermutations = from a in chanNames
+							from b in chanNames
+							select string.Concat(a, b);
+					break;
+
+				case 3:
+					swizzlePermutations = from a in chanNames
+							from b in chanNames
+							from c in chanNames
+							select string.Concat(a, b, c);
+					break;
+
+				case 4:
+					swizzlePermutations = from a in chanNames
+							from b in chanNames
+							from c in chanNames
+							from d in chanNames
+							select string.Concat(a, b, c, d);
+					break;
+			}
+
+			foreach(string pName in swizzlePermutations)
+			{
+				int len = pName.Length;
+				string pReturnType = $"{vectorNames[t]}{len}";
+				string pComName = pName.Replace("R", "X").Replace("G", "Y").Replace("B", "Z").Replace("A", "W");
+
+#>
+		public <#=pReturnType#> <#=pName#> => new <#=pReturnType#>(<#=string.Join(",", pComName.ToCharArray())#>);
+
+<#
+			}
+		}
+
 		// Generate operators
 		if(vectorOperators[t])
 		{
