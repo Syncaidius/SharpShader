@@ -1,0 +1,57 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="MultipleOutput.tt" #>
+
+<#
+	string[] componentNames = {"X","Y","Z","W"};
+	string[] channelNames = {"R", "G", "B", "A"};
+
+	string[] matNames = {"Matrix", "UInt", "Int", "Bool", "Double"};
+	string[] matTypes = {"float", "uint", "int", "bool", "double"};
+	bool[]  matOperators = {true, true, true, false, true};
+	string[] matOperands =  {"+", "-", "*", "/"};
+
+	for(int t = 0; t < matTypes.Length; t++)
+	{
+		for(int sizeX = 2; sizeX <= 4; sizeX++)
+		{
+			for(int sizeY = 2; sizeY <= 4; sizeY++)
+			{
+				string name = $"{matNames[t]}{sizeX}x{sizeY}";
+#>
+using System.Runtime.InteropServices;
+
+namespace SharpShader
+{
+	[StructLayout(LayoutKind.Sequential)]
+	public struct <#=name#>
+	{
+<#	
+	for(int y = 1; y <= sizeY; y++)
+	{
+		for(int x = 1; x <= sizeX; x++)
+		{
+#>
+			/// <summary>
+			///	The value at row <#=y#> column <#=x#> of the matrix.
+			/// </summary>
+			public <#=$"{matTypes[t]} M{y}{x}"#>;
+
+<#
+		}
+	}
+#>
+	}
+}
+
+
+<#
+				SaveOutput($"{name}.cs");
+			}
+		}
+	}
+#>

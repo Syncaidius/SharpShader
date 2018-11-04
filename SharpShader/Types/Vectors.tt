@@ -10,9 +10,9 @@
 	string[] componentNames = {"X","Y","Z","W"};
 	string[] channelNames = {"R", "G", "B", "A"};
 
-	string[] vectorNames = {"Vector", "Int", "Bool", "Double"};
-	string[] vectorTypes = {"float", "int", "bool", "double"};
-	bool[]  vectorOperators = {true, true, false, true};
+	string[] vectorNames = {"Vector", "UInt", "Int", "Bool", "Double"};
+	string[] vectorTypes = {"float", "uint", "int", "bool", "double"};
+	bool[]  vectorOperators = {true, true, true, false, true};
 	string[] vectorOperands =  {"+", "-", "*", "/"};
 
 	for(int t = 0; t < vectorTypes.Length; t++)
@@ -165,7 +165,7 @@ namespace SharpShader
 	}
 }
 <#
-	SaveOutput($"{vectorNames[t] + i}.cs");
+	SaveOutput($"{name}.cs");
 	}
 }
 #>
