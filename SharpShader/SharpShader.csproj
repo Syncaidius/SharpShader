@@ -185,13 +185,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ComputeShaderAttribute.cs" />
+    <Compile Include="Attributes\DomainShaderAttribute.cs" />
+    <Compile Include="Attributes\HullShaderAttribute.cs" />
+    <Compile Include="Attributes\GeometryShaderAttribute.cs" />
+    <Compile Include="EntryPointSyntax.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
+    <Compile Include="ConversionContext.cs" />
     <Compile Include="CSharpShader.cs" />
     <Compile Include="ShaderOutput.cs" />
-    <Compile Include="ShaderConverter.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />

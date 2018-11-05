@@ -12,7 +12,7 @@ namespace SharpShaderSample
     {
         static void Main(string[] args)
         {
-            ShaderConverter converter = new ShaderConverter();
+            Converter converter = new Converter();
             using(FileStream fs = new FileStream("SampleShader.cs", FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fs))
@@ -21,7 +21,8 @@ namespace SharpShaderSample
                     string output = converter.Convert(csharp, ShaderOutput.HLSL);
                 }
             }
-            
+
+            Console.ReadKey();
         }
     }
 }
