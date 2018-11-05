@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class EntryPointSyntax
+    internal class EntryPoint : ShaderMethod
     {
         public Type AttributeType;
         public AttributeSyntax AttributeSyntax;
-        public MethodDeclarationSyntax MethodSyntax;
         public EntryPointType EntryType;
 
         public override string ToString()

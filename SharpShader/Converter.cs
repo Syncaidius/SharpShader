@@ -3,7 +3,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +16,20 @@ namespace SharpShader
     /// </summary>
     public class Converter
     {
-        static int test = 0;
+        static Dictionary<Type, NodeParser> _parsers;
+        static Converter()
+        {
+            _parsers = new Dictionary<Type, NodeParser>();
+            Type pType = typeof(NodeParser);
+            Assembly assembly = pType.Assembly;
+            IEnumerable<Type> types = assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
+            foreach(Type t in types)
+            {
+                NodeParser parser = Activator.CreateInstance(t) as NodeParser;
+                _parsers.Add(parser.ParsedType, parser);
+            }
+        }
+
         public string Convert(string input, ShaderOutput output)
         {
             ConversionContext context = new ConversionContext();
@@ -22,64 +37,32 @@ namespace SharpShader
 
             SyntaxTree tree = CSharpSyntaxTree.ParseText(input, parseOptions);
             SyntaxNode node = tree.GetRoot();
+
             //CompilationUnitSyntax comUnit = node as CompilationUnitSyntax;
-            GatherEntryPoints(context, node, 0);
-            return "";
+            ParseNodes(context, node, 0);
+
+            string result = null;
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+
+            result = BitConverter.ToString(stream.ToArray(), 0);
+
+            writer.Close();
+            stream.Dispose();
+            return result;
         }
 
-        private void GatherEntryPoints(ConversionContext context, SyntaxNode node, int depth)
+        private void ParseNodes(ConversionContext context, SyntaxNode node, int depth)
         {
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
             {
                 Type t = child.GetType();
 
-                switch (child)
-                {
-                    case MethodDeclarationSyntax methodSyntax:
-                        foreach(AttributeListSyntax list in methodSyntax.AttributeLists)
-                        {
-                            foreach(AttributeSyntax attSyntax in list.Attributes)
-                            {
-                                string name = attSyntax.Name.ToString();
-                                if (!name.EndsWith("Attribute"))
-                                    name += "Attribute";
-
-                                Type attType = Type.GetType($"SharpShader.{name}");
-                                if (attType != null)
-                                {
-                                    EntryPointType ep = EntryPointType.Invalid;
-
-                                    if (attType == typeof(VertexShaderAttribute))
-                                        ep = EntryPointType.VertexShader;
-                                    if (attType == typeof(FragmentShaderAttribute))
-                                        ep = EntryPointType.FragmentShader;
-                                    if (attType == typeof(GeometryShaderAttribute))
-                                        ep = EntryPointType.GeometryShader;
-                                    if (attType == typeof(HullShaderAttribute))
-                                        ep = EntryPointType.HullShader;
-                                    if (attType == typeof(DomainShaderAttribute))
-                                        ep = EntryPointType.DomainShader;
-                                    if (attType == typeof(ComputeShaderAttribute))
-                                        ep = EntryPointType.ComputeShader;
-
-                                    context.EntryPoints.Add(new EntryPointSyntax()
-                                    {
-                                        AttributeType = attType,
-                                        EntryType = ep,
-                                        MethodSyntax = methodSyntax,
-                                        AttributeSyntax = attSyntax,
-                                    });
-                                }
-                            }
-                        }
-                        break;
-
-                    default:
-                        //Console.WriteLine($"{new string(' ', depth)}Unhandled syntax node type: " + t.Name);
-                        GatherEntryPoints(context, child, depth + 1);
-                        break;
-                }
+                if (_parsers.TryGetValue(t, out NodeParser parser))
+                    parser.Parse(context, child);
+                else
+                    ParseNodes(context, child, depth + 1);
             }
         }
     }

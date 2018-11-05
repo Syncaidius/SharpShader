@@ -10,6 +10,12 @@ namespace SharpShader
 {
     internal class ConversionContext
     {
-        public List<EntryPointSyntax> EntryPoints = new List<EntryPointSyntax>();
+        public List<EntryPoint> EntryPoints = new List<EntryPoint>();
+
+        public List<ShaderMethod> Methods = new List<ShaderMethod>();
+
+        public List<ShaderStructure> Structures = new List<ShaderStructure>();
+
+        public Dictionary<string, ConstantBufferStructure> ConstantBuffers = new Dictionary<string, ConstantBufferStructure>();
     }
 }
