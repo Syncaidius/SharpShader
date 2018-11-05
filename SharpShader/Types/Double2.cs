@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace SharpShader
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Double2 : IIntrinsicValue<double>
+	public struct Double2 : IVector
 	{
         /// <summary>
         /// The X component.

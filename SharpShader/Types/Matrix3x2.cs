@@ -6,7 +6,7 @@ namespace SharpShader
 	///	A 3 row, 2 column matrix.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Matrix3x2 : IIntrinsicValue<float>
+	public struct Matrix3x2 : IMatrix, IIntrinsicValue
 	{
 			/// <summary>
 			///	The value at row 1, column 1 of the matrix.

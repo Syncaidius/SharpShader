@@ -190,7 +190,6 @@
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
     <Compile Include="CSharpShader.cs" />
-    <Compile Include="IIntrinsicValue.cs" />
     <Compile Include="ShaderOutput.cs" />
     <Compile Include="ShaderConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -251,6 +250,12 @@
     <Compile Include="Types\Int4x2.cs" />
     <Compile Include="Types\Int4x3.cs" />
     <Compile Include="Types\Int4x4.cs" />
+    <Compile Include="Types\IIntrinsicValue.cs" />
+    <Compile Include="Types\Matrices1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Matrices.tt</DependentUpon>
+    </Compile>
     <Compile Include="Types\Matrix1x1.cs" />
     <Compile Include="Types\Matrix1x2.cs" />
     <Compile Include="Types\Matrix1x3.cs" />
@@ -320,7 +325,7 @@
     </Content>
     <Content Include="Types\Matrices.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Matrices.cs</LastGenOutput>
+      <LastGenOutput>Matrices1.cs</LastGenOutput>
     </Content>
     <Content Include="Types\Vectors.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

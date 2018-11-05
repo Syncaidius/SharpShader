@@ -12,6 +12,7 @@
 
 	string[] matNames = {"Matrix", "UInt", "Int", "Bool", "Double"};
 	string[] matTypes = {"float", "uint", "int", "bool", "double"};
+	bool[] isIntrinsic = {true, false, true, false, false};
 	bool[]  matOperators = {true, true, true, false, true};
 	string[] matOperands =  {"+", "-", "*", "/"};
 
@@ -31,7 +32,7 @@ namespace SharpShader
 	///	A <#=$"{rowCount} row, {colCount} column matrix."#>
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#> : IIntrinsicValue<<#=matTypes[t]#>>
+	public struct <#=name#> : IMatrix<#=(isIntrinsic[t] ? ", IIntrinsicValue" : "")#>
 	{
 <#	
 	for(int y = 1; y <= rowCount; y++)

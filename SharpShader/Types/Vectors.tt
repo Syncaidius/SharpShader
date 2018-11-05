@@ -12,6 +12,7 @@
 
 	string[] vectorNames = {"Vector", "UInt", "Int", "Bool", "Double"};
 	string[] vectorTypes = {"float", "uint", "int", "bool", "double"};
+	bool[] isIntrinsic = {true, false, true, false, false};
 	bool[]  vectorOperators = {true, true, true, false, true};
 	string[] vectorOperands =  {"+", "-", "*", "/"};
 
@@ -34,7 +35,7 @@ namespace SharpShader
 	}
 #>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#> : IIntrinsicValue<<#=vectorTypes[t]#>>
+	public struct <#=name#> : IVector<#=(isIntrinsic[t] ? ", IIntrinsicValue" : "")#>
 	{
 <#
 		for(int j = 0; j < i; j++)
