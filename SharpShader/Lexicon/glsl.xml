@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Lexicon>
+  <Language>HLSL</Language>
+  <Words>
+    <Type t="IVector">
+      <Word t="System.Int32" to="ivec"/>
+      <Word t="System.UInt32" to="uivec" />   <!-- Are unsigned integer vectors possible in GLSL?-->
+      <Word t="System.Single" to="vec" />
+      <Word t="System.Double" to="dvec" />
+      <Word t="System.Bool" to="bvec"/>
+    </Type>
+    <Type t="IMatrix">
+      <Word t="System.Int32" to="imat4"/>     <!-- Again, is this possible in GLSL?-->
+      <Word t="System.UInt32" to="uimat4" />  <!-- I doubt this is...-->
+      <Word t="System.Single" to="mat4" />
+      <Word t="System.Double" to="double" />  <!-- Or this...-->
+      <Word t="System.Bool" to="bool"/>       <!-- Or this...-->
+    </Type>
+  </Words>
+</Lexicon>

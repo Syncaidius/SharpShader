@@ -8,7 +8,12 @@ namespace SharpShader
 {
     public interface IIntrinsicValue { }
 
-    public interface IVector { }
+    public interface IIntrinsicValue<T> : IIntrinsicValue 
+        where T : struct { }
 
-    public interface IMatrix { }
+    public interface IVector<T> : IIntrinsicValue 
+        where T : struct { }
+
+    public interface IMatrix<T> : IIntrinsicValue
+        where T : struct { }
 }

@@ -6,7 +6,7 @@ namespace SharpShader
 	///	A 1 row, 4 column matrix.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct UInt1x4 : IMatrix
+	public struct UInt1x4 : IMatrix<uint>
 	{
 			/// <summary>
 			///	The value at row 1, column 1 of the matrix.

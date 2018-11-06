@@ -36,7 +36,7 @@ namespace SharpShader
                             }
 
                             string cbName = structSyntax.Identifier.ToString();
-                            context.ConstantBuffers.Add(cbName, new ConstantBufferStructure()
+                            context.AddConstantBuffer(new ConstantBufferStructure()
                             {
                                 Syntax = structSyntax,
                                 Slot = slot,
@@ -51,7 +51,7 @@ namespace SharpShader
 
             if (!attributed)
             {
-                context.Structures.Add(new ShaderStructure()
+                context.AddStructure(new ShaderStructure()
                 {
                     Syntax = structSyntax,
                 });

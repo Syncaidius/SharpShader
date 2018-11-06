@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Lexicon>
+  <Language>HLSL</Language>
+  <Words>
+    <Type t="IVector">
+      <Word t="System.Int32" to="int"/>
+      <Word t="System.UInt32" to="uint" />
+      <Word t="System.Single" to="float" />
+      <Word t="System.Double" to="double" />
+      <Word t="System.Bool" to="bool"/>
+    </Type>
+    <Type t="IMatrix">
+      <Word t="System.Int32" to="int"/>
+      <Word t="System.UInt32" to="uint" />
+      <Word t="System.Single" to="float" />
+      <Word t="System.Double" to="double" />
+      <Word t="System.Bool" to="bool"/>
+    </Type>
+  </Words>
+</Lexicon>

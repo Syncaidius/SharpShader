@@ -17,9 +17,13 @@ namespace SharpShader
     public class Converter
     {
         static Dictionary<Type, NodeParser> _parsers;
+        static List<Translator> _translators;
+
         static Converter()
         {
             _parsers = new Dictionary<Type, NodeParser>();
+            _translators = new List<Translator>();
+
             Type pType = typeof(NodeParser);
             Assembly assembly = pType.Assembly;
             IEnumerable<Type> types = assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
@@ -28,6 +32,15 @@ namespace SharpShader
                 NodeParser parser = Activator.CreateInstance(t) as NodeParser;
                 _parsers.Add(parser.ParsedType, parser);
             }
+
+            // Add the translators in the order they need to happen.
+            AddTranslator<StructTranslator>();
+            AddTranslator<TypeTranslator>();
+        }
+
+        private static void AddTranslator<T>() where T : Translator, new()
+        {
+            _translators.Add(new T());
         }
 
         public string Convert(string input, ShaderOutput output)
@@ -41,14 +54,10 @@ namespace SharpShader
             //CompilationUnitSyntax comUnit = node as CompilationUnitSyntax;
             ParseNodes(context, node, 0);
 
-            string result = null;
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
+            foreach (Translator translator in _translators)
+                translator.Translate(context);
 
-            result = BitConverter.ToString(stream.ToArray(), 0);
-
-            writer.Close();
-            stream.Dispose();
+            string result = context.GetResult();
             return result;
         }
 

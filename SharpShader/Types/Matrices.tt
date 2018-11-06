@@ -32,7 +32,7 @@ namespace SharpShader
 	///	A <#=$"{rowCount} row, {colCount} column matrix."#>
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#> : IMatrix<#=(isIntrinsic[t] ? ", IIntrinsicValue" : "")#>
+	public struct <#=name#> : IMatrix<<#=matTypes[t]#>><#=(isIntrinsic[t] ? $", IIntrinsicValue<{matTypes[t]}>" : "")#>
 	{
 <#	
 	for(int y = 1; y <= rowCount; y++)

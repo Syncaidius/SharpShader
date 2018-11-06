@@ -6,7 +6,7 @@ namespace SharpShader
 	///	A 3 row, 4 column matrix.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Bool3x4 : IMatrix
+	public struct Bool3x4 : IMatrix<bool>
 	{
 			/// <summary>
 			///	The value at row 1, column 1 of the matrix.

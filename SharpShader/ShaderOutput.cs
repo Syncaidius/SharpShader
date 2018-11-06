@@ -8,14 +8,16 @@ namespace SharpShader
 {
     public enum ShaderOutput
     {
+        Invalid = 0,
+
         /// <summary>
         /// The input C# code will be output to DirectX high-level shader language (HLSL).
         /// </summary>
-        HLSL = 0,
+        HLSL = 1,
 
         /// <summary>
         /// The input C# code will be output to GL shader language (GLSL).
         /// </summary>
-        GLSL = 1,
+        GLSL = 2,
     }
 }

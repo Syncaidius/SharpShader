@@ -190,6 +190,8 @@
     <Compile Include="Attributes\HullShaderAttribute.cs" />
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="ConstantBufferStructure.cs" />
+    <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Lexicon\ShaderLexicon.cs" />
     <Compile Include="ShaderStructure.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -205,6 +207,10 @@
     <Compile Include="ShaderOutput.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strip.cs" />
+    <Compile Include="Translators\TypeTranslator.cs" />
+    <Compile Include="Translators\StructTranslator.cs" />
+    <Compile Include="Translators\Translator.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />
     <Compile Include="Types\Bool1x3.cs" />
@@ -331,6 +337,8 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Lexicon\hlsl.xml" />
+    <EmbeddedResource Include="Lexicon\glsl.xml" />
     <Content Include="Types\MultipleOutput.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MultipleOutput.cs</LastGenOutput>
