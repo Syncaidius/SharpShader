@@ -10,9 +10,9 @@
       <Word t="System.Bool" to="bvec"/>
     </Type>
     <Type t="IMatrix">
-      <Word t="System.Int32" to="imat4"/>     <!-- Again, is this possible in GLSL?-->
-      <Word t="System.UInt32" to="uimat4" />  <!-- I doubt this is...-->
-      <Word t="System.Single" to="mat4" />
+      <Word t="System.Int32" to="imat"/>     <!-- Again, is this possible in GLSL?-->
+      <Word t="System.UInt32" to="uimat" />  <!-- I doubt this is...-->
+      <Word t="System.Single" to="mat" />
       <Word t="System.Double" to="double" />  <!-- Or this...-->
       <Word t="System.Bool" to="bool"/>       <!-- Or this...-->
     </Type>
