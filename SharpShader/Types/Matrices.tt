@@ -23,6 +23,8 @@
 			for(int rowCount = 1; rowCount <= 4; rowCount++)
 			{
 				string name = $"{matNames[t]}{rowCount}x{colCount}";
+				string intrinsic = (isIntrinsic[t] ? $", IIntrinsicValue<{matTypes[t]}>" : "");
+				string uniformDimensions = (colCount == rowCount ? $", UniformDimensions" : "");
 #>
 using System.Runtime.InteropServices;
 
@@ -32,7 +34,7 @@ namespace SharpShader
 	///	A <#=$"{rowCount} row, {colCount} column matrix."#>
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct <#=name#> : IMatrix<<#=matTypes[t]#>><#=(isIntrinsic[t] ? $", IIntrinsicValue<{matTypes[t]}>" : "")#>
+	public struct <#=name#> : IMatrix<<#=matTypes[t]#>><#=(intrinsic + uniformDimensions)#>
 	{
 <#	
 	for(int y = 1; y <= rowCount; y++)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,23 +15,26 @@ namespace SharpShader
     /// </summary>
     public class ShaderLexicon
     {
-        public class Word
-        {
-            public string WordText;
+        Dictionary<Type, string> _words = new Dictionary<Type, string>();
 
-            /// <summary>
-            /// A dictionary containing shader language translations for sub-types of a word in C# source. For example, Vector
-            /// </summary>
-            public Dictionary<Type, string> TypeNames = new Dictionary<Type, string>();
+        public ShaderLanguage Language { get; }
+
+        internal ShaderLexicon(ShaderLanguage language)
+        {
+            Language = language;
         }
 
-        Dictionary<Type, Word> _words = new Dictionary<Type, Word>();
-
-        static Dictionary<ShaderOutput, ShaderLexicon> _lexicons = new Dictionary<ShaderOutput, ShaderLexicon>();
-
-        static ShaderLexicon()
+        internal string Translate(Type t)
         {
-            LoadeEmbeddedLexicon("SharpShader.Lexicon.hlsl.xml");
+            return _words[t] ?? t.Name;
+        }
+
+        #region Static
+        static Dictionary<ShaderLanguage, ShaderLexicon> _lexicons = new Dictionary<ShaderLanguage, ShaderLexicon>();
+
+        internal static ShaderLexicon GetLexicon(ShaderLanguage outputLanguage)
+        {
+            return _lexicons[outputLanguage];
         }
 
         internal static void LoadeEmbeddedLexicon(string embeddedName)
@@ -44,13 +48,13 @@ namespace SharpShader
                 XmlNode langNode = rootNode["Language"];
                 XmlNode words = rootNode["Words"];
 
-                if (Enum.TryParse(langNode.InnerText, out ShaderOutput language))
+                if (Enum.TryParse(langNode.InnerText, out ShaderLanguage language))
                 {
-                    ShaderLexicon lex = new ShaderLexicon();
+                    ShaderLexicon lex = new ShaderLexicon(language);
 
-                    foreach (XmlNode wordNode in rootNode)
+                    foreach (XmlNode wordNode in words)
                     {
-                        if (wordNode.Name == "Word")
+                        if (wordNode.Name == "Type")
                             ParseWordNode(lex, wordNode);
                     }
 
@@ -65,11 +69,24 @@ namespace SharpShader
 
         private static void ParseWordNode(ShaderLexicon lex, XmlNode wordNode)
         {
+            Type translatedType = Type.GetType(wordNode.Attributes["t"].InnerText);
+
             foreach (XmlNode subTypeNode in wordNode)
             {
-                if (subTypeNode.Name != "SubType")
+                if (subTypeNode.Name != "Word")
                     continue;
+
+                string generic = subTypeNode.Attributes["generic"]?.InnerText;
+                string toType = subTypeNode.Attributes["to"]?.InnerText;
+
+                if (!string.IsNullOrWhiteSpace(generic))
+                {
+                    Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {lex.Language} lexicon.");
+                    Type translatedGeneric = translatedType.MakeGenericType(genericType);
+                    lex._words.Add(translatedGeneric, toType);
+                }
             }
         }
+        #endregion
     }
 }

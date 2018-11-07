@@ -192,6 +192,8 @@
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Lexicon\ShaderLexicon.cs" />
+    <Compile Include="Parsers\NamespaceNodeParser.cs" />
+    <Compile Include="Parsers\UsingNodeParser.cs" />
     <Compile Include="ShaderStructure.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -204,13 +206,10 @@
     <Compile Include="Parsers\StructNodeParser.cs" />
     <Compile Include="Parsers\MethodNodeParser.cs" />
     <Compile Include="Parsers\NodeParser.cs" />
-    <Compile Include="ShaderOutput.cs" />
+    <Compile Include="ShaderLanguage.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strip.cs" />
-    <Compile Include="Translators\TypeTranslator.cs" />
-    <Compile Include="Translators\StructTranslator.cs" />
-    <Compile Include="Translators\Translator.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />
     <Compile Include="Types\Bool1x3.cs" />
@@ -268,7 +267,7 @@
     <Compile Include="Types\Int4x2.cs" />
     <Compile Include="Types\Int4x3.cs" />
     <Compile Include="Types\Int4x4.cs" />
-    <Compile Include="Types\IIntrinsicValue.cs" />
+    <Compile Include="IIntrinsicValue.cs" />
     <Compile Include="Types\Matrices1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

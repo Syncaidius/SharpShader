@@ -1,20 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Lexicon>
-  <Language>HLSL</Language>
+  <Language>GLSL</Language>
   <Words>
-    <Type t="IVector">
-      <Word t="System.Int32" to="ivec"/>
-      <Word t="System.UInt32" to="uivec" />   <!-- Are unsigned integer vectors possible in GLSL?-->
-      <Word t="System.Single" to="vec" />
-      <Word t="System.Double" to="dvec" />
-      <Word t="System.Bool" to="bvec"/>
+    <Type t="SharpShader.IVector`1" intrinsic="true">
+      <Word generic="System.Int32" to="ivec" />
+      <Word generic="System.UInt32" to="uivec" /> <!--Does GLSL even support this type?-->
+      <Word generic="System.Single" to="vec" />
+      <Word generic="System.Double" to="dvec" />
+      <Word generic="System.Boolean" to="bvec" />
     </Type>
-    <Type t="IMatrix">
-      <Word t="System.Int32" to="imat"/>     <!-- Again, is this possible in GLSL?-->
-      <Word t="System.UInt32" to="uimat" />  <!-- I doubt this is...-->
-      <Word t="System.Single" to="mat" />
-      <Word t="System.Double" to="double" />  <!-- Or this...-->
-      <Word t="System.Bool" to="bool"/>       <!-- Or this...-->
+    <Type t="SharpShader.IMatrix`1" intrinsic="true" uniformSizeIsSingular="true">
+      <Word generic="System.Int32" to="imat" />
+      <Word generic="System.UInt32" to="uimat" />
+      <Word generic="System.Single" to="mat" />
+      <Word generic="System.Double" to="dmat" />
+      <Word generic="System.Boolean" to="bmat" />
     </Type>
   </Words>
+
+  <!--Rules for handling constant buffers-->
+  <CBuffer>
+    <!-- If true, instance member accessors (e.g. matrices.projection or light.color) will not be stripped.
+         If false, instance accessors, declarations and instantiations will be stripped and only the member names will be left intact. -->    
+    <InstanceIsName>true</InstanceIsName>
+
+    <!-- The keyword rules for defining a constant buffer in the language-->
+    <Keyword> 
+      <Word>uniform</Word>
+      <!-- If false, the keyword is treated as a suffix.-->
+      <IsPrefix>true</IsPrefix> 
+    </Keyword>
+  </CBuffer>
 </Lexicon>

@@ -20,7 +20,7 @@ namespace SharpShaderSample
                 using (StreamReader reader = new StreamReader(fs))
                 {
                     string csharp = reader.ReadToEnd();
-                    output = converter.Convert(csharp, ShaderOutput.HLSL);
+                    output = converter.Convert(csharp, ShaderLanguage.HLSL);
                 }
             }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public enum ShaderOutput
+    public enum ShaderLanguage
     {
         Invalid = 0,
 
