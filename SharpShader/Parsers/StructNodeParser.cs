@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,20 @@ namespace SharpShader
         {
             StructDeclarationSyntax structSyntax = node as StructDeclarationSyntax;
             bool attributed = false;
+
+            // Remove field modifiers (i.e. public, protected, etc).
+            if (structSyntax.Modifiers.Count > 0)
+            {
+                StructDeclarationSyntax temp = structSyntax;
+                foreach (SyntaxToken token in structSyntax.Modifiers)
+                    temp = temp.ReplaceToken(token, SyntaxFactory.Token(SyntaxKind.None));
+
+                //fieldSyntax = temp;
+                node = context.Root.ReplaceNode(structSyntax, temp);
+                context.ReplaceTree(node.SyntaxTree);
+
+                return;
+            }
 
             foreach (AttributeListSyntax list in structSyntax.AttributeLists)
             {
@@ -36,7 +51,7 @@ namespace SharpShader
                             }
 
                             string cbName = structSyntax.Identifier.ToString();
-                            context.AddConstantBuffer(new ConstantBufferStructure()
+                            context.Map.AddConstantBuffer(new ConstantBufferStructure()
                             {
                                 Syntax = structSyntax,
                                 Slot = slot,
@@ -51,7 +66,7 @@ namespace SharpShader
 
             if (!attributed)
             {
-                context.AddStructure(new ShaderStructure()
+                context.Map.AddStructure(new ShaderStructure()
                 {
                     Syntax = structSyntax,
                 });

@@ -24,9 +24,17 @@ namespace SharpShader
             Language = language;
         }
 
+        /// <summary>
+        /// Returns the translated string for a type, or null if no translation is found.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         internal string Translate(Type t)
         {
-            return _words[t] ?? t.Name;
+            if (_words.TryGetValue(t, out string translation))
+                return translation;
+            else
+                return null;
         }
 
         #region Static

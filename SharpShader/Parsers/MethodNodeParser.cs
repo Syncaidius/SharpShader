@@ -42,7 +42,7 @@ namespace SharpShader
 
                         if (ep != EntryPointType.Invalid)
                         {
-                            context.AddEntryPoint(new EntryPoint()
+                            context.Map.AddEntryPoint(new EntryPoint()
                             {
                                 AttributeType = attType,
                                 EntryType = ep,
@@ -57,7 +57,7 @@ namespace SharpShader
 
             if (!attributed)
             {
-                context.AddMethod(new ShaderMethod()
+                context.Map.AddMethod(new ShaderMethod()
                 {
                     MethodSyntax = methodSyntax,
                 });

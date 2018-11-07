@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -37,18 +38,26 @@ namespace SharpShader
 
         public string Convert(string cSharpSource, ShaderLanguage output)
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             ShaderLexicon lex = ShaderLexicon.GetLexicon(output);
             ConversionContext context = new ConversionContext(lex);
             context.RegenerateTree(cSharpSource);
 
-            //CompilationUnitSyntax comUnit = node as CompilationUnitSyntax;
-            ParseNodes(context, context.Root, 0);
+            int iterations = 1;
+            while(ParseNodes(context, context.Root, 0))
+            {
+                Console.WriteLine($"Completed iteration {iterations}");
+                iterations++;
+            }
 
             string result = context.Root.ToString();
+            timer.Stop();
+            Console.WriteLine($"Finished in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             return result;
         }
 
-        private void ParseNodes(ConversionContext context, SyntaxNode node, int depth)
+        private bool ParseNodes(ConversionContext context, SyntaxNode node, int depth)
         {
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
@@ -59,19 +68,17 @@ namespace SharpShader
                 {
                     SyntaxTree tree = context.Tree;
                     parser.Parse(context, child);
-                    if (tree != context.Tree)
-                    {
-                        ParseNodes(context, context.Root, 0);
-                        break;
-                    }
-                    else
-                        ParseNodes(context, child, depth + 1);
+                    if (tree != context.Tree || ParseNodes(context, child, depth + 1))
+                        return true;                    
                 }
                 else
                 {
-                    ParseNodes(context, child, depth + 1);
+                    if (ParseNodes(context, child, depth + 1))
+                        return true;
                 }
             }
+
+            return false;
         }
     }
 }

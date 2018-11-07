@@ -15,8 +15,11 @@ namespace SharpShader
         {
             NamespaceDeclarationSyntax namespaceSyntax = node as NamespaceDeclarationSyntax;
 
-            // Remove namespace block from code by taking the node's children and adding them to the parent
-            ReplaceWithChildren(context, namespaceSyntax, namespaceSyntax.Name);
+            Translate(context, node, (ref string source, ref string nodeSource) =>
+            {
+                string srcChildren = GetChildNodeSource(node, namespaceSyntax.Name);
+                return source.Replace(nodeSource, srcChildren);
+            });
         }
     }
 }

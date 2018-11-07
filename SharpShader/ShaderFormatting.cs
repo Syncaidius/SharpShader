@@ -9,21 +9,12 @@ namespace SharpShader
     /// <summary>
     /// A helper class for stripping various parts of C# code.
     /// </summary>
-    public static class Strip
+    public static class ShaderFormatting
     {
         static readonly string[] _accessorWords = { "protected", "private", "public", "internal", "override", "sealed", "virtual" };
         static readonly string[] _delimiters = { Environment.NewLine };
         const string BlockOpen = "{";
         const string BlockClosed = "}";
-
-        public static string Accessors(string input)
-        {
-            string r = input;
-            foreach (string accessor in _accessorWords)
-                r = r.Replace(accessor, string.Empty);
-
-            return r;
-        }
 
         /// <summary>
         /// Strips and re-adds the correct amount of indentation to a code string.
