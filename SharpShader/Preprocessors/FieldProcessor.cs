@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharpShader
@@ -30,22 +31,7 @@ namespace SharpShader
             }
 
             // Translate type, if possible.
-            Type t = Type.GetType($"SharpShader.{declaration.Type}") ?? Type.GetType($"System.{declaration.Type}");
-            if(t != null)
-            {
-                Type[] iTypes = t.GetInterfaces();
-                foreach (Type implemented in iTypes)
-                {
-                    string translation = context.Lexicon.Translate(implemented);
-                    if (translation != null)
-                    {
-                        //Translate(context, node, (ref string source, ref string nodeSource) =>
-                        //{
-                        //    return source.Replace(nodeSource, nodeSource);
-                        //});
-                    }
-                }
-            }
+            TranslateType(context, node, declaration.Type);
         }
     }
 }

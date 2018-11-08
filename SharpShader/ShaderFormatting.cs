@@ -41,8 +41,6 @@ namespace SharpShader
 
                 if (blockStarted && !blockEnded)
                     indent++;
-                //else if (blockEnded)
-                //    indent = Math.Max(indent - 1, 0);
             }
 
             return string.Join(Environment.NewLine, lines);

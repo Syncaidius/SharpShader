@@ -15,7 +15,12 @@ namespace SharpShader
     /// </summary>
     public class ShaderLexicon
     {
-        Dictionary<Type, string> _words = new Dictionary<Type, string>();
+        public class Word
+        {
+            public bool UniformSizeIsSingular;
+            public string Text;
+        }
+        Dictionary<Type, Word> _words = new Dictionary<Type, Word>();
 
         public ShaderLanguage Language { get; }
 
@@ -29,10 +34,10 @@ namespace SharpShader
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        internal string Translate(Type t)
+        internal Word GetWord(Type t)
         {
-            if (_words.TryGetValue(t, out string translation))
-                return translation;
+            if (_words.TryGetValue(t, out Word word))
+                return word;
             else
                 return null;
         }
@@ -78,6 +83,10 @@ namespace SharpShader
         private static void ParseWordNode(ShaderLexicon lex, XmlNode wordNode)
         {
             Type translatedType = Type.GetType(wordNode.Attributes["t"].InnerText);
+            bool uniformDimensionSingular = false;
+
+            if(wordNode.Attributes["uniformSizeIsSingular"] != null)
+                bool.TryParse(wordNode.Attributes["uniformSizeIsSingular"].InnerText, out uniformDimensionSingular);
 
             foreach (XmlNode subTypeNode in wordNode)
             {
@@ -85,13 +94,17 @@ namespace SharpShader
                     continue;
 
                 string generic = subTypeNode.Attributes["generic"]?.InnerText;
-                string toType = subTypeNode.Attributes["to"]?.InnerText;
+                string toWord = subTypeNode.Attributes["to"]?.InnerText;
 
                 if (!string.IsNullOrWhiteSpace(generic))
                 {
                     Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {lex.Language} lexicon.");
                     Type translatedGeneric = translatedType.MakeGenericType(genericType);
-                    lex._words.Add(translatedGeneric, toType);
+                    lex._words.Add(translatedGeneric, new Word()
+                    {
+                        Text = toWord,
+                        UniformSizeIsSingular = uniformDimensionSingular,
+                    });
                 }
             }
         }

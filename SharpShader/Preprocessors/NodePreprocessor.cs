@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharpShader
@@ -65,6 +66,64 @@ namespace SharpShader
             }
 
             return childSource;
+        }
+
+        protected void TranslateType(ConversionContext context, SyntaxNode node, TypeSyntax type)
+        {
+            Type t = Type.GetType($"SharpShader.{type}") ?? Type.GetType($"System.{type}");
+            if (t != null)
+            {
+                Type[] iTypes = t.GetInterfaces();
+                foreach (Type implemented in iTypes)
+                {
+                    ShaderLexicon.Word translation = context.Lexicon.GetWord(implemented);
+                    if (translation != null)
+                    {
+                        string strRegex = null;
+                        string toReplace = null;
+
+                        // TODO These should be defined in a lexicon-esque XML file, 
+                        //      along with information for automatically generating SharpShader types.
+                        if (typeof(IVector).IsAssignableFrom(implemented))
+                        {
+                            strRegex = @"(;|\b|\w)Vector[0-9](\b|\w)";
+                            toReplace = "Vector";
+                        }
+                        else if (typeof(IMatrix).IsAssignableFrom(implemented))
+                        {
+                            strRegex = @"(;|\b|\w)Matrix[0-9]x[0-9](\b|\w)";
+                            toReplace = "Matrix";
+                        }
+
+                        if (strRegex == null)
+                            continue;
+
+                        Translate(context, node, (ref string source, ref string nodeSource) =>
+                        {
+                            Match m = Regex.Match(nodeSource, strRegex);
+                            if (m.Success)
+                            {
+                                string replacement = m.Value.Replace(toReplace, translation.Text);
+
+                                if (translation.UniformSizeIsSingular)
+                                {
+                                    if (typeof(UniformDimensions).IsAssignableFrom(t))
+                                        replacement = replacement.Substring(0, replacement.Length - 2);
+                                }
+
+                                // Replace the type across the whole source. This saves regenerating the syntax tree for each individual field declaration.
+                                return source.Replace(m.Value, replacement);
+                            }
+                            else
+                            {
+                                return source;
+                            }
+                        });
+
+                        break;
+                    }
+                }
+            }
         }
 
         internal abstract Type ParsedType { get; }

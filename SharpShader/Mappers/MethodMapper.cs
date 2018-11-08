@@ -13,6 +13,7 @@ namespace SharpShader
         internal override void Map(ConversionContext context, SyntaxNode node)
         {
             MethodDeclarationSyntax methodSyntax = node as MethodDeclarationSyntax;
+
             bool attributed = false;
             foreach (AttributeListSyntax list in methodSyntax.AttributeLists)
             {

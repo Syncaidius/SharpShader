@@ -196,7 +196,7 @@
     <Compile Include="Mappers\NodeMapper.cs" />
     <Compile Include="Mappers\StructMapper.cs" />
     <Compile Include="Preprocessors\NamespaceNodeProcessor.cs" />
-    <Compile Include="Preprocessors\FieldParser.cs" />
+    <Compile Include="Preprocessors\FieldProcessor.cs" />
     <Compile Include="Preprocessors\UsingNodeProcessor.cs" />
     <Compile Include="ShaderStructure.cs" />
     <Compile Include="ShaderMethod.cs" />

@@ -13,9 +13,13 @@ namespace SharpShader
 
     public interface UniformDimensions { }
 
-    public interface IVector<T> : IIntrinsicValue 
+    public interface IVector : IIntrinsicValue { }
+
+    public interface IVector<T> : IVector
         where T : struct { }
 
-    public interface IMatrix<T> : IIntrinsicValue
+    public interface IMatrix : IIntrinsicValue { }
+
+    public interface IMatrix<T> : IMatrix
         where T : struct { }
 }
