@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class FieldParser : NodeParser<FieldDeclarationSyntax>
+    internal class FieldProcessor : NodePreprocessor<FieldDeclarationSyntax>
     {
-        internal override void Parse(ConversionContext context, SyntaxNode node)
+        internal override void Process(ConversionContext context, SyntaxNode node)
         {
             FieldDeclarationSyntax fieldSyntax = node as FieldDeclarationSyntax;
             VariableDeclarationSyntax declaration = fieldSyntax.Declaration;

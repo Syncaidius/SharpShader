@@ -193,9 +193,11 @@
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Lexicon\ShaderLexicon.cs" />
-    <Compile Include="Parsers\NamespaceNodeParser.cs" />
-    <Compile Include="Parsers\FieldParser.cs" />
-    <Compile Include="Parsers\UsingNodeParser.cs" />
+    <Compile Include="Mappers\NodeMapper.cs" />
+    <Compile Include="Mappers\StructMapper.cs" />
+    <Compile Include="Preprocessors\NamespaceNodeProcessor.cs" />
+    <Compile Include="Preprocessors\FieldParser.cs" />
+    <Compile Include="Preprocessors\UsingNodeProcessor.cs" />
     <Compile Include="ShaderStructure.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
@@ -205,9 +207,9 @@
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
     <Compile Include="ConversionContext.cs" />
     <Compile Include="CSharpShader.cs" />
-    <Compile Include="Parsers\StructNodeParser.cs" />
-    <Compile Include="Parsers\MethodNodeParser.cs" />
-    <Compile Include="Parsers\NodeParser.cs" />
+    <Compile Include="Preprocessors\StructNodeProcessor.cs" />
+    <Compile Include="Mappers\MethodMapper.cs" />
+    <Compile Include="Preprocessors\NodePreprocessor.cs" />
     <Compile Include="ShaderLanguage.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

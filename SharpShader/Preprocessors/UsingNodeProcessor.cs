@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class UsingNodeParser : NodeParser<UsingDirectiveSyntax>
+    internal class UsingNodeParser : NodePreprocessor<UsingDirectiveSyntax>
     {
-        internal override void Parse(ConversionContext context, SyntaxNode node)
+        internal override void Process(ConversionContext context, SyntaxNode node)
         {
             // Remove using statement from code by taking the node's children and adding them to the parent
             RemoveNode(context, node);

@@ -9,26 +9,12 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class StructNodeParser : NodeParser<StructDeclarationSyntax>
+    internal class StructMapper : NodeMapper<StructDeclarationSyntax>
     {
-        internal override void Parse(ConversionContext context, SyntaxNode node)
+        internal override void Map(ConversionContext context, SyntaxNode node)
         {
             StructDeclarationSyntax structSyntax = node as StructDeclarationSyntax;
             bool attributed = false;
-
-            // Remove field modifiers (i.e. public, protected, etc).
-            if (structSyntax.Modifiers.Count > 0)
-            {
-                StructDeclarationSyntax temp = structSyntax;
-                foreach (SyntaxToken token in structSyntax.Modifiers)
-                    temp = temp.ReplaceToken(token, SyntaxFactory.Token(SyntaxKind.None));
-
-                //fieldSyntax = temp;
-                node = context.Root.ReplaceNode(structSyntax, temp);
-                context.ReplaceTree(node.SyntaxTree);
-
-                return;
-            }
 
             foreach (AttributeListSyntax list in structSyntax.AttributeLists)
             {

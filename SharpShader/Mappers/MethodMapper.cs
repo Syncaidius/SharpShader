@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MethodNodeParser : NodeParser<MethodDeclarationSyntax>
+    internal class MethodNodeMapper : NodeMapper<MethodDeclarationSyntax>
     {
-        internal override void Parse(ConversionContext context, SyntaxNode node)
+        internal override void Map(ConversionContext context, SyntaxNode node)
         {
             MethodDeclarationSyntax methodSyntax = node as MethodDeclarationSyntax;
             bool attributed = false;

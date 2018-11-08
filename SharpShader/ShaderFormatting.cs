@@ -22,10 +22,10 @@ namespace SharpShader
         /// <param name="input"></param>
         /// <param name="minIndent">The minimum level of indentation.</param>
         /// <returns></returns>
-        public static string CorrectIndents(string input, int minIndent)
+        public static string CorrectIndents(string input)
         {
-            string[] lines = input.Split(_delimiters, StringSplitOptions.RemoveEmptyEntries);
-            int indent = minIndent;
+            string[] lines = input.Split(_delimiters, StringSplitOptions.None);
+            int indent = 0;
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -35,14 +35,14 @@ namespace SharpShader
                 bool blockEnded = lines[i].EndsWith(BlockClosed) || lines[i].EndsWith(BlockClosed + ";");
 
                 if (lines[i].StartsWith(BlockClosed) && blockEnded)
-                    indent = Math.Max(indent - 1, minIndent);
+                    indent = Math.Max(indent - 1, 0);
 
                 lines[i] = new string('\t', indent) + lines[i];
 
                 if (blockStarted && !blockEnded)
                     indent++;
-                else if (blockEnded)
-                    indent = Math.Max(indent - 1, minIndent);
+                //else if (blockEnded)
+                //    indent = Math.Max(indent - 1, 0);
             }
 
             return string.Join(Environment.NewLine, lines);

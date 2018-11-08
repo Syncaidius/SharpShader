@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class NamespaceNodeParser : NodeParser<NamespaceDeclarationSyntax>
+    internal class NamespaceNodeParser : NodePreprocessor<NamespaceDeclarationSyntax>
     {
-        internal override void Parse(ConversionContext context, SyntaxNode node)
+        internal override void Process(ConversionContext context, SyntaxNode node)
         {
             NamespaceDeclarationSyntax namespaceSyntax = node as NamespaceDeclarationSyntax;
 

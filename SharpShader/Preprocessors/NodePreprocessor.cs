@@ -11,9 +11,9 @@ namespace SharpShader
 {
     internal delegate string TranslateCallbackDelegate(ref string source, ref string nodeSource);
 
-    internal abstract class NodeParser
+    internal abstract class NodePreprocessor
     {
-        internal abstract void Parse(ConversionContext context, SyntaxNode node);
+        internal abstract void Process(ConversionContext context, SyntaxNode node);
 
         /// <summary>
         /// Removes a node from the syntax tree.
@@ -70,7 +70,7 @@ namespace SharpShader
         internal abstract Type ParsedType { get; }
     }
 
-    internal abstract class NodeParser<T> : NodeParser 
+    internal abstract class NodePreprocessor<T> : NodePreprocessor
         where T : SyntaxNode
     {
         internal override sealed Type ParsedType => typeof(T);
