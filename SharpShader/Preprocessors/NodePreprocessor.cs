@@ -14,63 +14,11 @@ namespace SharpShader
 
     internal abstract class NodePreprocessor
     {
-        internal abstract void Process(ConversionContext context, SyntaxNode node);
+        internal abstract void Process(ConversionContext context, SyntaxNode node, StringBuilder source);
 
-        /// <summary>
-        /// Removes a node from the syntax tree.
-        /// </summary>
-        /// <param name="context">The conversion context.</param>
-        /// <param name="node">The node to be removed.</param>
-        /// <param name="migrateChildren">If true, the node's children are transferred to the node's parent.</param>
-        protected void RemoveNode(ConversionContext context, SyntaxNode node)
+        protected void TranslateTypeSyntax(ConversionContext context, TypeSyntax syntax, StringBuilder source)
         {
-            SyntaxNode newParent = node.Parent.RemoveNode(node, SyntaxRemoveOptions.KeepNoTrivia);
-            context.ReplaceTree(newParent.SyntaxTree);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="node"></param>
-        /// <param name="callback">A callback which takes the the main source and node source as input and returns the translated shader source result as output.</param>
-        protected void Translate(ConversionContext context, SyntaxNode node, TranslateCallbackDelegate callback)
-        {
-            string source = context.Tree.ToString();
-            string nodeSource = node.ToString();
-            int start = source.IndexOf(node.ToString());
-
-            if (start > -1)
-            {
-                source = callback(ref source, ref nodeSource);
-                context.RegenerateTree(source);
-            }
-        }
-
-        /// <summary>
-        /// Returns the source code of a node's child nodes, while leaving out the excluded ones.
-        /// </summary>
-        /// <param name="node"></param>
-        /// <param name="exludedChildren"></param>
-        /// <returns></returns>
-        protected static string GetChildNodeSource(SyntaxNode node, params SyntaxNode[] exludedChildren)
-        {
-            IEnumerable<SyntaxNode> children = node.ChildNodes();
-            string childSource = "";
-            foreach (SyntaxNode child in children)
-            {
-                if (exludedChildren.Contains(child))
-                    continue;
-
-                childSource += child.ToString();
-            }
-
-            return childSource;
-        }
-
-        protected void TranslateType(ConversionContext context, SyntaxNode node, TypeSyntax type)
-        {
-            Type t = Type.GetType($"SharpShader.{type}") ?? Type.GetType($"System.{type}");
+            Type t = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
             if (t != null)
             {
                 Type[] iTypes = t.GetInterfaces();
@@ -79,51 +27,44 @@ namespace SharpShader
                     ShaderLexicon.Word translation = context.Lexicon.GetWord(implemented);
                     if (translation != null)
                     {
-                        string strRegex = null;
-                        string toReplace = null;
-
-                        // TODO These should be defined in a lexicon-esque XML file, 
-                        //      along with information for automatically generating SharpShader types.
+                        string original = syntax.ToString();
+                        string replacement = null;
                         if (typeof(IVector).IsAssignableFrom(implemented))
-                        {
-                            strRegex = @"(;|\b|\w)Vector[0-9](\b|\w)";
-                            toReplace = "Vector";
-                        }
+                            replacement = original.Replace("Vector", "");
                         else if (typeof(IMatrix).IsAssignableFrom(implemented))
+                            replacement = original.Replace("Matrix", "");
+
+                        if (translation.UniformSizeIsSingular)
                         {
-                            strRegex = @"(;|\b|\w)Matrix[0-9]x[0-9](\b|\w)";
-                            toReplace = "Matrix";
+                            if (typeof(UniformDimensions).IsAssignableFrom(t))
+                                replacement = replacement.Substring(0, replacement.Length - 2);
                         }
 
-                        if (strRegex == null)
-                            continue;
+                        replacement = translation.Text + replacement;
 
-                        Translate(context, node, (ref string source, ref string nodeSource) =>
-                        {
-                            Match m = Regex.Match(nodeSource, strRegex);
-                            if (m.Success)
-                            {
-                                string replacement = m.Value.Replace(toReplace, translation.Text);
-
-                                if (translation.UniformSizeIsSingular)
-                                {
-                                    if (typeof(UniformDimensions).IsAssignableFrom(t))
-                                        replacement = replacement.Substring(0, replacement.Length - 2);
-                                }
-
-                                // Replace the type across the whole source. This saves regenerating the syntax tree for each individual field declaration.
-                                return source.Replace(m.Value, replacement);
-                            }
-                            else
-                            {
-                                return source;
-                            }
-                        });
-
+                        // Replace the type across the whole source. This saves regenerating the syntax tree for each individual field declaration.
+                        source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
                         break;
                     }
                 }
             }
+        }
+
+
+        protected static void RemoveSyntax(SyntaxNode node, StringBuilder source)
+        {
+            source = source.Remove(node.SpanStart, node.Span.Length);
+        }
+
+        protected static void RemoveToken(SyntaxToken node, StringBuilder source)
+        {
+            source = source.Remove(node.SpanStart, node.Span.Length);
+        }
+
+        protected static void RemoveTokens(SyntaxTokenList list, StringBuilder source)
+        {
+            foreach (SyntaxToken token in list)
+                RemoveToken(token, source);
         }
 
         internal abstract Type ParsedType { get; }
@@ -133,5 +74,12 @@ namespace SharpShader
         where T : SyntaxNode
     {
         internal override sealed Type ParsedType => typeof(T);
+
+        internal override sealed void Process(ConversionContext context, SyntaxNode node, StringBuilder source)
+        {
+            OnProcess(context, node as T, source);
+        }
+
+        protected abstract void OnProcess(ConversionContext context, T node, StringBuilder source);
     }
 }

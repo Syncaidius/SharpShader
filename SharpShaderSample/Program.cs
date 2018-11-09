@@ -32,7 +32,7 @@ namespace SharpShaderSample
                 }
             }
 
-                Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

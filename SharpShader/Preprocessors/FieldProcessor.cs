@@ -12,26 +12,13 @@ namespace SharpShader
 {
     internal class FieldProcessor : NodePreprocessor<FieldDeclarationSyntax>
     {
-        internal override void Process(ConversionContext context, SyntaxNode node)
+        protected override void OnProcess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source)
         {
-            FieldDeclarationSyntax fieldSyntax = node as FieldDeclarationSyntax;
-            VariableDeclarationSyntax declaration = fieldSyntax.Declaration;
+            // Update the type first, this comes after the modifiers.
+            TranslateTypeSyntax(context, syntax.Declaration.Type, source);
 
             // Remove field modifiers (i.e. public, protected, etc).
-            if (fieldSyntax.Modifiers.Count > 0)
-            {
-                FieldDeclarationSyntax temp = fieldSyntax;
-                foreach(SyntaxToken token in fieldSyntax.Modifiers)
-                    temp = temp.ReplaceToken(token, SyntaxFactory.Token(SyntaxKind.None));
-
-                //fieldSyntax = temp;
-                node = context.Root.ReplaceNode(fieldSyntax, temp);
-                context.ReplaceTree(node.SyntaxTree);
-                return;
-            }
-
-            // Translate type, if possible.
-            TranslateType(context, node, declaration.Type);
+            RemoveTokens(syntax.Modifiers, source);
         }
     }
 }

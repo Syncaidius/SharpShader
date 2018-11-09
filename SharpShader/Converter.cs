@@ -60,13 +60,14 @@ namespace SharpShader
             ConversionContext context = new ConversionContext(lex);
             context.RegenerateTree(cSharpSource);
 
-            int iterations = 1;
-            while(Preprocess(context, context.Root, 0))
+            List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
+            foreach(Type t in _preprocessors.Keys)
             {
-                Console.WriteLine($"Completed iteration {iterations}");
-                iterations++;
+                GatherNodes(context, context.Root, t, nodesToProcess);
+                Preprocess(context, t, nodesToProcess);
+                nodesToProcess.Clear();
             }
-
+            
             Map(context, context.Root, 0);
 
             string result = context.Root.ToString();
@@ -76,28 +77,28 @@ namespace SharpShader
             return result;
         }
 
-        private bool Preprocess(ConversionContext context, SyntaxNode node, int depth)
+        private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess)
         {
+            Type t = node.GetType();
+            if (t == nodeType)
+                nodesToProcess.Add(node);
+
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
-            {
-                Type t = child.GetType();
+                GatherNodes(context, child, nodeType, nodesToProcess);
+        }
 
-                if (_preprocessors.TryGetValue(t, out NodePreprocessor pp))
-                {
-                    SyntaxTree tree = context.Tree;
-                    pp.Process(context, child);
-                    if (tree != context.Tree || Preprocess(context, child, depth + 1))
-                        return true;                    
-                }
-                else
-                {
-                    if (Preprocess(context, child, depth + 1))
-                        return true;
-                }
-            }
+        private void Preprocess(ConversionContext context, Type nodeType, List<SyntaxNode> nodes)
+        {
+            StringBuilder source = new StringBuilder(context.Tree.ToString());
+            NodePreprocessor processor = _preprocessors[nodeType];
 
-            return false;
+            // Iterate backwards; Bottom to top. 
+            // Iterating in this way ensures any changes made by preprocessors will not invalidate the locations of earlier nodes.
+            for (int i = nodes.Count - 1; i >= 0; i--)
+                processor.Process(context, nodes[i], source);
+
+            context.RegenerateTree(source.ToString());
         }
 
         private void Map(ConversionContext context, SyntaxNode node, int depth)

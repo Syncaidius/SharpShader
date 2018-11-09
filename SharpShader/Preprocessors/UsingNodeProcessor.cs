@@ -10,10 +10,10 @@ namespace SharpShader
 {
     internal class UsingNodeParser : NodePreprocessor<UsingDirectiveSyntax>
     {
-        internal override void Process(ConversionContext context, SyntaxNode node)
+        protected override void OnProcess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
         {
             // Remove using statement from code by taking the node's children and adding them to the parent
-            RemoveNode(context, node);
+            RemoveSyntax(node, source);
         }
     }
 }
