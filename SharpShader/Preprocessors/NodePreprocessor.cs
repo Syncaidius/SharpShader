@@ -61,10 +61,10 @@ namespace SharpShader
             source = source.Remove(node.SpanStart, node.Span.Length);
         }
 
-        protected static void RemoveTokens(SyntaxTokenList list, StringBuilder source)
+        protected static void RemoveTokens(SyntaxTokenList tokens, StringBuilder source)
         {
-            foreach (SyntaxToken token in list)
-                RemoveToken(token, source);
+            for(int i = tokens.Count - 1; i >= 0; i--)
+                RemoveToken(tokens[i], source);
         }
 
         internal abstract Type ParsedType { get; }

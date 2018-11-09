@@ -1,25 +1,27 @@
-﻿//using Microsoft.CodeAnalysis;
-//using Microsoft.CodeAnalysis.CSharp;
-//using Microsoft.CodeAnalysis.CSharp.Syntax;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-//namespace SharpShader
-//{
-//    internal class NamespaceNodeParser : NodePreprocessor<NamespaceDeclarationSyntax>
-//    {
-//        internal override void Process(ConversionContext context, SyntaxNode node)
-//        {
-//            NamespaceDeclarationSyntax namespaceSyntax = node as NamespaceDeclarationSyntax;
+namespace SharpShader
+{
+    internal class NamespaceNodeParser : NodePreprocessor<NamespaceDeclarationSyntax>
+    {
+        protected override void OnProcess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
+        {
+            IEnumerable<SyntaxNode> children = syntax.ChildNodes();
+            string childSource = "";
+            foreach (SyntaxNode n in children)
+            {
+                if (n == syntax.Name)
+                    continue;
 
-//            Translate(context, node, (ref string source, ref string nodeSource) =>
-//            {
-//                string srcChildren = GetChildNodeSource(node, namespaceSyntax.Name);
-//                return source.Replace(nodeSource, srcChildren);
-//            });
-//        }
-//    }
-//}
+                childSource += n.ToString();
+            }
+
+            source.Replace(syntax.ToString(), childSource, syntax.SpanStart, syntax.Span.Length);
+        }
+    }
+}

@@ -12,7 +12,6 @@ namespace SharpShader
     {
         protected override void OnProcess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
         {
-            // Remove using statement from code by taking the node's children and adding them to the parent
             RemoveSyntax(node, source);
         }
     }

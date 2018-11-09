@@ -13,7 +13,7 @@ namespace SharpShader
     {
         protected override void OnProcess(ConversionContext context, StructDeclarationSyntax node, StringBuilder source)
         {
-            
+            RemoveTokens(node.Modifiers, source);
         }
     }
 }
