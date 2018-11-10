@@ -19,6 +19,14 @@ namespace SharpShader
     internal abstract class NodeMapper<T> : NodeMapper 
         where T : SyntaxNode
     {
+
+        internal override sealed void Map(ConversionContext context, SyntaxNode node)
+        {
+            OnMap(context, node as T);
+        }
+
+        protected abstract void OnMap(ConversionContext context, T syntax);
+
         internal override sealed Type ParsedType => typeof(T);
     }
 }

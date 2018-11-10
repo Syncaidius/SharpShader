@@ -11,12 +11,11 @@ namespace SharpShader
 {
     internal class StructMapper : NodeMapper<StructDeclarationSyntax>
     {
-        internal override void Map(ConversionContext context, SyntaxNode node)
+        protected override void OnMap(ConversionContext context, StructDeclarationSyntax syntax)
         {
-            StructDeclarationSyntax structSyntax = node as StructDeclarationSyntax;
             bool attributed = false;
 
-            foreach (AttributeListSyntax list in structSyntax.AttributeLists)
+            foreach (AttributeListSyntax list in syntax.AttributeLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
                 {
@@ -36,10 +35,10 @@ namespace SharpShader
                                 int.TryParse(argList[0].ToString(), out slot);
                             }
 
-                            string cbName = structSyntax.Identifier.ToString();
+                            string cbName = syntax.Identifier.ToString();
                             context.Map.AddConstantBuffer(new ConstantBufferStructure()
                             {
-                                Syntax = structSyntax,
+                                Syntax = syntax,
                                 Slot = slot,
                                 Name = cbName,
                             });
@@ -54,7 +53,7 @@ namespace SharpShader
             {
                 context.Map.AddStructure(new ShaderStructure()
                 {
-                    Syntax = structSyntax,
+                    Syntax = syntax,
                 });
             }
         }

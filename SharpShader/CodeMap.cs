@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,9 @@ namespace SharpShader
     {
         internal List<EntryPoint> EntryPoints = new List<EntryPoint>();
 
-        internal List<ShaderMethod> Methods = new List<ShaderMethod>();
+        internal Dictionary<string, MethodDeclarationSyntax> Methods = new Dictionary<string, MethodDeclarationSyntax>();
+
+        internal Dictionary<string, List<InvocationExpressionSyntax>> MethodCalls = new Dictionary<string, List<InvocationExpressionSyntax>>();
 
         internal List<ShaderStructure> Structures = new List<ShaderStructure>();
 
@@ -24,9 +27,22 @@ namespace SharpShader
             EntryPoints.Add(ep);
         }
 
-        internal void AddMethod(ShaderMethod method)
+        internal void AddMethod(MethodDeclarationSyntax method)
         {
-            Methods.Add(method);
+            Methods.Add(method.Identifier.ToString(), method);
+        }
+
+        internal void AddMethodCall(InvocationExpressionSyntax call)
+        {
+            List<InvocationExpressionSyntax> invocationList = null;
+            string expression = call.Expression.ToString();
+            if (!MethodCalls.TryGetValue(expression, out invocationList))
+            {
+                invocationList = new List<InvocationExpressionSyntax>();
+                MethodCalls.Add(expression, invocationList);
+            }
+
+            invocationList.Add(call);
         }
 
         internal void AddStructure(ShaderStructure structure)

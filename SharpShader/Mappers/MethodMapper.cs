@@ -10,12 +10,10 @@ namespace SharpShader
 {
     internal class MethodNodeMapper : NodeMapper<MethodDeclarationSyntax>
     {
-        internal override void Map(ConversionContext context, SyntaxNode node)
+        protected override void OnMap(ConversionContext context, MethodDeclarationSyntax syntax)
         {
-            MethodDeclarationSyntax methodSyntax = node as MethodDeclarationSyntax;
-
             bool attributed = false;
-            foreach (AttributeListSyntax list in methodSyntax.AttributeLists)
+            foreach (AttributeListSyntax list in syntax.AttributeLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
                 {
@@ -47,7 +45,7 @@ namespace SharpShader
                             {
                                 AttributeType = attType,
                                 EntryType = ep,
-                                MethodSyntax = methodSyntax,
+                                MethodSyntax = syntax,
                                 AttributeSyntax = attSyntax,
                             });
                             attributed = true;
@@ -57,12 +55,7 @@ namespace SharpShader
             }
 
             if (!attributed)
-            {
-                context.Map.AddMethod(new ShaderMethod()
-                {
-                    MethodSyntax = methodSyntax,
-                });
-            }
+                context.Map.AddMethod(syntax);
         }
     }
 }

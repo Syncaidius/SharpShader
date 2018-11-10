@@ -193,6 +193,7 @@
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Lexicon\ShaderLexicon.cs" />
+    <Compile Include="Mappers\MethodCallMapper.cs" />
     <Compile Include="Mappers\NodeMapper.cs" />
     <Compile Include="Mappers\StructMapper.cs" />
     <Compile Include="Preprocessors\MethodProcessor.cs" />
