@@ -17,8 +17,12 @@ namespace SharpShader
     /// </summary>
     public class Converter
     {
+        #region Static members
         static Dictionary<Type, NodePreprocessor> _preprocessors;
         static Dictionary<Type, NodeMapper> _mappers;
+        static readonly string[] _delimiters = { Environment.NewLine };
+        const string BlockOpen = "{";
+        const string BlockClosed = "}";
 
         static Converter()
         {
@@ -45,6 +49,36 @@ namespace SharpShader
             }
         }
 
+        /// <summary>
+        /// Strips and re-adds the correct amount of indentation to a code string.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="minIndent">The minimum level of indentation.</param>
+        /// <returns></returns>
+        public static string CorrectIndents(string input)
+        {
+            string[] lines = input.Split(_delimiters, StringSplitOptions.None);
+            int indent = 0;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                lines[i] = lines[i].Trim();
+
+                bool blockStarted = lines[i].StartsWith(BlockOpen);
+                bool blockEnded = lines[i].EndsWith(BlockClosed) || lines[i].EndsWith(BlockClosed + ";");
+
+                if (lines[i].StartsWith(BlockClosed) && blockEnded)
+                    indent = Math.Max(indent - 1, 0);
+
+                lines[i] = new string('\t', indent) + lines[i];
+
+                if (blockStarted && !blockEnded)
+                    indent++;
+            }
+
+            return string.Join(Environment.NewLine, lines);
+        }
+
         private static IEnumerable<Type> FindOfType<T>() where T : class
         {
             Type pType = typeof(T);
@@ -52,6 +86,9 @@ namespace SharpShader
             return assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
         }
 
+        #endregion
+
+        #region Instance members
         public string Convert(string cSharpSource, ShaderLanguage output)
         {
             Stopwatch timer = new Stopwatch();
@@ -71,7 +108,7 @@ namespace SharpShader
             Map(context, context.Root, 0);
 
             string result = context.Root.ToString();
-            result = ShaderFormatting.CorrectIndents(result);
+            result = CorrectIndents(result);
             timer.Stop();
             Console.WriteLine($"Finished in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             return result;
@@ -119,5 +156,6 @@ namespace SharpShader
                 Map(context, child, depth + 1);
             }
         }
+        #endregion
     }
 }
