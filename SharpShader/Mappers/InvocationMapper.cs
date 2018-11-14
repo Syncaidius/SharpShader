@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MethodCallMapper : NodeMapper<InvocationExpressionSyntax>
+    internal class InvocationMapper : NodeMapper<InvocationExpressionSyntax>
     {
         protected override void OnMap(ConversionContext context, InvocationExpressionSyntax syntax)
         {

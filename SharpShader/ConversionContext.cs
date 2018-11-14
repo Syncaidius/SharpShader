@@ -20,6 +20,8 @@ namespace SharpShader
         internal CodeMap Map { get; private set; }
         internal ShaderLexicon Lexicon { get; }
 
+        int _nextVariable = 0;
+
         internal ConversionContext(ShaderLexicon lexicon)
         {
             Lexicon = lexicon;
@@ -40,7 +42,10 @@ namespace SharpShader
             Map = new CodeMap();
         }
 
-
+        internal string GetNewVariableName(string prefix = null)
+        {
+            return $"ss_{($"{prefix}_" ?? "val_")}{_nextVariable++}";
+        }
 
         internal string GetResult()
         {

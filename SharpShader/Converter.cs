@@ -114,15 +114,19 @@ namespace SharpShader
             return result;
         }
 
-        private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess)
+        private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
         {
             Type t = node.GetType();
             if (t == nodeType)
                 nodesToProcess.Add(node);
 
+#if DEBUG
+            Console.WriteLine($"{new string(' ', depth * 2)} {node.GetType().Name}");
+#endif
+
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
-                GatherNodes(context, child, nodeType, nodesToProcess);
+                GatherNodes(context, child, nodeType, nodesToProcess, depth + 1);
         }
 
         private void Preprocess(ConversionContext context, Type nodeType, List<SyntaxNode> nodes)
