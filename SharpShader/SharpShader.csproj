@@ -196,10 +196,12 @@
     <Compile Include="Mappers\MethodCallMapper.cs" />
     <Compile Include="Mappers\NodeMapper.cs" />
     <Compile Include="Mappers\StructMapper.cs" />
+    <Compile Include="Preprocessors\InvocationProcessor.cs" />
     <Compile Include="Preprocessors\MethodProcessor.cs" />
     <Compile Include="Preprocessors\NamespaceNodeProcessor.cs" />
     <Compile Include="Preprocessors\FieldProcessor.cs" />
     <Compile Include="Preprocessors\UsingNodeProcessor.cs" />
+    <Compile Include="ShaderReflection.cs" />
     <Compile Include="ShaderStructure.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />

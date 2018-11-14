@@ -1,22 +1,154 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Lexicon>
   <Language>HLSL</Language>
-  <Words>
-    <Type t="SharpShader.IVector`1" intrinsic="true">
-      <Word generic="System.Int32" to="int" />
-      <Word generic="System.UInt32" to="uint" />
-      <Word generic="System.Single" to="float" />
-      <Word generic="System.Double" to="double" />
-      <Word generic="System.Boolean" to="bool" />
-    </Type>
-    <Type t="SharpShader.IMatrix`1" intrinsic="true"  uniformSizeIsSingular="false">
-      <Word generic="System.Int32" to="int" />
-      <Word generic="System.UInt32" to="uint" />
-      <Word generic="System.Single" to="float" />
-      <Word generic="System.Double" to="double" />
-      <Word generic="System.Boolean" to="bool" />
-    </Type>
-  </Words>
+  <Word t="SharpShader.IVector`1" intrinsic="true">
+    <Generic type="System.Int32" to="int" />
+    <Generic type="System.UInt32" to="uint" />
+    <Generic type="System.Single" to="float" />
+    <Generic type="System.Double" to="double" />
+    <Generic type="System.Boolean" to="bool" />
+  </Word>
+  <Word t="SharpShader.IMatrix`1" intrinsic="true"  uniformSizeIsSingular="false">
+    <Generic type="System.Int32" to="int" />
+    <Generic type="System.UInt32" to="uint" />
+    <Generic type="System.Single" to="float" />
+    <Generic type="System.Double" to="double" />
+    <Generic type="System.Boolean" to="bool" />
+  </Word>
+  <Intrinsic name="abort" />
+  <Intrinsic name="abs" />
+  <Intrinsic name="acos" />
+  <Intrinsic name="all" />
+  <Intrinsic name="AllMemoryBarrier" />
+  <Intrinsic name="AllMemoryBarrierWithGroupSync" />
+  <Intrinsic name="any" />
+  <Intrinsic name="asdouble" />
+  <Intrinsic name="asfloat" />
+  <Intrinsic name="asin" />
+  <Intrinsic name="asint" />
+  <Intrinsic name="asuint" />
+  <Intrinsic name="atan" />
+  <Intrinsic name="atan2" />
+  <Intrinsic name="ceil" />
+  <Intrinsic name="CheckAccessFullyMapped" />
+  <Intrinsic name="clamp" />
+  <Intrinsic name="clip" />
+  <Intrinsic name="cos" />
+  <Intrinsic name="cosh" />
+  <Intrinsic name="countbits" />
+  <Intrinsic name="cross" />
+  <Intrinsic name="D3DCOLORtoUBYTE4" />
+  <Intrinsic name="ddx" />
+  <Intrinsic name="ddx_coarse" />
+  <Intrinsic name="ddx_fine" />
+  <Intrinsic name="ddy" />
+  <Intrinsic name="ddy_coarse" />
+  <Intrinsic name="ddy_fine" />
+  <Intrinsic name="degrees" />
+  <Intrinsic name="determinant" />
+  <Intrinsic name="DeviceMemoryBarrier" />
+  <Intrinsic name="DeviceMemoryBarrierWithGroupSync" />
+  <Intrinsic name="distance" />
+  <Intrinsic name="dot" />
+  <Intrinsic name="dst" />
+  <Intrinsic name="errorf" />
+  <Intrinsic name="EvaluateAttributeAtCentroid" />
+  <Intrinsic name="EvaluateAttributeAtSample" />
+  <Intrinsic name="EvaluateAttributeSnapped" />
+  <Intrinsic name="exp" />
+  <Intrinsic name="exp2" />
+  <Intrinsic name="f16tof32" />
+  <Intrinsic name="f32tof16" />
+  <Intrinsic name="faceforward" />
+  <Intrinsic name="firstbithigh" />
+  <Intrinsic name="firstbitlow" />
+  <Intrinsic name="floor" />
+  <Intrinsic name="fma" />
+  <Intrinsic name="fmod" />
+  <Intrinsic name="frac" />
+  <Intrinsic name="frexp" />
+  <Intrinsic name="fwidth" />
+  <Intrinsic name="GetRenderTargetSampleCount" />
+  <Intrinsic name="GetRenderTargetSamplePosition" />
+  <Intrinsic name="GroupMemoryBarrier" />
+  <Intrinsic name="GroupMemoryBarrierWithSync" />
+  <Intrinsic name="InterlockedAdd" />
+  <Intrinsic name="InterlockedAnd" />
+  <Intrinsic name="InterlockedCompareExchange" />
+  <Intrinsic name="InterlockedCompareStore" />
+  <Intrinsic name="InterlockedExchange" />
+  <Intrinsic name="InterlockedMax" />
+  <Intrinsic name="InterlockedMin" />
+  <Intrinsic name="InterlockedOr" />
+  <Intrinsic name="InterlockedXor" />
+  <Intrinsic name="isfinite" />
+  <Intrinsic name="isinf" />
+  <Intrinsic name="isnan" />
+  <Intrinsic name="ldexp" />
+  <Intrinsic name="length" />
+  <Intrinsic name="lerp" />
+  <Intrinsic name="lit" />
+  <Intrinsic name="log" />
+  <Intrinsic name="log10" />
+  <Intrinsic name="log2" />
+  <Intrinsic name="mad" />
+  <Intrinsic name="max" />
+  <Intrinsic name="min" />
+  <Intrinsic name="modf" />
+  <Intrinsic name="msad4" />
+  <Intrinsic name="mul" />
+  <Intrinsic name="noise" />
+  <Intrinsic name="normalize" />
+  <Intrinsic name="pow" />
+  <Intrinsic name="printf" />
+  <Intrinsic name="Process2DQuadTessFactorsAvg" />
+  <Intrinsic name="Process2DQuadTessFactorsMax" />
+  <Intrinsic name="Process2DQuadTessFactorsMin" />
+  <Intrinsic name="ProcessIsolineTessFactors" />
+  <Intrinsic name="ProcessQuadTessFactorsAvg" />
+  <Intrinsic name="ProcessQuadTessFactorsMax" />
+  <Intrinsic name="ProcessQuadTessFactorsMin" />
+  <Intrinsic name="ProcessTriTessFactorsAvg" />
+  <Intrinsic name="ProcessTriTessFactorsMax" />
+  <Intrinsic name="ProcessTriTessFactorsMin" />
+  <Intrinsic name="radians" />
+  <Intrinsic name="rcp" />
+  <Intrinsic name="reflect" />
+  <Intrinsic name="refract" />
+  <Intrinsic name="reversebits" />
+  <Intrinsic name="round" />
+  <Intrinsic name="rsqrt" />
+  <Intrinsic name="saturate" />
+  <Intrinsic name="sign" />
+  <Intrinsic name="sincos" />
+  <Intrinsic name="sinh" />
+  <Intrinsic name="smoothstep" />
+  <Intrinsic name="sqrt" />
+  <Intrinsic name="step" />
+  <Intrinsic name="tan" />
+  <Intrinsic name="tanh" />
+  <Intrinsic name="tex1D" />
+  <Intrinsic name="tex1Dbias" />
+  <Intrinsic name="tex1Dgrad" />
+  <Intrinsic name="tex1Dlod" />
+  <Intrinsic name="tex1Dproj" />
+  <Intrinsic name="tex2D" />
+  <Intrinsic name="tex2Dbias" />
+  <Intrinsic name="tex2Dgrad" />
+  <Intrinsic name="tex2Dlod" />
+  <Intrinsic name="tex2Dproj" />
+  <Intrinsic name="tex3D" />
+  <Intrinsic name="tex3Dbias" />
+  <Intrinsic name="tex3Dgrad" />
+  <Intrinsic name="tex3Dlod" />
+  <Intrinsic name="tex3Dproj" />
+  <Intrinsic name="texCUBE" />
+  <Intrinsic name="texCUBEbias" />
+  <Intrinsic name="texCUBEgrad" />
+  <Intrinsic name="texCUBElod" />
+  <Intrinsic name="texCUBEproj" />
+  <Intrinsic name="transpose" />
+  <Intrinsic name="trunc" />
 
   <!--Rules for handling constant buffers-->
   <CBuffer>

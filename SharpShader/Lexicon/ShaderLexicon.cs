@@ -13,14 +13,22 @@ namespace SharpShader
     /// <summary>
     /// A lexicon to aid translation of certain words and types.
     /// </summary>
-    public class ShaderLexicon
+    internal class ShaderLexicon
     {
-        public class Word
+        #region Instance members
+        internal class Intrinsic
+        {
+            internal string Name { get; set; }
+            internal List<string> Parameters = new List<string>();
+        }
+
+        internal class Word
         {
             public bool UniformSizeIsSingular;
             public string Text;
         }
         Dictionary<Type, Word> _words = new Dictionary<Type, Word>();
+        Dictionary<string, List<Intrinsic>> _intrinsics = new Dictionary<string, List<Intrinsic>>();
 
         public ShaderLanguage Language { get; }
 
@@ -42,7 +50,13 @@ namespace SharpShader
                 return null;
         }
 
-        #region Static
+        internal bool IsIntrinsic(string name)
+        {
+            return _intrinsics.ContainsKey(name);
+        }
+        #endregion
+
+        #region Static members
         static Dictionary<ShaderLanguage, ShaderLexicon> _lexicons = new Dictionary<ShaderLanguage, ShaderLexicon>();
 
         internal static ShaderLexicon GetLexicon(ShaderLanguage outputLanguage)
@@ -59,16 +73,23 @@ namespace SharpShader
 
                 XmlNode rootNode = doc["Lexicon"];
                 XmlNode langNode = rootNode["Language"];
-                XmlNode words = rootNode["Words"];
 
                 if (Enum.TryParse(langNode.InnerText, out ShaderLanguage language))
                 {
                     ShaderLexicon lex = new ShaderLexicon(language);
 
-                    foreach (XmlNode wordNode in words)
+                    foreach (XmlNode node in rootNode)
                     {
-                        if (wordNode.Name == "Type")
-                            ParseWordNode(lex, wordNode);
+                        switch (node.Name)
+                        {
+                            case "Word":
+                                ParseWord(lex, node);
+                                break;
+
+                            case "Intrinsic":
+                                ParseIntrinsic(lex, node);
+                                break;
+                        }                         
                     }
 
                     _lexicons.Add(language, lex);
@@ -80,7 +101,7 @@ namespace SharpShader
             }
         }
 
-        private static void ParseWordNode(ShaderLexicon lex, XmlNode wordNode)
+        private static void ParseWord(ShaderLexicon lex, XmlNode wordNode)
         {
             Type translatedType = Type.GetType(wordNode.Attributes["t"].InnerText);
             bool uniformDimensionSingular = false;
@@ -90,10 +111,10 @@ namespace SharpShader
 
             foreach (XmlNode subTypeNode in wordNode)
             {
-                if (subTypeNode.Name != "Word")
+                if (subTypeNode.Name != "Generic")
                     continue;
 
-                string generic = subTypeNode.Attributes["generic"]?.InnerText;
+                string generic = subTypeNode.Attributes["type"]?.InnerText;
                 string toWord = subTypeNode.Attributes["to"]?.InnerText;
 
                 if (!string.IsNullOrWhiteSpace(generic))
@@ -107,6 +128,26 @@ namespace SharpShader
                     });
                 }
             }
+        }
+
+        private static void ParseIntrinsic(ShaderLexicon lex, XmlNode node)
+        {
+            XmlAttribute attName = node.Attributes["name"];
+            if (attName == null)
+                return;
+
+            List<Intrinsic> intrinsicList = null;
+            if (!lex._intrinsics.TryGetValue(attName.InnerText, out intrinsicList))
+            {
+                intrinsicList = new List<Intrinsic>();
+                lex._intrinsics.Add(attName.InnerText, intrinsicList);
+            }
+
+            Intrinsic i = new Intrinsic();
+            i.Name = attName.InnerText;
+            // TODO parse parameters
+            intrinsicList.Add(i);
+
         }
         #endregion
     }
