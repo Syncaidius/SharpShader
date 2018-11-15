@@ -18,6 +18,13 @@ namespace SharpShader
 
         protected void TranslateTypeSyntax(ConversionContext context, TypeSyntax syntax, StringBuilder source)
         {
+            string original = syntax.ToString();
+            string replacement = GetTypeTranslation(context, syntax);
+            source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
+        }
+
+        protected string GetTypeTranslation(ConversionContext context, TypeSyntax syntax)
+        {
             Type t = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
             if (t != null)
             {
@@ -41,13 +48,12 @@ namespace SharpShader
                         }
 
                         replacement = translation.Text + replacement;
-
-                        // Replace the type across the whole source. This saves regenerating the syntax tree for each individual field declaration.
-                        source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
-                        break;
+                        return replacement;
                     }
                 }
             }
+
+            return syntax.ToString();
         }
 
 
