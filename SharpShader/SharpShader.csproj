@@ -196,6 +196,7 @@
     <Compile Include="Mappers\InvocationMapper.cs" />
     <Compile Include="Mappers\NodeMapper.cs" />
     <Compile Include="Mappers\StructMapper.cs" />
+    <Compile Include="Preprocessors\ClassProcessor.cs" />
     <Compile Include="Preprocessors\ObjectCreationProcessor.cs" />
     <Compile Include="Preprocessors\InvocationProcessor.cs" />
     <Compile Include="Preprocessors\MethodProcessor.cs" />

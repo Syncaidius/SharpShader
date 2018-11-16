@@ -44,7 +44,7 @@ namespace SharpShader
                     result += initializer;
                     result += $"return {varName};";
 
-                    source.Replace(syntax.Parent.ToString(), result);
+                    source.Replace(syntax.Parent.ToString(), result, syntax.Parent.SpanStart, syntax.Parent.Span.Length);
                 }
             }
             else
@@ -57,7 +57,7 @@ namespace SharpShader
                     // Get a name for our temporary variable.
                     string result = $"return {initializer};";
 
-                    source.Replace(syntax.Parent.ToString(), result);
+                    source.Replace(syntax.Parent.ToString(), result, syntax.Parent.SpanStart, syntax.Parent.Span.Length);
                 }                
             }
         }

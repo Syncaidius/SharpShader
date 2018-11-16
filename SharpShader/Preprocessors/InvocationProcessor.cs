@@ -17,7 +17,7 @@ namespace SharpShader
             string strName = syntax.Expression.ToString();
             string invocName = char.ToLowerInvariant(strName[0]) + strName.Substring(1);  
             if (context.Lexicon.IsIntrinsic(invocName))
-                source.Replace(strName, invocName);
+                source.Replace(strName, invocName, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
         }
     }
 }

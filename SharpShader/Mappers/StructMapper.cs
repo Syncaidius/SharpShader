@@ -49,6 +49,7 @@ namespace SharpShader
                 }
             }
 
+
             if (!attributed)
             {
                 context.Map.AddStructure(new ShaderStructure()

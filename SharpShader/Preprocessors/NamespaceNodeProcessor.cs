@@ -11,14 +11,20 @@ namespace SharpShader
     {
         protected override void OnProcess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
         {
-            IEnumerable<SyntaxNode> children = syntax.ChildNodes();
+            IEnumerable<SyntaxNodeOrToken> children = syntax.ChildNodesAndTokens();
             string childSource = "";
-            foreach (SyntaxNode n in children)
+            bool first = true;
+            SyntaxNodeOrToken last = children.Last();
+
+            foreach (SyntaxNodeOrToken n in children)
             {
-                if (n == syntax.Name)
+                if (n == syntax.Name || n == syntax.NamespaceKeyword || n == syntax.CloseBraceToken || n == syntax.OpenBraceToken)
                     continue;
 
-                childSource += n.ToString();
+                childSource += $"{n.ToString()}{Environment.NewLine}";
+
+                if (n != last)
+                    childSource += Environment.NewLine;
             }
 
             source.Replace(syntax.ToString(), childSource, syntax.SpanStart, syntax.Span.Length);

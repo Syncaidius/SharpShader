@@ -104,7 +104,7 @@ namespace SharpShader
                 Preprocess(context, t, nodesToProcess);
                 nodesToProcess.Clear();
             }
-            
+
             Map(context, context.Root, 0);
 
             string result = context.Root.ToString();
@@ -120,9 +120,9 @@ namespace SharpShader
             if (t == nodeType)
                 nodesToProcess.Add(node);
 
-#if DEBUG
-            Console.WriteLine($"{new string(' ', depth * 2)} {node.GetType().Name}");
-#endif
+//#if DEBUG
+//            Console.WriteLine($"{new string(' ', depth * 2)} {node.GetType().Name}");
+//#endif
 
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
