@@ -3430,7 +3430,69 @@ namespace SharpShader
 				W = a.W + b.W,
 			};
 		}
+		public static Vector4 operator +(Vector4 a, int b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+				W = (float)(a.W + b),
+			};
+		}
 
+		public static Vector4 operator +(int a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+				Z = (float)(a + b.Z),
+				W = (float)(a + b.W),
+			};
+		}
+		public static Vector4 operator +(Vector4 a, float b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+				W = (float)(a.W + b),
+			};
+		}
+
+		public static Vector4 operator +(float a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+				Z = (a + b.Z),
+				W = (a + b.W),
+			};
+		}
+		public static Vector4 operator +(Vector4 a, double b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+				W = (float)(a.W + b),
+			};
+		}
+
+		public static Vector4 operator +(double a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+				Z = (float)(a + b.Z),
+				W = (float)(a + b.W),
+			};
+		}
 		public static Vector4 operator -(Vector4 a, Vector4 b)
 		{
 			return new Vector4()
@@ -3441,7 +3503,69 @@ namespace SharpShader
 				W = a.W - b.W,
 			};
 		}
+		public static Vector4 operator -(Vector4 a, int b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+				W = (float)(a.W - b),
+			};
+		}
 
+		public static Vector4 operator -(int a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+				Z = (float)(a - b.Z),
+				W = (float)(a - b.W),
+			};
+		}
+		public static Vector4 operator -(Vector4 a, float b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+				W = (float)(a.W - b),
+			};
+		}
+
+		public static Vector4 operator -(float a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+				Z = (a - b.Z),
+				W = (a - b.W),
+			};
+		}
+		public static Vector4 operator -(Vector4 a, double b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+				W = (float)(a.W - b),
+			};
+		}
+
+		public static Vector4 operator -(double a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+				Z = (float)(a - b.Z),
+				W = (float)(a - b.W),
+			};
+		}
 		public static Vector4 operator *(Vector4 a, Vector4 b)
 		{
 			return new Vector4()
@@ -3452,7 +3576,69 @@ namespace SharpShader
 				W = a.W * b.W,
 			};
 		}
+		public static Vector4 operator *(Vector4 a, int b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+				W = (float)(a.W * b),
+			};
+		}
 
+		public static Vector4 operator *(int a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+				Z = (float)(a * b.Z),
+				W = (float)(a * b.W),
+			};
+		}
+		public static Vector4 operator *(Vector4 a, float b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+				W = (float)(a.W * b),
+			};
+		}
+
+		public static Vector4 operator *(float a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+				Z = (a * b.Z),
+				W = (a * b.W),
+			};
+		}
+		public static Vector4 operator *(Vector4 a, double b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+				W = (float)(a.W * b),
+			};
+		}
+
+		public static Vector4 operator *(double a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+				Z = (float)(a * b.Z),
+				W = (float)(a * b.W),
+			};
+		}
 		public static Vector4 operator /(Vector4 a, Vector4 b)
 		{
 			return new Vector4()
@@ -3463,6 +3649,68 @@ namespace SharpShader
 				W = a.W / b.W,
 			};
 		}
+		public static Vector4 operator /(Vector4 a, int b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+				W = (float)(a.W / b),
+			};
+		}
 
+		public static Vector4 operator /(int a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+				Z = (float)(a / b.Z),
+				W = (float)(a / b.W),
+			};
+		}
+		public static Vector4 operator /(Vector4 a, float b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+				W = (float)(a.W / b),
+			};
+		}
+
+		public static Vector4 operator /(float a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+				Z = (a / b.Z),
+				W = (a / b.W),
+			};
+		}
+		public static Vector4 operator /(Vector4 a, double b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+				W = (float)(a.W / b),
+			};
+		}
+
+		public static Vector4 operator /(double a, Vector4 b)
+		{
+			return new Vector4()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+				Z = (float)(a / b.Z),
+				W = (float)(a / b.W),
+			};
+		}
 	}
 }

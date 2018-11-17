@@ -1,7 +1,7 @@
 ﻿using SharpShader;
 
 namespace SharpShaderSample
-{    
+{
     class SampleShader : CSharpShader
     {
         [ConstantBuffer(0)]
@@ -24,6 +24,18 @@ namespace SharpShaderSample
 
         public ObjectBuffer cbObject = new ObjectBuffer();
 
+        // This method is simply for testing purposes. Beyond that, it's pointless!
+        public Vector4 getColor(Vector4 input, float multiplier)
+        {
+            return input * multiplier;
+        }
+
+        // This is another test method!
+        public Vector4 getOtherColor()
+        {
+            return new Vector4(0f, 1.0f, 0f, 1f);
+        }
+
         [VertexShader]
         public PixelInput VertexFunc(VertexInput input)
         {
@@ -37,7 +49,7 @@ namespace SharpShaderSample
         [FragmentShader]
         public Vector4 FragFunc(PixelInput input)
         {
-            return input.Color;
+            return getColor(input.Color, 1) * getOtherColor();
         }
     }
 }

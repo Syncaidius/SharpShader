@@ -3430,7 +3430,69 @@ namespace SharpShader
 				W = a.W + b.W,
 			};
 		}
+		public static UInt4 operator +(UInt4 a, int b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+				W = (uint)(a.W + b),
+			};
+		}
 
+		public static UInt4 operator +(int a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+				W = (uint)(a + b.W),
+			};
+		}
+		public static UInt4 operator +(UInt4 a, float b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+				W = (uint)(a.W + b),
+			};
+		}
+
+		public static UInt4 operator +(float a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+				W = (uint)(a + b.W),
+			};
+		}
+		public static UInt4 operator +(UInt4 a, double b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+				W = (uint)(a.W + b),
+			};
+		}
+
+		public static UInt4 operator +(double a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+				W = (uint)(a + b.W),
+			};
+		}
 		public static UInt4 operator -(UInt4 a, UInt4 b)
 		{
 			return new UInt4()
@@ -3441,7 +3503,69 @@ namespace SharpShader
 				W = a.W - b.W,
 			};
 		}
+		public static UInt4 operator -(UInt4 a, int b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+				W = (uint)(a.W - b),
+			};
+		}
 
+		public static UInt4 operator -(int a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+				W = (uint)(a - b.W),
+			};
+		}
+		public static UInt4 operator -(UInt4 a, float b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+				W = (uint)(a.W - b),
+			};
+		}
+
+		public static UInt4 operator -(float a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+				W = (uint)(a - b.W),
+			};
+		}
+		public static UInt4 operator -(UInt4 a, double b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+				W = (uint)(a.W - b),
+			};
+		}
+
+		public static UInt4 operator -(double a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+				W = (uint)(a - b.W),
+			};
+		}
 		public static UInt4 operator *(UInt4 a, UInt4 b)
 		{
 			return new UInt4()
@@ -3452,7 +3576,69 @@ namespace SharpShader
 				W = a.W * b.W,
 			};
 		}
+		public static UInt4 operator *(UInt4 a, int b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+				W = (uint)(a.W * b),
+			};
+		}
 
+		public static UInt4 operator *(int a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+				W = (uint)(a * b.W),
+			};
+		}
+		public static UInt4 operator *(UInt4 a, float b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+				W = (uint)(a.W * b),
+			};
+		}
+
+		public static UInt4 operator *(float a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+				W = (uint)(a * b.W),
+			};
+		}
+		public static UInt4 operator *(UInt4 a, double b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+				W = (uint)(a.W * b),
+			};
+		}
+
+		public static UInt4 operator *(double a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+				W = (uint)(a * b.W),
+			};
+		}
 		public static UInt4 operator /(UInt4 a, UInt4 b)
 		{
 			return new UInt4()
@@ -3463,6 +3649,68 @@ namespace SharpShader
 				W = a.W / b.W,
 			};
 		}
+		public static UInt4 operator /(UInt4 a, int b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+				W = (uint)(a.W / b),
+			};
+		}
 
+		public static UInt4 operator /(int a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+				W = (uint)(a / b.W),
+			};
+		}
+		public static UInt4 operator /(UInt4 a, float b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+				W = (uint)(a.W / b),
+			};
+		}
+
+		public static UInt4 operator /(float a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+				W = (uint)(a / b.W),
+			};
+		}
+		public static UInt4 operator /(UInt4 a, double b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+				W = (uint)(a.W / b),
+			};
+		}
+
+		public static UInt4 operator /(double a, UInt4 b)
+		{
+			return new UInt4()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+				W = (uint)(a / b.W),
+			};
+		}
 	}
 }

@@ -324,7 +324,57 @@ namespace SharpShader
 				Y = a.Y + b.Y,
 			};
 		}
+		public static Double2 operator +(Double2 a, int b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+			};
+		}
 
+		public static Double2 operator +(int a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a + b.X),
+				Y = (double)(a + b.Y),
+			};
+		}
+		public static Double2 operator +(Double2 a, float b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+			};
+		}
+
+		public static Double2 operator +(float a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a + b.X),
+				Y = (double)(a + b.Y),
+			};
+		}
+		public static Double2 operator +(Double2 a, double b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+			};
+		}
+
+		public static Double2 operator +(double a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+			};
+		}
 		public static Double2 operator -(Double2 a, Double2 b)
 		{
 			return new Double2()
@@ -333,7 +383,57 @@ namespace SharpShader
 				Y = a.Y - b.Y,
 			};
 		}
+		public static Double2 operator -(Double2 a, int b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+			};
+		}
 
+		public static Double2 operator -(int a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a - b.X),
+				Y = (double)(a - b.Y),
+			};
+		}
+		public static Double2 operator -(Double2 a, float b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+			};
+		}
+
+		public static Double2 operator -(float a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a - b.X),
+				Y = (double)(a - b.Y),
+			};
+		}
+		public static Double2 operator -(Double2 a, double b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+			};
+		}
+
+		public static Double2 operator -(double a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+			};
+		}
 		public static Double2 operator *(Double2 a, Double2 b)
 		{
 			return new Double2()
@@ -342,7 +442,57 @@ namespace SharpShader
 				Y = a.Y * b.Y,
 			};
 		}
+		public static Double2 operator *(Double2 a, int b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+			};
+		}
 
+		public static Double2 operator *(int a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a * b.X),
+				Y = (double)(a * b.Y),
+			};
+		}
+		public static Double2 operator *(Double2 a, float b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+			};
+		}
+
+		public static Double2 operator *(float a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a * b.X),
+				Y = (double)(a * b.Y),
+			};
+		}
+		public static Double2 operator *(Double2 a, double b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+			};
+		}
+
+		public static Double2 operator *(double a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+			};
+		}
 		public static Double2 operator /(Double2 a, Double2 b)
 		{
 			return new Double2()
@@ -351,6 +501,56 @@ namespace SharpShader
 				Y = a.Y / b.Y,
 			};
 		}
+		public static Double2 operator /(Double2 a, int b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+			};
+		}
 
+		public static Double2 operator /(int a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a / b.X),
+				Y = (double)(a / b.Y),
+			};
+		}
+		public static Double2 operator /(Double2 a, float b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+			};
+		}
+
+		public static Double2 operator /(float a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (double)(a / b.X),
+				Y = (double)(a / b.Y),
+			};
+		}
+		public static Double2 operator /(Double2 a, double b)
+		{
+			return new Double2()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+			};
+		}
+
+		public static Double2 operator /(double a, Double2 b)
+		{
+			return new Double2()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+			};
+		}
 	}
 }

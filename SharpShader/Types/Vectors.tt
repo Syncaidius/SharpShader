@@ -14,6 +14,7 @@
 	string[] vectorTypes = {"float", "uint", "int", "bool", "double"};
 	bool[] isIntrinsic = {true, false, true, false, false};
 	bool[]  vectorOperators = {true, true, true, false, true};
+	string[] operatorScalarTypes = {"int", "float", "double"};
 	string[] vectorOperands =  {"+", "-", "*", "/"};
 
 	for(int t = 0; t < vectorTypes.Length; t++)
@@ -158,8 +159,41 @@ namespace SharpShader
 #>
 			};
 		}
-
 <#
+		for(int ot = 0; ot < operatorScalarTypes.Length; ot++)
+		{
+#>
+		public static <#=name#> operator <#=operand#>(<#=name#> a, <#=operatorScalarTypes[ot]#> b)
+		{
+			return new <#=name#>()
+			{
+<#
+				for(int j = 0; j < i; j++)
+				{
+#>
+				<#=componentNames[j]#> = (<#=vectorTypes[t]#>)(<#=$"a.{componentNames[j]} {operand} b"#>),
+<#
+				}
+#>
+			};
+		}
+
+		public static <#=name#> operator <#=operand#>(<#=operatorScalarTypes[ot]#> a, <#=name#> b)
+		{
+			return new <#=name#>()
+			{
+<#
+				for(int j = 0; j < i; j++)
+				{
+#>
+				<#=componentNames[j]#> = <#=(vectorTypes[t] != operatorScalarTypes[ot] ? $"({vectorTypes[t]})" : "")#>(<#=$"a {operand} b.{componentNames[j]}"#>),
+<#
+				}
+#>
+			};
+		}
+<#
+		}
 		}
 		}
 #>

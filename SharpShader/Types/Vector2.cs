@@ -326,7 +326,57 @@ namespace SharpShader
 				Y = a.Y + b.Y,
 			};
 		}
+		public static Vector2 operator +(Vector2 a, int b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+			};
+		}
 
+		public static Vector2 operator +(int a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+			};
+		}
+		public static Vector2 operator +(Vector2 a, float b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+			};
+		}
+
+		public static Vector2 operator +(float a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+			};
+		}
+		public static Vector2 operator +(Vector2 a, double b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+			};
+		}
+
+		public static Vector2 operator +(double a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+			};
+		}
 		public static Vector2 operator -(Vector2 a, Vector2 b)
 		{
 			return new Vector2()
@@ -335,7 +385,57 @@ namespace SharpShader
 				Y = a.Y - b.Y,
 			};
 		}
+		public static Vector2 operator -(Vector2 a, int b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+			};
+		}
 
+		public static Vector2 operator -(int a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+			};
+		}
+		public static Vector2 operator -(Vector2 a, float b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+			};
+		}
+
+		public static Vector2 operator -(float a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+			};
+		}
+		public static Vector2 operator -(Vector2 a, double b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+			};
+		}
+
+		public static Vector2 operator -(double a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+			};
+		}
 		public static Vector2 operator *(Vector2 a, Vector2 b)
 		{
 			return new Vector2()
@@ -344,7 +444,57 @@ namespace SharpShader
 				Y = a.Y * b.Y,
 			};
 		}
+		public static Vector2 operator *(Vector2 a, int b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+			};
+		}
 
+		public static Vector2 operator *(int a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+			};
+		}
+		public static Vector2 operator *(Vector2 a, float b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+			};
+		}
+
+		public static Vector2 operator *(float a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+			};
+		}
+		public static Vector2 operator *(Vector2 a, double b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+			};
+		}
+
+		public static Vector2 operator *(double a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+			};
+		}
 		public static Vector2 operator /(Vector2 a, Vector2 b)
 		{
 			return new Vector2()
@@ -353,6 +503,56 @@ namespace SharpShader
 				Y = a.Y / b.Y,
 			};
 		}
+		public static Vector2 operator /(Vector2 a, int b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+			};
+		}
 
+		public static Vector2 operator /(int a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+			};
+		}
+		public static Vector2 operator /(Vector2 a, float b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+			};
+		}
+
+		public static Vector2 operator /(float a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+			};
+		}
+		public static Vector2 operator /(Vector2 a, double b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+			};
+		}
+
+		public static Vector2 operator /(double a, Vector2 b)
+		{
+			return new Vector2()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+			};
+		}
 	}
 }

@@ -1227,7 +1227,63 @@ namespace SharpShader
 				Z = a.Z + b.Z,
 			};
 		}
+		public static Double3 operator +(Double3 a, int b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+				Z = (double)(a.Z + b),
+			};
+		}
 
+		public static Double3 operator +(int a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a + b.X),
+				Y = (double)(a + b.Y),
+				Z = (double)(a + b.Z),
+			};
+		}
+		public static Double3 operator +(Double3 a, float b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+				Z = (double)(a.Z + b),
+			};
+		}
+
+		public static Double3 operator +(float a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a + b.X),
+				Y = (double)(a + b.Y),
+				Z = (double)(a + b.Z),
+			};
+		}
+		public static Double3 operator +(Double3 a, double b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X + b),
+				Y = (double)(a.Y + b),
+				Z = (double)(a.Z + b),
+			};
+		}
+
+		public static Double3 operator +(double a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+				Z = (a + b.Z),
+			};
+		}
 		public static Double3 operator -(Double3 a, Double3 b)
 		{
 			return new Double3()
@@ -1237,7 +1293,63 @@ namespace SharpShader
 				Z = a.Z - b.Z,
 			};
 		}
+		public static Double3 operator -(Double3 a, int b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+				Z = (double)(a.Z - b),
+			};
+		}
 
+		public static Double3 operator -(int a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a - b.X),
+				Y = (double)(a - b.Y),
+				Z = (double)(a - b.Z),
+			};
+		}
+		public static Double3 operator -(Double3 a, float b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+				Z = (double)(a.Z - b),
+			};
+		}
+
+		public static Double3 operator -(float a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a - b.X),
+				Y = (double)(a - b.Y),
+				Z = (double)(a - b.Z),
+			};
+		}
+		public static Double3 operator -(Double3 a, double b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X - b),
+				Y = (double)(a.Y - b),
+				Z = (double)(a.Z - b),
+			};
+		}
+
+		public static Double3 operator -(double a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+				Z = (a - b.Z),
+			};
+		}
 		public static Double3 operator *(Double3 a, Double3 b)
 		{
 			return new Double3()
@@ -1247,7 +1359,63 @@ namespace SharpShader
 				Z = a.Z * b.Z,
 			};
 		}
+		public static Double3 operator *(Double3 a, int b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+				Z = (double)(a.Z * b),
+			};
+		}
 
+		public static Double3 operator *(int a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a * b.X),
+				Y = (double)(a * b.Y),
+				Z = (double)(a * b.Z),
+			};
+		}
+		public static Double3 operator *(Double3 a, float b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+				Z = (double)(a.Z * b),
+			};
+		}
+
+		public static Double3 operator *(float a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a * b.X),
+				Y = (double)(a * b.Y),
+				Z = (double)(a * b.Z),
+			};
+		}
+		public static Double3 operator *(Double3 a, double b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X * b),
+				Y = (double)(a.Y * b),
+				Z = (double)(a.Z * b),
+			};
+		}
+
+		public static Double3 operator *(double a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+				Z = (a * b.Z),
+			};
+		}
 		public static Double3 operator /(Double3 a, Double3 b)
 		{
 			return new Double3()
@@ -1257,6 +1425,62 @@ namespace SharpShader
 				Z = a.Z / b.Z,
 			};
 		}
+		public static Double3 operator /(Double3 a, int b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+				Z = (double)(a.Z / b),
+			};
+		}
 
+		public static Double3 operator /(int a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a / b.X),
+				Y = (double)(a / b.Y),
+				Z = (double)(a / b.Z),
+			};
+		}
+		public static Double3 operator /(Double3 a, float b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+				Z = (double)(a.Z / b),
+			};
+		}
+
+		public static Double3 operator /(float a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (double)(a / b.X),
+				Y = (double)(a / b.Y),
+				Z = (double)(a / b.Z),
+			};
+		}
+		public static Double3 operator /(Double3 a, double b)
+		{
+			return new Double3()
+			{
+				X = (double)(a.X / b),
+				Y = (double)(a.Y / b),
+				Z = (double)(a.Z / b),
+			};
+		}
+
+		public static Double3 operator /(double a, Double3 b)
+		{
+			return new Double3()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+				Z = (a / b.Z),
+			};
+		}
 	}
 }

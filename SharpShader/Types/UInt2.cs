@@ -324,7 +324,57 @@ namespace SharpShader
 				Y = a.Y + b.Y,
 			};
 		}
+		public static UInt2 operator +(UInt2 a, int b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+			};
+		}
 
+		public static UInt2 operator +(int a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+			};
+		}
+		public static UInt2 operator +(UInt2 a, float b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+			};
+		}
+
+		public static UInt2 operator +(float a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+			};
+		}
+		public static UInt2 operator +(UInt2 a, double b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+			};
+		}
+
+		public static UInt2 operator +(double a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+			};
+		}
 		public static UInt2 operator -(UInt2 a, UInt2 b)
 		{
 			return new UInt2()
@@ -333,7 +383,57 @@ namespace SharpShader
 				Y = a.Y - b.Y,
 			};
 		}
+		public static UInt2 operator -(UInt2 a, int b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+			};
+		}
 
+		public static UInt2 operator -(int a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+			};
+		}
+		public static UInt2 operator -(UInt2 a, float b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+			};
+		}
+
+		public static UInt2 operator -(float a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+			};
+		}
+		public static UInt2 operator -(UInt2 a, double b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+			};
+		}
+
+		public static UInt2 operator -(double a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+			};
+		}
 		public static UInt2 operator *(UInt2 a, UInt2 b)
 		{
 			return new UInt2()
@@ -342,7 +442,57 @@ namespace SharpShader
 				Y = a.Y * b.Y,
 			};
 		}
+		public static UInt2 operator *(UInt2 a, int b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+			};
+		}
 
+		public static UInt2 operator *(int a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+			};
+		}
+		public static UInt2 operator *(UInt2 a, float b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+			};
+		}
+
+		public static UInt2 operator *(float a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+			};
+		}
+		public static UInt2 operator *(UInt2 a, double b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+			};
+		}
+
+		public static UInt2 operator *(double a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+			};
+		}
 		public static UInt2 operator /(UInt2 a, UInt2 b)
 		{
 			return new UInt2()
@@ -351,6 +501,56 @@ namespace SharpShader
 				Y = a.Y / b.Y,
 			};
 		}
+		public static UInt2 operator /(UInt2 a, int b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+			};
+		}
 
+		public static UInt2 operator /(int a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+			};
+		}
+		public static UInt2 operator /(UInt2 a, float b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+			};
+		}
+
+		public static UInt2 operator /(float a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+			};
+		}
+		public static UInt2 operator /(UInt2 a, double b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+			};
+		}
+
+		public static UInt2 operator /(double a, UInt2 b)
+		{
+			return new UInt2()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+			};
+		}
 	}
 }

@@ -1227,7 +1227,63 @@ namespace SharpShader
 				Z = a.Z + b.Z,
 			};
 		}
+		public static Vector3 operator +(Vector3 a, int b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+			};
+		}
 
+		public static Vector3 operator +(int a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+				Z = (float)(a + b.Z),
+			};
+		}
+		public static Vector3 operator +(Vector3 a, float b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+			};
+		}
+
+		public static Vector3 operator +(float a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+				Z = (a + b.Z),
+			};
+		}
+		public static Vector3 operator +(Vector3 a, double b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X + b),
+				Y = (float)(a.Y + b),
+				Z = (float)(a.Z + b),
+			};
+		}
+
+		public static Vector3 operator +(double a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a + b.X),
+				Y = (float)(a + b.Y),
+				Z = (float)(a + b.Z),
+			};
+		}
 		public static Vector3 operator -(Vector3 a, Vector3 b)
 		{
 			return new Vector3()
@@ -1237,7 +1293,63 @@ namespace SharpShader
 				Z = a.Z - b.Z,
 			};
 		}
+		public static Vector3 operator -(Vector3 a, int b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+			};
+		}
 
+		public static Vector3 operator -(int a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+				Z = (float)(a - b.Z),
+			};
+		}
+		public static Vector3 operator -(Vector3 a, float b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+			};
+		}
+
+		public static Vector3 operator -(float a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+				Z = (a - b.Z),
+			};
+		}
+		public static Vector3 operator -(Vector3 a, double b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X - b),
+				Y = (float)(a.Y - b),
+				Z = (float)(a.Z - b),
+			};
+		}
+
+		public static Vector3 operator -(double a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a - b.X),
+				Y = (float)(a - b.Y),
+				Z = (float)(a - b.Z),
+			};
+		}
 		public static Vector3 operator *(Vector3 a, Vector3 b)
 		{
 			return new Vector3()
@@ -1247,7 +1359,63 @@ namespace SharpShader
 				Z = a.Z * b.Z,
 			};
 		}
+		public static Vector3 operator *(Vector3 a, int b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+			};
+		}
 
+		public static Vector3 operator *(int a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+				Z = (float)(a * b.Z),
+			};
+		}
+		public static Vector3 operator *(Vector3 a, float b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+			};
+		}
+
+		public static Vector3 operator *(float a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+				Z = (a * b.Z),
+			};
+		}
+		public static Vector3 operator *(Vector3 a, double b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X * b),
+				Y = (float)(a.Y * b),
+				Z = (float)(a.Z * b),
+			};
+		}
+
+		public static Vector3 operator *(double a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a * b.X),
+				Y = (float)(a * b.Y),
+				Z = (float)(a * b.Z),
+			};
+		}
 		public static Vector3 operator /(Vector3 a, Vector3 b)
 		{
 			return new Vector3()
@@ -1257,6 +1425,62 @@ namespace SharpShader
 				Z = a.Z / b.Z,
 			};
 		}
+		public static Vector3 operator /(Vector3 a, int b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+			};
+		}
 
+		public static Vector3 operator /(int a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+				Z = (float)(a / b.Z),
+			};
+		}
+		public static Vector3 operator /(Vector3 a, float b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+			};
+		}
+
+		public static Vector3 operator /(float a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+				Z = (a / b.Z),
+			};
+		}
+		public static Vector3 operator /(Vector3 a, double b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a.X / b),
+				Y = (float)(a.Y / b),
+				Z = (float)(a.Z / b),
+			};
+		}
+
+		public static Vector3 operator /(double a, Vector3 b)
+		{
+			return new Vector3()
+			{
+				X = (float)(a / b.X),
+				Y = (float)(a / b.Y),
+				Z = (float)(a / b.Z),
+			};
+		}
 	}
 }

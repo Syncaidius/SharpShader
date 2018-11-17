@@ -1227,7 +1227,63 @@ namespace SharpShader
 				Z = a.Z + b.Z,
 			};
 		}
+		public static UInt3 operator +(UInt3 a, int b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+			};
+		}
 
+		public static UInt3 operator +(int a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+			};
+		}
+		public static UInt3 operator +(UInt3 a, float b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+			};
+		}
+
+		public static UInt3 operator +(float a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+			};
+		}
+		public static UInt3 operator +(UInt3 a, double b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X + b),
+				Y = (uint)(a.Y + b),
+				Z = (uint)(a.Z + b),
+			};
+		}
+
+		public static UInt3 operator +(double a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a + b.X),
+				Y = (uint)(a + b.Y),
+				Z = (uint)(a + b.Z),
+			};
+		}
 		public static UInt3 operator -(UInt3 a, UInt3 b)
 		{
 			return new UInt3()
@@ -1237,7 +1293,63 @@ namespace SharpShader
 				Z = a.Z - b.Z,
 			};
 		}
+		public static UInt3 operator -(UInt3 a, int b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+			};
+		}
 
+		public static UInt3 operator -(int a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+			};
+		}
+		public static UInt3 operator -(UInt3 a, float b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+			};
+		}
+
+		public static UInt3 operator -(float a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+			};
+		}
+		public static UInt3 operator -(UInt3 a, double b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X - b),
+				Y = (uint)(a.Y - b),
+				Z = (uint)(a.Z - b),
+			};
+		}
+
+		public static UInt3 operator -(double a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a - b.X),
+				Y = (uint)(a - b.Y),
+				Z = (uint)(a - b.Z),
+			};
+		}
 		public static UInt3 operator *(UInt3 a, UInt3 b)
 		{
 			return new UInt3()
@@ -1247,7 +1359,63 @@ namespace SharpShader
 				Z = a.Z * b.Z,
 			};
 		}
+		public static UInt3 operator *(UInt3 a, int b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+			};
+		}
 
+		public static UInt3 operator *(int a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+			};
+		}
+		public static UInt3 operator *(UInt3 a, float b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+			};
+		}
+
+		public static UInt3 operator *(float a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+			};
+		}
+		public static UInt3 operator *(UInt3 a, double b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X * b),
+				Y = (uint)(a.Y * b),
+				Z = (uint)(a.Z * b),
+			};
+		}
+
+		public static UInt3 operator *(double a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a * b.X),
+				Y = (uint)(a * b.Y),
+				Z = (uint)(a * b.Z),
+			};
+		}
 		public static UInt3 operator /(UInt3 a, UInt3 b)
 		{
 			return new UInt3()
@@ -1257,6 +1425,62 @@ namespace SharpShader
 				Z = a.Z / b.Z,
 			};
 		}
+		public static UInt3 operator /(UInt3 a, int b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+			};
+		}
 
+		public static UInt3 operator /(int a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+			};
+		}
+		public static UInt3 operator /(UInt3 a, float b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+			};
+		}
+
+		public static UInt3 operator /(float a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+			};
+		}
+		public static UInt3 operator /(UInt3 a, double b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a.X / b),
+				Y = (uint)(a.Y / b),
+				Z = (uint)(a.Z / b),
+			};
+		}
+
+		public static UInt3 operator /(double a, UInt3 b)
+		{
+			return new UInt3()
+			{
+				X = (uint)(a / b.X),
+				Y = (uint)(a / b.Y),
+				Z = (uint)(a / b.Z),
+			};
+		}
 	}
 }

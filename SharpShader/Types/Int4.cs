@@ -3430,7 +3430,69 @@ namespace SharpShader
 				W = a.W + b.W,
 			};
 		}
+		public static Int4 operator +(Int4 a, int b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+				W = (int)(a.W + b),
+			};
+		}
 
+		public static Int4 operator +(int a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+				Z = (a + b.Z),
+				W = (a + b.W),
+			};
+		}
+		public static Int4 operator +(Int4 a, float b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+				W = (int)(a.W + b),
+			};
+		}
+
+		public static Int4 operator +(float a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+				Z = (int)(a + b.Z),
+				W = (int)(a + b.W),
+			};
+		}
+		public static Int4 operator +(Int4 a, double b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+				W = (int)(a.W + b),
+			};
+		}
+
+		public static Int4 operator +(double a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+				Z = (int)(a + b.Z),
+				W = (int)(a + b.W),
+			};
+		}
 		public static Int4 operator -(Int4 a, Int4 b)
 		{
 			return new Int4()
@@ -3441,7 +3503,69 @@ namespace SharpShader
 				W = a.W - b.W,
 			};
 		}
+		public static Int4 operator -(Int4 a, int b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+				W = (int)(a.W - b),
+			};
+		}
 
+		public static Int4 operator -(int a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+				Z = (a - b.Z),
+				W = (a - b.W),
+			};
+		}
+		public static Int4 operator -(Int4 a, float b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+				W = (int)(a.W - b),
+			};
+		}
+
+		public static Int4 operator -(float a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+				Z = (int)(a - b.Z),
+				W = (int)(a - b.W),
+			};
+		}
+		public static Int4 operator -(Int4 a, double b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+				W = (int)(a.W - b),
+			};
+		}
+
+		public static Int4 operator -(double a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+				Z = (int)(a - b.Z),
+				W = (int)(a - b.W),
+			};
+		}
 		public static Int4 operator *(Int4 a, Int4 b)
 		{
 			return new Int4()
@@ -3452,7 +3576,69 @@ namespace SharpShader
 				W = a.W * b.W,
 			};
 		}
+		public static Int4 operator *(Int4 a, int b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+				W = (int)(a.W * b),
+			};
+		}
 
+		public static Int4 operator *(int a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+				Z = (a * b.Z),
+				W = (a * b.W),
+			};
+		}
+		public static Int4 operator *(Int4 a, float b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+				W = (int)(a.W * b),
+			};
+		}
+
+		public static Int4 operator *(float a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+				Z = (int)(a * b.Z),
+				W = (int)(a * b.W),
+			};
+		}
+		public static Int4 operator *(Int4 a, double b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+				W = (int)(a.W * b),
+			};
+		}
+
+		public static Int4 operator *(double a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+				Z = (int)(a * b.Z),
+				W = (int)(a * b.W),
+			};
+		}
 		public static Int4 operator /(Int4 a, Int4 b)
 		{
 			return new Int4()
@@ -3463,6 +3649,68 @@ namespace SharpShader
 				W = a.W / b.W,
 			};
 		}
+		public static Int4 operator /(Int4 a, int b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+				W = (int)(a.W / b),
+			};
+		}
 
+		public static Int4 operator /(int a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+				Z = (a / b.Z),
+				W = (a / b.W),
+			};
+		}
+		public static Int4 operator /(Int4 a, float b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+				W = (int)(a.W / b),
+			};
+		}
+
+		public static Int4 operator /(float a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+				Z = (int)(a / b.Z),
+				W = (int)(a / b.W),
+			};
+		}
+		public static Int4 operator /(Int4 a, double b)
+		{
+			return new Int4()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+				W = (int)(a.W / b),
+			};
+		}
+
+		public static Int4 operator /(double a, Int4 b)
+		{
+			return new Int4()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+				Z = (int)(a / b.Z),
+				W = (int)(a / b.W),
+			};
+		}
 	}
 }

@@ -1227,7 +1227,63 @@ namespace SharpShader
 				Z = a.Z + b.Z,
 			};
 		}
+		public static Int3 operator +(Int3 a, int b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+			};
+		}
 
+		public static Int3 operator +(int a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+				Z = (a + b.Z),
+			};
+		}
+		public static Int3 operator +(Int3 a, float b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+			};
+		}
+
+		public static Int3 operator +(float a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+				Z = (int)(a + b.Z),
+			};
+		}
+		public static Int3 operator +(Int3 a, double b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+				Z = (int)(a.Z + b),
+			};
+		}
+
+		public static Int3 operator +(double a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+				Z = (int)(a + b.Z),
+			};
+		}
 		public static Int3 operator -(Int3 a, Int3 b)
 		{
 			return new Int3()
@@ -1237,7 +1293,63 @@ namespace SharpShader
 				Z = a.Z - b.Z,
 			};
 		}
+		public static Int3 operator -(Int3 a, int b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+			};
+		}
 
+		public static Int3 operator -(int a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+				Z = (a - b.Z),
+			};
+		}
+		public static Int3 operator -(Int3 a, float b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+			};
+		}
+
+		public static Int3 operator -(float a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+				Z = (int)(a - b.Z),
+			};
+		}
+		public static Int3 operator -(Int3 a, double b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+				Z = (int)(a.Z - b),
+			};
+		}
+
+		public static Int3 operator -(double a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+				Z = (int)(a - b.Z),
+			};
+		}
 		public static Int3 operator *(Int3 a, Int3 b)
 		{
 			return new Int3()
@@ -1247,7 +1359,63 @@ namespace SharpShader
 				Z = a.Z * b.Z,
 			};
 		}
+		public static Int3 operator *(Int3 a, int b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+			};
+		}
 
+		public static Int3 operator *(int a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+				Z = (a * b.Z),
+			};
+		}
+		public static Int3 operator *(Int3 a, float b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+			};
+		}
+
+		public static Int3 operator *(float a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+				Z = (int)(a * b.Z),
+			};
+		}
+		public static Int3 operator *(Int3 a, double b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+				Z = (int)(a.Z * b),
+			};
+		}
+
+		public static Int3 operator *(double a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+				Z = (int)(a * b.Z),
+			};
+		}
 		public static Int3 operator /(Int3 a, Int3 b)
 		{
 			return new Int3()
@@ -1257,6 +1425,62 @@ namespace SharpShader
 				Z = a.Z / b.Z,
 			};
 		}
+		public static Int3 operator /(Int3 a, int b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+			};
+		}
 
+		public static Int3 operator /(int a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+				Z = (a / b.Z),
+			};
+		}
+		public static Int3 operator /(Int3 a, float b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+			};
+		}
+
+		public static Int3 operator /(float a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+				Z = (int)(a / b.Z),
+			};
+		}
+		public static Int3 operator /(Int3 a, double b)
+		{
+			return new Int3()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+				Z = (int)(a.Z / b),
+			};
+		}
+
+		public static Int3 operator /(double a, Int3 b)
+		{
+			return new Int3()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+				Z = (int)(a / b.Z),
+			};
+		}
 	}
 }

@@ -324,7 +324,57 @@ namespace SharpShader
 				Y = a.Y + b.Y,
 			};
 		}
+		public static Int2 operator +(Int2 a, int b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+			};
+		}
 
+		public static Int2 operator +(int a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (a + b.X),
+				Y = (a + b.Y),
+			};
+		}
+		public static Int2 operator +(Int2 a, float b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+			};
+		}
+
+		public static Int2 operator +(float a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+			};
+		}
+		public static Int2 operator +(Int2 a, double b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X + b),
+				Y = (int)(a.Y + b),
+			};
+		}
+
+		public static Int2 operator +(double a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a + b.X),
+				Y = (int)(a + b.Y),
+			};
+		}
 		public static Int2 operator -(Int2 a, Int2 b)
 		{
 			return new Int2()
@@ -333,7 +383,57 @@ namespace SharpShader
 				Y = a.Y - b.Y,
 			};
 		}
+		public static Int2 operator -(Int2 a, int b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+			};
+		}
 
+		public static Int2 operator -(int a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (a - b.X),
+				Y = (a - b.Y),
+			};
+		}
+		public static Int2 operator -(Int2 a, float b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+			};
+		}
+
+		public static Int2 operator -(float a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+			};
+		}
+		public static Int2 operator -(Int2 a, double b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X - b),
+				Y = (int)(a.Y - b),
+			};
+		}
+
+		public static Int2 operator -(double a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a - b.X),
+				Y = (int)(a - b.Y),
+			};
+		}
 		public static Int2 operator *(Int2 a, Int2 b)
 		{
 			return new Int2()
@@ -342,7 +442,57 @@ namespace SharpShader
 				Y = a.Y * b.Y,
 			};
 		}
+		public static Int2 operator *(Int2 a, int b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+			};
+		}
 
+		public static Int2 operator *(int a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (a * b.X),
+				Y = (a * b.Y),
+			};
+		}
+		public static Int2 operator *(Int2 a, float b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+			};
+		}
+
+		public static Int2 operator *(float a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+			};
+		}
+		public static Int2 operator *(Int2 a, double b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X * b),
+				Y = (int)(a.Y * b),
+			};
+		}
+
+		public static Int2 operator *(double a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a * b.X),
+				Y = (int)(a * b.Y),
+			};
+		}
 		public static Int2 operator /(Int2 a, Int2 b)
 		{
 			return new Int2()
@@ -351,6 +501,56 @@ namespace SharpShader
 				Y = a.Y / b.Y,
 			};
 		}
+		public static Int2 operator /(Int2 a, int b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+			};
+		}
 
+		public static Int2 operator /(int a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (a / b.X),
+				Y = (a / b.Y),
+			};
+		}
+		public static Int2 operator /(Int2 a, float b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+			};
+		}
+
+		public static Int2 operator /(float a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+			};
+		}
+		public static Int2 operator /(Int2 a, double b)
+		{
+			return new Int2()
+			{
+				X = (int)(a.X / b),
+				Y = (int)(a.Y / b),
+			};
+		}
+
+		public static Int2 operator /(double a, Int2 b)
+		{
+			return new Int2()
+			{
+				X = (int)(a / b.X),
+				Y = (int)(a / b.Y),
+			};
+		}
 	}
 }
