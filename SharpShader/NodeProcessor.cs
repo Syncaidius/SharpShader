@@ -107,11 +107,11 @@ namespace SharpShader
             OnPostprocess(context, node as T);
         }
 
-        protected virtual void OnpPreprocess(ConversionContext context, T node, StringBuilder source) { }
+        protected virtual void OnpPreprocess(ConversionContext context, T syntax, StringBuilder source) { }
 
-        protected virtual void OnMap(ConversionContext context, T node) { }
+        protected virtual void OnMap(ConversionContext context, T syntax) { }
 
-        protected virtual void OnPostprocess(ConversionContext context, T node) { }
+        protected virtual void OnPostprocess(ConversionContext context, T syntax) { }
     }
 
     [Flags]
