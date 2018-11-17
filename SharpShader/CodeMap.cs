@@ -16,6 +16,8 @@ namespace SharpShader
 
         internal Dictionary<string, MethodDeclarationSyntax> Methods = new Dictionary<string, MethodDeclarationSyntax>();
 
+        internal Dictionary<string, VariableDeclarationSyntax> Variables = new Dictionary<string, VariableDeclarationSyntax>();
+
         internal Dictionary<string, List<InvocationExpressionSyntax>> MethodCalls = new Dictionary<string, List<InvocationExpressionSyntax>>();
 
         internal List<ShaderStructure> Structures = new List<ShaderStructure>();
@@ -25,6 +27,11 @@ namespace SharpShader
         internal void AddEntryPoint(EntryPoint ep)
         {
             EntryPoints.Add(ep);
+        }
+
+        internal void AddVariable(VariableDeclarationSyntax syntax)
+        {
+            Variables.Add(syntax.Variables[0].Identifier.ToString(), syntax);
         }
 
         internal void AddMethod(MethodDeclarationSyntax method)

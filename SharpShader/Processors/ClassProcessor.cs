@@ -7,9 +7,11 @@ using System.Text;
 
 namespace SharpShader
 {
-    internal class ClassProcessor : NodePreprocessor<ClassDeclarationSyntax>
+    internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
-        protected override void OnProcess(ConversionContext context, ClassDeclarationSyntax syntax, StringBuilder source)
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+
+        protected override void OnpPreprocess(ConversionContext context, ClassDeclarationSyntax syntax, StringBuilder source)
         {
             if(syntax.OpenBraceToken != null && syntax.CloseBraceToken != null)
             {

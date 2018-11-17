@@ -18,34 +18,36 @@ namespace SharpShader
     public class Converter
     {
         #region Static members
-        static Dictionary<Type, NodePreprocessor> _preprocessors;
-        static Dictionary<Type, NodeMapper> _mappers;
+        static Dictionary<Type, NodeProcessor> _preprocessors;
+        static Dictionary<Type, NodeProcessor> _mappers;
+        static Dictionary<Type, NodeProcessor> _postProcessors;
         static readonly string[] _delimiters = { Environment.NewLine };
         const string BlockOpen = "{";
         const string BlockClosed = "}";
 
         static Converter()
         {
-            _preprocessors = new Dictionary<Type, NodePreprocessor>();
-            _mappers = new Dictionary<Type, NodeMapper>();
+            _preprocessors = new Dictionary<Type, NodeProcessor>();
+            _mappers = new Dictionary<Type, NodeProcessor>();
+            _postProcessors = new Dictionary<Type, NodeProcessor>();
 
             ShaderLexicon.LoadeEmbeddedLexicon("SharpShader.Lexicon.hlsl.xml");
             ShaderLexicon.LoadeEmbeddedLexicon("SharpShader.Lexicon.glsl.xml");
 
             // Preprocessors
-            IEnumerable<Type> types = FindOfType<NodePreprocessor>();
+            IEnumerable<Type> types = FindOfType<NodeProcessor>();
             foreach (Type t in types)
             {
-                NodePreprocessor pp = Activator.CreateInstance(t) as NodePreprocessor;
-                _preprocessors.Add(pp.ParsedType, pp);
-            }
+                NodeProcessor pp = Activator.CreateInstance(t) as NodeProcessor;
 
-            // Mappers
-            types = FindOfType<NodeMapper>();
-            foreach (Type t in types)
-            {
-                NodeMapper mapper = Activator.CreateInstance(t) as NodeMapper;
-                _mappers.Add(mapper.ParsedType, mapper);
+                if(pp.HasStageFlags(NodeProcessStageFlags.PreProcess))
+                    _preprocessors.Add(pp.ParsedType, pp);
+
+                if (pp.HasStageFlags(NodeProcessStageFlags.Mapping))
+                    _mappers.Add(pp.ParsedType, pp);
+
+                if (pp.HasStageFlags(NodeProcessStageFlags.PostProcess))
+                    _postProcessors.Add(pp.ParsedType, pp);
             }
         }
 
@@ -97,15 +99,20 @@ namespace SharpShader
             ConversionContext context = new ConversionContext(lex);
             context.RegenerateTree(cSharpSource);
 
+            Console.WriteLine("Stage 1/3 (pre-process)...");
             List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
             foreach(Type t in _preprocessors.Keys)
             {
+                Console.WriteLine($"   Processing {t.Name} nodes");
                 GatherNodes(context, context.Root, t, nodesToProcess);
                 Preprocess(context, t, nodesToProcess);
                 nodesToProcess.Clear();
             }
 
-            Map(context, context.Root, 0);
+            Console.WriteLine("Stage 2/3 (mapping)...");
+            Map(context, context.Root);
+
+            Console.WriteLine("Stage 3/3 (post-process)...");
 
             string result = context.Root.ToString();
             result = CorrectIndents(result);
@@ -120,10 +127,6 @@ namespace SharpShader
             if (t == nodeType)
                 nodesToProcess.Add(node);
 
-//#if DEBUG
-//            Console.WriteLine($"{new string(' ', depth * 2)} {node.GetType().Name}");
-//#endif
-
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
                 GatherNodes(context, child, nodeType, nodesToProcess, depth + 1);
@@ -132,32 +135,32 @@ namespace SharpShader
         private void Preprocess(ConversionContext context, Type nodeType, List<SyntaxNode> nodes)
         {
             StringBuilder source = new StringBuilder(context.Tree.ToString());
-            NodePreprocessor processor = _preprocessors[nodeType];
+            NodeProcessor processor = _preprocessors[nodeType];
 
             // Iterate backwards; Bottom to top. 
             // Iterating in this way ensures any changes made by preprocessors will not invalidate the locations of earlier nodes.
             for (int i = nodes.Count - 1; i >= 0; i--)
-                processor.Process(context, nodes[i], source);
+                processor.Preprocess(context, nodes[i], source);
 
             context.RegenerateTree(source.ToString());
         }
 
-        private void Map(ConversionContext context, SyntaxNode node, int depth)
+        private void Map(ConversionContext context, SyntaxNode node)
         {
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
             {
                 Type t = child.GetType();
 
-                if (_mappers.TryGetValue(t, out NodeMapper mapper))
+                if (_mappers.TryGetValue(t, out NodeProcessor mapper))
                 {
                     SyntaxTree tree = context.Tree;
                     mapper.Map(context, child);
                     if (tree != context.Tree)
-                        throw new Exception("The syntax tree was modified during mapping");
+                        throw new Exception("The syntax tree was modified during mapping stage");
                 }
 
-                Map(context, child, depth + 1);
+                Map(context, child);
             }
         }
         #endregion

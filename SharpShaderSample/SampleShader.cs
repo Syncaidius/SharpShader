@@ -33,7 +33,8 @@ namespace SharpShaderSample
         // This is another test method!
         public Vector4 getOtherColor()
         {
-            return new Vector4(0f, 1.0f, 0f, 1f);
+            float r = 0f, g = 1.0f, b = 0f, a = 1f;
+            return new Vector4(r,g,b,a);
         }
 
         [VertexShader]

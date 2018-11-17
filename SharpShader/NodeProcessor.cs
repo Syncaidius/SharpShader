@@ -12,9 +12,13 @@ namespace SharpShader
 {
     internal delegate string TranslateCallbackDelegate(ref string source, ref string nodeSource);
 
-    internal abstract class NodePreprocessor
+    internal abstract class NodeProcessor
     {
-        internal abstract void Process(ConversionContext context, SyntaxNode node, StringBuilder source);
+        internal virtual void Preprocess(ConversionContext context, SyntaxNode node, StringBuilder source) { }
+
+        internal virtual void Map(ConversionContext context, SyntaxNode node) { }
+
+        internal virtual void Postprocess(ConversionContext context, SyntaxNode node) { }
 
         protected void TranslateTypeSyntax(ConversionContext context, TypeSyntax syntax, StringBuilder source)
         {
@@ -56,6 +60,11 @@ namespace SharpShader
             return syntax.ToString();
         }
 
+        internal bool HasStageFlags(NodeProcessStageFlags stage)
+        {
+            return (Stages & stage) == stage;
+        }
+
 
         protected static void RemoveSyntax(SyntaxNode node, StringBuilder source)
         {
@@ -69,23 +78,51 @@ namespace SharpShader
 
         protected static void RemoveTokens(SyntaxTokenList tokens, StringBuilder source)
         {
-            for(int i = tokens.Count - 1; i >= 0; i--)
+            for (int i = tokens.Count - 1; i >= 0; i--)
                 RemoveToken(tokens[i], source);
         }
 
         internal abstract Type ParsedType { get; }
+
+        internal abstract NodeProcessStageFlags Stages { get; }
     }
 
-    internal abstract class NodePreprocessor<T> : NodePreprocessor
+    internal abstract class NodeProcessor<T> : NodeProcessor
         where T : SyntaxNode
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed void Process(ConversionContext context, SyntaxNode node, StringBuilder source)
+        internal override sealed void Preprocess(ConversionContext context, SyntaxNode node, StringBuilder source)
         {
-            OnProcess(context, node as T, source);
+            OnpPreprocess(context, node as T, source);
         }
 
-        protected abstract void OnProcess(ConversionContext context, T node, StringBuilder source);
+        internal override sealed void Map(ConversionContext context, SyntaxNode node)
+        {
+            OnMap(context, node as T);
+        }
+
+        internal override sealed void Postprocess(ConversionContext context, SyntaxNode node)
+        {
+            OnPostprocess(context, node as T);
+        }
+
+        protected virtual void OnpPreprocess(ConversionContext context, T node, StringBuilder source) { }
+
+        protected virtual void OnMap(ConversionContext context, T node) { }
+
+        protected virtual void OnPostprocess(ConversionContext context, T node) { }
+    }
+
+    [Flags]
+    internal enum NodeProcessStageFlags
+    {
+        None = 0,
+
+        PreProcess = 1,
+
+        Mapping = 2,
+
+        PostProcess = 2
     }
 }

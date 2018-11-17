@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class StructMapper : NodeMapper<StructDeclarationSyntax>
+    internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping;
+
+        protected override void OnpPreprocess(ConversionContext context, StructDeclarationSyntax node, StringBuilder source)
+        {
+            RemoveTokens(node.Modifiers, source);
+        }
+
         protected override void OnMap(ConversionContext context, StructDeclarationSyntax syntax)
         {
             bool attributed = false;

@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class FieldProcessor : NodePreprocessor<FieldDeclarationSyntax>
+    internal class FieldProcessor : NodeProcessor<FieldDeclarationSyntax>
     {
-        protected override void OnProcess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source)
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+
+        protected override void OnpPreprocess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source)
         {
             // Update the type first, this comes after the modifiers.
             TranslateTypeSyntax(context, syntax.Declaration.Type, source);

@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class UsingNodeParser : NodePreprocessor<UsingDirectiveSyntax>
+    internal class UsingProcessor : NodeProcessor<UsingDirectiveSyntax>
     {
-        protected override void OnProcess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+
+        protected override void OnpPreprocess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
         {
             RemoveSyntax(node, source);
         }

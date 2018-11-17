@@ -7,9 +7,11 @@ using System.Text;
 
 namespace SharpShader
 {
-    internal class NamespaceNodeParser : NodePreprocessor<NamespaceDeclarationSyntax>
+    internal class NamespaceProcessor : NodeProcessor<NamespaceDeclarationSyntax>
     {
-        protected override void OnProcess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+
+        protected override void OnpPreprocess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
         {
             IEnumerable<SyntaxNodeOrToken> children = syntax.ChildNodesAndTokens();
             SyntaxNodeOrToken last = children.Last();
