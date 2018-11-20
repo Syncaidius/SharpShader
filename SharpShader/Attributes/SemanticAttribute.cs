@@ -11,7 +11,7 @@ namespace SharpShader
         internal SemanticType Semantic { get; }
         internal int Slot { get; }
 
-        public SemanticAttribute(SemanticType semantic, int slot)
+        public SemanticAttribute(SemanticType semantic, int slot = -1)
         {
             Semantic = semantic;
             Slot = slot;
@@ -77,5 +77,55 @@ namespace SharpShader
         /// Output depth
         /// </summary>
         Depth = 14,
+
+        SV_Position = 15,
+
+        SV_ClipDistance = 16,
+
+        SV_CullDistance = 17,
+
+        SV_Coverage = 18,
+
+        SV_DepthGreaterEqual = 19,
+
+        SV_DepthLessEqual = 20,
+
+        SV_DispatchThreadID = 21,
+
+        SV_DomainLocation = 22,
+
+        SV_GroupID = 23,
+
+        SV_GroupIndex = 24,
+
+        SV_GroupThreadID = 25,
+
+        SV_GSInstanceID = 26,
+
+        SV_InnerCoverage = 27,
+
+        SV_InsideTessFactor = 28,
+
+        SV_InstanceID = 29,
+
+        SV_IsFrontFace = 30,
+
+        SV_OutputControlPointID = 31,
+
+        SV_PrimitiveID = 32,
+
+        SV_RenderTargetArrayIndex = 33,
+
+        SV_SampleIndex = 34,
+
+        SV_StencilRef = 35,
+
+        SV_Target = 36,
+
+        SV_TessFactor = 37,
+
+        SV_VertexID = 38,
+
+        SV_ViewportArrayIndex = 39,
     }
 }

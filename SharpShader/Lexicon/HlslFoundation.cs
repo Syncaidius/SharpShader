@@ -77,7 +77,7 @@ namespace SharpShader
             AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(syntax.AttributeLists);
             if(semanticAttribute != null)
             {
-                if(semanticAttribute.ArgumentList.Arguments.Count == 2)
+                if(semanticAttribute.ArgumentList.Arguments.Count > 0)
                 {
                     int slot = -1;
                     SemanticType type = SemanticType.Position;
@@ -86,14 +86,21 @@ namespace SharpShader
 
                     if (Enum.TryParse(strSemantic, out type))
                     {
-                        AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
-                        if (int.TryParse(argSlot.ToString(), out slot))
+                        if (semanticAttribute.ArgumentList.Arguments.Count > 1)
                         {
-                            return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+                            AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
+                            if (int.TryParse(argSlot.ToString(), out slot))
+                            {
+                                return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+                            }
+                            else
+                            {
+                                // TODO log incorrect semantic slot value.
+                            }
                         }
                         else
                         {
-                            // TODO log incorrect semantic slot value.
+                            return $"{syntax.Declaration} : {strSemantic.ToUpper()}";
                         }
                     }
                     else

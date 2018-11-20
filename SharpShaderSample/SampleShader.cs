@@ -25,7 +25,10 @@ namespace SharpShaderSample
 
         public struct PixelInput
         {
+            [Semantic(SemanticType.SV_Position)]
             public Vector4 Position;
+
+            [Semantic(SemanticType.Color)]
             public Vector4 Color;
         }
 
