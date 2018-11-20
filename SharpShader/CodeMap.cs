@@ -16,22 +16,27 @@ namespace SharpShader
 
         internal Dictionary<string, MethodDeclarationSyntax> Methods = new Dictionary<string, MethodDeclarationSyntax>();
 
-        internal Dictionary<string, VariableDeclarationSyntax> Variables = new Dictionary<string, VariableDeclarationSyntax>();
+        internal Dictionary<string, VariableDeclarationSyntax> Fields = new Dictionary<string, VariableDeclarationSyntax>();
 
-        internal Dictionary<string, List<InvocationExpressionSyntax>> MethodCalls = new Dictionary<string, List<InvocationExpressionSyntax>>();
+        internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
 
-        internal List<ShaderStructure> Structures = new List<ShaderStructure>();
+        internal List<ShaderComponent> Components = new List<ShaderComponent>();
 
-        internal Dictionary<string, ConstantBufferStructure> ConstantBuffers = new Dictionary<string, ConstantBufferStructure>();
+        internal Dictionary<string, StructDeclarationSyntax> ConstantBuffers = new Dictionary<string, StructDeclarationSyntax>();
 
         internal void AddEntryPoint(EntryPoint ep)
         {
             EntryPoints.Add(ep);
         }
 
-        internal void AddVariable(VariableDeclarationSyntax syntax)
+        internal void AddField(VariableDeclarationSyntax syntax)
         {
-            Variables.Add(syntax.Variables[0].Identifier.ToString(), syntax);
+            Fields.Add(syntax.Variables[0].Identifier.ToString(), syntax);
+        }
+
+        internal bool IsStructInstance(VariableDeclarationSyntax syntax)
+        {
+            return Fields.ContainsKey(syntax.Variables[0].Identifier.ToString());
         }
 
         internal void AddMethod(MethodDeclarationSyntax method)
@@ -39,27 +44,27 @@ namespace SharpShader
             Methods.Add(method.Identifier.ToString(), method);
         }
 
-        internal void AddMethodCall(InvocationExpressionSyntax call)
+        internal void AddStructure(StructDeclarationSyntax syntax)
         {
-            List<InvocationExpressionSyntax> invocationList = null;
-            string expression = call.Expression.ToString();
-            if (!MethodCalls.TryGetValue(expression, out invocationList))
+            Structures.Add(syntax);
+            Components.Add(new ShaderComponent()
             {
-                invocationList = new List<InvocationExpressionSyntax>();
-                MethodCalls.Add(expression, invocationList);
-            }
-
-            invocationList.Add(call);
+                Node = syntax,
+                Type = ShaderComponentType.Struct,
+                Name = syntax.Identifier.ToString(),
+            });
         }
 
-        internal void AddStructure(ShaderStructure structure)
+        internal void AddConstantBuffer(StructDeclarationSyntax syntax)
         {
-            Structures.Add(structure);
-        }
-
-        internal void AddConstantBuffer(ConstantBufferStructure cb)
-        {
-            ConstantBuffers.Add(cb.Name, cb);
+            string name = syntax.Identifier.ToString();
+            ConstantBuffers.Add(name, syntax);
+            Components.Add(new ShaderComponent()
+            {
+                Name = name,
+                Node = syntax,
+                Type = ShaderComponentType.ConstantBuffer,
+            });
         }
     }
 }

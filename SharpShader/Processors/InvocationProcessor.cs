@@ -21,10 +21,5 @@ namespace SharpShader
             if (context.Lexicon.IsIntrinsic(invocName))
                 source.Replace(strName, invocName, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
         }
-
-        protected override void OnMap(ConversionContext context, InvocationExpressionSyntax syntax)
-        {
-            context.Map.AddMethodCall(syntax);
-        }
     }
 }

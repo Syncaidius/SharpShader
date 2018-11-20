@@ -22,5 +22,11 @@ namespace SharpShader
             // Remove field modifiers (i.e. public, protected, etc).
             RemoveTokens(syntax.Modifiers, source);
         }
+
+        protected override void OnMap(ConversionContext context, FieldDeclarationSyntax syntax)
+        {
+            if (syntax.Parent == context.Root)
+                context.Map.AddField(syntax.Declaration);
+        }
     }
 }

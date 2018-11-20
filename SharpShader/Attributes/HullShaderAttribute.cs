@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class HullShaderAttribute : Attribute
+    public class HullShaderAttribute : SharpShaderAttribute
     {
     }
 }

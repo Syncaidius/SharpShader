@@ -32,6 +32,8 @@ namespace SharpShader
 
         public ShaderLanguage Language { get; }
 
+        public LanguageFoundation Foundation { get; private set; }
+
         internal ShaderLexicon(ShaderLanguage language)
         {
             Language = language;
@@ -64,7 +66,7 @@ namespace SharpShader
             return _lexicons[outputLanguage];
         }
 
-        internal static void LoadeEmbeddedLexicon(string embeddedName)
+        internal static void LoadeEmbeddedLexicon<T>(string embeddedName) where T : LanguageFoundation
         {
             using (Stream stream = EmbeddedResource.GetStream(embeddedName))
             {
@@ -77,6 +79,9 @@ namespace SharpShader
                 if (Enum.TryParse(langNode.InnerText, out ShaderLanguage language))
                 {
                     ShaderLexicon lex = new ShaderLexicon(language);
+                    lex.Foundation = Activator.CreateInstance(typeof(T),
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                        null, null, null) as LanguageFoundation;
 
                     foreach (XmlNode node in rootNode)
                     {

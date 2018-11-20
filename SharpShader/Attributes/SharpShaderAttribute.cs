@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class GeometryShaderAttribute : SharpShaderAttribute
+    public abstract class SharpShaderAttribute : Attribute
     {
     }
 }

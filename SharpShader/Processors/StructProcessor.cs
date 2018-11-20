@@ -11,7 +11,7 @@ namespace SharpShader
 {
     internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping;
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
         protected override void OnpPreprocess(ConversionContext context, StructDeclarationSyntax node, StringBuilder source)
         {
@@ -20,49 +20,35 @@ namespace SharpShader
 
         protected override void OnMap(ConversionContext context, StructDeclarationSyntax syntax)
         {
-            bool attributed = false;
+            if (ShaderReflection.HasAttribute<ConstantBufferAttribute>(syntax))
+                context.Map.AddConstantBuffer(syntax);
+            else
+                context.Map.AddStructure(syntax);
+        }
 
-            foreach (AttributeListSyntax list in syntax.AttributeLists)
+        protected override void OnPostprocess(ConversionContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        {
+            AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax);
+            if(cbAttribute != null)
             {
-                foreach (AttributeSyntax attSyntax in list.Attributes)
+                string name = cbAttribute.Name.ToString();
+                if (!name.EndsWith("Attribute"))
+                    name += "Attribute";
+
+                Type attType = Type.GetType($"SharpShader.{name}");
+                if (attType != null)
                 {
-                    string name = attSyntax.Name.ToString();
-                    if (!name.EndsWith("Attribute"))
-                        name += "Attribute";
-
-                    Type attType = Type.GetType($"SharpShader.{name}");
-                    if (attType != null)
+                    if (attType == typeof(ConstantBufferAttribute))
                     {
-                        if (attType == typeof(ConstantBufferAttribute))
-                        {
-                            SeparatedSyntaxList<AttributeArgumentSyntax> argList = attSyntax.ArgumentList.Arguments;
-                            int slot = -1;
-                            if (argList.Count > 0)
-                            {
-                                int.TryParse(argList[0].ToString(), out slot);
-                            }
+                        SeparatedSyntaxList<AttributeArgumentSyntax> argList = cbAttribute.ArgumentList.Arguments;
+                        int slot = -1;
+                        if (argList.Count > 0)
+                            int.TryParse(argList[0].ToString(), out slot);
 
-                            string cbName = syntax.Identifier.ToString();
-                            context.Map.AddConstantBuffer(new ConstantBufferStructure()
-                            {
-                                Syntax = syntax,
-                                Slot = slot,
-                                Name = cbName,
-                            });
-
-                            attributed = true;
-                        }
+                        string translated = context.Lexicon.Foundation.TranslateConstantBuffer(context, syntax, slot);
+                        source.Replace(syntax.ToString(), translated);
                     }
                 }
-            }
-
-
-            if (!attributed)
-            {
-                context.Map.AddStructure(new ShaderStructure()
-                {
-                    Syntax = syntax,
-                });
             }
         }
     }

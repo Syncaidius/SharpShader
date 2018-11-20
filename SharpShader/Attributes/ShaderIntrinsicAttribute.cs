@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class ShaderIntrinsicAttribute : Attribute
+    public class ShaderIntrinsicAttribute : SharpShaderAttribute
     {
     }
 }

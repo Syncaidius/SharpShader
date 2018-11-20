@@ -31,8 +31,8 @@ namespace SharpShader
             _mappers = new Dictionary<Type, NodeProcessor>();
             _postProcessors = new Dictionary<Type, NodeProcessor>();
 
-            ShaderLexicon.LoadeEmbeddedLexicon("SharpShader.Lexicon.hlsl.xml");
-            ShaderLexicon.LoadeEmbeddedLexicon("SharpShader.Lexicon.glsl.xml");
+            ShaderLexicon.LoadeEmbeddedLexicon<HlslFoundation>("SharpShader.Lexicon.hlsl.xml");
+            ShaderLexicon.LoadeEmbeddedLexicon<GlslFoundation>("SharpShader.Lexicon.glsl.xml");
 
             // Preprocessors
             IEnumerable<Type> types = FindOfType<NodeProcessor>();
@@ -59,12 +59,26 @@ namespace SharpShader
         /// <returns></returns>
         public static string CorrectIndents(string input)
         {
-            string[] lines = input.Split(_delimiters, StringSplitOptions.None);
+            string[] lines = input.Trim().Split(_delimiters, StringSplitOptions.None);
             int indent = 0;
+            bool prevLineEmpty = false;
+            int newLineCount = lines.Length;
 
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < newLineCount; i++)
             {
                 lines[i] = lines[i].Trim();
+
+
+                // Remove consecutive empty lines.
+                bool curLineEmpty = string.IsNullOrWhiteSpace(lines[i]);
+                int cPos = i + 1;
+                if (prevLineEmpty && curLineEmpty && cPos < lines.Length)
+                {
+                    Array.Copy(lines, cPos, lines, i, lines.Length - cPos);
+                    i--;
+                    newLineCount--;
+                    continue;
+                }
 
                 bool blockStarted = lines[i].StartsWith(BlockOpen);
                 bool blockEnded = lines[i].EndsWith(BlockClosed) || lines[i].EndsWith(BlockClosed + ";");
@@ -76,9 +90,11 @@ namespace SharpShader
 
                 if (blockStarted && !blockEnded)
                     indent++;
+
+                prevLineEmpty = curLineEmpty;
             }
 
-            return string.Join(Environment.NewLine, lines);
+            return string.Join(Environment.NewLine, lines, 0, newLineCount);
         }
 
         private static IEnumerable<Type> FindOfType<T>() where T : class
@@ -112,14 +128,20 @@ namespace SharpShader
             Console.WriteLine("Stage 2/3 (mapping)...");
             Map(context, context.Root);
 
-            Console.WriteLine("Stage 3/3 (post-process)...");
+            Console.WriteLine("Stage 3/3 (post-process)...");         
+            string result = PostProcess(context);
 
-            string result = context.Root.ToString();
             result = CorrectIndents(result);
             timer.Stop();
             Console.WriteLine($"Finished in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             return result;
         }
+
+        /* TODO RETHINK:
+         *  - Map all of the important shader features into a list of ShaderComponent.
+         *      -- ShaderComponent.Type = enum describing the type of the component (e.g. constant buffer, 2D sampler, buffer, texture, etc)
+         *  - Iterate over the map list in reverse, post-processing nodes as intended
+         */
 
         private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
         {
@@ -147,7 +169,7 @@ namespace SharpShader
 
         private void Map(ConversionContext context, SyntaxNode node)
         {
-            IEnumerable<SyntaxNode> stuff = node.ChildNodes();
+            IEnumerable<SyntaxNode> stuff = node.ChildNodes();  
             foreach (SyntaxNode child in stuff)
             {
                 Type t = child.GetType();
@@ -162,6 +184,23 @@ namespace SharpShader
 
                 Map(context, child);
             }
+        }
+
+        private string PostProcess(ConversionContext context)
+        {
+            StringBuilder source = new StringBuilder(context.Tree.ToString());
+
+            // Iterate backwards; Bottom to top. 
+            // Iterating in this way ensures any changes made by post-processors will not invalidate the locations of earlier nodes.
+            for (int i = context.Map.Components.Count - 1; i >= 0; i--)
+            {
+                ShaderComponent com = context.Map.Components[i];
+                SyntaxNode node = com.Node;
+                if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))
+                    proc.Postprocess(context, node, source, com);
+            }
+
+            return source.ToString();
         }
         #endregion
     }

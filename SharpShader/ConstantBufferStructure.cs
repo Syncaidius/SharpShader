@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ConstantBufferStructure : ShaderStructure
+    internal class ConstantBufferStructure : ShaderComponent
     {
         /// <summary>
         /// The constant buffer slot. If -1, the slot will automatically be assigned to the first unassigned constant buffer slot during shader code generation.

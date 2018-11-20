@@ -189,9 +189,13 @@
     <Compile Include="Attributes\DomainShaderAttribute.cs" />
     <Compile Include="Attributes\HullShaderAttribute.cs" />
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
+    <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="CodeMap.cs" />
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Lexicon\GlslFoundation.cs" />
+    <Compile Include="Lexicon\HlslFoundation.cs" />
+    <Compile Include="Lexicon\LanguageFoundation.cs" />
     <Compile Include="Lexicon\ShaderLexicon.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="NodeProcessor.cs" />
@@ -203,7 +207,7 @@
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\UsingProcessor.cs" />
     <Compile Include="ShaderReflection.cs" />
-    <Compile Include="ShaderStructure.cs" />
+    <Compile Include="ShaderComponent.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class FragmentShaderAttribute : Attribute
+    public class FragmentShaderAttribute : SharpShaderAttribute
     {
     }
 }

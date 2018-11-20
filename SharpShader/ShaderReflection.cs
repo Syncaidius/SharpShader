@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -35,6 +36,67 @@ namespace SharpShader
         internal static bool IsIntrinsicFunction(string name)
         {
             return false;
+        }
+
+        internal static bool HasAttribute<T>(StructDeclarationSyntax syntax) where T : SharpShaderAttribute
+        {
+            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            {
+                foreach (AttributeSyntax attSyntax in list.Attributes)
+                {
+                    string name = attSyntax.Name.ToString();
+                    if (!name.EndsWith("Attribute"))
+                        name += "Attribute";
+
+                    Type attType = Type.GetType($"SharpShader.{name}");
+                    if (attType != null)
+                    {
+                        if (attType == typeof(T))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        internal static AttributeSyntax GetAttribute<T>(StructDeclarationSyntax syntax) where T : SharpShaderAttribute
+        {
+            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            {
+                foreach (AttributeSyntax attSyntax in list.Attributes)
+                {
+                    string name = attSyntax.Name.ToString();
+                    if (!name.EndsWith("Attribute"))
+                        name += "Attribute";
+
+                    Type attType = Type.GetType($"SharpShader.{name}");
+                    if (attType != null)
+                    {
+                        if (attType == typeof(T))
+                            return attSyntax;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        internal static void IterateAttributes(StructDeclarationSyntax syntax, Action<Type> callback)
+        {
+            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            {
+                foreach (AttributeSyntax attSyntax in list.Attributes)
+                {
+                    string name = attSyntax.Name.ToString();
+                    if (!name.EndsWith("Attribute"))
+                        name += "Attribute";
+
+                    Type attType = Type.GetType($"SharpShader.{name}");
+                    if (attType != null)
+                        callback(attType);
+                }
+            }
         }
     }
 }

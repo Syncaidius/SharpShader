@@ -30,7 +30,7 @@ namespace SharpShader
         protected override void OnMap(ConversionContext context, VariableDeclarationSyntax syntax)
         {
             if (syntax.Parent == context.Root)
-                context.Map.AddVariable(syntax);
+                context.Map.AddField(syntax);
         }
     }
 }

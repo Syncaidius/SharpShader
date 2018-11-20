@@ -18,7 +18,7 @@ namespace SharpShader
 
         internal virtual void Map(ConversionContext context, SyntaxNode node) { }
 
-        internal virtual void Postprocess(ConversionContext context, SyntaxNode node) { }
+        internal virtual void Postprocess(ConversionContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
 
         protected void TranslateTypeSyntax(ConversionContext context, TypeSyntax syntax, StringBuilder source)
         {
@@ -102,16 +102,16 @@ namespace SharpShader
             OnMap(context, node as T);
         }
 
-        internal override sealed void Postprocess(ConversionContext context, SyntaxNode node)
+        internal override sealed void Postprocess(ConversionContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
         {
-            OnPostprocess(context, node as T);
+            OnPostprocess(context, node as T, source, component);
         }
 
         protected virtual void OnpPreprocess(ConversionContext context, T syntax, StringBuilder source) { }
 
         protected virtual void OnMap(ConversionContext context, T syntax) { }
 
-        protected virtual void OnPostprocess(ConversionContext context, T syntax) { }
+        protected virtual void OnPostprocess(ConversionContext context, T syntax, StringBuilder source, ShaderComponent component) { }
     }
 
     [Flags]
@@ -123,6 +123,6 @@ namespace SharpShader
 
         Mapping = 2,
 
-        PostProcess = 2
+        PostProcess = 4
     }
 }

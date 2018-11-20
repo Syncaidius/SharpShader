@@ -13,8 +13,6 @@ namespace SharpShader
 {
     internal class ConversionContext
     {
-        //List<string> _lines = new List<string>();
-
         internal SyntaxNode Root { get; private set; }
         internal SyntaxTree Tree { get; private set; }
         internal CodeMap Map { get; private set; }

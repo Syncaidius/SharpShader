@@ -22,6 +22,15 @@ namespace SharpShaderSample
             public Vector4 Color;
         }
 
+
+
+
+
+
+
+
+
+
         public ObjectBuffer cbObject = new ObjectBuffer();
 
         // This method is simply for testing purposes. Beyond that, it's pointless!

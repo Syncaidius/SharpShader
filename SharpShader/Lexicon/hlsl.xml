@@ -149,19 +149,4 @@
   <Intrinsic name="texCUBEproj" />
   <Intrinsic name="transpose" />
   <Intrinsic name="trunc" />
-
-  <!--Rules for handling constant buffers-->
-  <CBuffer>
-    <!-- If true, instance member accessors (e.g. matrices.projection or light.color) will not be stripped.
-         If false, instance accessors, declarations and instantiations will be stripped and only the member names will be left intact. -->
-    <InstanceIsName>false</InstanceIsName>
-
-    <!-- The keyword rules for defining a constant buffer in the language-->
-    <Keyword>
-      <Word>cbuffer</Word>
-
-      <!-- If false, the keyword is treated as a suffix.-->
-      <IsPrefix>true</IsPrefix>
-    </Keyword>
-  </CBuffer>
 </Lexicon>
