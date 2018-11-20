@@ -12,7 +12,8 @@ namespace SharpShader
     {
         internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot)
         {
-            string result = $"cbuffer {syntax.Identifier} : register(b{slot}){Environment.NewLine}";
+            string strRegister = slot > -1 ? $" : register(b{slot}" : "";
+            string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
             result += "{" + Environment.NewLine;
             foreach(MemberDeclarationSyntax m in syntax.Members)
             {
@@ -25,7 +26,16 @@ namespace SharpShader
 
         internal override string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax)
         {
-            throw new NotImplementedException();
+            string result = $"struct {syntax.Identifier}{Environment.NewLine}";
+            result += "{" + Environment.NewLine;
+            foreach (MemberDeclarationSyntax m in syntax.Members)
+            {
+                if (m is FieldDeclarationSyntax field)
+                    result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
+            }
+            result += "}" + Environment.NewLine;
+
+            return result;
         }
 
         internal override string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax)
@@ -44,9 +54,8 @@ namespace SharpShader
                         if (packAttribute.ArgumentList.Arguments.Count == 2)
                         {
                             AttributeArgumentSyntax argComponent = packAttribute.ArgumentList.Arguments[1];
-                            string comVal = argComponent.ToString();
 
-                            if (Enum.TryParse(comVal, out PackOffsetComponent component))
+                            if (Enum.TryParse(argComponent.ToString(), out PackOffsetComponent component))
                             {
                                 return $"{syntax.Declaration} : packoffset(c{register}.{component.ToString().ToLower()})";
                             }
@@ -65,6 +74,38 @@ namespace SharpShader
                 }
             }
 
+            AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(syntax.AttributeLists);
+            if(semanticAttribute != null)
+            {
+                if(semanticAttribute.ArgumentList.Arguments.Count == 2)
+                {
+                    int slot = -1;
+                    SemanticType type = SemanticType.Position;
+                    AttributeArgumentSyntax argSemantic = semanticAttribute.ArgumentList.Arguments[0];
+                    string strSemantic = argSemantic.ToString().Replace($"{typeof(SemanticType).Name}.", "");
+
+                    if (Enum.TryParse(strSemantic, out type))
+                    {
+                        AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
+                        if (int.TryParse(argSlot.ToString(), out slot))
+                        {
+                            return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+                        }
+                        else
+                        {
+                            // TODO log incorrect semantic slot value.
+                        }
+                    }
+                    else
+                    {
+                        // TODO log incorrect semantic name.
+                    }
+                }
+                else
+                {
+                    // TODO log output here here. SemanticAttribute always takes 2 arguments.
+                }
+            }
 
             return $"{syntax.Declaration}";
         }

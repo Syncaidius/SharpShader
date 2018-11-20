@@ -31,24 +31,18 @@ namespace SharpShader
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if(cbAttribute != null)
             {
-                string name = cbAttribute.Name.ToString();
-                if (!name.EndsWith("Attribute"))
-                    name += "Attribute";
+                SeparatedSyntaxList<AttributeArgumentSyntax> argList = cbAttribute.ArgumentList.Arguments;
+                int slot = -1;
+                if (argList.Count > 0)
+                    int.TryParse(argList[0].ToString(), out slot);
 
-                Type attType = Type.GetType($"SharpShader.{name}");
-                if (attType != null)
-                {
-                    if (attType == typeof(ConstantBufferAttribute))
-                    {
-                        SeparatedSyntaxList<AttributeArgumentSyntax> argList = cbAttribute.ArgumentList.Arguments;
-                        int slot = -1;
-                        if (argList.Count > 0)
-                            int.TryParse(argList[0].ToString(), out slot);
-
-                        string translated = context.Lexicon.Foundation.TranslateConstantBuffer(context, syntax, slot);
-                        source.Replace(syntax.ToString(), translated);
-                    }
-                }
+                string translated = context.Lexicon.Foundation.TranslateConstantBuffer(context, syntax, slot);
+                source.Replace(syntax.ToString(), translated);
+            }
+            else
+            {
+                string translated = context.Lexicon.Foundation.TranslateStruct(context, syntax);
+                source.Replace(syntax.ToString(), translated);
             }
         }
     }

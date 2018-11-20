@@ -16,7 +16,10 @@ namespace SharpShaderSample
 
         public struct VertexInput
         {
+            [Semantic(SemanticType.Position, 0)]
             public Vector4 Position;
+
+            [Semantic(SemanticType.Color, 0)]
             public Vector4 Color;
         }
 
