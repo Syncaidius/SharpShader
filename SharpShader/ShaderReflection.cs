@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +39,9 @@ namespace SharpShader
             return false;
         }
 
-        internal static bool HasAttribute<T>(StructDeclarationSyntax syntax) where T : SharpShaderAttribute
+        internal static bool HasAttribute<T>(SyntaxList<AttributeListSyntax> attLists) where T : SharpShaderAttribute
         {
-            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            foreach (AttributeListSyntax list in attLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
                 {
@@ -60,9 +61,9 @@ namespace SharpShader
             return false;
         }
 
-        internal static AttributeSyntax GetAttribute<T>(StructDeclarationSyntax syntax) where T : SharpShaderAttribute
+        internal static AttributeSyntax GetAttribute<T>(SyntaxList<AttributeListSyntax> attLists) where T : SharpShaderAttribute
         {
-            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            foreach (AttributeListSyntax list in attLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
                 {
@@ -82,9 +83,9 @@ namespace SharpShader
             return null;
         }
 
-        internal static void IterateAttributes(StructDeclarationSyntax syntax, Action<Type> callback)
+        internal static void IterateAttributes(SyntaxList<AttributeListSyntax> attLists, Action<Type> callback)
         {
-            foreach (AttributeListSyntax list in syntax.AttributeLists)
+            foreach (AttributeListSyntax list in attLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
                 {

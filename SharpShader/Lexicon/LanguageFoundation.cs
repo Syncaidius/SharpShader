@@ -10,10 +10,10 @@ namespace SharpShader
 {
     internal abstract class LanguageFoundation
     {
-        internal abstract string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax node, int slot);
+        internal abstract string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot);
 
-        internal abstract string TranslateStruct(ConversionContext context, StructDeclarationSyntax node);
+        internal abstract string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax);
 
-        internal abstract string TranslateStructField(ConversionContext context, FieldDeclarationSyntax node);
+        internal abstract string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax);
     }
 }

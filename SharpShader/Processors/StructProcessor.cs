@@ -20,7 +20,7 @@ namespace SharpShader
 
         protected override void OnMap(ConversionContext context, StructDeclarationSyntax syntax)
         {
-            if (ShaderReflection.HasAttribute<ConstantBufferAttribute>(syntax))
+            if (ShaderReflection.HasAttribute<ConstantBufferAttribute>(syntax.AttributeLists))
                 context.Map.AddConstantBuffer(syntax);
             else
                 context.Map.AddStructure(syntax);
@@ -28,7 +28,7 @@ namespace SharpShader
 
         protected override void OnPostprocess(ConversionContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
-            AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax);
+            AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if(cbAttribute != null)
             {
                 string name = cbAttribute.Name.ToString();

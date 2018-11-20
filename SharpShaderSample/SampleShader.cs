@@ -7,7 +7,11 @@ namespace SharpShaderSample
         [ConstantBuffer(0)]
         public struct ObjectBuffer
         {
+            [PackOffset(0)]
             public Matrix4x4 Wvp;
+
+            [PackOffset(4, PackOffsetComponent.X)]
+            public Vector4 TintColor;
         }
 
         public struct VertexInput
@@ -21,15 +25,6 @@ namespace SharpShaderSample
             public Vector4 Position;
             public Vector4 Color;
         }
-
-
-
-
-
-
-
-
-
 
         public ObjectBuffer cbObject = new ObjectBuffer();
 
@@ -59,7 +54,7 @@ namespace SharpShaderSample
         [FragmentShader]
         public Vector4 FragFunc(PixelInput input)
         {
-            return getColor(input.Color, 1) * getOtherColor();
+            return getColor(input.Color, 1) * getOtherColor() * cbObject.TintColor;
         }
     }
 }

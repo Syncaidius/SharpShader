@@ -10,11 +10,11 @@ namespace SharpShader
 {
     internal class HlslFoundation : LanguageFoundation
     {
-        internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax node, int slot)
+        internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot)
         {
-            string result = $"cbuffer {node.Identifier} : register(b{slot}){Environment.NewLine}";
+            string result = $"cbuffer {syntax.Identifier} : register(b{slot}){Environment.NewLine}";
             result += "{" + Environment.NewLine;
-            foreach(MemberDeclarationSyntax m in node.Members)
+            foreach(MemberDeclarationSyntax m in syntax.Members)
             {
                 if (m is FieldDeclarationSyntax field)
                     result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
@@ -23,14 +23,50 @@ namespace SharpShader
             return result;
         }
 
-        internal override string TranslateStruct(ConversionContext context, StructDeclarationSyntax node)
+        internal override string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateStructField(ConversionContext context, FieldDeclarationSyntax node)
+        internal override string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax)
         {
-            return $"{node.Declaration}";
+            AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(syntax.AttributeLists);
+            if (packAttribute != null)
+            {
+                if (packAttribute.ArgumentList.Arguments.Count > 0)
+                {
+                    int register = -1;
+
+                    // Pack offset attribute has either 1 or 2 arguments. Second argument is optional
+                    AttributeArgumentSyntax argRegister = packAttribute.ArgumentList.Arguments[0];
+                    if (int.TryParse(argRegister.ToString(), out register))
+                    {
+                        if (packAttribute.ArgumentList.Arguments.Count == 2)
+                        {
+                            AttributeArgumentSyntax argComponent = packAttribute.ArgumentList.Arguments[1];
+                            string comVal = argComponent.ToString();
+
+                            if (Enum.TryParse(comVal, out PackOffsetComponent component))
+                            {
+                                return $"{syntax.Declaration} : packoffset(c{register}.{component.ToString().ToLower()})";
+                            }
+                            else
+                            {
+                                // TODO log incorrect pack offset component name.
+                            }
+                        }
+
+                        return $"{syntax.Declaration} : packoffset(c{register})";
+                    }
+                }
+                else
+                {
+                    // TODO log output error here. PackOffsetAttribute does not take 0 arguments.
+                }
+            }
+
+
+            return $"{syntax.Declaration}";
         }
     }
 }

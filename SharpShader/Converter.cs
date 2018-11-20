@@ -103,7 +103,6 @@ namespace SharpShader
             Assembly assembly = pType.Assembly;
             return assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
         }
-
         #endregion
 
         #region Instance members
@@ -136,12 +135,6 @@ namespace SharpShader
             Console.WriteLine($"Finished in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             return result;
         }
-
-        /* TODO RETHINK:
-         *  - Map all of the important shader features into a list of ShaderComponent.
-         *      -- ShaderComponent.Type = enum describing the type of the component (e.g. constant buffer, 2D sampler, buffer, texture, etc)
-         *  - Iterate over the map list in reverse, post-processing nodes as intended
-         */
 
         private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
         {
