@@ -33,13 +33,6 @@ namespace SharpShader
             Map = new CodeMap();
         }
 
-        internal void ReplaceTree(SyntaxTree tree)
-        {
-            Tree = tree;
-            Root = tree.GetRoot();
-            Map = new CodeMap();
-        }
-
         internal string GetNewVariableName(string prefix = null)
         {
             return $"ss_{($"{prefix}_" ?? "val_")}{_nextVariable++}";
