@@ -15,7 +15,7 @@ namespace SharpShader
             string strRegister = slot > -1 ? $" : register(b{slot}" : "";
             string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
             result += "{" + Environment.NewLine;
-            foreach(MemberDeclarationSyntax m in syntax.Members)
+            foreach (MemberDeclarationSyntax m in syntax.Members)
             {
                 if (m is FieldDeclarationSyntax field)
                     result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
@@ -33,7 +33,7 @@ namespace SharpShader
                 if (m is FieldDeclarationSyntax field)
                     result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
             }
-            result += "}" + Environment.NewLine;
+            result += "};" + Environment.NewLine;
 
             return result;
         }
@@ -75,9 +75,9 @@ namespace SharpShader
             }
 
             AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(syntax.AttributeLists);
-            if(semanticAttribute != null)
+            if (semanticAttribute != null)
             {
-                if(semanticAttribute.ArgumentList.Arguments.Count > 0)
+                if (semanticAttribute.ArgumentList.Arguments.Count > 0)
                 {
                     int slot = -1;
                     SemanticType type = SemanticType.Position;
@@ -91,17 +91,18 @@ namespace SharpShader
                             AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
                             if (int.TryParse(argSlot.ToString(), out slot))
                             {
-                                return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+                                if (slot > -1)
+                                    return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+
+                                // TODO log invalid value if < 0.
                             }
                             else
                             {
                                 // TODO log incorrect semantic slot value.
                             }
                         }
-                        else
-                        {
-                            return $"{syntax.Declaration} : {strSemantic.ToUpper()}";
-                        }
+
+                        return $"{syntax.Declaration} : {strSemantic.ToUpper()}";
                     }
                     else
                     {
@@ -115,6 +116,45 @@ namespace SharpShader
             }
 
             return $"{syntax.Declaration}";
+        }
+
+        internal override string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header)
+        {
+            if (ep.EntryType == EntryPointType.VertexShader)
+            {
+                return header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "");
+            }
+            else if (ep.EntryType == EntryPointType.FragmentShader)
+            {
+                // Attribute is a FragmentShaderAttribute. First argument is always the output semantic, if present.
+                SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
+                if (args.Count > 0)
+                {
+                    string enumVal = args[0].ToString().Replace($"{nameof(SemanticFragmentOutputType)}.", "");
+
+                    if (Enum.TryParse(enumVal, out SemanticFragmentOutputType outputType))
+                    {
+                        string result = $"{header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "").Trim()} : {outputType.ToString().ToUpper()}{Environment.NewLine}";
+                        // Second argument is always the semantic slot ID.
+                        if (args.Count > 1)
+                        {
+                            if (int.TryParse(args[1].ToString(), out int slot))
+                                result += slot;
+
+                            // TODO log invalid slot ID in 'else' clause.
+                        }
+
+                        return result;
+                    }
+                    else
+                    {
+                        // TODO log invalid output semantic value.
+                    }
+                }
+            }
+
+            // TODO parse geometry, hull, domain and compute shader attributes into shader-specific versions.
+            return header;
         }
     }
 }

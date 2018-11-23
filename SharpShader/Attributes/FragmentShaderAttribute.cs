@@ -8,5 +8,11 @@ namespace SharpShader
 {
     public class FragmentShaderAttribute : SharpShaderAttribute
     {
+        public SemanticFragmentOutputType Semantic { get; }
+
+        public FragmentShaderAttribute(SemanticFragmentOutputType type = SemanticFragmentOutputType.None)
+        {
+            Semantic = type;
+        }
     }
 }

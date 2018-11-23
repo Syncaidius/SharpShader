@@ -12,11 +12,13 @@ namespace SharpShader
     /// </summary>
     internal class CodeMap
     {
-        internal List<EntryPoint> EntryPoints = new List<EntryPoint>();
+        internal Dictionary<string, EntryPoint> EntryPoints = new Dictionary<string, EntryPoint>();
 
         internal Dictionary<string, MethodDeclarationSyntax> Methods = new Dictionary<string, MethodDeclarationSyntax>();
 
-        internal Dictionary<string, VariableDeclarationSyntax> Fields = new Dictionary<string, VariableDeclarationSyntax>();
+        internal Dictionary<string, FieldDeclarationSyntax> Fields = new Dictionary<string, FieldDeclarationSyntax>();
+
+        internal List<MemberAccessExpressionSyntax> MemberAccess = new List<MemberAccessExpressionSyntax>();
 
         internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
 
@@ -26,12 +28,37 @@ namespace SharpShader
 
         internal void AddEntryPoint(EntryPoint ep)
         {
-            EntryPoints.Add(ep);
+            string name = ep.MethodSyntax.Identifier.ToString();
+            EntryPoints.Add(name, ep);
+            Components.Add(new ShaderComponent()
+            {
+                Node = ep.MethodSyntax,
+                Type = ShaderComponentType.EntryPoint,
+                Name = name,
+            });
         }
 
-        internal void AddField(VariableDeclarationSyntax syntax)
+        internal void AddMemberAccess(MemberAccessExpressionSyntax syntax)
         {
-            Fields.Add(syntax.Variables[0].Identifier.ToString(), syntax);
+            MemberAccess.Add(syntax);
+            Components.Add(new ShaderComponent()
+            {
+                Node = syntax,
+                Type = ShaderComponentType.MemberAccess,
+                Name = syntax.Expression.ToString(),
+            });
+        }
+
+        internal void AddField(FieldDeclarationSyntax syntax)
+        {
+            string name = syntax.Declaration.Variables[0].Identifier.ToString();
+            Fields.Add(name, syntax);
+            Components.Add(new ShaderComponent()
+            {
+                Node = syntax,
+                Type = ShaderComponentType.CSharpField,
+                Name = name,
+            });
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)

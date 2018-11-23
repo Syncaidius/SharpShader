@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ProjectCreationProcessor : NodeProcessor<ObjectCreationExpressionSyntax>
+    internal class ObjectCreationProcessor : NodeProcessor<ObjectCreationExpressionSyntax>
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
         {
             /* Considerations:
              *  - If the parent node is ReturnStatementSyntax, reformat to return by variable, if needed.

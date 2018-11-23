@@ -94,7 +94,7 @@ namespace SharpShader
 
         internal override sealed void Preprocess(ConversionContext context, SyntaxNode node, StringBuilder source)
         {
-            OnpPreprocess(context, node as T, source);
+            OnPreprocess(context, node as T, source);
         }
 
         internal override sealed void Map(ConversionContext context, SyntaxNode node)
@@ -107,7 +107,7 @@ namespace SharpShader
             OnPostprocess(context, node as T, source, component);
         }
 
-        protected virtual void OnpPreprocess(ConversionContext context, T syntax, StringBuilder source) { }
+        protected virtual void OnPreprocess(ConversionContext context, T syntax, StringBuilder source) { }
 
         protected virtual void OnMap(ConversionContext context, T syntax) { }
 

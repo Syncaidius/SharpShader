@@ -12,9 +12,9 @@ namespace SharpShader
 {
     internal class FieldProcessor : NodeProcessor<FieldDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source)
         {
             // Update the type first, this comes after the modifiers.
             TranslateTypeSyntax(context, syntax.Declaration.Type, source);
@@ -26,7 +26,13 @@ namespace SharpShader
         protected override void OnMap(ConversionContext context, FieldDeclarationSyntax syntax)
         {
             if (syntax.Parent == context.Root)
-                context.Map.AddField(syntax.Declaration);
+                context.Map.AddField(syntax);
+        }
+
+        protected override void OnPostprocess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        {
+            if (context.Map.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
+                source.Remove(syntax.SpanStart, syntax.Span.Length);
         }
     }
 }

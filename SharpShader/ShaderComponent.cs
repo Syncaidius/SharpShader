@@ -23,26 +23,18 @@ namespace SharpShader
 
     public enum ShaderComponentType
     {
-        VertexEntryPoint = 0,
+        EntryPoint = 0,
 
-        FragmentEntryPoint = 1,
+        ConstantBuffer = 1,
 
-        GeometryEntryPoint = 2,
+        TextureSampler = 2,
 
-        HullEntryPoint = 3,
+        Buffer = 3,
 
-        DomainEntryPoint = 4,
+        Struct = 4,
 
-        ComputeEntryPoint = 5,
+        CSharpField = 5,
 
-        ConstantBuffer = 6,
-
-        TextureSampler = 7,
-
-        Buffer = 8,
-
-        Struct = 9,
-
-        CSharpField = 10,
+        MemberAccess = 6,
     }
 }

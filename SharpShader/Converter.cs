@@ -189,6 +189,7 @@ namespace SharpShader
             {
                 ShaderComponent com = context.Map.Components[i];
                 SyntaxNode node = com.Node;
+                Type test = node.GetType();
                 if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))
                     proc.Postprocess(context, node, source, com);
             }

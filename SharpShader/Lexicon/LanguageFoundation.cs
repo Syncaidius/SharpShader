@@ -15,5 +15,13 @@ namespace SharpShader
         internal abstract string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax);
 
         internal abstract string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax);
+
+        /// <summary>
+        /// Occurs when the first line of an entry point method/function declaration requires translating. The content of the method should not be translated.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="ep"></param>
+        /// <returns></returns>
+        internal abstract string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header);
     }
 }

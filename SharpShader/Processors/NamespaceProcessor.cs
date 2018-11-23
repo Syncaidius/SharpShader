@@ -11,7 +11,7 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
         {
             IEnumerable<SyntaxNodeOrToken> children = syntax.ChildNodesAndTokens();
             SyntaxNodeOrToken last = children.Last();

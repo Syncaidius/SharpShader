@@ -4,16 +4,6 @@ namespace SharpShaderSample
 {
     class SampleShader : CSharpShader
     {
-        [ConstantBuffer(0)]
-        public struct ObjectBuffer
-        {
-            [PackOffset(0)]
-            public Matrix4x4 Wvp;
-
-            [PackOffset(4, PackOffsetComponent.X)]
-            public Vector4 TintColor;
-        }
-
         public struct VertexInput
         {
             [Semantic(SemanticType.Position, 0)]
@@ -32,7 +22,33 @@ namespace SharpShaderSample
             public Vector4 Color;
         }
 
-        public ObjectBuffer cbObject = new ObjectBuffer();
+        [ConstantBuffer(0)]
+        public struct Common
+        {
+            [PackOffset(0)]
+            public Matrix4x4 View;
+
+            [PackOffset(4)]
+            public Matrix4x4 Projection;
+
+            [PackOffset(8)]
+            public Matrix4x4 ViewProjection;
+
+            [PackOffset(12)]
+            public Matrix4x4 InvViewProjection;
+        }
+
+        [ConstantBuffer(1)]
+        public struct Object
+        {
+            [PackOffset(0)]
+            public Matrix4x4 Wvp;
+
+            [PackOffset(4)]
+            public Matrix4x4 World;
+        }
+
+        public Object cbObject = new Object();
 
         // This method is simply for testing purposes. Beyond that, it's pointless!
         public Vector4 getColor(Vector4 input, float multiplier)
@@ -57,10 +73,10 @@ namespace SharpShaderSample
             };
         }
 
-        [FragmentShader]
+        [FragmentShader(SemanticFragmentOutputType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {
-            return getColor(input.Color, 1) * getOtherColor() * cbObject.TintColor;
+            return getColor(input.Color, 1) * getOtherColor();
         }
     }
 }

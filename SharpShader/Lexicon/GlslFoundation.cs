@@ -24,5 +24,10 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

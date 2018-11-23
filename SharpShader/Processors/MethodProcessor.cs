@@ -12,9 +12,9 @@ namespace SharpShader
 {
     internal class MethodProcessor : NodeProcessor<MethodDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping;
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, MethodDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, MethodDeclarationSyntax syntax, StringBuilder source)
         {
             // Translate (if any) types of every parameter of the method.
             SeparatedSyntaxList<ParameterSyntax> paramList = syntax.ParameterList.Parameters;
@@ -75,6 +75,20 @@ namespace SharpShader
 
             if (!attributed)
                 context.Map.AddMethod(syntax);
+        }
+
+        protected override void OnPostprocess(ConversionContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        {
+            if(component.Type == ShaderComponentType.EntryPoint)
+            {
+                SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
+                int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;
+                string toReplace = syntax.ToString().Substring(0, methodHeaderLength);
+                string methodHeader = toReplace;
+
+                string translated = context.Lexicon.Foundation.TranslateEntryPointHeader(context, context.Map.EntryPoints[component.Name], ref methodHeader);
+                source.Replace(toReplace, translated);
+            }
         }
     }
 }

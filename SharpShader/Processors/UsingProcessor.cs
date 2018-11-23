@@ -12,7 +12,7 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, UsingDirectiveSyntax node, StringBuilder source)
         {
             RemoveSyntax(node, source);
         }

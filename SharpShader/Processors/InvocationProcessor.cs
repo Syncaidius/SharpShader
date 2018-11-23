@@ -14,7 +14,7 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping;
 
-        protected override void OnpPreprocess(ConversionContext context, InvocationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, InvocationExpressionSyntax syntax, StringBuilder source)
         {
             string strName = syntax.Expression.ToString();
             string invocName = char.ToLowerInvariant(strName[0]) + strName.Substring(1);  

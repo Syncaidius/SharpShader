@@ -10,9 +10,9 @@ namespace SharpShader
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PreProcess;
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnpPreprocess(ConversionContext context, VariableDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ConversionContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
             if (syntax.Variables.Count > 1)
             {
@@ -25,12 +25,6 @@ namespace SharpShader
                 else
                     source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
             }
-        }
-
-        protected override void OnMap(ConversionContext context, VariableDeclarationSyntax syntax)
-        {
-            if (syntax.Parent == context.Root)
-                context.Map.AddField(syntax);
         }
     }
 }
