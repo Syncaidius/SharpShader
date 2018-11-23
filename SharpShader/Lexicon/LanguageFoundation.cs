@@ -23,5 +23,7 @@ namespace SharpShader
         /// <param name="ep"></param>
         /// <returns></returns>
         internal abstract string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header);
+
+        internal abstract string TranslateNumber(ConversionContext context, string number);
     }
 }

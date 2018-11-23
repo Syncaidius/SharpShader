@@ -29,5 +29,10 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override string TranslateNumber(ConversionContext context, string number)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

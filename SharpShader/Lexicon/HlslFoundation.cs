@@ -156,5 +156,32 @@ namespace SharpShader
             // TODO parse geometry, hull, domain and compute shader attributes into shader-specific versions.
             return header;
         }
+
+        internal override string TranslateNumber(ConversionContext context, string number)
+        {
+            // NOTE: hexadecimal literals are supported, binary literals are not, so we'll need to translate those.
+            if (number.StartsWith("0b")) // Binary literal.
+            {
+                return number;
+                // TODO translate binary literal.
+            }
+            else if(number.StartsWith("0x")) // Hexadecimal literal.
+            {
+                return number;
+            }
+            else // Everything else.
+            {
+                int newLength = number.Length;
+                for(int i = number.Length - 1; i >= 0; i++)
+                {
+                    if (!char.IsNumber(number[i]))
+                    {
+                        newLength = i;
+                        break;
+                    }
+                }
+                return number.Substring(0, newLength);
+            }
+        }
     }
 }
