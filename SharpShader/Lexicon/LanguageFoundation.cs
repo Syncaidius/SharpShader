@@ -25,5 +25,19 @@ namespace SharpShader
         internal abstract string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header);
 
         internal abstract string TranslateNumber(ConversionContext context, string number);
+
+        protected static string TranslateBinaryLiteral(string number)
+        {
+            number = number.Substring(2);
+            int result = 0;
+            number = string.Concat(number.Reverse()).Replace("_", "");
+            for (int i = 0; i < number.Length; i++)
+            {
+                if (number[i] == '1')
+                    result |= 1 << i;
+            }
+
+            return result.ToString();
+        }
     }
 }

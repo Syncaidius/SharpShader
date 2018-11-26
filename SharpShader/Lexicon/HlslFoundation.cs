@@ -162,14 +162,9 @@ namespace SharpShader
             // NOTE: hexadecimal literals are supported, binary literals are not, so we'll need to translate those.
             if (number.StartsWith("0b")) // Binary literal.
             {
-                return number;
-                // TODO translate binary literal.
+                return TranslateBinaryLiteral(number);
             }
-            else if(number.StartsWith("0x")) // Hexadecimal literal.
-            {
-                return number;
-            }
-            else // Everything else.
+            else // Hexadecimal + everything else.
             {
                 int newLength = number.Length;
                 for(int i = number.Length - 1; i >= 0; i++)
