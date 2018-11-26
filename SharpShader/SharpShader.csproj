@@ -193,6 +193,7 @@
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="CodeMap.cs" />
+    <Compile Include="ConversionResult.cs" />
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Lexicon\GlslFoundation.cs" />

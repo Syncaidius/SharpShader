@@ -106,33 +106,55 @@ namespace SharpShader
         #endregion
 
         #region Instance members
-        public string Convert(string cSharpSource, ShaderLanguage output)
+        /// <summary>
+        /// Converts the provided C# source code to the specified shader language.
+        /// </summary>
+        /// <param name="cSharpSources">A dictionary containing source code by file or friendly name.</param>
+        /// <param name="outputLanguage">The language that the input source code should be translated to.</param>
+        /// <returns></returns>
+        public ConversionResult Convert(Dictionary<string, string> cSharpSources, ShaderLanguage outputLanguage)
         {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            ShaderLexicon lex = ShaderLexicon.GetLexicon(output);
-            ConversionContext context = new ConversionContext(lex);
-            context.RegenerateTree(cSharpSource);
+            ConversionResult result = new ConversionResult();
 
-            Console.WriteLine("Stage 1/3 (pre-process)...");
-            List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
-            foreach(Type t in _preprocessors.Keys)
+            Stopwatch mainTimer = new Stopwatch();
+            mainTimer.Start();
+            foreach(KeyValuePair<string,string> kvp in cSharpSources)
             {
-                Console.WriteLine($"   Processing {t.Name} nodes");
-                GatherNodes(context, context.Root, t, nodesToProcess);
-                Preprocess(context, t, nodesToProcess);
-                nodesToProcess.Clear();
+                Console.WriteLine($"Translating '{kvp.Key}'");
+
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
+                ShaderLexicon lex = ShaderLexicon.GetLexicon(outputLanguage);
+                ConversionContext context = new ConversionContext(lex);
+                context.RegenerateTree(kvp.Value);
+
+                Console.WriteLine("  Stage 1/3 (pre-process)...");
+                List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
+                foreach (Type t in _preprocessors.Keys)
+                {
+                    Console.WriteLine($"    Processing {t.Name} nodes");
+                    GatherNodes(context, context.Root, t, nodesToProcess);
+                    Preprocess(context, t, nodesToProcess);
+                    nodesToProcess.Clear();
+                }
+
+                Console.WriteLine("  Stage 2/3 (mapping)...");
+                Map(context, context.Root);
+
+                Console.WriteLine("  Stage 3/3 (post-process)...");
+                string strResult = PostProcess(context);
+
+                strResult = CorrectIndents(strResult);
+                timer.Stop();
+                Console.WriteLine($"  Finished '{kvp.Key}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
+
+                ConversionResult.Shader shader = new ConversionResult.Shader(strResult);
+                result.Translated.Add(kvp.Key, shader);
             }
 
-            Console.WriteLine("Stage 2/3 (mapping)...");
-            Map(context, context.Root);
+            mainTimer.Stop();
+            Console.WriteLine($"  Converted {cSharpSources.Count} source(s) in {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
-            Console.WriteLine("Stage 3/3 (post-process)...");         
-            string result = PostProcess(context);
-
-            result = CorrectIndents(result);
-            timer.Stop();
-            Console.WriteLine($"Finished in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             return result;
         }
 

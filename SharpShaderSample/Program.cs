@@ -13,22 +13,32 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             Converter converter = new Converter();
-            string output = "";
+            ConversionResult output = null;
 
             using(FileStream fs = new FileStream("SampleShader.cs", FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fs))
                 {
-                    string csharp = reader.ReadToEnd();
-                    output = converter.Convert(csharp, ShaderLanguage.HLSL);
+                    Dictionary<string, string> input = new Dictionary<string, string>()
+                    {
+                        ["SampleShader"] = reader.ReadToEnd(),
+                    };
+                    output = converter.Convert(input, ShaderLanguage.HLSL);
                 }
             }
 
-            using (FileStream fs = new FileStream("SampleShader.hlsl", FileMode.Create, FileAccess.Write))
+            // Store the output to file so we can take a look at it ourselves.
+            if (output != null)
             {
-                using (StreamWriter writer = new StreamWriter(fs))
+                foreach (KeyValuePair<string, ConversionResult.Shader> kvp in output)
                 {
-                    writer.Write(output);
+                    using (FileStream fs = new FileStream($"{kvp.Key}.hlsl", FileMode.Create, FileAccess.Write))
+                    {
+                        using (StreamWriter writer = new StreamWriter(fs))
+                        {
+                            writer.Write(kvp.Value.SourceCode);
+                        }
+                    }
                 }
             }
 
