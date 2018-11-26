@@ -106,6 +106,22 @@ namespace SharpShader
         #endregion
 
         #region Instance members
+
+        /// <summary>
+        /// Converts the provided C# source code to the specified shader language.
+        /// </summary>
+        /// <param name="fileOrFriendlyName">The filename or friendly name to assign to the source code.</param>
+        /// <param name="cSharpSource">The C# source code to be converted.</param>
+        /// <param name="outputLanguage"></param>
+        /// <returns></returns>
+        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, ShaderLanguage outputLanguage)
+        {
+            return Convert(new Dictionary<string, string>()
+            {
+                [fileOrFriendlyName] = cSharpSource,
+            }, outputLanguage);
+        }
+
         /// <summary>
         /// Converts the provided C# source code to the specified shader language.
         /// </summary>
