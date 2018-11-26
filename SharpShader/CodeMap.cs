@@ -18,13 +18,21 @@ namespace SharpShader
 
         internal Dictionary<string, FieldDeclarationSyntax> Fields = new Dictionary<string, FieldDeclarationSyntax>();
 
-        internal List<MemberAccessExpressionSyntax> MemberAccess = new List<MemberAccessExpressionSyntax>();
-
         internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
 
         internal List<ShaderComponent> Components = new List<ShaderComponent>();
 
         internal Dictionary<string, StructDeclarationSyntax> ConstantBuffers = new Dictionary<string, StructDeclarationSyntax>();
+
+        internal void Clear()
+        {
+            EntryPoints.Clear();
+            Methods.Clear();
+            Fields.Clear();
+            Structures.Clear();
+            Components.Clear();
+            ConstantBuffers.Clear();
+        }
 
         internal void AddEntryPoint(EntryPoint ep)
         {
@@ -40,7 +48,6 @@ namespace SharpShader
 
         internal void AddMemberAccess(MemberAccessExpressionSyntax syntax)
         {
-            MemberAccess.Add(syntax);
             Components.Add(new ShaderComponent()
             {
                 Node = syntax,

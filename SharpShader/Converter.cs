@@ -119,7 +119,8 @@ namespace SharpShader
             return Convert(new Dictionary<string, string>()
             {
                 [fileOrFriendlyName] = cSharpSource,
-            }, outputLanguage);
+            }, 
+            outputLanguage);
         }
 
         /// <summary>
@@ -130,18 +131,17 @@ namespace SharpShader
         /// <returns></returns>
         public ConversionResult Convert(Dictionary<string, string> cSharpSources, ShaderLanguage outputLanguage)
         {
+            ShaderLexicon lex = ShaderLexicon.GetLexicon(outputLanguage);
+            ConversionContext context = new ConversionContext(lex);
             ConversionResult result = new ConversionResult();
-
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
+
             foreach(KeyValuePair<string,string> kvp in cSharpSources)
             {
                 Console.WriteLine($"Translating '{kvp.Key}'");
-
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
-                ShaderLexicon lex = ShaderLexicon.GetLexicon(outputLanguage);
-                ConversionContext context = new ConversionContext(lex);
                 context.RegenerateTree(kvp.Value);
 
                 Console.WriteLine("  Stage 1/3 (pre-process)...");
@@ -166,6 +166,8 @@ namespace SharpShader
 
                 ConversionResult.Shader shader = new ConversionResult.Shader(strResult);
                 result.Translated.Add(kvp.Key, shader);
+
+                context.Clear();
             }
 
             mainTimer.Stop();

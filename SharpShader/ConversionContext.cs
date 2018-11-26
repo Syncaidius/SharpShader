@@ -23,6 +23,14 @@ namespace SharpShader
         internal ConversionContext(ShaderLexicon lexicon)
         {
             Lexicon = lexicon;
+            Map = new CodeMap();
+        }
+
+        internal void Clear()
+        {
+            Tree = null;
+            Root = null;
+            Map.Clear();
         }
 
         internal void RegenerateTree(string source)
@@ -30,7 +38,6 @@ namespace SharpShader
             CSharpParseOptions parseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
             Tree = CSharpSyntaxTree.ParseText(source, parseOptions);
             Root = Tree.GetRoot();
-            Map = new CodeMap();
         }
 
         internal string GetNewVariableName(string prefix = null)
