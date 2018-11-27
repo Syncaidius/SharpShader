@@ -23,10 +23,6 @@ namespace SharpShader
                 string memberString = syntax.ToString().Substring(start + 1, len - 2);
                 source.Replace(syntax.ToString(), memberString, syntax.SpanStart, syntax.Span.Length);
             }
-            else
-            {
-                // TODO implement
-            }
         }
     }
 }

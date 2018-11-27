@@ -54,15 +54,11 @@ namespace SharpShader
                         if (packAttribute.ArgumentList.Arguments.Count == 2)
                         {
                             AttributeArgumentSyntax argComponent = packAttribute.ArgumentList.Arguments[1];
-
-                            if (Enum.TryParse(argComponent.ToString(), out PackOffsetComponent component))
-                            {
+                            string comName = argComponent.ToString();
+                            if (Enum.TryParse(comName, out PackOffsetComponent component))
                                 return $"{syntax.Declaration} : packoffset(c{register}.{component.ToString().ToLower()})";
-                            }
                             else
-                            {
-                                // TODO log incorrect pack offset component name.
-                            }
+                                context.CurrentShader.AddError($"Incorrect pack offset component name: {comName}", 0, 0);
                         }
 
                         return $"{syntax.Declaration} : packoffset(c{register})";
@@ -70,7 +66,7 @@ namespace SharpShader
                 }
                 else
                 {
-                    // TODO log output error here. PackOffsetAttribute does not take 0 arguments.
+                    context.CurrentShader.AddError($"Incorrect PackOffsetAttribute arguments. 1 or more expected arguments are missing.", 0, 0);
                 }
             }
 
@@ -89,16 +85,17 @@ namespace SharpShader
                         if (semanticAttribute.ArgumentList.Arguments.Count > 1)
                         {
                             AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
-                            if (int.TryParse(argSlot.ToString(), out slot))
+                            string strArgSlot = argSlot.ToString();
+                            if (int.TryParse(strArgSlot, out slot))
                             {
                                 if (slot > -1)
                                     return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
-
-                                // TODO log invalid value if < 0.
+                                else
+                                    context.CurrentShader.AddError($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
                             }
                             else
                             {
-                                // TODO log incorrect semantic slot value.
+                                context.CurrentShader.AddError($"Invalid SemanticAttribute slot value. Expected value greater than, or equal to 0. Got: {strArgSlot}", 0, 0);
                             }
                         }
 
@@ -106,12 +103,12 @@ namespace SharpShader
                     }
                     else
                     {
-                        // TODO log incorrect semantic name.
+                        context.CurrentShader.AddError($"Invalid semantic name: {strSemantic}", 0, 0);
                     }
                 }
                 else
                 {
-                    // TODO log output here here. SemanticAttribute always takes 2 arguments.
+                    context.CurrentShader.AddError($"Unexpected number of SemanticAttribute arguments ({semanticAttribute.ArgumentList.Arguments.Count}). Expected at least 1.", 0, 0);
                 }
             }
 
@@ -138,17 +135,18 @@ namespace SharpShader
                         // Second argument is always the semantic slot ID.
                         if (args.Count > 1)
                         {
-                            if (int.TryParse(args[1].ToString(), out int slot))
+                            string strSlot = args[1].ToString();
+                            if (int.TryParse(strSlot, out int slot))
                                 result += slot;
-
-                            // TODO log invalid slot ID in 'else' clause.
+                            else
+                                context.CurrentShader.AddError($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strSlot}", 0, 0);
                         }
 
                         return result;
                     }
                     else
                     {
-                        // TODO log invalid output semantic value.
+                        context.CurrentShader.AddError($"Invalid semantic name: {enumVal}", 0, 0);
                     }
                 }
             }

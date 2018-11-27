@@ -150,7 +150,6 @@ namespace SharpShader
 
             Intrinsic i = new Intrinsic();
             i.Name = attName.InnerText;
-            // TODO parse parameters
             intrinsicList.Add(i);
 
         }

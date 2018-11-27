@@ -17,6 +17,8 @@ namespace SharpShader
         internal SyntaxTree Tree { get; private set; }
         internal CodeMap Map { get; private set; }
         internal ShaderLexicon Lexicon { get; }
+        internal ConversionResult Result { get; }
+        internal ConversionResult.Shader CurrentShader { get; private set; }
 
         int _nextVariable = 0;
 
@@ -24,6 +26,13 @@ namespace SharpShader
         {
             Lexicon = lexicon;
             Map = new CodeMap();
+            Result = new ConversionResult();
+        }
+
+        internal void StartNewShader(string name)
+        {
+            CurrentShader = new ConversionResult.Shader();
+            Result.Translated.Add(name, CurrentShader);
         }
 
         internal void Clear()

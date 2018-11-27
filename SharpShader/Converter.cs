@@ -133,7 +133,6 @@ namespace SharpShader
         {
             ShaderLexicon lex = ShaderLexicon.GetLexicon(outputLanguage);
             ConversionContext context = new ConversionContext(lex);
-            ConversionResult result = new ConversionResult();
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
@@ -142,6 +141,7 @@ namespace SharpShader
                 Console.WriteLine($"Translating '{kvp.Key}'");
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
+                context.StartNewShader(kvp.Key);
                 context.RegenerateTree(kvp.Value);
 
                 Console.WriteLine("  Stage 1/3 (pre-process)...");
@@ -164,16 +164,13 @@ namespace SharpShader
                 timer.Stop();
                 Console.WriteLine($"  Finished '{kvp.Key}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
-                ConversionResult.Shader shader = new ConversionResult.Shader(strResult);
-                result.Translated.Add(kvp.Key, shader);
-
                 context.Clear();
             }
 
             mainTimer.Stop();
             Console.WriteLine($"  Converted {cSharpSources.Count} source(s) in {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
-            return result;
+            return context.Result;
         }
 
         private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
