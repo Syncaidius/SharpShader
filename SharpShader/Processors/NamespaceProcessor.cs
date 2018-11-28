@@ -25,7 +25,7 @@ namespace SharpShader
                 if (n == syntax.CloseBraceToken || n == syntax.OpenBraceToken)
                     continue;
 
-                childSource += $"{n.ToString()}{Environment.NewLine}";
+                childSource += $"{n.GetLeadingTrivia()}{n.ToString()}{n.GetTrailingTrivia()}{Environment.NewLine}";
 
                 if (n != last)
                     childSource += Environment.NewLine;

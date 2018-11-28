@@ -61,7 +61,7 @@ namespace SharpShaderSample
         {
             float r = 0f, g = 1.0f, b = 0b0000_01110, a = 1f;
             return new Vector4(r,g,b,a);
-        }
+        } // Ha just kidding!
 
         [VertexShader]
         public PixelInput VertexFunc(VertexInput input)

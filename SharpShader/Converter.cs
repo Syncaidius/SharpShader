@@ -81,7 +81,10 @@ namespace SharpShader
                 }
 
                 bool blockStarted = lines[i].StartsWith(BlockOpen);
-                bool blockEnded = lines[i].EndsWith(BlockClosed) || lines[i].EndsWith(BlockClosed + ";");
+                bool blockEnded = lines[i].EndsWith(BlockClosed) || 
+                    lines[i].EndsWith(BlockClosed + ";") || 
+                    lines[i].StartsWith(BlockClosed + "//") || 
+                    lines[i].StartsWith(BlockClosed + " //");
 
                 if (lines[i].StartsWith(BlockClosed) && blockEnded)
                     indent = Math.Max(indent - 1, 0);
@@ -159,11 +162,9 @@ namespace SharpShader
 
                 Console.WriteLine("  Stage 3/3 (post-process)...");
                 string strResult = PostProcess(context);
-
-                strResult = CorrectIndents(strResult);
+                context.CurrentShader.SourceCode = CorrectIndents(strResult);
                 timer.Stop();
                 Console.WriteLine($"  Finished '{kvp.Key}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
-
                 context.Clear();
             }
 
