@@ -39,5 +39,10 @@ namespace SharpShader
 
             return result.ToString();
         }
+
+        /// <summary>
+        /// Gets whether or not constant buffers are referred to as if they are instanced objects in their respective shader language.
+        /// </summary>
+        internal abstract bool InstancedConstantBuffers { get; }
     }
 }
