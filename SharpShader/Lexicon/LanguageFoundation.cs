@@ -111,7 +111,7 @@ namespace SharpShader
                 {
                     LanguageFoundation foundation = Activator.CreateInstance(typeof(T),
                         BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                        null, null, null) as LanguageFoundation;
+                        null, new object[] { language }, null) as LanguageFoundation;
 
                     foreach (XmlNode node in rootNode)
                     {
