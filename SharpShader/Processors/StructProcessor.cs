@@ -36,12 +36,12 @@ namespace SharpShader
                 if (argList.Count > 0)
                     int.TryParse(argList[0].ToString(), out slot);
 
-                string translated = context.Lexicon.Foundation.TranslateConstantBuffer(context, syntax, slot);
+                string translated = context.Foundation.Foundation.TranslateConstantBuffer(context, syntax, slot);
                 source.Replace(syntax.ToString(), translated);
             }
             else
             {
-                string translated = context.Lexicon.Foundation.TranslateStruct(context, syntax);
+                string translated = context.Foundation.Foundation.TranslateStruct(context, syntax);
                 source.Replace(syntax.ToString(), translated);
             }
         }

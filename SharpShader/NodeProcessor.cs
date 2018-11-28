@@ -35,7 +35,7 @@ namespace SharpShader
                 Type[] iTypes = t.GetInterfaces();
                 foreach (Type implemented in iTypes)
                 {
-                    ShaderLexicon.Word translation = context.Lexicon.GetWord(implemented);
+                    ShaderLexicon.Word translation = context.Foundation.GetWord(implemented);
                     if (translation != null)
                     {
                         string original = syntax.ToString();

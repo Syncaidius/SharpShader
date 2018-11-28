@@ -31,7 +31,7 @@ namespace SharpShader
 
         protected override void OnPostprocess(ConversionContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
-            if (!context.Lexicon.Foundation.InstancedConstantBuffers)
+            if (!context.Foundation.InstancedConstantBuffers)
             {
                 if (context.Map.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
                     source.Remove(syntax.SpanStart, syntax.Span.Length);

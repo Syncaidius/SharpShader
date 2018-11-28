@@ -12,6 +12,8 @@ namespace SharpShader
     {
         internal override bool InstancedConstantBuffers => false;
 
+        internal HlslFoundation(ShaderLanguage language) : base(language) { }
+
         internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot)
         {
             string strRegister = slot > -1 ? $" : register(b{slot}" : "";

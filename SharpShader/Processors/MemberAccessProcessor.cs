@@ -23,7 +23,7 @@ namespace SharpShader
         {
             if (context.Map.Fields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {
-                if (!context.Lexicon.Foundation.InstancedConstantBuffers)
+                if (!context.Foundation.Foundation.InstancedConstantBuffers)
                 {
                     if (context.Map.ConstantBuffers.ContainsKey(fieldSyntax.Declaration.Type.ToString()))
                         source.Remove(syntax.Expression.SpanStart, syntax.Expression.Span.Length + syntax.OperatorToken.Span.Length);

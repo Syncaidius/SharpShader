@@ -31,8 +31,8 @@ namespace SharpShader
             _mappers = new Dictionary<Type, NodeProcessor>();
             _postProcessors = new Dictionary<Type, NodeProcessor>();
 
-            ShaderLexicon.LoadeEmbeddedLexicon<HlslFoundation>("SharpShader.Lexicon.hlsl.xml");
-            ShaderLexicon.LoadeEmbeddedLexicon<GlslFoundation>("SharpShader.Lexicon.glsl.xml");
+            LanguageFoundation.LoadEmbedded<HlslFoundation>("SharpShader.Lexicon.hlsl.xml");
+            LanguageFoundation.LoadEmbedded<GlslFoundation>("SharpShader.Lexicon.glsl.xml");
 
             // Preprocessors
             IEnumerable<Type> types = FindOfType<NodeProcessor>();
@@ -134,8 +134,8 @@ namespace SharpShader
         /// <returns></returns>
         public ConversionResult Convert(Dictionary<string, string> cSharpSources, ShaderLanguage outputLanguage)
         {
-            ShaderLexicon lex = ShaderLexicon.GetLexicon(outputLanguage);
-            ConversionContext context = new ConversionContext(lex);
+            LanguageFoundation foundation = LanguageFoundation.Get(outputLanguage);
+            ConversionContext context = new ConversionContext(foundation);
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 

@@ -16,15 +16,15 @@ namespace SharpShader
         internal SyntaxNode Root { get; private set; }
         internal SyntaxTree Tree { get; private set; }
         internal CodeMap Map { get; private set; }
-        internal ShaderLexicon Lexicon { get; }
+        internal LanguageFoundation Foundation { get; }
         internal ConversionResult Result { get; }
         internal ConversionResult.Shader CurrentShader { get; private set; }
 
         int _nextVariable = 0;
 
-        internal ConversionContext(ShaderLexicon lexicon)
+        internal ConversionContext(LanguageFoundation foundatation)
         {
-            Lexicon = lexicon;
+            Foundation = foundatation;
             Map = new CodeMap();
             Result = new ConversionResult();
         }
