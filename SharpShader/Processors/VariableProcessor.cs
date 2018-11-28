@@ -41,7 +41,7 @@ namespace SharpShader
                 string initValue = syntax.Initializer.Value.ToString();
                 if (char.IsNumber(initValue[0]))
                 {
-                    string translated = context.Foundation.Foundation.TranslateNumber(context, initValue);
+                    string translated = context.Foundation.TranslateNumber(context, initValue);
                     source.Replace(initValue, translated, syntax.Initializer.SpanStart, syntax.Initializer.Span.Length);
                 }
             }
