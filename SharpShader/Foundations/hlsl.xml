@@ -96,7 +96,49 @@
   <Intrinsic name="min" />
   <Intrinsic name="modf" />
   <Intrinsic name="msad4" />
-  <Intrinsic name="mul" />
+  <Intrinsic name="mul">
+    <call>
+      <param type="System.Single" name="a"/>
+      <param type="System.Single" name="b"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="a"/>
+      <param type="System.Int32" name="b"/>
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param type="System.Single" name="a"/>
+      <param generic="T" name="b"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param type="System.Int32" name="a"/>
+      <param generic="T" name="b"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="a"/>
+      <param type="System.Single" name="b"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="a"/>
+      <param type="System.Int32" name="b"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="V1"/>
+      <generic type="SharpShader.IIntrinsicValue" name="V2"/>
+      <param generic="V1" name="a"/>
+      <param generic="V2" name="b"/>
+      <return generic="V1" />
+    </call>
+  </Intrinsic>
   <Intrinsic name="noise" />
   <Intrinsic name="normalize" />
   <Intrinsic name="pow" />

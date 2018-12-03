@@ -8,5 +8,11 @@ namespace SharpShader
 {
     public class ShaderIntrinsicAttribute : SharpShaderAttribute
     {
+        internal ShaderIntrinsicAttribute(ShaderLanguage language)
+        {
+            Language = language;
+        }
+
+        public ShaderLanguage Language { get; }
     }
 }

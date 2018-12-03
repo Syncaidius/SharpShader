@@ -195,10 +195,15 @@
     <Compile Include="CodeMap.cs" />
     <Compile Include="ConversionResult.cs" />
     <Compile Include="ConstantBufferStructure.cs" />
+    <Compile Include="CSharpShader.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharpShader.tt</DependentUpon>
+    </Compile>
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="Lexicon\GlslFoundation.cs" />
-    <Compile Include="Lexicon\HlslFoundation.cs" />
-    <Compile Include="Lexicon\LanguageFoundation.cs" />
+    <Compile Include="Foundations\GlslFoundation.cs" />
+    <Compile Include="Foundations\HlslFoundation.cs" />
+    <Compile Include="Foundations\LanguageFoundation.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="NodeProcessor.cs" />
@@ -219,7 +224,7 @@
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
     <Compile Include="ConversionContext.cs" />
-    <Compile Include="CSharpShader.cs" />
+    <Compile Include="CSharpShader.old.cs" />
     <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="ShaderLanguage.cs" />
     <Compile Include="Converter.cs" />
@@ -350,8 +355,12 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Lexicon\hlsl.xml" />
-    <EmbeddedResource Include="Lexicon\glsl.xml" />
+    <EmbeddedResource Include="Foundations\hlsl.xml" />
+    <EmbeddedResource Include="Foundations\glsl.xml" />
+    <Content Include="CSharpShader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpShader.cs</LastGenOutput>
+    </Content>
     <Content Include="Types\MultipleOutput.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MultipleOutput.cs</LastGenOutput>

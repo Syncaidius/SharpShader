@@ -31,8 +31,8 @@ namespace SharpShader
             _mappers = new Dictionary<Type, NodeProcessor>();
             _postProcessors = new Dictionary<Type, NodeProcessor>();
 
-            LanguageFoundation.LoadEmbedded<HlslFoundation>("SharpShader.Lexicon.hlsl.xml");
-            LanguageFoundation.LoadEmbedded<GlslFoundation>("SharpShader.Lexicon.glsl.xml");
+            LanguageFoundation.LoadEmbedded<HlslFoundation>("SharpShader.Foundations.hlsl.xml");
+            LanguageFoundation.LoadEmbedded<GlslFoundation>("SharpShader.Foundations.glsl.xml");
 
             // Preprocessors
             IEnumerable<Type> types = FindOfType<NodeProcessor>();
