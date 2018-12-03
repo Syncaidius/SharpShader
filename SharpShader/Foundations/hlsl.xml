@@ -15,9 +15,37 @@
     <Generic type="System.Double" to="double" />
     <Generic type="System.Boolean" to="bool" />
   </Word>
-  <Intrinsic name="abort" />
-  <Intrinsic name="abs" />
-  <Intrinsic name="acos" />
+  <Intrinsic name="abort">
+    <call>
+      <comment>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</comment>
+    </call>
+  </Intrinsic>
+  <Intrinsic name="abs">
+    <call>
+      <param type="System.Int32" name="x"/>
+      <return type="System.Int32"/>
+    </call>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+  <Intrinsic name="acos">
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
   <Intrinsic name="all" />
   <Intrinsic name="AllMemoryBarrier" />
   <Intrinsic name="AllMemoryBarrierWithGroupSync" />

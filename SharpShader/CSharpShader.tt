@@ -24,13 +24,18 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 
 		string strParams = "";
 		bool firstParam = true;
-		string genericString = "";
+		string strGeneric = "";
+		string strComment = "";
 		genericNames.Clear();
 
 		foreach(XmlNode paramNode in child)
 		{
 			switch(paramNode.Name)
 			{
+				case "comment":
+					strComment = paramNode.InnerText;
+					break;
+
 				case "param":
 					string strCurParam = "";
 					XmlAttribute attType = paramNode.Attributes["type"];
@@ -90,8 +95,8 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 						if(genericType != null || attGenericType.InnerText.StartsWith("SharpShader"))
 						{
 							string genericName = attGenericName.InnerText.Replace(" ", "_").ToUpper();
-							genericString += genericString.Length > 0 ? "=" : "";
-							genericString += $"{genericName}|{attGenericType.InnerText}";
+							strGeneric += strGeneric.Length > 0 ? "=" : "";
+							strGeneric += $"{genericName}|{attGenericType.InnerText}";
 							genericNames.Add(genericName);
 						}
 					}
@@ -100,7 +105,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 		}
 
 		List<string> languages = null;
-		strParams = $"{strParams}--{strReturn}--{genericString}";
+		strParams = $"{strParams}--{strReturn}--{strGeneric}";
 
 		if(!meta.TryGetValue(strParams, out languages))
 		{
@@ -108,7 +113,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 			meta.Add(strParams, languages);
 		}
 
-		languages.Add(language);
+		languages.Add($"{language}--{strComment}");
 		hasCall = true;
 	}
 
@@ -122,7 +127,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 			meta.Add("", languages);
 		}
 
-		languages.Add(language);
+		languages.Add($"{language}--");
 	}
 }
  
@@ -194,8 +199,8 @@ namespace SharpShader
 		Dictionary<string, List<string>> intrinsicMethods = entries[intrinsicName];
 		foreach(string strParams in intrinsicMethods.Keys)
 		{
-			// Parts = parameter string | return type | generic names and types (name|type)
 			string strReturnType = "void";
+			string strComment = "";
 			string strParameters = "";
 			string strGenerics = "";
 			string strGenericConstraints = "";
@@ -203,28 +208,36 @@ namespace SharpShader
 			string languageAttributes = "";
 
 			// Build attribute string
-			foreach(string language in languages)
+			foreach(string languageAndComment in languages)
 			{
+				string[] langParts = languageAndComment.Split(delims, StringSplitOptions.None);
+
 				if(languageAttributes.Length > 0)
 					languageAttributes += Environment.NewLine + "\t\t";
 
-				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
-			}
+				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{langParts[0]}, \"{nameParts[0]}\")]";
 
-			if(languageAttributes.Length > 0)
-				languageAttributes = Environment.NewLine + "\t\t" + languageAttributes;
+				if(langParts[1].Length > 0)
+				{
+					if(strComment.Length > 0)
+						strComment += "<para/>" + Environment.NewLine + "\t\t/// ";
+
+					strComment += $"{langParts[0]}: {langParts[1]}";
+				}
+			}
 
 			// Build parameter and generic strings.
 			if(!string.IsNullOrEmpty(strParams))
 			{
+				// Parts = parameter string | return type | generic names and types (name|type) | comment/summary
 				string[] paramParts = strParams.Split(delims, StringSplitOptions.None);
 				strParameters = paramParts[0];
-
-				if(paramParts.Length > 1)
-					strReturnType = string.IsNullOrEmpty(paramParts[1]) ? "void" : paramParts[1];
 				
 				if(paramParts[2].Length > 0)
-				{
+				{			
+					if(paramParts.Length > 1)
+						strReturnType = string.IsNullOrEmpty(paramParts[1]) ? "void" : paramParts[1];
+
 					string[] genericParts = paramParts[2].Split(genericDelims, StringSplitOptions.None);
 					foreach(string generic in genericParts)
 					{
@@ -250,6 +263,8 @@ namespace SharpShader
 			}
 		
 #>
+
+		/// <summary><#=(string.IsNullOrEmpty(strComment) ? "No summary." : strComment)#></summary>
 		<#=languageAttributes#>
 		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=(!string.IsNullOrEmpty(strReturnType) && strReturnType != "void" ? $"return default({strReturnType});" : "")#> }
 <#
