@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Lexicon>
   <Language>GLSL</Language>
-  <Words>
-    <Type t="SharpShader.IVector`1" intrinsic="true">
-      <Word generic="System.Int32" to="ivec" />
-      <Word generic="System.UInt32" to="uivec" /> <!--Does GLSL even support this type?-->
-      <Word generic="System.Single" to="vec" />
-      <Word generic="System.Double" to="dvec" />
-      <Word generic="System.Boolean" to="bvec" />
-    </Type>
-    <Type t="SharpShader.IMatrix`1" intrinsic="true" uniformSizeIsSingular="true">
-      <Word generic="System.Int32" to="imat" />
-      <Word generic="System.UInt32" to="uimat" />
-      <Word generic="System.Single" to="mat" />
-      <Word generic="System.Double" to="dmat" />
-      <Word generic="System.Boolean" to="bmat" />
-    </Type>
-  </Words>
+  <Word t="SharpShader.IVector`1" intrinsic="true">
+    <Generic type="System.Int32" to="ivec" />
+    <Generic type="System.UInt32" to="uivec" />
+    <Generic type="System.Single" to="vec" />
+    <Generic type="System.Double" to="dvec" />
+    <Generic type="System.Boolean" to="bvec" />
+  </Word>
+  <Word t="SharpShader.IMatrix`1" intrinsic="true"  uniformSizeIsSingular="false">
+    <Generic type="System.Int32" to="imat" />
+    <Generic type="System.UInt32" to="uimat" />
+    <Generic type="System.Single" to="mat" />
+    <Generic type="System.Double" to="dmat" />
+    <Generic type="System.Boolean" to="bmat" />
+  </Word>
+  <Intrinsic name="max" />
+  <Intrinsic name="min" />
 </Lexicon>

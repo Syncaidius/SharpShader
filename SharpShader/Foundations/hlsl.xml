@@ -37,13 +37,13 @@
   <Intrinsic name="cosh" />
   <Intrinsic name="countbits" />
   <Intrinsic name="cross" />
-  <Intrinsic name="D3DCOLORtoUBYTE4" />
+  <Intrinsic name="D3DCOLORtoUBYTE4" csharp="D3dColorToUByte4"/>
   <Intrinsic name="ddx" />
-  <Intrinsic name="ddx_coarse" />
-  <Intrinsic name="ddx_fine" />
+  <Intrinsic name="ddx_coarse" csharp="DdxCourse"/>
+  <Intrinsic name="ddx_fine" csharp="DdxFine"/>
   <Intrinsic name="ddy" />
-  <Intrinsic name="ddy_coarse" />
-  <Intrinsic name="ddy_fine" />
+  <Intrinsic name="ddy_coarse" csharp="DdyCourse" />
+  <Intrinsic name="ddy_fine" csharp="DdyFine"/>
   <Intrinsic name="degrees" />
   <Intrinsic name="determinant" />
   <Intrinsic name="DeviceMemoryBarrier" />
@@ -190,5 +190,5 @@
   <Intrinsic name="texCUBElod" />
   <Intrinsic name="texCUBEproj" />
   <Intrinsic name="transpose" />
-  <Intrinsic name="trunc" />
+  <Intrinsic name="trunc" csharp="Truncate"/>
 </Lexicon>

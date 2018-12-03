@@ -199,12 +199,26 @@ namespace SharpShader
 			string strParameters = "";
 			string strGenerics = "";
 			string strGenericConstraints = "";
+			List<string> languages = intrinsicMethods[strParams];
+			string languageAttributes = "";
 
+			// Build attribute string
+			foreach(string language in languages)
+			{
+				if(languageAttributes.Length > 0)
+					languageAttributes += Environment.NewLine + "\t\t";
+
+				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
+			}
+
+			if(languageAttributes.Length > 0)
+				languageAttributes = Environment.NewLine + "\t\t" + languageAttributes;
+
+			// Build parameter and generic strings.
 			if(!string.IsNullOrEmpty(strParams))
 			{
 				string[] paramParts = strParams.Split(delims, StringSplitOptions.None);
 				strParameters = paramParts[0];
-				List<string> languages = intrinsicMethods[strParams];
 
 				if(paramParts.Length > 1)
 					strReturnType = string.IsNullOrEmpty(paramParts[1]) ? "void" : paramParts[1];
@@ -225,7 +239,7 @@ namespace SharpShader
 						}
 						else
 						{
-					
+							// TODO implement
 						}
 					}
 
@@ -236,8 +250,8 @@ namespace SharpShader
 			}
 		
 #>
+		<#=languageAttributes#>
 		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=(!string.IsNullOrEmpty(strReturnType) && strReturnType != "void" ? $"return default({strReturnType});" : "")#> }
-
 <#
 		}
 	}
