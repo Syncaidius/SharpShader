@@ -10,49 +10,81 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abort")]
 		protected void Abort() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
 		protected void Abs(Int32 x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
 		protected void Abs(Single x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
 		protected T Abs<T>() where T : struct, IIntrinsicValue { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the arccosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "acos")]
 		protected void Acos(Single x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the arccosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "acos")]
 		protected T Acos<T>() where T : struct, IIntrinsicValue { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
-		protected void All() {  }
+		protected void All(Int32 x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
+		protected void All(Single x) {  }
+
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
+		protected void All(Boolean x) {  }
+
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
+		protected Boolean All<T>(T x) where T : struct, IIntrinsicValue { return default(Boolean); }
+
+		/// <summary>HLSL: Blocks execution of all threads in a group until all memory accesses have been completed.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "AllMemoryBarrier")]
 		protected void AllMemoryBarrier() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "AllMemoryBarrierWithGroupSync")]
 		protected void AllMemoryBarrierWithGroupSync() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
-		protected void Any() {  }
+		protected void Any(Int32 x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
+		protected void Any(Single x) {  }
+
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
+		protected void Any(Boolean x) {  }
+
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
+		protected Boolean Any<T>(T x) where T : struct, IIntrinsicValue { return default(Boolean); }
+
+		/// <summary>HLSL: Reinterprets a cast value (two 32-bit values) into a double.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asdouble")]
-		protected void Asdouble() {  }
+		protected void AsDouble(UInt32 lowBits, UInt32 highBits) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Interprets the bit pattern of x as a floating-point number.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asfloat")]
-		protected void Asfloat() {  }
+		protected void AsFloat(UInt32 x) {  }
+
+		/// <summary>HLSL: Interprets the bit pattern of x as a floating-point number.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "asfloat")]
+		protected void AsFloat(Int32 x) {  }
+
+		/// <summary>HLSL: Interprets the bit pattern of x as a floating-point number.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "asfloat")]
+		protected T AsFloat<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asin")]
