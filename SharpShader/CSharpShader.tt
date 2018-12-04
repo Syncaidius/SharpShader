@@ -227,7 +227,7 @@ namespace SharpShader
 				if(languageAttributes.Length > 0)
 					languageAttributes += Environment.NewLine + "\t\t";
 
-				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{language}\")]";
+				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
 			}
 
 			// Build comment string
