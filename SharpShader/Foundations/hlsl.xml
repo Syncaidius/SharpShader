@@ -17,24 +17,20 @@
   </Word>
   
   <Intrinsic name="abort">
-    <call>
-      <comment>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</comment>
-    </call>
+    <comment>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</comment>
   </Intrinsic>
   
   <Intrinsic name="abs">
+    <comment>Returns the absolute value of the specified value.</comment>
     <call>
-      <comment>Returns the absolute value of the specified value.</comment>
       <param type="System.Int32" name="x"/>
       <return type="System.Int32"/>
     </call>
     <call>
-      <comment>Returns the absolute value of the specified value.</comment>
       <param type="System.Single" name="x"/>
       <return type="System.Single"/>
     </call>
     <call>
-      <comment>Returns the absolute value of the specified value.</comment>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
       <param generic="T" />
       <return generic="T"/>
@@ -56,23 +52,20 @@
   </Intrinsic>
   
   <Intrinsic name="all">
-    <call>
-      <comment>Determines if all components of the specified value are non-zero.</comment>
+    <comment>Determines if all components of the specified value are non-zero.</comment>
+    <call>      
       <param type="System.Int32" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if all components of the specified value are non-zero.</comment>
       <param type="System.Single" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if all components of the specified value are non-zero.</comment>
       <param type="System.Boolean" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if all components of the specified value are non-zero.</comment>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
       <param generic="T" name ="x"/>
       <return type="System.Boolean"/>
@@ -80,35 +73,28 @@
   </Intrinsic>
   
   <Intrinsic name="AllMemoryBarrier">
-    <call>
-      <comment>Blocks execution of all threads in a group until all memory accesses have been completed.</comment>
-    </call>
+    <comment>Blocks execution of all threads in a group until all memory accesses have been completed.</comment>
   </Intrinsic>
 
   <Intrinsic name="AllMemoryBarrierWithGroupSync">
-    <call>
-      <comment>Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</comment>
-    </call>
+    <comment>Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</comment>
   </Intrinsic>
 
   <Intrinsic name="any">
-    <call>
-      <comment>Determines if any components of the specified value are non-zero.</comment>
+    <comment>Determines if any components of the specified value are non-zero.</comment>
+    <call>      
       <param type="System.Int32" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if any components of the specified value are non-zero.</comment>
       <param type="System.Single" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if any components of the specified value are non-zero.</comment>
       <param type="System.Boolean" name="x"/>
       <return type="System.Boolean"/>
     </call>
     <call>
-      <comment>Determines if any components of the specified value are non-zero.</comment>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
       <param generic="T" name="x"/>
       <return type="System.Boolean"/>
@@ -116,8 +102,8 @@
   </Intrinsic>
   
   <Intrinsic name="asdouble" csharp="AsDouble">
-    <call>
-      <comment>Reinterprets a cast value (two 32-bit values) into a double.</comment>
+    <comment>Reinterprets a cast value (two 32-bit values) into a double.</comment>
+    <call>      
       <param type="System.UInt32" name="lowBits"/>
       <param type="System.UInt32" name="highBits"/>
       <return type="System.Double" />
@@ -126,17 +112,14 @@
   
   <Intrinsic name="asfloat" csharp="AsFloat">
     <call>
-      <comment>Interprets the bit pattern of x as a floating-point number.</comment>
       <param type="System.UInt32" name="x"/>
       <return type="System.Single" />
     </call>
     <call>
-      <comment>Interprets the bit pattern of x as a floating-point number.</comment>
       <param type="System.Int32" name="x"/>
       <return type="System.Single" />
     </call>
     <call>
-      <comment>Interprets the bit pattern of x as a floating-point number.</comment>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
       <param generic="T" name="x"/>
       <return generic="T" />
