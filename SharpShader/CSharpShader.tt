@@ -9,12 +9,51 @@
 <#@ output extension=".cs" #>
 
 <# 
+string ParseParameterNodeType(XmlNode paramNode, out string type, out string name)
+{
+	string strCurParam = "";
+	name = "";
+	type = "";
+	XmlAttribute attType = paramNode.Attributes["type"];
+	XmlAttribute attGeneric = paramNode.Attributes["generic"];
+	XmlAttribute attName = paramNode.Attributes["name"];
+	if(attType != null)
+	{
+		Type paramType = Type.GetType(attType.InnerText);
+		if(paramType != null)
+		{
+			if(attName != null)
+			{
+				strCurParam = $"{paramType.Name} {attName.InnerText}";
+				type = paramType.Name;
+				name = attName.InnerText;
+			}
+		}
+	}else if(attGeneric != null)
+	{
+		if(attName != null)
+		{
+			strCurParam = $"{attGeneric.InnerText} {attName.InnerText}";
+			type = attGeneric.InnerText;
+			name = attName.InnerText;
+		}
+	}
+
+	return strCurParam;
+}
+
+string ParseParameterNode(XmlNode paramNode)
+{
+	string dummyType;
+	string dummyName;
+	return ParseParameterNodeType(paramNode, out dummyType, out dummyName);
+}
+
 // Indexed as parameters string -> list of "languages--return type""
 // Comments = Key-value pair of languages and comments.
 void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> comments)
 {
 	bool hasCall = false;
-	string strReturn = "void";
 	int genericID = 0;
 	List<string> genericNames = new List<string>();
 
@@ -30,6 +69,8 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 			continue;
 			 
 		string strParams = "";
+		string strReturn = "void";
+		string strReturnString = "";
 		bool firstParam = true;
 		string strGeneric = "";
 		genericNames.Clear();
@@ -39,24 +80,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 			switch(paramNode.Name)
 			{
 				case "param":
-					string strCurParam = "";
-					XmlAttribute attType = paramNode.Attributes["type"];
-					XmlAttribute attGeneric = paramNode.Attributes["generic"];
-					XmlAttribute attName = paramNode.Attributes["name"];
-					if(attType != null)
-					{
-						Type paramType = Type.GetType(attType.InnerText);
-						if(paramType != null)
-						{
-							if(attName != null)
-								strCurParam = $"{paramType.Name} {attName.InnerText}";
-						}
-					}else if(attGeneric != null)
-					{
-						if(attName != null)
-							strCurParam = $"{attGeneric.InnerText} {attName.InnerText}";
-					}
-
+					string strCurParam = ParseParameterNode(paramNode);
 					if(!string.IsNullOrEmpty(strCurParam))
 					{
 						if(!firstParam)
@@ -64,6 +88,23 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 
 						firstParam = false;
 						strParams += strCurParam;
+					}
+					break;
+
+				case "out":
+					string outType, outName;
+					string strOutParam = ParseParameterNodeType(paramNode, out outType, out outName);
+					if(!string.IsNullOrEmpty(strOutParam))
+					{
+						if(!firstParam)
+							strParams += ", ";
+
+						firstParam = false;
+						strParams += $"out {strOutParam}";
+						if(strReturnString.Length > 0)
+							strReturnString = $"{outName} = default({outType}); " + strReturnString;
+						else
+							strReturnString = $"{outName} = default({outType});";
 					}
 					break;
 
@@ -84,6 +125,14 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 					{
 						if(genericNames.Contains(attGenericReturnType.InnerText))
 							strReturn = attGenericReturnType.InnerText;
+					}
+
+					if(!string.IsNullOrEmpty(strReturn))
+					{
+						if(strReturnString.Length > 0)
+							strReturnString += " ";
+
+						strReturnString += $"return default({strReturn});";
 					}
 					break;
 
@@ -107,7 +156,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 		}
 
 		List<string> languages = null;
-		strParams = $"{strParams}--{strReturn}--{strGeneric}";
+		strParams = $"{strParams}--{strReturn}--{strGeneric}--{strReturnString}";
 
 		if(!meta.TryGetValue(strParams, out languages))
 		{
@@ -214,6 +263,7 @@ namespace SharpShader
 		foreach(string strParams in intrinsicMethods.Keys)
 		{
 			string strReturnType = "void";
+			string strReturnString = "";
 			string strComment = "";
 			string strParameters = "";
 			string strGenerics = "";
@@ -245,11 +295,15 @@ namespace SharpShader
 				// Parts = parameter string | return type | generic names and types (name|type) | comment/summary
 				string[] paramParts = strParams.Split(delims, StringSplitOptions.None);
 				strParameters = paramParts[0];
-				
+
+				if(paramParts.Length > 1)
+					strReturnType = string.IsNullOrEmpty(paramParts[1]) ? "void" : paramParts[1];
+
+				if(paramParts.Length > 3)
+					strReturnString = paramParts[3];
+
 				if(paramParts[2].Length > 0)
 				{			
-					if(paramParts.Length > 1)
-						strReturnType = string.IsNullOrEmpty(paramParts[1]) ? "void" : paramParts[1];
 
 					string[] genericParts = paramParts[2].Split(genericDelims, StringSplitOptions.None);
 					foreach(string generic in genericParts)
@@ -279,7 +333,7 @@ namespace SharpShader
 
 		/// <summary><#=(string.IsNullOrEmpty(strComment) ? "No summary." : strComment)#></summary>
 		<#=languageAttributes#>
-		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=(!string.IsNullOrEmpty(strReturnType) && strReturnType != "void" ? $"return default({strReturnType});" : "")#> }
+		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=strReturnString#> }
 <#
 		}
 	}

@@ -38,13 +38,12 @@
   </Intrinsic>
   
   <Intrinsic name="acos">
-    <call>
-      <comment>Returns the arccosine of the specified value.</comment>
+    <comment>Returns the arccosine of the specified value.</comment>
+    <call>      
       <param type="System.Single" name="x"/>
       <return type="System.Single"/>
     </call>
     <call>
-      <comment>Returns the arccosine of the specified value.</comment>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
       <param generic="T" />
       <return generic="T"/>
@@ -111,6 +110,7 @@
   </Intrinsic>
   
   <Intrinsic name="asfloat" csharp="AsFloat">
+    <comment>Interprets the bit pattern of x as a floating-point number.</comment>
     <call>
       <param type="System.UInt32" name="x"/>
       <return type="System.Single" />
@@ -126,11 +126,57 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="asin" />
-  
-  <Intrinsic name="asint" />
-  
-  <Intrinsic name="asuint" />
+  <Intrinsic name="asin" csharp="Asin">
+    <comment>Returns the arcsine of the specified value.</comment>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="asint" csharp="AsInt">
+    <comment>Interprets the bit pattern of x as an integer.</comment>
+    <call>
+      <param type="System.UInt32" name="x"/>
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="asuint" csharp="AsUInt">
+    <comment>Interprets the bit pattern of x as an unsigned integer, or reinterprets the bit pattern of a double as two unsigned 32-bit integers.</comment>
+    <call>
+      <param type="System.Int32" name="x"/>
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <param type="System.Double" name="x"/>
+      <out type="System.UInt32" name="lowBits"/>
+      <out type="System.UInt32" name="highBits"/>
+    </call>
+  </Intrinsic>
   
   <Intrinsic name="atan" />
   
