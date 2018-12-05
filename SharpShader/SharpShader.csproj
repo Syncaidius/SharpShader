@@ -193,6 +193,7 @@
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="CodeMap.cs" />
+    <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionResult.cs" />
     <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="CSharpShader.cs">
@@ -224,7 +225,6 @@
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
     <Compile Include="ConversionContext.cs" />
-    <Compile Include="CSharpShader.old.cs" />
     <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="ShaderLanguage.cs" />
     <Compile Include="Converter.cs" />

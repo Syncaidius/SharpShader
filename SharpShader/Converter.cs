@@ -57,7 +57,7 @@ namespace SharpShader
         /// <param name="input"></param>
         /// <param name="minIndent">The minimum level of indentation.</param>
         /// <returns></returns>
-        public static string CorrectIndents(string input)
+        private static string CorrectIndents(string input, ConversionFlags flags)
         {
             string[] lines = input.Trim().Split(_delimiters, StringSplitOptions.None);
             int indent = 0;
@@ -80,6 +80,7 @@ namespace SharpShader
                     continue;
                 }
 
+                // TODO improve this later. It's fugly!
                 bool blockStarted = lines[i].StartsWith(BlockOpen);
                 bool blockEnded = lines[i].EndsWith(BlockClosed) || 
                     lines[i].EndsWith(BlockClosed + ";") || 
@@ -89,7 +90,10 @@ namespace SharpShader
                 if (lines[i].StartsWith(BlockClosed) && blockEnded)
                     indent = Math.Max(indent - 1, 0);
 
-                lines[i] = new string('\t', indent) + lines[i];
+                if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
+                    lines[i] = "";
+                else
+                    lines[i] = new string('\t', indent) + lines[i];
 
                 if (blockStarted && !blockEnded)
                     indent++;
@@ -98,6 +102,25 @@ namespace SharpShader
             }
 
             return string.Join(Environment.NewLine, lines, 0, newLineCount);
+        }
+
+        private static string RemoveWhitespace(string input, ConversionFlags flags)
+        {
+            string[] lines = input.Trim().Split(_delimiters, StringSplitOptions.None);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                // TODO check if the output language supports comment blocks. If not, add a line break to the end of the comment.
+                lines[i] = lines[i].Trim();
+                if (lines[i].StartsWith("//"))
+                {
+                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
+                        lines[i] = "";
+                    else
+                        lines[i] = $"/* {lines[i]} */";
+                }
+            }
+
+            return string.Join("", lines);
         }
 
         private static IEnumerable<Type> FindOfType<T>() where T : class
@@ -115,15 +138,16 @@ namespace SharpShader
         /// </summary>
         /// <param name="fileOrFriendlyName">The filename or friendly name to assign to the source code.</param>
         /// <param name="cSharpSource">The C# source code to be converted.</param>
-        /// <param name="outputLanguage"></param>
+        /// <param name="outputLanguage">The output shader language.</param>
+        /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <returns></returns>
-        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, ShaderLanguage outputLanguage)
+        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, ShaderLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None)
         {
             return Convert(new Dictionary<string, string>()
             {
                 [fileOrFriendlyName] = cSharpSource,
             }, 
-            outputLanguage);
+            outputLanguage, flags);
         }
 
         /// <summary>
@@ -131,8 +155,9 @@ namespace SharpShader
         /// </summary>
         /// <param name="cSharpSources">A dictionary containing source code by file or friendly name.</param>
         /// <param name="outputLanguage">The language that the input source code should be translated to.</param>
+        /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <returns></returns>
-        public ConversionResult Convert(Dictionary<string, string> cSharpSources, ShaderLanguage outputLanguage)
+        public ConversionResult Convert(Dictionary<string, string> cSharpSources, ShaderLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None)
         {
             LanguageFoundation foundation = LanguageFoundation.Get(outputLanguage);
             ConversionContext context = new ConversionContext(foundation);
@@ -161,8 +186,24 @@ namespace SharpShader
                 Map(context, context.Root);
 
                 Console.WriteLine("  Stage 3/3 (post-process)...");
-                string strResult = PostProcess(context);
-                context.CurrentShader.SourceCode = CorrectIndents(strResult);
+                context.CurrentShader.SourceCode = PostProcess(context);
+
+                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
+                {
+                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
+                    {
+                        context.CurrentShader.SourceCode = RemoveWhitespace(context.CurrentShader.SourceCode, flags);
+                        Console.WriteLine("  Stripped whitespace");
+                    }
+                    else
+                    {
+                        context.CurrentShader.SourceCode = CorrectIndents(context.CurrentShader.SourceCode, flags);
+                        Console.WriteLine("  Corrected indentation");
+                    }
+                }
+                else
+                    Console.WriteLine($"  Skipped formatting step");
+
                 timer.Stop();
                 Console.WriteLine($"  Finished '{kvp.Key}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
                 context.Clear();
