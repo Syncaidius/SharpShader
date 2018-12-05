@@ -90,10 +90,13 @@ namespace SharpShader
                 if (lines[i].StartsWith(BlockClosed) && blockEnded)
                     indent = Math.Max(indent - 1, 0);
 
-                if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
-                    lines[i] = "";
-                else
-                    lines[i] = new string('\t', indent) + lines[i];
+
+                lines[i] = new string('\t', indent) + lines[i];
+                if (lines[i].StartsWith("//"))
+                {
+                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
+                        lines[i] = "";
+                }
 
                 if (blockStarted && !blockEnded)
                     indent++;
