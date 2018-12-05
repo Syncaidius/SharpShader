@@ -177,28 +177,152 @@
       <out type="System.UInt32" name="highBits"/>
     </call>
   </Intrinsic>
+
+  <Intrinsic name="atan">
+    <comment>Returns the arctangent of the specified value.</comment>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="atan2">
+    <comment>Returns the arctangent of two values (x,y).</comment>
+    <call>
+      <param type="System.Single" name="y"/>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Single" name="y"/>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ceil">
+    <comment>Returns the smallest integer value that is greater than or equal to the specified value.</comment>
+    <call>
+      <param type="System.Single" name ="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="CheckAccessFullyMapped">
+    <comment>Determines whether all values from a Sample, Gather, or Load operation accessed mapped tiles in a tiled resource.</comment>
+    <param type="System.UInt32" name="status" />
+    <return type="System.Boolean" />
+  </Intrinsic>
+
+  <Intrinsic name="clamp">
+    <comment>Clamps the specified value to the specified minimum and maximum range.</comment>
+    <call>
+      <param type="System.Single" name="x"/>
+      <param type="System.Single" name="min" />
+      <param type="System.Single" name="max" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="x"/>
+      <param type="System.Int32" name="min" />
+      <param type="System.Int32" name="max" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x"/>
+      <param generic="T" name="min" />
+      <param generic="T" name="max" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="clip">
+    <comment>Discards the current pixel if the specified value is less than zero.</comment>
+    <call>
+      <param type="System.Single" name="x" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="cos">
+    <comment>Returns the cosine of the specified value.</comment>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="cosh" csharp="CosH">
+    <comment>Returns the hyperbolic cosine of the specified value.</comment>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="countbits" csharp="CountBits">
+    <comment>Counts the number of bits (per component) in the input integer.</comment>
+    <call>
+      <param type="System.UInt32" name="x"/>
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt2" name="x"/>
+      <return type="SharpShader.UInt2" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt3" name="x"/>
+      <return type="SharpShader.UInt3" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt4" name="x"/>
+      <return type="SharpShader.UInt4" />
+    </call>
+  </Intrinsic>
   
-  <Intrinsic name="atan" />
-  
-  <Intrinsic name="atan2" />
-  
-  <Intrinsic name="ceil" />
-  
-  <Intrinsic name="CheckAccessFullyMapped" />
-  <Intrinsic name="clamp" />
-  <Intrinsic name="clip" />
-  <Intrinsic name="cos" />
-  <Intrinsic name="cosh" />
-  <Intrinsic name="countbits" />
   <Intrinsic name="cross" />
+  
   <Intrinsic name="D3DCOLORtoUBYTE4" csharp="D3dColorToUByte4"/>
+  
   <Intrinsic name="ddx" />
+  
   <Intrinsic name="ddx_coarse" csharp="DdxCourse"/>
+  
   <Intrinsic name="ddx_fine" csharp="DdxFine"/>
+  
   <Intrinsic name="ddy" />
+  
   <Intrinsic name="ddy_coarse" csharp="DdyCourse" />
+  
   <Intrinsic name="ddy_fine" csharp="DdyFine"/>
+  
   <Intrinsic name="degrees" />
+  
   <Intrinsic name="determinant" />
   <Intrinsic name="DeviceMemoryBarrier" />
   <Intrinsic name="DeviceMemoryBarrierWithGroupSync" />

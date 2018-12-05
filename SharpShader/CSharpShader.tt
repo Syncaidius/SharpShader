@@ -17,21 +17,26 @@ string ParseParameterNodeType(XmlNode paramNode, out string type, out string nam
 	XmlAttribute attType = paramNode.Attributes["type"];
 	XmlAttribute attGeneric = paramNode.Attributes["generic"];
 	XmlAttribute attName = paramNode.Attributes["name"];
-	if(attType != null)
+
+	if(attName != null)
 	{
-		Type paramType = Type.GetType(attType.InnerText);
-		if(paramType != null)
+		if(attType != null)
 		{
-			if(attName != null)
+			Type paramType = Type.GetType(attType.InnerText);
+			if(paramType != null)
 			{
 				strCurParam = $"{paramType.Name} {attName.InnerText}";
 				type = paramType.Name;
 				name = attName.InnerText;
 			}
+			else if(attType.InnerText.StartsWith("SharpShader"))
+			{
+				type = attType.InnerText.Replace("SharpShader.", "");
+				strCurParam = $"{type} {attName.InnerText}";
+				name = attName.InnerText;
+			}
 		}
-	}else if(attGeneric != null)
-	{
-		if(attName != null)
+		else if(attGeneric != null)
 		{
 			strCurParam = $"{attGeneric.InnerText} {attName.InnerText}";
 			type = attGeneric.InnerText;
@@ -54,7 +59,6 @@ string ParseParameterNode(XmlNode paramNode)
 void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> comments)
 {
 	bool hasCall = false;
-	int genericID = 0;
 	List<string> genericNames = new List<string>();
 
 	foreach(XmlNode child in node)
@@ -120,6 +124,10 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 							if(attReturnType != null)
 								strReturn = returnType.Name;
 						}
+						else if(attReturnType.InnerText.StartsWith("SharpShader"))
+						{
+							strReturn = attReturnType.InnerText.Replace("SharpShader.", "");
+						}
 					}
 					else if(attGenericReturnType != null)
 					{
@@ -182,7 +190,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 	}
 }
  
-// Indexed as intrinsic "name--csharpName" -> parameters string -> list of "languages--return type""
+
 void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>> nodes, Dictionary<string, Dictionary<string, string>> comments)
 {
 	string absolutePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(this.Host.TemplateFile), fn));

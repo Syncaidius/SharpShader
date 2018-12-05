@@ -122,41 +122,85 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asuint")]
 		protected void AsUInt(Double x, out UInt32 lowBits, out UInt32 highBits) { highBits = default(UInt32); lowBits = default(UInt32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the arctangent of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan")]
-		protected void Atan() {  }
+		protected Single Atan(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the arctangent of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan")]
+		protected T Atan<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Returns the arctangent of two values (x,y).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan2")]
-		protected void Atan2() {  }
+		protected Single Atan2(Single y, Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the arctangent of two values (x,y).</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan2")]
+		protected T Atan2<T>(Single y, T x) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Returns the smallest integer value that is greater than or equal to the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ceil")]
-		protected void Ceil() {  }
+		protected Single Ceil(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the smallest integer value that is greater than or equal to the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ceil")]
+		protected T Ceil<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Determines whether all values from a Sample, Gather, or Load operation accessed mapped tiles in a tiled resource.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "CheckAccessFullyMapped")]
 		protected void CheckAccessFullyMapped() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Clamps the specified value to the specified minimum and maximum range.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "clamp")]
-		protected void Clamp() {  }
+		protected Single Clamp(Single x, Single min, Single max) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Clamps the specified value to the specified minimum and maximum range.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "clamp")]
+		protected Int32 Clamp(Int32 x, Int32 min, Int32 max) { return default(Int32); }
+
+		/// <summary>HLSL: Clamps the specified value to the specified minimum and maximum range.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "clamp")]
+		protected T Clamp<T>(T x, T min, T max) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Discards the current pixel if the specified value is less than zero.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "clip")]
-		protected void Clip() {  }
+		protected void Clip(Single x) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Discards the current pixel if the specified value is less than zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "clip")]
+		protected void Clip<T>(T x) where T : struct, IIntrinsicValue {  }
+
+		/// <summary>HLSL: Returns the cosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cos")]
-		protected void Cos() {  }
+		protected Single Cos(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the cosine of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "cos")]
+		protected T Cos<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Returns the hyperbolic cosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cosh")]
-		protected void Cosh() {  }
+		protected Single CosH(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the hyperbolic cosine of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "cosh")]
+		protected T CosH<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+
+		/// <summary>HLSL: Counts the number of bits (per component) in the input integer.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
-		protected void Countbits() {  }
+		protected UInt32 CountBits(UInt32 x) { return default(UInt32); }
+
+		/// <summary>HLSL: Counts the number of bits (per component) in the input integer.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
+		protected UInt2 CountBits(UInt2 x) { return default(UInt2); }
+
+		/// <summary>HLSL: Counts the number of bits (per component) in the input integer.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
+		protected UInt3 CountBits(UInt3 x) { return default(UInt3); }
+
+		/// <summary>HLSL: Counts the number of bits (per component) in the input integer.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
+		protected UInt4 CountBits(UInt4 x) { return default(UInt4); }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cross")]
