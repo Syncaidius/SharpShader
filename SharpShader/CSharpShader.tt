@@ -9,6 +9,22 @@
 <#@ output extension=".cs" #>
 
 <# 
+string ParseTypeName(string input)
+{
+	Type paramType = Type.GetType(input);
+	if(paramType != null)
+	{
+		return paramType.Name;
+	}
+	else if(input.StartsWith("SharpShader"))
+	{
+		input = input.Replace("[", "<").Replace("]", ">");
+		return input.Replace("SharpShader.", "");
+	}
+
+	return null;
+}
+
 string ParseParameterNodeType(XmlNode paramNode, out string type, out string name)
 {
 	string strCurParam = "";
@@ -22,18 +38,12 @@ string ParseParameterNodeType(XmlNode paramNode, out string type, out string nam
 	{
 		if(attType != null)
 		{
-			Type paramType = Type.GetType(attType.InnerText);
-			if(paramType != null)
+			string typeName = ParseTypeName(attType.InnerText);
+			if(typeName != null)
 			{
-				strCurParam = $"{paramType.Name} {attName.InnerText}";
-				type = paramType.Name;
+				type = typeName;
 				name = attName.InnerText;
-			}
-			else if(attType.InnerText.StartsWith("SharpShader"))
-			{
-				type = attType.InnerText.Replace("SharpShader.", "");
-				strCurParam = $"{type} {attName.InnerText}";
-				name = attName.InnerText;
+				strCurParam = $"{type} {name}";
 			}
 		}
 		else if(attGeneric != null)
@@ -118,16 +128,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 
 					if(attReturnType != null)
 					{
-						Type returnType = Type.GetType(attReturnType.InnerText);
-						if(returnType != null)
-						{
-							if(attReturnType != null)
-								strReturn = returnType.Name;
-						}
-						else if(attReturnType.InnerText.StartsWith("SharpShader"))
-						{
-							strReturn = attReturnType.InnerText.Replace("SharpShader.", "");
-						}
+						strReturn = ParseTypeName(attReturnType.InnerText) ?? "";
 					}
 					else if(attGenericReturnType != null)
 					{
@@ -150,12 +151,12 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 
 					if(attGenericType != null && attGenericName != null)
 					{
-						Type genericType = Type.GetType(attGenericType.InnerText);
-						if(genericType != null || attGenericType.InnerText.StartsWith("SharpShader"))
+						string genericTypeName = ParseTypeName(attGenericType.InnerText);
+						if(genericTypeName != null)
 						{
 							string genericName = attGenericName.InnerText.Replace(" ", "_").ToUpper();
 							strGeneric += strGeneric.Length > 0 ? "=" : "";
-							strGeneric += $"{genericName}|{attGenericType.InnerText}";
+							strGeneric += $"{genericName}|{genericTypeName}";
 							genericNames.Add(genericName);
 						}
 					}
@@ -319,16 +320,8 @@ namespace SharpShader
 						string[] nameAndType = generic.Split(genericDataDelims, StringSplitOptions.None);
 						strGenerics += strGenerics.Length > 0 ? ", " : "";
 						strGenerics += nameAndType[0];
-
-						if(nameAndType[1].StartsWith("SharpShader"))
-						{
-							strGenericConstraints += strGenericConstraints.Length > 0 ? " " : "";
-							strGenericConstraints += $"where {nameAndType[0]} : struct, {nameAndType[1].Replace("SharpShader.", "")}";
-						}
-						else
-						{
-							// TODO implement
-						}
+						strGenericConstraints += strGenericConstraints.Length > 0 ? " " : "";
+						strGenericConstraints += $"where {nameAndType[0]} : struct, {nameAndType[1].Replace("SharpShader.", "")}";
 					}
 
 					strGenerics = strGenerics.Length > 0 ? $"<{strGenerics}>" : "";

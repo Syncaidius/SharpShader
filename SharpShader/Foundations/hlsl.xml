@@ -44,7 +44,7 @@
       <return type="System.Single"/>
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
       <param generic="T" />
       <return generic="T"/>
     </call>
@@ -133,7 +133,7 @@
       <return type="System.Single"/>
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
       <param generic="T" />
       <return generic="T"/>
     </call>
@@ -185,7 +185,7 @@
       <return type="System.Single" />
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
       <param generic="T" name="x"/>
       <return generic="T" />
     </call>
@@ -200,7 +200,7 @@
     </call>
     <call>
       <param type="System.Single" name="y"/>
-      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
       <param generic="T" name="x"/>
       <return generic="T" />
     </call>
@@ -213,7 +213,7 @@
       <return type="System.Single" />
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
       <param generic="T" name="x"/>
       <return generic="T" />
     </call>
@@ -266,7 +266,7 @@
       <return type="System.Single" />
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
       <param generic="T" name="x" />
       <return generic="T" />
     </call>
@@ -279,7 +279,7 @@
       <return type="System.Single" />
     </call>
     <call>
-      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
       <param generic="T" name="x" />
       <return generic="T" />
     </call>

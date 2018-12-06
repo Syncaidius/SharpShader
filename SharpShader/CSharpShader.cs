@@ -28,7 +28,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the arccosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "acos")]
-		protected T Acos<T>() where T : struct, IIntrinsicValue { return default(T); }
+		protected T Acos<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
@@ -92,7 +92,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the arcsine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asin")]
-		protected T Asin<T>() where T : struct, IIntrinsicValue { return default(T); }
+		protected T Asin<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Interprets the bit pattern of x as an integer.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asint")]
@@ -128,7 +128,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the arctangent of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan")]
-		protected T Atan<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+		protected T Atan<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Returns the arctangent of two values (x,y).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan2")]
@@ -136,7 +136,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the arctangent of two values (x,y).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan2")]
-		protected T Atan2<T>(Single y, T x) where T : struct, IIntrinsicValue { return default(T); }
+		protected T Atan2<T>(Single y, T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Returns the smallest integer value that is greater than or equal to the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ceil")]
@@ -144,7 +144,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the smallest integer value that is greater than or equal to the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ceil")]
-		protected T Ceil<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+		protected T Ceil<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Determines whether all values from a Sample, Gather, or Load operation accessed mapped tiles in a tiled resource.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "CheckAccessFullyMapped")]
@@ -176,7 +176,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the cosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cos")]
-		protected T Cos<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+		protected T Cos<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Returns the hyperbolic cosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cosh")]
@@ -184,7 +184,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Returns the hyperbolic cosine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cosh")]
-		protected T CosH<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
+		protected T CosH<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Counts the number of bits (per component) in the input integer.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
