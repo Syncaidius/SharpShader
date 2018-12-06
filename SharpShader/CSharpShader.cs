@@ -202,41 +202,101 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "countbits")]
 		protected UInt4 CountBits(UInt4 x) { return default(UInt4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the cross product of two floating-point, 3D vectors.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "cross")]
-		protected void Cross() {  }
+		protected T Cross<T>(T x, T y) where T : struct, IVector<Single> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL:  Converts a floating-point, 4D vector set by a D3DCOLOR to a UBYTE4 (a UInt32). I can be used to swizzle and scale components of the x parameter. Use this function to compensate for the lack of UBYTE4 support in some hardware.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "D3DCOLORtoUBYTE4")]
-		protected void D3dColorToUByte4() {  }
+		protected UInt32 D3dColorToUByte4<T>(T x) where T : struct, IVector<Single> { return default(UInt32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the partial derivative of the specified value with respect to the screen-space x-coordinate. This function is only supported in pixel shaders.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx")]
-		protected void Ddx() {  }
+		protected Single Ddx(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the partial derivative of the specified value with respect to the screen-space x-coordinate. This function is only supported in pixel shaders.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx")]
+		protected T Ddx<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space x-coordinate.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_coarse")]
-		protected void DdxCourse() {  }
+		protected Single DdxCourse(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_coarse")]
+		protected Vector2 DdxCourse(Vector2 value) { return default(Vector2); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_coarse")]
+		protected Vector3 DdxCourse(Vector3 value) { return default(Vector3); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_coarse")]
+		protected Vector4 DdxCourse(Vector4 value) { return default(Vector4); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space x-coordinate.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_fine")]
-		protected void DdxFine() {  }
+		protected Single DdxFine(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_fine")]
+		protected Vector2 DdxFine(Vector2 value) { return default(Vector2); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_fine")]
+		protected Vector3 DdxFine(Vector3 value) { return default(Vector3); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space x-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddx_fine")]
+		protected Vector4 DdxFine(Vector4 value) { return default(Vector4); }
+
+		/// <summary>HLSL: Returns the partial derivative of the specified value with respect to the screen-space y-coordinate. This function is only supported in pixel shaders.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy")]
-		protected void Ddy() {  }
+		protected Single Ddy(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the partial derivative of the specified value with respect to the screen-space y-coordinate. This function is only supported in pixel shaders.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy")]
+		protected T Ddy<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space y-coordinate.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_coarse")]
-		protected void DdyCourse() {  }
+		protected Single DdyCourse(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_coarse")]
+		protected Vector2 DdyCourse(Vector2 value) { return default(Vector2); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_coarse")]
+		protected Vector3 DdyCourse(Vector3 value) { return default(Vector3); }
+
+		/// <summary>HLSL: Computes a low precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_coarse")]
+		protected Vector4 DdyCourse(Vector4 value) { return default(Vector4); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space y-coordinate.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_fine")]
-		protected void DdyFine() {  }
+		protected Single DdyFine(Single value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_fine")]
+		protected Vector2 DdyFine(Vector2 value) { return default(Vector2); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_fine")]
+		protected Vector3 DdyFine(Vector3 value) { return default(Vector3); }
+
+		/// <summary>HLSL: Computes a high precision partial derivative with respect to the screen-space y-coordinate.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "ddy_fine")]
+		protected Vector4 DdyFine(Vector4 value) { return default(Vector4); }
+
+		/// <summary>HLSL: Converts the specified value from radians to degrees.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "degrees")]
-		protected void Degrees() {  }
+		protected Single Degrees(Single x) { return default(Single); }
+
+		/// <summary>HLSL: Converts the specified value from radians to degrees.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "degrees")]
+		protected T Degrees<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "determinant")]

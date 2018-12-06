@@ -304,24 +304,144 @@
       <return type="SharpShader.UInt4" />
     </call>
   </Intrinsic>
-  
-  <Intrinsic name="cross" />
-  
-  <Intrinsic name="D3DCOLORtoUBYTE4" csharp="D3dColorToUByte4"/>
-  
-  <Intrinsic name="ddx" />
-  
-  <Intrinsic name="ddx_coarse" csharp="DdxCourse"/>
-  
-  <Intrinsic name="ddx_fine" csharp="DdxFine"/>
-  
-  <Intrinsic name="ddy" />
-  
-  <Intrinsic name="ddy_coarse" csharp="DdyCourse" />
-  
-  <Intrinsic name="ddy_fine" csharp="DdyFine"/>
-  
-  <Intrinsic name="degrees" />
+
+  <Intrinsic name="cross">
+    <comment>Returns the cross product of two floating-point, 3D vectors.</comment>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="D3DCOLORtoUBYTE4" csharp="D3dColorToUByte4">
+    <comment> Converts a floating-point, 4D vector set by a D3DCOLOR to a UBYTE4 (a UInt32). I can be used to swizzle and scale components of the x parameter. Use this function to compensate for the lack of UBYTE4 support in some hardware.</comment>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x"/>
+      <return type="System.UInt32" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddx">
+    <comment>Returns the partial derivative of the specified value with respect to the screen-space x-coordinate. This function is only supported in pixel shaders.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name ="T"/>
+      <param generic="T" name ="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddx_coarse" csharp="DdxCourse">
+    <comment>Computes a low precision partial derivative with respect to the screen-space x-coordinate.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector2" name ="value" />
+      <return type="SharpShader.Vector2" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector3" name ="value" />
+      <return type="SharpShader.Vector3" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector4" name ="value" />
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddx_fine" csharp="DdxFine">
+    <comment>Computes a high precision partial derivative with respect to the screen-space x-coordinate.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector2" name ="value" />
+      <return type="SharpShader.Vector2" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector3" name ="value" />
+      <return type="SharpShader.Vector3" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector4" name ="value" />
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddy">
+    <comment>Returns the partial derivative of the specified value with respect to the screen-space y-coordinate. This function is only supported in pixel shaders.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name ="T"/>
+      <param generic="T" name ="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddy_coarse" csharp="DdyCourse">
+    <comment>Computes a low precision partial derivative with respect to the screen-space y-coordinate.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector2" name ="value" />
+      <return type="SharpShader.Vector2" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector3" name ="value" />
+      <return type="SharpShader.Vector3" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector4" name ="value" />
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ddy_fine" csharp="DdyFine">
+    <comment>Computes a high precision partial derivative with respect to the screen-space y-coordinate.</comment>
+    <call>
+      <param type="System.Single" name ="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector2" name ="value" />
+      <return type="SharpShader.Vector2" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector3" name ="value" />
+      <return type="SharpShader.Vector3" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector4" name ="value" />
+      <return type="SharpShader.Vector4" />
+    </call> 
+  </Intrinsic>
+
+  <Intrinsic name="degrees">
+    <comment>Converts the specified value from radians to degrees.</comment>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
   
   <Intrinsic name="determinant" />
   <Intrinsic name="DeviceMemoryBarrier" />
