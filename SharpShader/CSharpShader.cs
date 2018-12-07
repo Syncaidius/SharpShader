@@ -330,7 +330,7 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "dot")]
 		protected Int32 Dot(Int4 x, Int4 y) { return default(Int32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Calculates a distance vector. This intrinsic function provides the same functionality as the Vertex Shader instruction dst.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "dst")]
 		protected T Dst<T>(T x, T y) where T : struct, IVector<Single> { return default(T); }
 
@@ -338,105 +338,221 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "errorf")]
 		protected void Errorf(String format, params Object[] args) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Evaluates at the pixel centroid. TODO: NOT IMPLEMENTED.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "EvaluateAttributeAtCentroid")]
 		protected void EvaluateAttributeAtCentroid() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Evaluates at the indexed sample location. TODO: NOT IMPLEMENTED.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "EvaluateAttributeAtSample")]
 		protected void EvaluateAttributeAtSample() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Evaluates at the pixel centroid with an offset. TODO: NOT IMPLEMENTED.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "EvaluateAttributeSnapped")]
 		protected void EvaluateAttributeSnapped() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the base-e exponential, or ex, of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "exp")]
-		protected void Exp() {  }
+		protected Single Exp(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the base-e exponential, or ex, of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "exp")]
+		protected T Exp<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the base 2 exponential, or 2x, of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "exp2")]
-		protected void Exp2() {  }
+		protected Single Exp2(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the base 2 exponential, or 2x, of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "exp2")]
+		protected T Exp2<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Converts the float16 stored in the low-half of the uint to a float.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "f16tof32")]
-		protected void F16tof32() {  }
+		protected Single F16tof32(UInt32 value) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Converts the float16 stored in the low-half of the uint to a float.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f16tof32")]
+		protected Vector2 F16tof32(UInt2 value) { return default(Vector2); }
+
+		/// <summary>HLSL: Converts the float16 stored in the low-half of the uint to a float.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f16tof32")]
+		protected Vector3 F16tof32(UInt3 value) { return default(Vector3); }
+
+		/// <summary>HLSL: Converts the float16 stored in the low-half of the uint to a float.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f16tof32")]
+		protected Vector4 F16tof32(UInt4 value) { return default(Vector4); }
+
+		/// <summary>HLSL: Converts an input into a float16 type.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "f32tof16")]
-		protected void F32tof16() {  }
+		protected UInt32 F32tof16(Single value) { return default(UInt32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Converts an input into a float16 type.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f32tof16")]
+		protected UInt2 F32tof16(Vector2 value) { return default(UInt2); }
+
+		/// <summary>HLSL: Converts an input into a float16 type.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f32tof16")]
+		protected UInt3 F32tof16(Vector3 value) { return default(UInt3); }
+
+		/// <summary>HLSL: Converts an input into a float16 type.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "f32tof16")]
+		protected UInt4 F32tof16(Vector4 value) { return default(UInt4); }
+
+		/// <summary>HLSL: Flips the surface-normal (if needed) to face in a direction opposite to i; returns the result in n.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "faceforward")]
-		protected void Faceforward() {  }
+		protected T Faceforward<T>(T n, T i, T ng) where T : struct, IVector<float> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
-		protected void Firstbithigh() {  }
+		protected Int32 Firstbithigh(Int32 value) { return default(Int32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
+		protected UInt32 Firstbithigh() { return default(UInt32); }
+
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
+		protected T Firstbithigh<T>(T value) where T : struct, IVector<Int32> { return default(T); }
+
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
+		protected UInt2 Firstbithigh(UInt2 value) { return default(UInt2); }
+
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
+		protected UInt3 Firstbithigh(UInt3 value) { return default(UInt3); }
+
+		/// <summary>HLSL: Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbithigh")]
+		protected UInt4 Firstbithigh(UInt4 value) { return default(UInt4); }
+
+		/// <summary>HLSL: Returns the location of the first set bit starting from the lowest order bit and working upward, per component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbitlow")]
-		protected void Firstbitlow() {  }
+		protected Int32 Firstbitlow(Int32 value) { return default(Int32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the location of the first set bit starting from the lowest order bit and working upward, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "firstbitlow")]
+		protected T Firstbitlow<T>(T value) where T : struct, IVector<UInt32> { return default(T); }
+
+		/// <summary>HLSL: Returns the largest integer value that is lesss than or equal to the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "floor")]
-		protected void Floor() {  }
+		protected Single Floor(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the largest integer value that is lesss than or equal to the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "floor")]
+		protected T Floor<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the double-precision fused multiply-addition of a * b + c.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "fma")]
-		protected void Fma() {  }
+		protected Double Fma(Double a, Double b, Double c) { return default(Double); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the double-precision fused multiply-addition of a * b + c.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "fma")]
+		protected T Fma<T>(T b, T c) where T : struct, IIntrinsicValue<Double> { return default(T); }
+
+		/// <summary>HLSL: Returns the floating-point remainder of x/y.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "fmod")]
-		protected void Fmod() {  }
+		protected Single Fmod(Single x, Single y) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the floating-point remainder of x/y.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "fmod")]
+		protected T Fmod<T>(T x, T y) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the fractional (or decimal) part of x; which is greater than or equal to 0 and less than 1.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "frac")]
-		protected void Frac() {  }
+		protected Single Frac(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the fractional (or decimal) part of x; which is greater than or equal to 0 and less than 1.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "frac")]
+		protected T Frac<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the mantissa and exponent of the specified floating-point value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "frexp")]
-		protected void Frexp() {  }
+		protected Single Frexp(Single x, Single exp) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the mantissa and exponent of the specified floating-point value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "frexp")]
+		protected T Frexp<T>(T x, T exp) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the absolute value of the partial derivatives of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "fwidth")]
-		protected void Fwidth() {  }
+		protected Single Fwidth(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the absolute value of the partial derivatives of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "fwidth")]
+		protected T Fwidth<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Gets the number of samples for a render target.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "GetRenderTargetSampleCount")]
-		protected void GetRenderTargetSampleCount() {  }
+		protected UInt32 GetRenderTargetSampleCount() { return default(UInt32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Gets the sampling position (x,y) for a given sample index.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "GetRenderTargetSamplePosition")]
-		protected void GetRenderTargetSamplePosition() {  }
+		protected Int2 GetRenderTargetSamplePosition() { return default(Int2); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Blocks execution of all threads in a group until all group shared accesses have been completed.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "GroupMemoryBarrier")]
 		protected void GroupMemoryBarrier() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Blocks execution of all threads in a group until all group shared accesses have been completed and all threads in the group have reached this call.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "GroupMemoryBarrierWithSync")]
 		protected void GroupMemoryBarrierWithSync() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Performs a guaranteed atomic add of value to the dest resource variable.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAdd")]
-		protected void InterlockedAdd() {  }
+		protected void InterlockedAdd(Int32 dest, Int32 value) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Performs a guaranteed atomic add of value to the dest resource variable.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAdd")]
+		protected void InterlockedAdd(Int32 dest, Int32 value, out Int32 original_value) { original_value = default(Int32); }
+
+		/// <summary>HLSL: Performs a guaranteed atomic add of value to the dest resource variable.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAdd")]
+		protected void InterlockedAdd(UInt32 dest, UInt32 value) {  }
+
+		/// <summary>HLSL: Performs a guaranteed atomic add of value to the dest resource variable.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAdd")]
+		protected void InterlockedAdd(UInt32 dest, UInt32 value, out UInt32 original_value) { original_value = default(UInt32); }
+
+		/// <summary>HLSL: Performs a guaranteed atomic and.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAnd")]
-		protected void InterlockedAnd() {  }
+		protected void InterlockedAnd(Int32 dest, Int32 value) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Performs a guaranteed atomic and.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAnd")]
+		protected void InterlockedAnd(Int32 dest, Int32 value, out Int32 original_value) { original_value = default(Int32); }
+
+		/// <summary>HLSL: Performs a guaranteed atomic and.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAnd")]
+		protected void InterlockedAnd(UInt32 dest, UInt32 value) {  }
+
+		/// <summary>HLSL: Performs a guaranteed atomic and.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedAnd")]
+		protected void InterlockedAnd(UInt32 dest, UInt32 value, out UInt32 original_value) { original_value = default(UInt32); }
+
+		/// <summary>HLSL: Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedCompareExchange")]
-		protected void InterlockedCompareExchange() {  }
+		protected void InterlockedCompareExchange(Int32 dest, Int32 compare_value, Int32 value, out Int32 original_value) { original_value = default(Int32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedCompareExchange")]
+		protected void InterlockedCompareExchange(UInt32 dest, UInt32 compare_value, UInt32 value, out UInt32 original_value) { original_value = default(UInt32); }
+
+		/// <summary>HLSL: Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedCompareStore")]
-		protected void InterlockedCompareStore() {  }
+		protected void InterlockedCompareStore(Int32 dest, Int32 compare_value, Int32 value) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedCompareStore")]
+		protected void InterlockedCompareStore(UInt32 dest, UInt32 compare_value, UInt32 value) {  }
+
+		/// <summary>HLSL: Assigns value to dest and returns the original value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedExchange")]
-		protected void InterlockedExchange() {  }
+		protected void InterlockedExchange(Int32 dest, Int32 value, out Int32 original_value) { original_value = default(Int32); }
+
+		/// <summary>HLSL: Assigns value to dest and returns the original value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedExchange")]
+		protected void InterlockedExchange(UInt32 dest, UInt32 value, out UInt32 original_value) { original_value = default(UInt32); }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "InterlockedMax")]

@@ -79,17 +79,17 @@ string ParseParameterNode(XmlNode paramNode)
 }
 
 // Indexed as parameters string -> list of "languages--return type""
-// Comments = Key-value pair of languages and comments.
-void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> comments)
+// Summaries = Key-value pair of languages and summaries.
+void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> summaries)
 {
 	bool hasCall = false;
 	List<string> genericNames = new List<string>();
 
 	foreach(XmlNode child in node)
 	{
-		if(child.Name == "comment")
+		if(child.Name == "summary")
 		{
-			comments[language] = child.InnerText;
+			summaries[language] = child.InnerText;
 			continue;
 		}
 
@@ -206,7 +206,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 }
  
 
-void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>> nodes, Dictionary<string, Dictionary<string, string>> comments)
+void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>> nodes, Dictionary<string, Dictionary<string, string>> summaries)
 {
 	string absolutePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(this.Host.TemplateFile), fn));
 	using(FileStream stream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read))
@@ -235,24 +235,24 @@ void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>
 							string strCSharpName = attCSharpName != null ? attCSharpName.InnerText.Replace(" ", "") : (char.ToUpper(attName.InnerText[0]) + attName.InnerText.Substring(1));
 							string nameKey = $"{attName.InnerText}--{strCSharpName}";
 
-							// If the node dictionary doesn't have the intrinsic's name, the comments dictionary will not either.
+							// If the node dictionary doesn't have the intrinsic's name, the summaries dictionary will not either.
 							Dictionary<string, List<string>> intrinsicMeta = null;
-							Dictionary<string, string> commentsByLanguage = null;
+							Dictionary<string, string> summariesByLanguage = null;
 							if(!nodes.TryGetValue(nameKey, out intrinsicMeta))
 							{
 								// Indexed as intrinsic name -> parameters string -> list of languages
 								intrinsicMeta = new Dictionary<string, List<string>>();
 								nodes.Add(nameKey, intrinsicMeta);
 
-								commentsByLanguage = new Dictionary<string, string>();
-								comments.Add(nameKey, commentsByLanguage);
+								summariesByLanguage = new Dictionary<string, string>();
+								summaries.Add(nameKey, summariesByLanguage);
 							}
 							else 
 							{
-								commentsByLanguage = comments[nameKey];							
+								summariesByLanguage = summaries[nameKey];							
 							}
 							
-							ParseIntrinsic(node, strCSharpName, langNode.InnerText, intrinsicMeta, commentsByLanguage);
+							ParseIntrinsic(node, strCSharpName, langNode.InnerText, intrinsicMeta, summariesByLanguage);
 						}
 					}
 				}
@@ -269,9 +269,9 @@ namespace SharpShader
 	{
 <#
 	Dictionary<string, Dictionary<string, List<string>>> entries = new Dictionary<string, Dictionary<string, List<string>>>();
-	Dictionary<string, Dictionary<string, string>> intrinsicComments = new Dictionary<string, Dictionary<string, string>>();
-	ParseLexicon("Foundations/hlsl.xml", entries, intrinsicComments);
-	ParseLexicon("Foundations/glsl.xml", entries, intrinsicComments);
+	Dictionary<string, Dictionary<string, string>> intrinsicSummaries = new Dictionary<string, Dictionary<string, string>>();
+	ParseLexicon("Foundations/hlsl.xml", entries, intrinsicSummaries);
+	ParseLexicon("Foundations/glsl.xml", entries, intrinsicSummaries);
 	string[] delims = {"--"};
 	string[] genericDelims = {"="};
 	string[] genericDataDelims = {"|"};
@@ -281,7 +281,7 @@ namespace SharpShader
 		// Name part 0 = shader language intrinsic name. Name part 1 = C# name for method.
 		string[] nameParts = intrinsicName.Split(delims, StringSplitOptions.None);
 		Dictionary<string, List<string>> intrinsicMethods = entries[intrinsicName];
-		Dictionary<string, string> commentsByLanguage = intrinsicComments[intrinsicName];
+		Dictionary<string, string> summariesByLanguage = intrinsicSummaries[intrinsicName];
 
 		foreach(string strParams in intrinsicMethods.Keys)
 		{
@@ -304,12 +304,12 @@ namespace SharpShader
 			}
 
 			// Build comment string
-			foreach(string language in commentsByLanguage.Keys)
+			foreach(string language in summariesByLanguage.Keys)
 			{
 				if(strComment.Length > 0)
 					strComment += "<para/>" + Environment.NewLine + "\t\t/// ";
 
-				strComment += $"{language}: {commentsByLanguage[language]}";
+				strComment += $"{language}: {summariesByLanguage[language]}";
 			}
 
 			// Build parameter and generic strings.

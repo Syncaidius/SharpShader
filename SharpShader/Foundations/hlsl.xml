@@ -17,11 +17,11 @@
   </Word>
   
   <Intrinsic name="abort">
-    <comment>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</comment>
+    <summary>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</summary>
   </Intrinsic>
   
   <Intrinsic name="abs">
-    <comment>Returns the absolute value of the specified value.</comment>
+    <summary>Returns the absolute value of the specified value.</summary>
     <call>
       <param type="System.Int32" name="x"/>
       <return type="System.Int32"/>
@@ -38,7 +38,7 @@
   </Intrinsic>
   
   <Intrinsic name="acos">
-    <comment>Returns the arccosine of the specified value.</comment>
+    <summary>Returns the arccosine of the specified value.</summary>
     <call>      
       <param type="System.Single" name="x"/>
       <return type="System.Single"/>
@@ -51,7 +51,7 @@
   </Intrinsic>
   
   <Intrinsic name="all">
-    <comment>Determines if all components of the specified value are non-zero.</comment>
+    <summary>Determines if all components of the specified value are non-zero.</summary>
     <call>      
       <param type="System.Int32" name="x"/>
       <return type="System.Boolean"/>
@@ -72,15 +72,15 @@
   </Intrinsic>
   
   <Intrinsic name="AllMemoryBarrier">
-    <comment>Blocks execution of all threads in a group until all memory accesses have been completed.</comment>
+    <summary>Blocks execution of all threads in a group until all memory accesses have been completed.</summary>
   </Intrinsic>
 
   <Intrinsic name="AllMemoryBarrierWithGroupSync">
-    <comment>Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</comment>
+    <summary>Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</summary>
   </Intrinsic>
 
   <Intrinsic name="any">
-    <comment>Determines if any components of the specified value are non-zero.</comment>
+    <summary>Determines if any components of the specified value are non-zero.</summary>
     <call>      
       <param type="System.Int32" name="x"/>
       <return type="System.Boolean"/>
@@ -101,7 +101,7 @@
   </Intrinsic>
   
   <Intrinsic name="asdouble" csharp="AsDouble">
-    <comment>Reinterprets a cast value (two 32-bit values) into a double.</comment>
+    <summary>Reinterprets a cast value (two 32-bit values) into a double.</summary>
     <call>      
       <param type="System.UInt32" name="lowBits"/>
       <param type="System.UInt32" name="highBits"/>
@@ -110,7 +110,7 @@
   </Intrinsic>
   
   <Intrinsic name="asfloat" csharp="AsFloat">
-    <comment>Interprets the bit pattern of x as a floating-point number.</comment>
+    <summary>Interprets the bit pattern of x as a floating-point number.</summary>
     <call>
       <param type="System.UInt32" name="x"/>
       <return type="System.Single" />
@@ -127,7 +127,7 @@
   </Intrinsic>
 
   <Intrinsic name="asin" csharp="Asin">
-    <comment>Returns the arcsine of the specified value.</comment>
+    <summary>Returns the arcsine of the specified value.</summary>
     <call>
       <param type="System.Single" name="x"/>
       <return type="System.Single"/>
@@ -140,7 +140,7 @@
   </Intrinsic>
 
   <Intrinsic name="asint" csharp="AsInt">
-    <comment>Interprets the bit pattern of x as an integer.</comment>
+    <summary>Interprets the bit pattern of x as an integer.</summary>
     <call>
       <param type="System.UInt32" name="x"/>
       <return type="System.Int32" />
@@ -157,7 +157,7 @@
   </Intrinsic>
 
   <Intrinsic name="asuint" csharp="AsUInt">
-    <comment>Interprets the bit pattern of x as an unsigned integer, or reinterprets the bit pattern of a double as two unsigned 32-bit integers.</comment>
+    <summary>Interprets the bit pattern of x as an unsigned integer, or reinterprets the bit pattern of a double as two unsigned 32-bit integers.</summary>
     <call>
       <param type="System.Int32" name="x"/>
       <return type="System.UInt32" />
@@ -179,7 +179,7 @@
   </Intrinsic>
 
   <Intrinsic name="atan">
-    <comment>Returns the arctangent of the specified value.</comment>
+    <summary>Returns the arctangent of the specified value.</summary>
     <call>
       <param type="System.Single" name="x"/>
       <return type="System.Single" />
@@ -192,7 +192,7 @@
   </Intrinsic>
 
   <Intrinsic name="atan2">
-    <comment>Returns the arctangent of two values (x,y).</comment>
+    <summary>Returns the arctangent of two values (x,y).</summary>
     <call>
       <param type="System.Single" name="y"/>
       <param type="System.Single" name="x"/>
@@ -207,7 +207,7 @@
   </Intrinsic>
 
   <Intrinsic name="ceil">
-    <comment>Returns the smallest integer value that is greater than or equal to the specified value.</comment>
+    <summary>Returns the smallest integer value that is greater than or equal to the specified value.</summary>
     <call>
       <param type="System.Single" name ="x"/>
       <return type="System.Single" />
@@ -220,13 +220,13 @@
   </Intrinsic>
 
   <Intrinsic name="CheckAccessFullyMapped">
-    <comment>Determines whether all values from a Sample, Gather, or Load operation accessed mapped tiles in a tiled resource.</comment>
+    <summary>Determines whether all values from a Sample, Gather, or Load operation accessed mapped tiles in a tiled resource.</summary>
     <param type="System.UInt32" name="status" />
     <return type="System.Boolean" />
   </Intrinsic>
 
   <Intrinsic name="clamp">
-    <comment>Clamps the specified value to the specified minimum and maximum range.</comment>
+    <summary>Clamps the specified value to the specified minimum and maximum range.</summary>
     <call>
       <param type="System.Single" name="x"/>
       <param type="System.Single" name="min" />
@@ -249,7 +249,7 @@
   </Intrinsic>
 
   <Intrinsic name="clip">
-    <comment>Discards the current pixel if the specified value is less than zero.</comment>
+    <summary>Discards the current pixel if the specified value is less than zero.</summary>
     <call>
       <param type="System.Single" name="x" />
     </call>
@@ -260,7 +260,7 @@
   </Intrinsic>
 
   <Intrinsic name="cos">
-    <comment>Returns the cosine of the specified value.</comment>
+    <summary>Returns the cosine of the specified value.</summary>
     <call>
       <param type="System.Single" name="x"/>
       <return type="System.Single" />
@@ -273,7 +273,7 @@
   </Intrinsic>
 
   <Intrinsic name="cosh" csharp="CosH">
-    <comment>Returns the hyperbolic cosine of the specified value.</comment>
+    <summary>Returns the hyperbolic cosine of the specified value.</summary>
     <call>
       <param type="System.Single" name="x"/>
       <return type="System.Single" />
@@ -286,7 +286,7 @@
   </Intrinsic>
 
   <Intrinsic name="countbits" csharp="CountBits">
-    <comment>Counts the number of bits (per component) in the input integer.</comment>
+    <summary>Counts the number of bits (per component) in the input integer.</summary>
     <call>
       <param type="System.UInt32" name="x"/>
       <return type="System.UInt32" />
@@ -306,7 +306,7 @@
   </Intrinsic>
 
   <Intrinsic name="cross">
-    <comment>Returns the cross product of two floating-point, 3D vectors.</comment>
+    <summary>Returns the cross product of two floating-point, 3D vectors.</summary>
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x" />
@@ -316,7 +316,7 @@
   </Intrinsic>
 
   <Intrinsic name="D3DCOLORtoUBYTE4" csharp="D3dColorToUByte4">
-    <comment> Converts a floating-point, 4D vector set by a D3DCOLOR to a UBYTE4 (a UInt32). I can be used to swizzle and scale components of the x parameter. Use this function to compensate for the lack of UBYTE4 support in some hardware.</comment>
+    <summary> Converts a floating-point, 4D vector set by a D3DCOLOR to a UBYTE4 (a UInt32). I can be used to swizzle and scale components of the x parameter. Use this function to compensate for the lack of UBYTE4 support in some hardware.</summary>
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x"/>
@@ -325,7 +325,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddx">
-    <comment>Returns the partial derivative of the specified value with respect to the screen-space x-coordinate. This function is only supported in pixel shaders.</comment>
+    <summary>Returns the partial derivative of the specified value with respect to the screen-space x-coordinate. This function is only supported in pixel shaders.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -338,7 +338,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddx_coarse" csharp="DdxCourse">
-    <comment>Computes a low precision partial derivative with respect to the screen-space x-coordinate.</comment>
+    <summary>Computes a low precision partial derivative with respect to the screen-space x-coordinate.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -358,7 +358,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddx_fine" csharp="DdxFine">
-    <comment>Computes a high precision partial derivative with respect to the screen-space x-coordinate.</comment>
+    <summary>Computes a high precision partial derivative with respect to the screen-space x-coordinate.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -378,7 +378,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddy">
-    <comment>Returns the partial derivative of the specified value with respect to the screen-space y-coordinate. This function is only supported in pixel shaders.</comment>
+    <summary>Returns the partial derivative of the specified value with respect to the screen-space y-coordinate. This function is only supported in pixel shaders.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -391,7 +391,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddy_coarse" csharp="DdyCourse">
-    <comment>Computes a low precision partial derivative with respect to the screen-space y-coordinate.</comment>
+    <summary>Computes a low precision partial derivative with respect to the screen-space y-coordinate.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -411,7 +411,7 @@
   </Intrinsic>
 
   <Intrinsic name="ddy_fine" csharp="DdyFine">
-    <comment>Computes a high precision partial derivative with respect to the screen-space y-coordinate.</comment>
+    <summary>Computes a high precision partial derivative with respect to the screen-space y-coordinate.</summary>
     <call>
       <param type="System.Single" name ="value" />
       <return type="System.Single" />
@@ -431,7 +431,7 @@
   </Intrinsic>
 
   <Intrinsic name="degrees">
-    <comment>Converts the specified value from radians to degrees.</comment>
+    <summary>Converts the specified value from radians to degrees.</summary>
     <call>
       <param type="System.Single" name="x" />
       <return type="System.Single" />
@@ -444,7 +444,7 @@
   </Intrinsic>
 
   <Intrinsic name="determinant">
-    <comment>Returns the determinant of the specified floating-point, square matrix.</comment>
+    <summary>Returns the determinant of the specified floating-point, square matrix.</summary>
     <call>
       <generic type="SharpShader.IMatrix[Single]" name="T" />
       <param generic="T" name="m"/>
@@ -453,15 +453,15 @@
   </Intrinsic>
 
   <Intrinsic name="DeviceMemoryBarrier">
-    <comment>Blocks execution of all threads in a group until all device memory accesses have been completed.</comment>
+    <summary>Blocks execution of all threads in a group until all device memory accesses have been completed.</summary>
   </Intrinsic>
 
   <Intrinsic name="DeviceMemoryBarrierWithGroupSync">
-    <comment>Blocks execution of all threads in a group until all device memory accesses have been completed and all threads in the group have reached this call.</comment>
+    <summary>Blocks execution of all threads in a group until all device memory accesses have been completed and all threads in the group have reached this call.</summary>
   </Intrinsic>
 
   <Intrinsic name="distance">
-    <comment>Returns a distance scalar between two vectors.</comment>
+    <summary>Returns a distance scalar between two vectors.</summary>
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x" />
@@ -471,7 +471,7 @@
   </Intrinsic>
 
   <Intrinsic name="dot">
-    <comment>Returns the dot product of two vectors.</comment>
+    <summary>Returns the dot product of two vectors.</summary>
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x" />
@@ -496,7 +496,7 @@
   </Intrinsic>
 
   <Intrinsic name="dst">
-    <comments>Calculates a distance vector. This intrinsic function provides the same functionality as the Vertex Shader instruction dst.</comments>
+    <summary>Calculates a distance vector. This intrinsic function provides the same functionality as the Vertex Shader instruction dst.</summary>
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x" />
@@ -506,48 +506,366 @@
   </Intrinsic>
 
   <Intrinsic name="errorf">
-    <comment>Submits an error message to the information queue.</comment>
+    <summary>Submits an error message to the information queue.</summary>
     <remarks>This operation does nothing on devices that do not support it.</remarks>
     <call>
       <param type="System.String" name="format" />
       <param type="System.Object" name="args" params="true" />
     </call>
   </Intrinsic>
+
+  <Intrinsic name="EvaluateAttributeAtCentroid">
+    <summary>Evaluates at the pixel centroid. TODO: NOT IMPLEMENTED.</summary>
+  </Intrinsic>
+
+  <Intrinsic name="EvaluateAttributeAtSample">
+    <summary>Evaluates at the indexed sample location. TODO: NOT IMPLEMENTED.</summary>
+  </Intrinsic>
+
+  <Intrinsic name="EvaluateAttributeSnapped">
+    <summary>Evaluates at the pixel centroid with an offset. TODO: NOT IMPLEMENTED.</summary>
+  </Intrinsic>
+
+  <Intrinsic name="exp">
+    <summary>Returns the base-e exponential, or ex, of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="exp2">
+    <summary>Returns the base 2 exponential, or 2x, of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="f16tof32">
+    <summary>Converts the float16 stored in the low-half of the uint to a float.</summary>
+    <call>
+      <param type="System.UInt32" name="value" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt2" name="value" />
+      <return type="SharpShader.Vector2" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt3" name="value" />
+      <return type="SharpShader.Vector3" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt4" name="value" />
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="f32tof16">
+    <summary>Converts an input into a float16 type.</summary>
+    <call>
+      <param type="System.Single" name="value" />
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector2" name="value" />
+      <return type="SharpShader.UInt2" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector3" name="value" />
+      <return type="SharpShader.UInt3" />
+    </call>
+    <call>
+      <param type="SharpShader.Vector4" name="value" />
+      <return type="SharpShader.UInt4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="faceforward">
+    <summary>Flips the surface-normal (if needed) to face in a direction opposite to i; returns the result in n.</summary>
+    <call>
+      <generic type="SharpShader.IVector[float]" name="T" />
+      <param generic="T" name="n" />
+      <param generic="T" name="i" />
+      <param generic="T" name="ng" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="firstbithigh">
+    <summary>Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
+    <call>
+      <param type="System.Int32" name="value" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <param type="SystemU.UInt32" name="value" />
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IVector[Int32]" name="T" />
+      <param generic="T" name="value" />
+      <return generic="T" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt2" name="value" />
+      <return type="SharpShader.UInt2" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt3" name="value" />
+      <return type="SharpShader.UInt3" />
+    </call>
+    <call>
+      <param type="SharpShader.UInt4" name="value" />
+      <return type="SharpShader.UInt4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="firstbitlow">
+    <summary>Returns the location of the first set bit starting from the lowest order bit and working upward, per component.</summary>
+    <call>
+      <param type="System.Int32" name="value" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IVector[UInt32]" name="T" />
+      <param generic="T" name="value" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="floor">
+    <summary>Returns the largest integer value that is lesss than or equal to the specified value.</summary>
+    <call>
+      <param type="System.Single" name ="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="fma">
+    <summary>Returns the double-precision fused multiply-addition of a * b + c.</summary>
+    <remarks>The fma intrinsic must support NaNs, INFs, and Denorms.</remarks>
+    <call>
+      <param type="System.Double" name="a" />
+      <param type="System.Double" name="b" />
+      <param type="System.Double" name="c" />
+      <return type="System.Double" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Double]" name="T" />
+      <param generic="T" name="b" />
+      <param generic="T" name="c" />
+      <return generic="T"  />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="fmod">
+    <summary>Returns the floating-point remainder of x/y.</summary>
+    <remarks>The floating-point remainder is calculated such that x = i * y + f, where i is an integer, f has the same sign as x, and the absolute value of f is less than the absolute value of y.</remarks>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="y" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return generic="T"  />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="frac">
+    <summary>Returns the fractional (or decimal) part of x; which is greater than or equal to 0 and less than 1.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T"  />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="frexp">
+    <summary>Returns the mantissa and exponent of the specified floating-point value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="exp" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="exp" />
+      <return generic="T"  />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="fwidth">
+    <summary>Returns the absolute value of the partial derivatives of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T"  />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="GetRenderTargetSampleCount">
+    <summary>Gets the number of samples for a render target.</summary>
+    <call>
+      <return type="System.UInt32" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="GetRenderTargetSamplePosition">
+    <summary>Gets the sampling position (x,y) for a given sample index.</summary>
+    <call>
+      <param type="System.Int32" />
+      <return type="SharpShader.Int2" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="GroupMemoryBarrier">
+    <summary>Blocks execution of all threads in a group until all group shared accesses have been completed.</summary>
+  </Intrinsic>
+
+  <Intrinsic name="GroupMemoryBarrierWithSync">
+    <summary>Blocks execution of all threads in a group until all group shared accesses have been completed and all threads in the group have reached this call.</summary>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedAdd">
+    <summary>Performs a guaranteed atomic add of value to the dest resource variable.</summary>
+    <remarks>This operation can only be performed on int or uint typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs an atomic add of value to the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs an atomic add of value to the resource location referenced by dest. The overloaded function has an additional output variable which will be set to the original value of dest. This overloaded operation is only available when R is readable and writable.</remarks>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedAnd">
+    <summary>Performs a guaranteed atomic and.</summary>
+    <remarks>This operation can only be performed on int or uint typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs an atomic and of value to the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs an atomic and of value to the resource location referenced by dest. The overloaded function has an additional output variable which will be set to the original value of dest. This overloaded operation is only available when R is readable and writable.</remarks>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedCompareExchange">
+    <summary>Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
+    <remarks>Atomically compares the value referenced by dest with compare_value, stores value in the location referenced by dest if the values match, returns the original value of dest in original_value. This operation can only be performed on int or uint typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs the operation on the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs the operation on the resource location referenced by dest. This operation is only available when R is readable and writable.</remarks>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="compare_value" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="compare_value" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedCompareStore">
+    <summary>Atomically compares the destination with the comparison value. If they are identical, the destination is overwritten with the input value. The original value is set to the destination's original value. Note: If you call InterlockedCompareExchange in a for or while compute shader loop, to properly compile, you must use the [allow_uav_condition] attribute on that loop.</summary>
+    <remarks>Atomically compares the value referenced by dest with compare_value and stores value in the location referenced by dest if the values match. This operation can only be performed on int or uint typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs the operation on the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs the operation on the resource location referenced by dest.</remarks> 
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="compare_value" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="compare_value" />
+      <param type="System.UInt32" name="value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedExchange">
+    <summary>Assigns value to dest and returns the original value.</summary>
+    <remarks>This operation can only be performed on scalar-typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs the operation on the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs the operation on the resource location referenced by dest. This operation is only available when R is readable and writable.</remarks>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
   
-  <Intrinsic name="EvaluateAttributeAtCentroid" />
-  <Intrinsic name="EvaluateAttributeAtSample" />
-  <Intrinsic name="EvaluateAttributeSnapped" />
-  <Intrinsic name="exp" />
-  <Intrinsic name="exp2" />
-  <Intrinsic name="f16tof32" />
-  <Intrinsic name="f32tof16" />
-  <Intrinsic name="faceforward" />
-  <Intrinsic name="firstbithigh" />
-  <Intrinsic name="firstbitlow" />
-  <Intrinsic name="floor" />
-  <Intrinsic name="fma" />
-  <Intrinsic name="fmod" />
-  <Intrinsic name="frac" />
-  <Intrinsic name="frexp" />
-  <Intrinsic name="fwidth" />
-  <Intrinsic name="GetRenderTargetSampleCount" />
-  <Intrinsic name="GetRenderTargetSamplePosition" />
-  <Intrinsic name="GroupMemoryBarrier" />
-  <Intrinsic name="GroupMemoryBarrierWithSync" />
-  <Intrinsic name="InterlockedAdd" />
-  <Intrinsic name="InterlockedAnd" />
-  <Intrinsic name="InterlockedCompareExchange" />
-  <Intrinsic name="InterlockedCompareStore" />
-  <Intrinsic name="InterlockedExchange" />
   <Intrinsic name="InterlockedMax" />
+  
   <Intrinsic name="InterlockedMin" />
+  
   <Intrinsic name="InterlockedOr" />
+  
   <Intrinsic name="InterlockedXor" />
+  
   <Intrinsic name="isfinite" />
+  
   <Intrinsic name="isinf" />
+  
   <Intrinsic name="isnan" />
+  
   <Intrinsic name="ldexp" />
+  
   <Intrinsic name="length" />
+  
   <Intrinsic name="lerp" />
   <Intrinsic name="lit" />
   <Intrinsic name="log" />
