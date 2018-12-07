@@ -229,6 +229,12 @@
     <Compile Include="ShaderLanguage.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Textures\Texture2DBase.cs" />
+    <Compile Include="Textures\TextureComparisonSampler.cs" />
+    <Compile Include="Textures\TextureSampler.cs" />
+    <Compile Include="Textures\TextureBase.cs" />
+    <Compile Include="Textures\Texture2D.cs" />
+    <Compile Include="Textures\Texture.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />
     <Compile Include="Types\Bool1x3.cs" />
