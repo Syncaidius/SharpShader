@@ -298,33 +298,45 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "degrees")]
 		protected T Degrees<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the determinant of the specified floating-point, square matrix.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "determinant")]
-		protected void Determinant() {  }
+		protected Single Determinant<T>(T m) where T : struct, IMatrix<Single> { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Blocks execution of all threads in a group until all device memory accesses have been completed.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "DeviceMemoryBarrier")]
 		protected void DeviceMemoryBarrier() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Blocks execution of all threads in a group until all device memory accesses have been completed and all threads in the group have reached this call.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "DeviceMemoryBarrierWithGroupSync")]
 		protected void DeviceMemoryBarrierWithGroupSync() {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns a distance scalar between two vectors.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "distance")]
-		protected void Distance() {  }
+		protected Single Distance<T>(T x, T y) where T : struct, IVector<Single> { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the dot product of two vectors.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "dot")]
-		protected void Dot() {  }
+		protected Single Dot<T>(T x, T y) where T : struct, IVector<Single> { return default(Single); }
+
+		/// <summary>HLSL: Returns the dot product of two vectors.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "dot")]
+		protected Int2 Dot(Int2 x, Int2 y) { return default(Int2); }
+
+		/// <summary>HLSL: Returns the dot product of two vectors.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "dot")]
+		protected Int32 Dot(Int3 x, Int3 y) { return default(Int32); }
+
+		/// <summary>HLSL: Returns the dot product of two vectors.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "dot")]
+		protected Int32 Dot(Int4 x, Int4 y) { return default(Int32); }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "dst")]
-		protected void Dst() {  }
+		protected T Dst<T>(T x, T y) where T : struct, IVector<Single> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Submits an error message to the information queue.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "errorf")]
-		protected void Errorf() {  }
+		protected void Errorf(String format, params Object[] args) {  }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "EvaluateAttributeAtCentroid")]

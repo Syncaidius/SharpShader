@@ -33,9 +33,16 @@ string ParseParameterNodeType(XmlNode paramNode, out string type, out string nam
 	XmlAttribute attType = paramNode.Attributes["type"];
 	XmlAttribute attGeneric = paramNode.Attributes["generic"];
 	XmlAttribute attName = paramNode.Attributes["name"];
+	XmlAttribute attParams = paramNode.Attributes["params"];
 
 	if(attName != null)
 	{
+		bool isParams = false;
+		if(attParams != null)
+		{
+			bool.TryParse(attParams.InnerText.ToLower(), out isParams);
+		}
+
 		if(attType != null)
 		{
 			string typeName = ParseTypeName(attType.InnerText);
@@ -43,12 +50,19 @@ string ParseParameterNodeType(XmlNode paramNode, out string type, out string nam
 			{
 				type = typeName;
 				name = attName.InnerText;
-				strCurParam = $"{type} {name}";
+
+				if(isParams)
+					strCurParam = $"params {type}[] {name}";
+				else
+					strCurParam = $"{type} {name}";
 			}
 		}
 		else if(attGeneric != null)
 		{
-			strCurParam = $"{attGeneric.InnerText} {attName.InnerText}";
+			if(isParams)
+				strCurParam = $"params {attGeneric.InnerText}[] {attName.InnerText}";
+			else
+				strCurParam = $"{attGeneric.InnerText} {attName.InnerText}";
 			type = attGeneric.InnerText;
 			name = attName.InnerText;
 		}

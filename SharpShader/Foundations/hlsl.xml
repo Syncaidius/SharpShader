@@ -442,14 +442,78 @@
       <return generic="T" />
     </call>
   </Intrinsic>
+
+  <Intrinsic name="determinant">
+    <comment>Returns the determinant of the specified floating-point, square matrix.</comment>
+    <call>
+      <generic type="SharpShader.IMatrix[Single]" name="T" />
+      <param generic="T" name="m"/>
+      <return type="System.Single" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="DeviceMemoryBarrier">
+    <comment>Blocks execution of all threads in a group until all device memory accesses have been completed.</comment>
+  </Intrinsic>
+
+  <Intrinsic name="DeviceMemoryBarrierWithGroupSync">
+    <comment>Blocks execution of all threads in a group until all device memory accesses have been completed and all threads in the group have reached this call.</comment>
+  </Intrinsic>
+
+  <Intrinsic name="distance">
+    <comment>Returns a distance scalar between two vectors.</comment>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return type="System.Single" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="dot">
+    <comment>Returns the dot product of two vectors.</comment>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="SharpShader.Int2" name="x" />
+      <param type="SharpShader.Int2" name="y" />
+      <return type="SharpShader.Int2" />
+    </call>
+    <call>
+      <param type="SharpShader.Int3" name="x" />
+      <param type="SharpShader.Int3" name="y" />
+      <return type="SharpShader.Int32" />
+    </call>
+    <call>
+      <param type="SharpShader.Int4" name="x" />
+      <param type="SharpShader.Int4" name="y" />
+      <return type="SharpShader.Int32" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="dst">
+    <comments>Calculates a distance vector. This intrinsic function provides the same functionality as the Vertex Shader instruction dst.</comments>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="errorf">
+    <comment>Submits an error message to the information queue.</comment>
+    <remarks>This operation does nothing on devices that do not support it.</remarks>
+    <call>
+      <param type="System.String" name="format" />
+      <param type="System.Object" name="args" params="true" />
+    </call>
+  </Intrinsic>
   
-  <Intrinsic name="determinant" />
-  <Intrinsic name="DeviceMemoryBarrier" />
-  <Intrinsic name="DeviceMemoryBarrierWithGroupSync" />
-  <Intrinsic name="distance" />
-  <Intrinsic name="dot" />
-  <Intrinsic name="dst" />
-  <Intrinsic name="errorf" />
   <Intrinsic name="EvaluateAttributeAtCentroid" />
   <Intrinsic name="EvaluateAttributeAtSample" />
   <Intrinsic name="EvaluateAttributeSnapped" />
