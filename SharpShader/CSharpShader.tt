@@ -267,6 +267,8 @@ namespace SharpShader
 {
 	public abstract class CSharpShader
 	{
+		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise multiple methods will be generated with the same C# name, regardless of return/parameter types.
+
 <#
 	Dictionary<string, Dictionary<string, List<string>>> entries = new Dictionary<string, Dictionary<string, List<string>>>();
 	Dictionary<string, Dictionary<string, string>> intrinsicSummaries = new Dictionary<string, Dictionary<string, string>>();
@@ -345,7 +347,6 @@ namespace SharpShader
 			}
 		
 #>
-
 		/// <summary><#=(string.IsNullOrEmpty(strComment) ? "No summary." : strComment)#></summary>
 		<#=languageAttributes#>
 		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=strReturnString#> }

@@ -126,7 +126,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="asin" csharp="Asin">
+  <Intrinsic name="asin">
     <summary>Returns the arcsine of the specified value.</summary>
     <call>
       <param type="System.Single" name="x"/>
@@ -552,7 +552,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="f16tof32">
+  <Intrinsic name="f16tof32" csharp="F16toF32">
     <summary>Converts the float16 stored in the low-half of the uint to a float.</summary>
     <call>
       <param type="System.UInt32" name="value" />
@@ -572,7 +572,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="f32tof16">
+  <Intrinsic name="f32tof16" csharp="F32toF16">
     <summary>Converts an input into a float16 type.</summary>
     <call>
       <param type="System.Single" name="value" />
@@ -592,7 +592,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="faceforward">
+  <Intrinsic name="faceforward" csharp="FaceForward">
     <summary>Flips the surface-normal (if needed) to face in a direction opposite to i; returns the result in n.</summary>
     <call>
       <generic type="SharpShader.IVector[float]" name="T" />
@@ -603,7 +603,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="firstbithigh">
+  <Intrinsic name="firstbithigh" csharp="FirstBitHigh">
     <summary>Gets the location of the first set bit starting from the highest order bit and working downward, per component.</summary>
     <call>
       <param type="System.Int32" name="value" />
@@ -632,7 +632,7 @@
     </call>
   </Intrinsic>
 
-  <Intrinsic name="firstbitlow">
+  <Intrinsic name="firstbitlow" csharp="FirstBitLow">
     <summary>Returns the location of the first set bit starting from the lowest order bit and working upward, per component.</summary>
     <call>
       <param type="System.Int32" name="value" />
@@ -856,9 +856,9 @@
   
   <Intrinsic name="InterlockedXor" />
   
-  <Intrinsic name="isfinite" />
+  <Intrinsic name="isfinite" csharp="IsFinite"/>
   
-  <Intrinsic name="isinf" />
+  <Intrinsic name="isinf" csharp="IsInf"/>
   
   <Intrinsic name="isnan" />
   
@@ -939,14 +939,14 @@
   <Intrinsic name="rcp" />
   <Intrinsic name="reflect" />
   <Intrinsic name="refract" />
-  <Intrinsic name="reversebits" />
+  <Intrinsic name="reversebits" csharp="ReverseBits"/>
   <Intrinsic name="round" />
   <Intrinsic name="rsqrt" />
   <Intrinsic name="saturate" />
   <Intrinsic name="sign" />
-  <Intrinsic name="sincos" />
-  <Intrinsic name="sinh" />
-  <Intrinsic name="smoothstep" />
+  <Intrinsic name="sincos" csharp="SinCos"/>
+  <Intrinsic name="sinh" csharp="SinH"/>
+  <Intrinsic name="smoothstep" csharp="SmoothStep"/>
   <Intrinsic name="sqrt" />
   <Intrinsic name="step" />
   <Intrinsic name="tan" />

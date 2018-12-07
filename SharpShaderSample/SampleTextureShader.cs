@@ -2,15 +2,15 @@
 
 namespace SharpShaderSample
 {
-    class SampleShader : CSharpShader
+    class SampleTextureShader : CSharpShader
     {
         public struct VertexInput
         {
             [Semantic(SemanticType.Position, 0)]
             public Vector4 Position;
 
-            [Semantic(SemanticType.Color, 0)]
-            public Vector4 Color;
+            [Semantic(SemanticType.TexCoord, 0)]
+            public Vector2 UV;
         }
 
         public struct PixelInput
@@ -18,8 +18,8 @@ namespace SharpShaderSample
             [Semantic(SemanticType.SV_Position)]
             public Vector4 Position;
 
-            [Semantic(SemanticType.Color)]
-            public Vector4 Color;
+            [Semantic(SemanticType.TexCoord)]
+            public Vector2 UV;
         }
 
         [ConstantBuffer(0)]
@@ -48,20 +48,9 @@ namespace SharpShaderSample
             public Matrix4x4 World;
         }
 
-        public ObjectData cbObject = new ObjectData();
-
-        // This method is simply for testing purposes. Beyond that, it's pointless!
-        public Vector4 getColor(Vector4 input, float multiplier)
-        {
-            return input * multiplier;
-        }
-
-        // This is another test method!
-        public Vector4 getOtherColor()
-        {
-            float r = 0f, g = 1.0f, b = 0b0000_01110, a = 1f;
-            return new Vector4(r,g,b,a);
-        }
+        public ObjectData cbObject;
+        public Texture2D mapTexture;
+        public TextureSampler texSampler;
 
         [VertexShader]
         public PixelInput VertexFunc(VertexInput input)
@@ -69,14 +58,14 @@ namespace SharpShaderSample
             return new PixelInput()
             {
                 Position = Mul(input.Position, cbObject.Wvp),
-                Color = input.Color,
+                UV = input.UV,
             };
         }
 
         [FragmentShader(SemanticFragmentOutputType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {
-            return getColor(input.Color, 1) * getOtherColor();
+            return mapTexture.Sample(texSampler, input.UV);
         }
     }
 }

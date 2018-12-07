@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    public class Texture2D : Texture2D<Vector4> { }
+
     /// <summary>
     /// An untyped texture object for backwards compatibility.
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-texture2d
