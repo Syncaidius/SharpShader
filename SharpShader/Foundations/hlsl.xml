@@ -847,35 +847,327 @@
       <out type="System.UInt32" name="original_value" />
     </call>
   </Intrinsic>
-  
-  <Intrinsic name="InterlockedMax" />
-  
-  <Intrinsic name="InterlockedMin" />
-  
-  <Intrinsic name="InterlockedOr" />
-  
-  <Intrinsic name="InterlockedXor" />
-  
-  <Intrinsic name="isfinite" csharp="IsFinite"/>
-  
-  <Intrinsic name="isinf" csharp="IsInf"/>
-  
-  <Intrinsic name="isnan" />
-  
-  <Intrinsic name="ldexp" />
-  
-  <Intrinsic name="length" />
-  
-  <Intrinsic name="lerp" />
-  <Intrinsic name="lit" />
-  <Intrinsic name="log" />
-  <Intrinsic name="log10" />
-  <Intrinsic name="log2" />
-  <Intrinsic name="mad" />
-  <Intrinsic name="max" />
-  <Intrinsic name="min" />
-  <Intrinsic name="modf" />
-  <Intrinsic name="msad4" />
+
+  <Intrinsic name="InterlockedMax">
+    <summary>Performs a guaranteed atomic max.</summary>
+    <remarks>This operation can only be performed on int and uint typed resources and shared memory variables. There are two possible uses for this function. The first is when R is a shared memory variable type. In this case, the function performs an atomic max of value to the shared memory register referenced by dest. The second scenario is when R is a resource variable type. In this scenario, the function performs an atomic max of value to the resource location referenced by dest. The overloaded function has an additional output variable which will be set to the original value of dest. This overloaded operation is only available when R is readable and writable.</remarks>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedMin">
+    <summary>Performs a guaranteed atomic min.</summary>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedOr">
+    <summary>Performs a guaranteed atomic or.</summary>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="InterlockedXor">
+    <summary>Performs a guaranteed atomic xor.</summary>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+    </call>
+    <call>
+      <param type="System.Int32" name="dest" />
+      <param type="System.Int32" name="value" />
+      <out type="System.Int32" name="original_value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="dest" />
+      <param type="System.UInt32" name="value" />
+      <out type="System.UInt32" name="original_value" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="isfinite" csharp="IsFinite">
+    <summary>Determines if the specified floating-point value is finite.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Boolean" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <generic type="SharpShader.IIntrinsicValue[Boolean]" name="R" />
+      <param generic="T" name="x" />
+      <return generic="R" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="isinf" csharp="IsInf">
+    <summary>Determines if the specified floating-point value is infinite. Returns a value of the same size as the input, with a value set to True if the x parameter is +INF or -INF. Otherwise, False.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Boolean" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <generic type="SharpShader.IIntrinsicValue[Boolean]" name="R" />
+      <param generic="T" name="x" />
+      <return generic="R" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="isnan" csharp="IsNan">
+    <summary>Determines if the specified value is NAN or QNAN.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Boolean" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <generic type="SharpShader.IIntrinsicValue[Boolean]" name="R" />
+      <param generic="T" name="x" />
+      <return generic="R" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ldexp">
+    <summary>Returns the result of multiplying the specified value by two, raised to the power of the specified exponent.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="exp" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="exp" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="length">
+    <summary>Returns the length of the specified floating-point vector.</summary>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T"/>
+      <param generic="T" name="x" />
+      <return type="System.Single" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="lerp">
+    <summary>Performs a linear interpolation.</summary>
+    <remarks>Linear interpolation is based on the following formula: x*(1-s) + y*s which can equivalently be written as x + s(y-x).</remarks>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="y" />
+      <param type="System.Single" name="s" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <param generic="T" name="s" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="lit">
+    <summary>Returns a lighting coefficient vector. This function returns a lighting coefficient vector (ambient, diffuse, specular, 1) </summary>
+    <call>
+      <param type="System.Single" name="n_dot_l" />
+      <param type="System.Single" name="n_dot_h" />
+      <param type="System.Single" name="m" />
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="log">
+    <summary>Returns the base-e logarithm of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="log10">
+    <summary>Returns the base-10 logarithm of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="log2">
+    <summary>Returns the base-2 logarithm of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="mad">
+    <summary>Performs an arithmetic multiply/add operation on three values.</summary>
+    <call>
+      <param type="System.Single" name="mValue" />
+      <param type="System.Single" name="aValue" />
+      <param type="System.Single" name="bValue" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="mValue" />
+      <param type="System.Int32" name="aValue" />
+      <param type="System.Int32" name="bValue" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <param type="System.UInt32" name="mValue" />
+      <param type="System.UInt32" name="aValue" />
+      <param type="System.UInt32" name="bValue" />
+      <return type="System.UInt32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IVector" name="T" />
+      <param generic="T" name="mValue" />
+      <param generic="T" name="aValue" />
+      <param generic="T" name="bValue" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="max" >
+    <summary>Selects the greater of x and y.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="y" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="x" />
+      <param type="System.Int32" name="y" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="min">
+    <summary>Selects the lesser of x and y.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="y" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="x" />
+      <param type="System.Int32" name="y" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+      <param generic="T" name="y" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="modf" csharp="ModF">
+    <summary>Splits the value x into fractional and integer parts, each of which has the same sign as x. Returns the signed-fractional portion of x.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <param type="System.Single" name="ip" />
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Int32" name="x" />
+      <param type="System.Int32" name="ip" />
+      <return type="System.Int32" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T" />
+      <param generic="T" name="x" />
+      <out generic="T" name="integerPortion" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="msad4" csharp="MSad4">
+    <summary>Compares a 4-byte reference value and an 8-byte source value and accumulates a vector of 4 sums. Each sum corresponds to the masked sum of absolute differences of a different byte alignment between the reference value and the source value.</summary>
+    <call>
+      <param type="System.UInt32" name="reference" />
+      <param type="SharpShader.UInt2" name="source" />
+      <param type="SharpShader.UInt4" name="accum" />
+      <return type="SharpsShader.UInt4" />
+    </call>
+  </Intrinsic> 
   
   <Intrinsic name="mul">
     <call>
@@ -924,7 +1216,7 @@
   <Intrinsic name="noise" />
   <Intrinsic name="normalize" />
   <Intrinsic name="pow" />
-  <Intrinsic name="printf" />
+  <Intrinsic name="printf" csharp="PrintF"/>
   <Intrinsic name="Process2DQuadTessFactorsAvg" />
   <Intrinsic name="Process2DQuadTessFactorsMax" />
   <Intrinsic name="Process2DQuadTessFactorsMin" />
@@ -941,7 +1233,7 @@
   <Intrinsic name="refract" />
   <Intrinsic name="reversebits" csharp="ReverseBits"/>
   <Intrinsic name="round" />
-  <Intrinsic name="rsqrt" />
+  <Intrinsic name="rsqrt" csharp="RSqrt"/>
   <Intrinsic name="saturate" />
   <Intrinsic name="sign" />
   <Intrinsic name="sincos" csharp="SinCos"/>

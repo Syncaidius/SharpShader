@@ -347,6 +347,7 @@ namespace SharpShader
 			}
 		
 #>
+
 		/// <summary><#=(string.IsNullOrEmpty(strComment) ? "No summary." : strComment)#></summary>
 		<#=languageAttributes#>
 		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=strReturnString#> }
