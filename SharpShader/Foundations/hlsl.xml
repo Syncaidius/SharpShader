@@ -1212,57 +1212,613 @@
       <return generic="V1" />
     </call>
   </Intrinsic>
-  
-  <Intrinsic name="noise" />
-  <Intrinsic name="normalize" />
-  <Intrinsic name="pow" />
-  <Intrinsic name="printf" csharp="PrintF"/>
-  <Intrinsic name="Process2DQuadTessFactorsAvg" />
-  <Intrinsic name="Process2DQuadTessFactorsMax" />
-  <Intrinsic name="Process2DQuadTessFactorsMin" />
-  <Intrinsic name="ProcessIsolineTessFactors" />
-  <Intrinsic name="ProcessQuadTessFactorsAvg" />
-  <Intrinsic name="ProcessQuadTessFactorsMax" />
-  <Intrinsic name="ProcessQuadTessFactorsMin" />
-  <Intrinsic name="ProcessTriTessFactorsAvg" />
-  <Intrinsic name="ProcessTriTessFactorsMax" />
-  <Intrinsic name="ProcessTriTessFactorsMin" />
-  <Intrinsic name="radians" />
-  <Intrinsic name="rcp" />
-  <Intrinsic name="reflect" />
-  <Intrinsic name="refract" />
-  <Intrinsic name="reversebits" csharp="ReverseBits"/>
-  <Intrinsic name="round" />
-  <Intrinsic name="rsqrt" csharp="RSqrt"/>
-  <Intrinsic name="saturate" />
-  <Intrinsic name="sign" />
-  <Intrinsic name="sincos" csharp="SinCos"/>
-  <Intrinsic name="sinh" csharp="SinH"/>
-  <Intrinsic name="smoothstep" csharp="SmoothStep"/>
-  <Intrinsic name="sqrt" />
-  <Intrinsic name="step" />
-  <Intrinsic name="tan" />
-  <Intrinsic name="tanh" />
-  <Intrinsic name="tex1D" />
-  <Intrinsic name="tex1Dbias" />
-  <Intrinsic name="tex1Dgrad" />
-  <Intrinsic name="tex1Dlod" />
-  <Intrinsic name="tex1Dproj" />
-  <Intrinsic name="tex2D" />
-  <Intrinsic name="tex2Dbias" />
-  <Intrinsic name="tex2Dgrad" />
-  <Intrinsic name="tex2Dlod" />
-  <Intrinsic name="tex2Dproj" />
-  <Intrinsic name="tex3D" />
-  <Intrinsic name="tex3Dbias" />
-  <Intrinsic name="tex3Dgrad" />
-  <Intrinsic name="tex3Dlod" />
-  <Intrinsic name="tex3Dproj" />
-  <Intrinsic name="texCUBE" />
-  <Intrinsic name="texCUBEbias" />
-  <Intrinsic name="texCUBEgrad" />
-  <Intrinsic name="texCUBElod" />
-  <Intrinsic name="texCUBEproj" />
-  <Intrinsic name="transpose" />
-  <Intrinsic name="trunc" csharp="Truncate"/>
+
+  <Intrinsic name="noise">
+    <summary>Generates a random value using the Perlin-noise algorithm. The Perlin noise value within a range between -1 and 1.</summary>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return type="System.Single" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="normalize">
+    <summary>Normalizes the specified floating-point vector according to x / length(x).</summary>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return type="System.Single" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="pow">
+    <summary>Returns the specified value raised to the specified power.</summary>
+    <call>
+      <param type="System.Single" name="value" />
+      <param type="System.Single" name="power" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="value" />
+      <param generic="T" name="power" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="printf" csharp="PrintF">
+    <summary>Submits a custom shader message to the information queue.</summary>
+    <remarks>This operation does nothing on devices that do not support it.</remarks>
+    <call>
+      <param type="System.String" name="format" />
+      <param type="System.Object" name="args" params="true" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="Process2DQuadTessFactorsAvg">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="SharpShader.Vector2" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="Process2DQuadTessFactorsMax">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="SharpShader.Vector2" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="Process2DQuadTessFactorsMin">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="SharpShader.Vector2" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessIsolineTessFactors">
+    <summary>Generates the rounded tessellation factors for an isoline.</summary>
+    <call>
+      <param type="System.Single" name="rawDetailFactor" />
+      <param type="System.Single" name="rawDensityFactor" />
+      <out type="System.Single" name="roundedDetailFactor" />
+      <out type="System.Single" name="roundedDensityFactor" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessQuadTessFactorsAvg">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessQuadTessFactorsMax">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessQuadTessFactorsMin">
+    <summary>Generates the corrected tessellation factors for a quad patch.</summary>
+    <call>
+      <param type="SharpShader.Vector4" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector4" name="roundedEdgeTessFactors" />
+      <out type="SharpShader.Vector2" name="roundedInsideTessFactors" />
+      <out type="SharpShader.Vector2" name="unroundedInsideTessFactors" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessTriTessFactorsAvg">
+    <summary>Generates the corrected tessellation factors for a tri patch.</summary>
+    <call>
+      <param type="SharpShader.Vector3" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector3" name="roundedEdgeTessFactors" />
+      <out type="System.Single" name="roundedInsideTessFactor" />
+      <out type="System.Single" name="unroundedInsideTessFactor" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessTriTessFactorsMax">
+    <summary>Generates the corrected tessellation factors for a tri patch.</summary>
+    <call>
+      <param type="SharpShader.Vector3" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector3" name="roundedEdgeTessFactors" />
+      <out type="System.Single" name="roundedInsideTessFactor" />
+      <out type="System.Single" name="unroundedInsideTessFactor" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="ProcessTriTessFactorsMin">
+    <summary>Generates the corrected tessellation factors for a tri patch.</summary>
+    <call>
+      <param type="SharpShader.Vector3" name="rawEdgeFactors" />
+      <param type="System.Single" name="insideScale" />
+      <out type="SharpShader.Vector3" name="roundedEdgeTessFactors" />
+      <out type="System.Single" name="roundedInsideTessFactor" />
+      <out type="System.Single" name="unroundedInsideTessFactor" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="radians">
+    <summary>Converts the specified value from degrees to radians.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="rcp">
+    <summary>Calculates a fast, approximate, per-component reciprocal.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="reflect">
+    <summary>Returns a reflection vector using an incident ray and a surface normal.</summary>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="incidentVector" />
+      <param generic="T" name="surfaceNormal" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="refract">
+    <summary>Returns a refraction vector using an entering ray, a surface normal, and a refraction index. A floating-point, refraction vector. If the angle between the entering ray i and the surface normal n is too great for a given refraction index ?, the return value is (0,0,0).</summary>
+    <call>
+      <generic type="SharpShader.IVector[Single]" name="T" />
+      <param generic="T" name="rayDirection" />
+      <param generic="T" name="surfaceNormal" />
+      <param type="System.Single" name="refractionIndex" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="reversebits" csharp="ReverseBits">
+    <summary>Reverses the order of the bits, per component.</summary>
+    <call>
+      <param type="System.UInt32" name="value" />
+      <return type="System.UInt32" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="round">
+    <summary>Rounds the specified value to the nearest integer.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="rsqrt" csharp="RSqrt">
+    <summary>Returns the reciprocal of the square root of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="saturate">
+    <summary>Clamps the specified value within the range of 0 to 1.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="sign">
+    <summary>Returns the sign of x. Returns -1 if x is less than zero; 0 if x equals zero; and 1 if x is greater than zero.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="sin">
+    <summary>Returns the sine of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="sincos" csharp="SinCos">
+    <summary>Returns the sine and cosine of x.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <out generic="T" name="sine" />
+      <out generic="T" name="cosine" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="sinh" csharp="SinH">
+    <summary>Returns the hyperbolic sine of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="smoothstep" csharp="SmoothStep">
+    <summary>Returns a smooth Hermite interpolation between 0 and 1, if x is in the range [min, max].</summary>
+    <call>
+      <param type="System.Single" name="min" />
+      <param type="System.Single" name="max" />
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="min" />
+      <param generic="T" name="max" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="sqrt">
+    <summary>Returns the square root of the specified floating-point value, per component.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="step">
+    <summary>Compares two values, returning 0 or 1 based on which value is greater.</summary>
+    <call>
+      <param type="System.Single" name="y" />
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="y" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tan">
+    <summary>Returns the tangent of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tanh">
+    <summary>Returns the hyperbolic tangent of the specified value.</summary>
+    <call>
+      <param type="System.Single" name="x" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex1D">
+    <summary>samples a 1D texture.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="System.Single" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="System.Single" name="texCoords"/>
+      <param type="System.Single" name="ddx"/>
+      <param type="System.Single" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex1Dbias">
+    <summary>Samples a 1D texture after biasing the mip level by t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex1Dgrad">
+    <summary>Samples a 1D texture using a gradient to select the mip level.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="System.Single" name="texCoords"/>
+      <param type="System.Single" name="ddx"/>
+      <param type="System.Single" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex1Dlod">
+    <summary>Samples a 1D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex1Dproj">
+    <summary>Samples a 1D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex2D">
+    <summary>Samples a 2D texture.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector2" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector2" name="texCoords"/>
+      <param type="SharpShader.Vector2" name="ddx"/>
+      <param type="SharpShader.Vector2" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex2Dbias">
+    <summary>Samples a 2D texture after biasing the mip level by t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex2Dgrad">
+    <summary>Samples a 2D texture using a gradient to select the mip level.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector2" name="texCoords"/>
+      <param type="SharpShader.Vector2" name="ddx"/>
+      <param type="SharpShader.Vector2" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex2Dlod">
+    <summary>Samples a 2D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex2Dproj">
+    <summary>Samples a 2D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex3D">
+    <summary>Samples a 3D texture.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <param type="SharpShader.Vector3" name="ddx"/>
+      <param type="SharpShader.Vector3" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex3Dbias">
+    <summary>Samples a 3D texture after biasing the mip level by t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex3Dgrad">
+    <summary>Samples a 3D texture using a gradient to select the mip level.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <param type="SharpShader.Vector3" name="ddx"/>
+      <param type="SharpShader.Vector3" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex3Dlod">
+    <summary>Samples a 3D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="tex3Dproj">
+    <summary>Samples a 3D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="texCUBE">
+    <summary>Samples a cube texture.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <param type="SharpShader.Vector3" name="ddx"/>
+      <param type="SharpShader.Vector3" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="texCUBEbias">
+    <summary>Samples a cube texture after biasing the mip level by t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="texCUBEgrad">
+    <summary>Samples a cube texture using a gradient to select the mip level.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector3" name="texCoords"/>
+      <param type="SharpShader.Vector3" name="ddx"/>
+      <param type="SharpShader.Vector3" name="ddy"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="texCUBElod">
+    <summary>Samples a cube texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="texCUBEproj">
+    <summary>Samples a cube texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
+    <call>
+      <param type="SharpShader.TextureSampler" name="sampler"/>
+      <param type="SharpShader.Vector4" name="texCoords"/>
+      <return type="SharpShader.Vector4" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="transpose">
+    <summary>Transposes the specified input matrix.</summary>
+    <call>
+      <generic type="SharpShader.IMatrix" name="T" />
+      <param generic="T" name="x" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="trunc" csharp="Truncate">
+    <summary>Truncates a floating-point value to the integer component.</summary>
+    <call>
+      <param type="System.Single" name="value" />
+      <param type="System.Single" name="power" />
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T" />
+      <param generic="T" name="value" />
+      <param generic="T" name="power" />
+      <return generic="T" />
+    </call>
+  </Intrinsic>
 </Lexicon>

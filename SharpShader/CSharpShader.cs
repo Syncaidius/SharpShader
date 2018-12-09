@@ -742,19 +742,19 @@ namespace SharpShader
 
 		/// <summary>HLSL: Splits the value x into fractional and integer parts, each of which has the same sign as x. Returns the signed-fractional portion of x.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "modf")]
-		protected Single Modf(Single x, Single ip) { return default(Single); }
+		protected Single ModF(Single x, Single ip) { return default(Single); }
 
 		/// <summary>HLSL: Splits the value x into fractional and integer parts, each of which has the same sign as x. Returns the signed-fractional portion of x.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "modf")]
-		protected Int32 Modf(Int32 x, Int32 ip) { return default(Int32); }
+		protected Int32 ModF(Int32 x, Int32 ip) { return default(Int32); }
 
 		/// <summary>HLSL: Splits the value x into fractional and integer parts, each of which has the same sign as x. Returns the signed-fractional portion of x.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "modf")]
-		protected T Modf<T>(T x, out T integerPortion) where T : struct, IIntrinsicValue { integerPortion = default(T); return default(T); }
+		protected T ModF<T>(T x, out T integerPortion) where T : struct, IIntrinsicValue { integerPortion = default(T); return default(T); }
 
 		/// <summary>HLSL: Compares a 4-byte reference value and an 8-byte source value and accumulates a vector of 4 sums. Each sum corresponds to the masked sum of absolute differences of a different byte alignment between the reference value and the source value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "msad4")]
-		protected void Msad4(UInt32 reference, UInt2 source, UInt4 accum) {  }
+		protected void MSad4(UInt32 reference, UInt2 source, UInt4 accum) {  }
 
 		/// <summary>No summary.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "mul")]
@@ -784,212 +784,296 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "mul")]
 		protected V1 Mul<V1, V2>(V1 a, V2 b) where V1 : struct, IIntrinsicValue where V2 : struct, IIntrinsicValue { return default(V1); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates a random value using the Perlin-noise algorithm. The Perlin noise value within a range between -1 and 1.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "noise")]
-		protected void Noise() {  }
+		protected Single Noise<T>(T x) where T : struct, IVector<Single> { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Normalizes the specified floating-point vector according to x / length(x).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "normalize")]
-		protected void Normalize() {  }
+		protected Single Normalize<T>(T x) where T : struct, IVector<Single> { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the specified value raised to the specified power.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "pow")]
-		protected void Pow() {  }
+		protected Single Pow(Single value, Single power) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the specified value raised to the specified power.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "pow")]
+		protected T Pow<T>(T value, T power) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Submits a custom shader message to the information queue.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "printf")]
-		protected void Printf() {  }
+		protected void PrintF(String format, params Object[] args) {  }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "Process2DQuadTessFactorsAvg")]
-		protected void Process2DQuadTessFactorsAvg() {  }
+		protected void Process2DQuadTessFactorsAvg(Vector4 rawEdgeFactors, Vector2 insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "Process2DQuadTessFactorsMax")]
-		protected void Process2DQuadTessFactorsMax() {  }
+		protected void Process2DQuadTessFactorsMax(Vector4 rawEdgeFactors, Vector2 insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "Process2DQuadTessFactorsMin")]
-		protected void Process2DQuadTessFactorsMin() {  }
+		protected void Process2DQuadTessFactorsMin(Vector4 rawEdgeFactors, Vector2 insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the rounded tessellation factors for an isoline.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessIsolineTessFactors")]
-		protected void ProcessIsolineTessFactors() {  }
+		protected void ProcessIsolineTessFactors(Single rawDetailFactor, Single rawDensityFactor, out Single roundedDetailFactor, out Single roundedDensityFactor) { roundedDensityFactor = default(Single); roundedDetailFactor = default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessQuadTessFactorsAvg")]
-		protected void ProcessQuadTessFactorsAvg() {  }
+		protected void ProcessQuadTessFactorsAvg(Vector4 rawEdgeFactors, Single insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessQuadTessFactorsMax")]
-		protected void ProcessQuadTessFactorsMax() {  }
+		protected void ProcessQuadTessFactorsMax(Vector4 rawEdgeFactors, Single insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a quad patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessQuadTessFactorsMin")]
-		protected void ProcessQuadTessFactorsMin() {  }
+		protected void ProcessQuadTessFactorsMin(Vector4 rawEdgeFactors, Single insideScale, out Vector4 roundedEdgeTessFactors, out Vector2 roundedInsideTessFactors, out Vector2 unroundedInsideTessFactors) { unroundedInsideTessFactors = default(Vector2); roundedInsideTessFactors = default(Vector2); roundedEdgeTessFactors = default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a tri patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessTriTessFactorsAvg")]
-		protected void ProcessTriTessFactorsAvg() {  }
+		protected void ProcessTriTessFactorsAvg(Vector3 rawEdgeFactors, Single insideScale, out Vector3 roundedEdgeTessFactors, out Single roundedInsideTessFactor, out Single unroundedInsideTessFactor) { unroundedInsideTessFactor = default(Single); roundedInsideTessFactor = default(Single); roundedEdgeTessFactors = default(Vector3); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a tri patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessTriTessFactorsMax")]
-		protected void ProcessTriTessFactorsMax() {  }
+		protected void ProcessTriTessFactorsMax(Vector3 rawEdgeFactors, Single insideScale, out Vector3 roundedEdgeTessFactors, out Single roundedInsideTessFactor, out Single unroundedInsideTessFactor) { unroundedInsideTessFactor = default(Single); roundedInsideTessFactor = default(Single); roundedEdgeTessFactors = default(Vector3); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Generates the corrected tessellation factors for a tri patch.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "ProcessTriTessFactorsMin")]
-		protected void ProcessTriTessFactorsMin() {  }
+		protected void ProcessTriTessFactorsMin(Vector3 rawEdgeFactors, Single insideScale, out Vector3 roundedEdgeTessFactors, out Single roundedInsideTessFactor, out Single unroundedInsideTessFactor) { unroundedInsideTessFactor = default(Single); roundedInsideTessFactor = default(Single); roundedEdgeTessFactors = default(Vector3); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Converts the specified value from degrees to radians.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "radians")]
-		protected void Radians() {  }
+		protected Single Radians(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Converts the specified value from degrees to radians.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "radians")]
+		protected T Radians<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Calculates a fast, approximate, per-component reciprocal.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "rcp")]
-		protected void Rcp() {  }
+		protected Single Rcp(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Calculates a fast, approximate, per-component reciprocal.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "rcp")]
+		protected T Rcp<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns a reflection vector using an incident ray and a surface normal.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "reflect")]
-		protected void Reflect() {  }
+		protected T Reflect<T>(T incidentVector, T surfaceNormal) where T : struct, IVector<Single> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns a refraction vector using an entering ray, a surface normal, and a refraction index. A floating-point, refraction vector. If the angle between the entering ray i and the surface normal n is too great for a given refraction index ?, the return value is (0,0,0).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "refract")]
-		protected void Refract() {  }
+		protected T Refract<T>(T rayDirection, T surfaceNormal, Single refractionIndex) where T : struct, IVector<Single> { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Reverses the order of the bits, per component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "reversebits")]
-		protected void ReverseBits() {  }
+		protected UInt32 ReverseBits(UInt32 value) { return default(UInt32); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Rounds the specified value to the nearest integer.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "round")]
-		protected void Round() {  }
+		protected Single Round(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Rounds the specified value to the nearest integer.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "round")]
+		protected T Round<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the reciprocal of the square root of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "rsqrt")]
-		protected void Rsqrt() {  }
+		protected Single RSqrt(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the reciprocal of the square root of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "rsqrt")]
+		protected T RSqrt<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Clamps the specified value within the range of 0 to 1.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "saturate")]
-		protected void Saturate() {  }
+		protected Single Saturate(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Clamps the specified value within the range of 0 to 1.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "saturate")]
+		protected T Saturate<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the sign of x. Returns -1 if x is less than zero; 0 if x equals zero; and 1 if x is greater than zero.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "sign")]
-		protected void Sign() {  }
+		protected Single Sign(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the sign of x. Returns -1 if x is less than zero; 0 if x equals zero; and 1 if x is greater than zero.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sign")]
+		protected T Sign<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the sine of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sin")]
+		protected Single Sin(Single x) { return default(Single); }
+
+		/// <summary>HLSL: Returns the sine of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sin")]
+		protected T Sin<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the sine and cosine of x.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "sincos")]
-		protected void SinCos() {  }
+		protected Single SinCos(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the sine and cosine of x.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sincos")]
+		protected void SinCos<T>(T x, out T sine, out T cosine) where T : struct, IIntrinsicValue<Single> { cosine = default(T); sine = default(T); }
+
+		/// <summary>HLSL: Returns the hyperbolic sine of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "sinh")]
-		protected void SinH() {  }
+		protected Single SinH(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the hyperbolic sine of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sinh")]
+		protected T SinH<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns a smooth Hermite interpolation between 0 and 1, if x is in the range [min, max].</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "smoothstep")]
-		protected void SmoothStep() {  }
+		protected Single SmoothStep(Single min, Single max, Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns a smooth Hermite interpolation between 0 and 1, if x is in the range [min, max].</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "smoothstep")]
+		protected T SmoothStep<T>(T min, T max, T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the square root of the specified floating-point value, per component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "sqrt")]
-		protected void Sqrt() {  }
+		protected Single Sqrt(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the square root of the specified floating-point value, per component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "sqrt")]
+		protected T Sqrt<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Compares two values, returning 0 or 1 based on which value is greater.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "step")]
-		protected void Step() {  }
+		protected Single Step(Single y, Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Compares two values, returning 0 or 1 based on which value is greater.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "step")]
+		protected T Step<T>(T y, T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the tangent of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tan")]
-		protected void Tan() {  }
+		protected Single Tan(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the tangent of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "tan")]
+		protected T Tan<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the hyperbolic tangent of the specified value.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tanh")]
-		protected void Tanh() {  }
+		protected Single Tanh(Single x) { return default(Single); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Returns the hyperbolic tangent of the specified value.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "tanh")]
+		protected T Tanh<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: samples a 1D texture.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1D")]
-		protected void Tex1D() {  }
+		protected Vector4 Tex1D(TextureSampler sampler, Single texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: samples a 1D texture.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1D")]
+		protected Vector4 Tex1D(TextureSampler sampler, Single texCoords, Single ddx, Single ddy) { return default(Vector4); }
+
+		/// <summary>HLSL: Samples a 1D texture after biasing the mip level by t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1Dbias")]
-		protected void Tex1Dbias() {  }
+		protected Vector4 Tex1Dbias(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 1D texture using a gradient to select the mip level.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1Dgrad")]
-		protected void Tex1Dgrad() {  }
+		protected Vector4 Tex1Dgrad(TextureSampler sampler, Single texCoords, Single ddx, Single ddy) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 1D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1Dlod")]
-		protected void Tex1Dlod() {  }
+		protected Vector4 Tex1Dlod(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 1D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex1Dproj")]
-		protected void Tex1Dproj() {  }
+		protected Vector4 Tex1Dproj(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 2D texture.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2D")]
-		protected void Tex2D() {  }
+		protected Vector4 Tex2D(TextureSampler sampler, Vector2 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 2D texture.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2D")]
+		protected Vector4 Tex2D(TextureSampler sampler, Vector2 texCoords, Vector2 ddx, Vector2 ddy) { return default(Vector4); }
+
+		/// <summary>HLSL: Samples a 2D texture after biasing the mip level by t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2Dbias")]
-		protected void Tex2Dbias() {  }
+		protected Vector4 Tex2Dbias(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 2D texture using a gradient to select the mip level.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2Dgrad")]
-		protected void Tex2Dgrad() {  }
+		protected Vector4 Tex2Dgrad(TextureSampler sampler, Vector2 texCoords, Vector2 ddx, Vector2 ddy) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 2D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2Dlod")]
-		protected void Tex2Dlod() {  }
+		protected Vector4 Tex2Dlod(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 2D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex2Dproj")]
-		protected void Tex2Dproj() {  }
+		protected Vector4 Tex2Dproj(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 3D texture.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3D")]
-		protected void Tex3D() {  }
+		protected Vector4 Tex3D(TextureSampler sampler, Vector3 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 3D texture.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3D")]
+		protected Vector4 Tex3D(TextureSampler sampler, Vector3 texCoords, Vector3 ddx, Vector3 ddy) { return default(Vector4); }
+
+		/// <summary>HLSL: Samples a 3D texture after biasing the mip level by t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3Dbias")]
-		protected void Tex3Dbias() {  }
+		protected Vector4 Tex3Dbias(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 3D texture using a gradient to select the mip level.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3Dgrad")]
-		protected void Tex3Dgrad() {  }
+		protected Vector4 Tex3Dgrad(TextureSampler sampler, Vector3 texCoords, Vector3 ddx, Vector3 ddy) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 3D texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3Dlod")]
-		protected void Tex3Dlod() {  }
+		protected Vector4 Tex3Dlod(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a 3D texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "tex3Dproj")]
-		protected void Tex3Dproj() {  }
+		protected Vector4 Tex3Dproj(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a cube texture.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBE")]
-		protected void TexCUBE() {  }
+		protected Vector4 TexCUBE(TextureSampler sampler, Vector3 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a cube texture.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBE")]
+		protected Vector4 TexCUBE(TextureSampler sampler, Vector3 texCoords, Vector3 ddx, Vector3 ddy) { return default(Vector4); }
+
+		/// <summary>HLSL: Samples a cube texture after biasing the mip level by t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBEbias")]
-		protected void TexCUBEbias() {  }
+		protected Vector4 TexCUBEbias(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a cube texture using a gradient to select the mip level.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBEgrad")]
-		protected void TexCUBEgrad() {  }
+		protected Vector4 TexCUBEgrad(TextureSampler sampler, Vector3 texCoords, Vector3 ddx, Vector3 ddy) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a cube texture with mipmaps. The mipmap LOD is specified in t.w.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBElod")]
-		protected void TexCUBElod() {  }
+		protected Vector4 TexCUBElod(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Samples a cube texture using a projective divide; the texture coordinate is divided by t.w before the lookup takes place.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "texCUBEproj")]
-		protected void TexCUBEproj() {  }
+		protected Vector4 TexCUBEproj(TextureSampler sampler, Vector4 texCoords) { return default(Vector4); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Transposes the specified input matrix.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "transpose")]
-		protected void Transpose() {  }
+		protected T Transpose<T>(T x) where T : struct, IMatrix { return default(T); }
 
-		/// <summary>No summary.</summary>
+		/// <summary>HLSL: Truncates a floating-point value to the integer component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "trunc")]
-		protected void Truncate() {  }
+		protected Single Truncate(Single value, Single power) { return default(Single); }
+
+		/// <summary>HLSL: Truncates a floating-point value to the integer component.</summary>
+		[ShaderIntrinsic(ShaderLanguage.HLSL, "trunc")]
+		protected T Truncate<T>(T value, T power) where T : struct, IIntrinsicValue<Single> { return default(T); }
 	}
 }
