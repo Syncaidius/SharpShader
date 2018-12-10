@@ -5,71 +5,97 @@ namespace SharpShader
 {
 	public abstract class CSharpShader
 	{
-		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise multiple methods will be generated with the same C# name, regardless of return/parameter types.
+		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise different functions will be generated with the same C# name, regardless of return/parameter types.
 
 
 		/// <summary>HLSL: Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abort")]
 		protected void Abort() {  }
 
-		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.<para/>
+		/// GLSL: Returns the absolute value of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "abs")]
 		protected Int32 Abs(Int32 x) { return default(Int32); }
 
-		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.<para/>
+		/// GLSL: Returns the absolute value of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "abs")]
 		protected Single Abs(Single x) { return default(Single); }
 
-		/// <summary>HLSL: Returns the absolute value of the specified value.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.<para/>
+		/// GLSL: Returns the absolute value of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "abs")]
 		protected T Abs<T>() where T : struct, IIntrinsicValue { return default(T); }
 
-		/// <summary>HLSL: Returns the arccosine of the specified value.</summary>
+		/// <summary>HLSL: Returns the absolute value of the specified value.<para/>
+		/// GLSL: Returns the absolute value of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "abs")]
+		protected Double Abs(Double x) { return default(Double); }
+
+		/// <summary>HLSL: Returns the arccosine of the specified value.<para/>
+		/// GLSL: Returns the arccosine of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "acos")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "acos")]
 		protected Single Acos(Single x) { return default(Single); }
 
-		/// <summary>HLSL: Returns the arccosine of the specified value.</summary>
+		/// <summary>HLSL: Returns the arccosine of the specified value.<para/>
+		/// GLSL: Returns the arccosine of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "acos")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "acos")]
 		protected T Acos<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
 
-		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if all components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
 		protected Boolean All(Int32 x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if all components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
 		protected Boolean All(Single x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if all components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
 		protected Boolean All(Boolean x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if all components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if all components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if all components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "all")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "all")]
 		protected Boolean All<T>(T x) where T : struct, IIntrinsicValue { return default(Boolean); }
 
 		/// <summary>HLSL: Blocks execution of all threads in a group until all memory accesses have been completed.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "AllMemoryBarrier")]
+		[IntrinsicVersion(IntrinsicPipelineType.Compute, 5f, 3.402823E+38f)]
 		protected void AllMemoryBarrier() {  }
 
 		/// <summary>HLSL: Blocks execution of all threads in a group until all memory accesses have been completed and all threads in the group have reached this call.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "AllMemoryBarrierWithGroupSync")]
 		protected void AllMemoryBarrierWithGroupSync() {  }
 
-		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if any components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
 		protected Boolean Any(Int32 x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if any components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
 		protected Boolean Any(Single x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if any components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
 		protected Boolean Any(Boolean x) { return default(Boolean); }
 
-		/// <summary>HLSL: Determines if any components of the specified value are non-zero.</summary>
+		/// <summary>HLSL: Determines if any components of the specified value are non-zero.<para/>
+		/// GLSL: Determines if any components of the specified vector are true.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "any")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "any")]
 		protected Boolean Any<T>(T x) where T : struct, IIntrinsicValue { return default(Boolean); }
 
 		/// <summary>HLSL: Reinterprets a cast value (two 32-bit values) into a double.</summary>
@@ -88,12 +114,16 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asfloat")]
 		protected T AsFloat<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
 
-		/// <summary>HLSL: Returns the arcsine of the specified value.</summary>
+		/// <summary>HLSL: Returns the arcsine of the specified value.<para/>
+		/// GLSL: Returns the arcsine of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asin")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "asin")]
 		protected Single Asin(Single x) { return default(Single); }
 
-		/// <summary>HLSL: Returns the arcsine of the specified value.</summary>
+		/// <summary>HLSL: Returns the arcsine of the specified value.<para/>
+		/// GLSL: Returns the arcsine of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asin")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "asin")]
 		protected T Asin<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Interprets the bit pattern of x as an integer.</summary>
@@ -124,13 +154,27 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "asuint")]
 		protected void AsUInt(Double x, out UInt32 lowBits, out UInt32 highBits) { highBits = default(UInt32); lowBits = default(UInt32); }
 
-		/// <summary>HLSL: Returns the arctangent of the specified value.</summary>
+		/// <summary>HLSL: Returns the arctangent of the specified value.<para/>
+		/// GLSL: Return the arc-tangent of the parameters.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atan")]
 		protected Single Atan(Single x) { return default(Single); }
 
-		/// <summary>HLSL: Returns the arctangent of the specified value.</summary>
+		/// <summary>HLSL: Returns the arctangent of the specified value.<para/>
+		/// GLSL: Return the arc-tangent of the parameters.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan")]
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atan")]
 		protected T Atan<T>(T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>HLSL: Returns the arctangent of the specified value.<para/>
+		/// GLSL: Return the arc-tangent of the parameters.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atan")]
+		protected Single Atan(Single y, Single x) { return default(Single); }
+
+		/// <summary>HLSL: Returns the arctangent of the specified value.<para/>
+		/// GLSL: Return the arc-tangent of the parameters.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atan")]
+		protected T Atan<T>(T y, T x) where T : struct, IIntrinsicValue<Single> { return default(T); }
 
 		/// <summary>HLSL: Returns the arctangent of two values (x,y).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "atan2")]
@@ -720,10 +764,6 @@ namespace SharpShader
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "max")]
 		protected T Max<T>(T x, T y) where T : struct, IIntrinsicValue { return default(T); }
 
-		/// <summary>HLSL: Selects the greater of x and y.</summary>
-		[ShaderIntrinsic(ShaderLanguage.GLSL, "max")]
-		protected void Max() {  }
-
 		/// <summary>HLSL: Selects the lesser of x and y.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "min")]
 		protected Single Min(Single x, Single y) { return default(Single); }
@@ -735,10 +775,6 @@ namespace SharpShader
 		/// <summary>HLSL: Selects the lesser of x and y.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "min")]
 		protected T Min<T>(T x, T y) where T : struct, IIntrinsicValue { return default(T); }
-
-		/// <summary>HLSL: Selects the lesser of x and y.</summary>
-		[ShaderIntrinsic(ShaderLanguage.GLSL, "min")]
-		protected void Min() {  }
 
 		/// <summary>HLSL: Splits the value x into fractional and integer parts, each of which has the same sign as x. Returns the signed-fractional portion of x.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "modf")]
@@ -1075,5 +1111,29 @@ namespace SharpShader
 		/// <summary>HLSL: Truncates a floating-point value to the integer component.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "trunc")]
 		protected T Truncate<T>(T value, T power) where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic cosine of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "acosh")]
+		protected Single AcosH(Single x) { return default(Single); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic cosine of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "acosh")]
+		protected T AcosH<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic sine of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "asinh")]
+		protected Single AsinH(Single x) { return default(Single); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic sine of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "asinh")]
+		protected T AsinH<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic tangent of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atanh")]
+		protected Single AtanH(Single x) { return default(Single); }
+
+		/// <summary>GLSL: Returns the arc hyperbolic tangent of the parameter.</summary>
+		[ShaderIntrinsic(ShaderLanguage.GLSL, "atanh")]
+		protected T AtanH<T>() where T : struct, IIntrinsicValue<Single> { return default(T); }
 	}
 }

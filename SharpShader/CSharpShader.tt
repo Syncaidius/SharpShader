@@ -80,115 +80,143 @@ string ParseParameterNode(XmlNode paramNode)
 
 // Indexed as parameters string -> list of "languages--return type""
 // Summaries = Key-value pair of languages and summaries.
-void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> summaries)
+void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary<string, List<string>> meta, Dictionary<string, string> summaries, Dictionary<string, string> versions)
 {
 	bool hasCall = false;
 	List<string> genericNames = new List<string>();
 
 	foreach(XmlNode child in node)
 	{
-		if(child.Name == "summary")
+		switch(child.Name)
 		{
-			summaries[language] = child.InnerText;
-			continue;
+			case "version":
+				XmlAttribute attPipeline = child.Attributes["pipeline"];
+				XmlAttribute attMinVersion = child.Attributes["min"];
+				XmlAttribute attMaxVersion = child.Attributes["max"];
+				float minVersion = float.MinValue;
+				float maxVersion = float.MaxValue;
+				string strPipeline = "";
+
+				if(attPipeline != null && !string.IsNullOrEmpty(attPipeline.InnerText))
+				{
+					strPipeline = attPipeline.InnerText.ToLower();
+					strPipeline = char.ToUpper(strPipeline[0]) + strPipeline.Substring(1);
+				}
+
+				if(attMinVersion != null)
+					float.TryParse(attMinVersion.InnerText, out minVersion);
+
+				if(attMaxVersion != null)
+					float.TryParse(attMaxVersion.InnerText, out maxVersion);
+
+				string strVersions = $"{strPipeline}|{minVersion}f|{maxVersion}f";
+
+				if(versions.ContainsKey(language))
+					versions[language] += $"--{strVersions}";
+				else
+					versions[language] = strVersions;
+				break;
+
+			case "summary": 
+				summaries[language] = child.InnerText;
+				break;
+
+			case "call":
+				string strParams = "";
+				string strReturn = "void";
+				string strReturnString = "";
+				bool firstParam = true;
+				string strGeneric = "";
+				genericNames.Clear();
+
+				foreach(XmlNode paramNode in child)
+				{
+					switch(paramNode.Name)
+					{
+						case "param":
+							string strCurParam = ParseParameterNode(paramNode);
+							if(!string.IsNullOrEmpty(strCurParam))
+							{
+								if(!firstParam)
+									strParams += ", ";
+
+								firstParam = false;
+								strParams += strCurParam;
+							}
+							break;
+
+						case "out":
+							string outType, outName;
+							string strOutParam = ParseParameterNodeType(paramNode, out outType, out outName);
+							if(!string.IsNullOrEmpty(strOutParam))
+							{
+								if(!firstParam)
+									strParams += ", ";
+
+								firstParam = false;
+								strParams += $"out {strOutParam}";
+								if(strReturnString.Length > 0)
+									strReturnString = $"{outName} = default({outType}); " + strReturnString;
+								else
+									strReturnString = $"{outName} = default({outType});";
+							}
+							break;
+
+						case "return":
+							XmlAttribute attReturnType = paramNode.Attributes["type"];
+							XmlAttribute attGenericReturnType = paramNode.Attributes["generic"];
+
+							if(attReturnType != null)
+							{
+								strReturn = ParseTypeName(attReturnType.InnerText) ?? "";
+							}
+							else if(attGenericReturnType != null)
+							{
+								if(genericNames.Contains(attGenericReturnType.InnerText))
+									strReturn = attGenericReturnType.InnerText;
+							}
+
+							if(!string.IsNullOrEmpty(strReturn))
+							{
+								if(strReturnString.Length > 0)
+									strReturnString += " ";
+
+								strReturnString += $"return default({strReturn});";
+							}
+							break;
+
+						case "generic":
+							XmlAttribute attGenericType = paramNode.Attributes["type"];
+							XmlAttribute attGenericName = paramNode.Attributes["name"];
+
+							if(attGenericType != null && attGenericName != null)
+							{
+								string genericTypeName = ParseTypeName(attGenericType.InnerText);
+								if(genericTypeName != null)
+								{
+									string genericName = attGenericName.InnerText.Replace(" ", "_").ToUpper();
+									strGeneric += strGeneric.Length > 0 ? "=" : "";
+									strGeneric += $"{genericName}|{genericTypeName}";
+									genericNames.Add(genericName);
+								}
+							}
+							break;
+					}
+				}
+
+				List<string> languages = null;
+				strParams = $"{strParams}--{strReturn}--{strGeneric}--{strReturnString}";
+
+				if(!meta.TryGetValue(strParams, out languages))
+				{
+					languages = new List<string>();
+					meta.Add(strParams, languages);
+				}
+
+				languages.Add(language);
+				hasCall = true;
+				break;
 		}
-
-		if(child.Name != "call")
-			continue;
-			 
-		string strParams = "";
-		string strReturn = "void";
-		string strReturnString = "";
-		bool firstParam = true;
-		string strGeneric = "";
-		genericNames.Clear();
-
-		foreach(XmlNode paramNode in child)
-		{
-			switch(paramNode.Name)
-			{
-				case "param":
-					string strCurParam = ParseParameterNode(paramNode);
-					if(!string.IsNullOrEmpty(strCurParam))
-					{
-						if(!firstParam)
-							strParams += ", ";
-
-						firstParam = false;
-						strParams += strCurParam;
-					}
-					break;
-
-				case "out":
-					string outType, outName;
-					string strOutParam = ParseParameterNodeType(paramNode, out outType, out outName);
-					if(!string.IsNullOrEmpty(strOutParam))
-					{
-						if(!firstParam)
-							strParams += ", ";
-
-						firstParam = false;
-						strParams += $"out {strOutParam}";
-						if(strReturnString.Length > 0)
-							strReturnString = $"{outName} = default({outType}); " + strReturnString;
-						else
-							strReturnString = $"{outName} = default({outType});";
-					}
-					break;
-
-				case "return":
-					XmlAttribute attReturnType = paramNode.Attributes["type"];
-					XmlAttribute attGenericReturnType = paramNode.Attributes["generic"];
-
-					if(attReturnType != null)
-					{
-						strReturn = ParseTypeName(attReturnType.InnerText) ?? "";
-					}
-					else if(attGenericReturnType != null)
-					{
-						if(genericNames.Contains(attGenericReturnType.InnerText))
-							strReturn = attGenericReturnType.InnerText;
-					}
-
-					if(!string.IsNullOrEmpty(strReturn))
-					{
-						if(strReturnString.Length > 0)
-							strReturnString += " ";
-
-						strReturnString += $"return default({strReturn});";
-					}
-					break;
-
-				case "generic":
-					XmlAttribute attGenericType = paramNode.Attributes["type"];
-					XmlAttribute attGenericName = paramNode.Attributes["name"];
-
-					if(attGenericType != null && attGenericName != null)
-					{
-						string genericTypeName = ParseTypeName(attGenericType.InnerText);
-						if(genericTypeName != null)
-						{
-							string genericName = attGenericName.InnerText.Replace(" ", "_").ToUpper();
-							strGeneric += strGeneric.Length > 0 ? "=" : "";
-							strGeneric += $"{genericName}|{genericTypeName}";
-							genericNames.Add(genericName);
-						}
-					}
-					break;
-			}
-		}
-
-		List<string> languages = null;
-		strParams = $"{strParams}--{strReturn}--{strGeneric}--{strReturnString}";
-
-		if(!meta.TryGetValue(strParams, out languages))
-		{
-			languages = new List<string>();
-			meta.Add(strParams, languages);
-		}
-
-		languages.Add(language);
-		hasCall = true;
 	}
 
 	// Add a parameterless entry
@@ -206,7 +234,7 @@ void ParseIntrinsic(XmlNode node, string cSharpName, string language, Dictionary
 }
  
 
-void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>> nodes, Dictionary<string, Dictionary<string, string>> summaries)
+void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>> nodes, Dictionary<string, Dictionary<string, string>> summaries, Dictionary<string, Dictionary<string, string>> versions)
 {
 	string absolutePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(this.Host.TemplateFile), fn));
 	using(FileStream stream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read))
@@ -238,21 +266,26 @@ void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>
 							// If the node dictionary doesn't have the intrinsic's name, the summaries dictionary will not either.
 							Dictionary<string, List<string>> intrinsicMeta = null;
 							Dictionary<string, string> summariesByLanguage = null;
+							Dictionary<string, string> versionsByLanguage = null;
+
 							if(!nodes.TryGetValue(nameKey, out intrinsicMeta))
 							{
-								// Indexed as intrinsic name -> parameters string -> list of languages
 								intrinsicMeta = new Dictionary<string, List<string>>();
 								nodes.Add(nameKey, intrinsicMeta);
 
 								summariesByLanguage = new Dictionary<string, string>();
 								summaries.Add(nameKey, summariesByLanguage);
+
+								versionsByLanguage = new Dictionary<string, string>();
+								versions.Add(nameKey, versionsByLanguage);
 							}
 							else 
 							{
-								summariesByLanguage = summaries[nameKey];							
+								summariesByLanguage = summaries[nameKey];	
+								versionsByLanguage = versions[nameKey];
 							}
 							
-							ParseIntrinsic(node, strCSharpName, langNode.InnerText, intrinsicMeta, summariesByLanguage);
+							ParseIntrinsic(node, strCSharpName, langNode.InnerText, intrinsicMeta, summariesByLanguage, versionsByLanguage);
 						}
 					}
 				}
@@ -267,16 +300,18 @@ namespace SharpShader
 {
 	public abstract class CSharpShader
 	{
-		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise multiple methods will be generated with the same C# name, regardless of return/parameter types.
+		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise different functions will be generated with the same C# name, regardless of return/parameter types.
 
 <#
 	Dictionary<string, Dictionary<string, List<string>>> entries = new Dictionary<string, Dictionary<string, List<string>>>();
 	Dictionary<string, Dictionary<string, string>> intrinsicSummaries = new Dictionary<string, Dictionary<string, string>>();
-	ParseLexicon("Foundations/hlsl.xml", entries, intrinsicSummaries);
-	ParseLexicon("Foundations/glsl.xml", entries, intrinsicSummaries);
+	Dictionary<string, Dictionary<string, string>> intrinsicVersions = new Dictionary<string, Dictionary<string, string>>();
 	string[] delims = {"--"};
 	string[] genericDelims = {"="};
 	string[] genericDataDelims = {"|"};
+
+	ParseLexicon("Foundations/hlsl.xml", entries, intrinsicSummaries, intrinsicVersions);
+	ParseLexicon("Foundations/glsl.xml", entries, intrinsicSummaries, intrinsicVersions);
 
 	foreach(string intrinsicName in entries.Keys)
 	{
@@ -284,6 +319,7 @@ namespace SharpShader
 		string[] nameParts = intrinsicName.Split(delims, StringSplitOptions.None);
 		Dictionary<string, List<string>> intrinsicMethods = entries[intrinsicName];
 		Dictionary<string, string> summariesByLanguage = intrinsicSummaries[intrinsicName];
+		Dictionary<string, string> versionsByLanguage = intrinsicVersions[intrinsicName];
 
 		foreach(string strParams in intrinsicMethods.Keys)
 		{
@@ -294,15 +330,26 @@ namespace SharpShader
 			string strGenerics = "";
 			string strGenericConstraints = "";
 			List<string> languages = intrinsicMethods[strParams];
-			string languageAttributes = "";
+			string strAttributes = "";
 
 			// Build attribute string
 			foreach(string language in languages)
 			{
-				if(languageAttributes.Length > 0)
-					languageAttributes += Environment.NewLine + "\t\t";
+				if(strAttributes.Length > 0)
+					strAttributes += Environment.NewLine + "\t\t";
 
-				languageAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
+				strAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
+
+				if(versionsByLanguage.TryGetValue(language, out string versions))
+				{
+					string[] versionsByPipeline = versions.Split(delims, StringSplitOptions.None);
+					foreach(string version in versionsByPipeline)
+					{
+						// Parts: 0 = pipeline stage, 1 = min version, 2 = max version.
+						string[] versionParts = version.Split(genericDataDelims, StringSplitOptions.None);
+						strAttributes += $"{Environment.NewLine}\t\t[IntrinsicVersion(IntrinsicPipelineType.{versionParts[0]}, {versionParts[1]}, {versionParts[2]})]";
+					}
+				}
 			}
 
 			// Build comment string
@@ -349,7 +396,7 @@ namespace SharpShader
 #>
 
 		/// <summary><#=(string.IsNullOrEmpty(strComment) ? "No summary." : strComment)#></summary>
-		<#=languageAttributes#>
+		<#=strAttributes#>
 		protected <#=strReturnType#> <#=nameParts[1] + strGenerics#>(<#=strParameters#>) <#=strGenericConstraints#>{ <#=strReturnString#> }
 <#
 		}

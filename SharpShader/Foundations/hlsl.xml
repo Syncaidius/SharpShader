@@ -73,6 +73,7 @@
   
   <Intrinsic name="AllMemoryBarrier">
     <summary>Blocks execution of all threads in a group until all memory accesses have been completed.</summary>
+    <version pipeline="compute" min="5.0" />
   </Intrinsic>
 
   <Intrinsic name="AllMemoryBarrierWithGroupSync">

@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
     <Compile Include="Attributes\SemanticAttribute.cs" />
     <Compile Include="Attributes\PackOffsetAttribute.cs" />
     <Compile Include="Attributes\ComputeShaderAttribute.cs" />

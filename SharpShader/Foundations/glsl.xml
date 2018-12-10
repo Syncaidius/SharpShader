@@ -15,6 +15,132 @@
     <Generic type="System.Double" to="dmat" />
     <Generic type="System.Boolean" to="bmat" />
   </Word>
-  <Intrinsic name="max" />
-  <Intrinsic name="min" />
+  
+  <Intrinsic name="abs">
+    <summary>Returns the absolute value of the parameter.</summary>
+    <call>
+      <param type="System.Int32" name="x"/>
+      <return type="System.Int32"/>
+    </call>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <param type="System.Double" name="x"/>
+      <return type="System.Double"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="acos">
+    <summary>Returns the arccosine of the parameter.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="acosh" csharp="AcosH">
+    <summary>Returns the arc hyperbolic cosine of the parameter.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="all">
+    <summary>Determines if all components of the specified vector are true.</summary>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name ="x"/>
+      <return type="System.Boolean"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="any">
+    <summary>Determines if any components of the specified vector are true.</summary>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue" name="T"/>
+      <param generic="T" name ="x"/>
+      <return type="System.Boolean"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="asin">
+    <summary>Returns the arcsine of the parameter.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="asinh" csharp="AsinH">
+    <summary>Returns the arc hyperbolic sine of the parameter.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="atan">
+    <summary>Return the arc-tangent of the parameters.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <param type="System.Single" name="y"/>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" name="y"/>
+      <param generic="T" name="x"/>
+      <return generic="T" />
+    </call>
+  </Intrinsic>
+
+  <Intrinsic name="atanh" csharp="AtanH">
+    <summary>Returns the arc hyperbolic tangent of the parameter.</summary>
+    <call>
+      <param type="System.Single" name="x"/>
+      <return type="System.Single"/>
+    </call>
+    <call>
+      <generic type="SharpShader.IIntrinsicValue[Single]" name="T"/>
+      <param generic="T" />
+      <return generic="T"/>
+    </call>
+  </Intrinsic>
 </Lexicon>
