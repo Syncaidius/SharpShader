@@ -19,12 +19,14 @@ namespace SharpShader
         internal LanguageFoundation Foundation { get; }
         internal ConversionResult Result { get; }
         internal ConversionResult.Shader CurrentShader { get; private set; }
+        internal CSharpParseOptions ParseOptions { get; private set; }
 
         int _nextVariable = 0;
 
         internal ConversionContext(LanguageFoundation foundatation)
         {
             Foundation = foundatation;
+            ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
             Map = new CodeMap();
             Result = new ConversionResult();
         }
@@ -44,8 +46,7 @@ namespace SharpShader
 
         internal void RegenerateTree(string source)
         {
-            CSharpParseOptions parseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
-            Tree = CSharpSyntaxTree.ParseText(source, parseOptions);
+            Tree = CSharpSyntaxTree.ParseText(source, ParseOptions);
             Root = Tree.GetRoot();
         }
 

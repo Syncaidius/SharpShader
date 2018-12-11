@@ -24,6 +24,10 @@ namespace SharpShader
 
         internal Dictionary<string, StructDeclarationSyntax> ConstantBuffers = new Dictionary<string, StructDeclarationSyntax>();
 
+        internal Dictionary<string, FieldDeclarationSyntax> Textures = new Dictionary<string, FieldDeclarationSyntax>();
+
+        internal Dictionary<string, FieldDeclarationSyntax> TextureSampler = new Dictionary<string, FieldDeclarationSyntax>();
+
         internal void Clear()
         {
             EntryPoints.Clear();
