@@ -13,41 +13,30 @@ namespace SharpShader
 {
     internal class ConversionContext
     {
-        internal SyntaxNode Root { get; private set; }
-        internal SyntaxTree Tree { get; private set; }
-        internal CodeMap Map { get; private set; }
         internal LanguageFoundation Foundation { get; }
-        internal ConversionResult Result { get; }
-        internal ConversionResult.Shader CurrentShader { get; private set; }
         internal CSharpParseOptions ParseOptions { get; private set; }
+        internal List<ShaderContext> Shaders { get; }
+        internal List<ConversionMessage> Messages { get; }
 
         int _nextVariable = 0;
 
         internal ConversionContext(LanguageFoundation foundatation)
         {
             Foundation = foundatation;
+            Shaders = new List<ShaderContext>();
+            Messages = new List<ConversionMessage>();
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
-            Map = new CodeMap();
-            Result = new ConversionResult();
         }
 
-        internal void StartNewShader(string name)
+        internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
         {
-            CurrentShader = new ConversionResult.Shader();
-            Result.Translated.Add(name, CurrentShader);
-        }
-
-        internal void Clear()
-        {
-            Tree = null;
-            Root = null;
-            Map.Clear();
-        }
-
-        internal void RegenerateTree(string source)
-        {
-            Tree = CSharpSyntaxTree.ParseText(source, ParseOptions);
-            Root = Tree.GetRoot();
+            Messages.Add(new ConversionMessage()
+            {
+                Text = text,
+                LineNumber = lineNumber,
+                LinePosition = linePos,
+                MessageType = type,
+            });
         }
 
         internal string GetNewVariableName(string prefix = null)
@@ -55,9 +44,25 @@ namespace SharpShader
             return $"ss_{($"{prefix}_" ?? "val_")}{_nextVariable++}";
         }
 
-        internal string GetResult()
+        internal ShaderContext AddShader(string name)
         {
-            return Tree.ToString();
+            ShaderContext context = new ShaderContext(this, name);
+            Shaders.Add(context);
+            return context;
+        }
+
+        internal ConversionResult ToResult()
+        {
+            ConversionResult result = new ConversionResult();
+            result.Messages.AddRange(Messages);
+            foreach (ShaderContext sc in Shaders)
+            {
+                ShaderResult shader = new ShaderResult();
+                shader.SourceCode = sc.Source;
+                result.Output.Add(sc.Name, shader);
+            }
+
+            return result;
         }
     }
 }

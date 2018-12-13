@@ -13,7 +13,7 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnPreprocess(ConversionContext context, VariableDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
             if (syntax.Variables.Count > 1)
             {
@@ -34,14 +34,14 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnPreprocess(ConversionContext context, VariableDeclaratorSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, VariableDeclaratorSyntax syntax, StringBuilder source)
         {
             if (syntax.Initializer != null)
             {
                 string initValue = syntax.Initializer.Value.ToString();
                 if (char.IsNumber(initValue[0]))
                 {
-                    string translated = context.Foundation.TranslateNumber(context, initValue);
+                    string translated = context.Parent.Foundation.TranslateNumber(context, initValue);
                     source.Replace(initValue, translated, syntax.Initializer.SpanStart, syntax.Initializer.Span.Length);
                 }
             }

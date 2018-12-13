@@ -14,27 +14,27 @@ namespace SharpShader
 
         internal GlslFoundation(ShaderLanguage language) : base(language) { }
 
-        internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax node, int slot)
+        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax node, int slot)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateStruct(ConversionContext context, StructDeclarationSyntax node)
+        internal override string TranslateStruct(ShaderContext context, StructDeclarationSyntax node)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateStructField(ConversionContext context, FieldDeclarationSyntax node)
+        internal override string TranslateStructField(ShaderContext context, FieldDeclarationSyntax node)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header)
+        internal override string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateNumber(ConversionContext context, string number)
+        internal override string TranslateNumber(ShaderContext context, string number)
         {
             throw new NotImplementedException();
         }

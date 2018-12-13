@@ -14,20 +14,20 @@ namespace SharpShader
 
     internal abstract class NodeProcessor
     {
-        internal virtual void Preprocess(ConversionContext context, SyntaxNode node, StringBuilder source) { }
+        internal virtual void Preprocess(ShaderContext context, SyntaxNode node, StringBuilder source) { }
 
-        internal virtual void Map(ConversionContext context, SyntaxNode node) { }
+        internal virtual void Map(ShaderContext context, SyntaxNode node) { }
 
-        internal virtual void Postprocess(ConversionContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
+        internal virtual void Postprocess(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
 
-        protected void TranslateTypeSyntax(ConversionContext context, TypeSyntax syntax, StringBuilder source)
+        protected void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
         {
             string original = syntax.ToString();
             string replacement = GetTypeTranslation(context, syntax);
             source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
         }
 
-        protected string GetTypeTranslation(ConversionContext context, TypeSyntax syntax)
+        protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
         {
             Type t = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
             if (t != null)
@@ -35,7 +35,7 @@ namespace SharpShader
                 Type[] iTypes = t.GetInterfaces();
                 foreach (Type implemented in iTypes)
                 {
-                    LanguageFoundation.Word translation = context.Foundation.GetWord(implemented);
+                    LanguageFoundation.Word translation = context.Parent.Foundation.GetWord(implemented);
                     if (translation != null)
                     {
                         string original = syntax.ToString();
@@ -92,26 +92,26 @@ namespace SharpShader
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed void Preprocess(ConversionContext context, SyntaxNode node, StringBuilder source)
+        internal override sealed void Preprocess(ShaderContext context, SyntaxNode node, StringBuilder source)
         {
             OnPreprocess(context, node as T, source);
         }
 
-        internal override sealed void Map(ConversionContext context, SyntaxNode node)
+        internal override sealed void Map(ShaderContext context, SyntaxNode node)
         {
             OnMap(context, node as T);
         }
 
-        internal override sealed void Postprocess(ConversionContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
+        internal override sealed void Postprocess(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
         {
             OnPostprocess(context, node as T, source, component);
         }
 
-        protected virtual void OnPreprocess(ConversionContext context, T syntax, StringBuilder source) { }
+        protected virtual void OnPreprocess(ShaderContext context, T syntax, StringBuilder source) { }
 
-        protected virtual void OnMap(ConversionContext context, T syntax) { }
+        protected virtual void OnMap(ShaderContext context, T syntax) { }
 
-        protected virtual void OnPostprocess(ConversionContext context, T syntax, StringBuilder source, ShaderComponent component) { }
+        protected virtual void OnPostprocess(ShaderContext context, T syntax, StringBuilder source, ShaderComponent component) { }
     }
 
     [Flags]

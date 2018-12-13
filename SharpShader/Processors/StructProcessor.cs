@@ -13,12 +13,12 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
-        protected override void OnPreprocess(ConversionContext context, StructDeclarationSyntax node, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax node, StringBuilder source)
         {
             RemoveTokens(node.Modifiers, source);
         }
 
-        protected override void OnMap(ConversionContext context, StructDeclarationSyntax syntax)
+        protected override void OnMap(ShaderContext context, StructDeclarationSyntax syntax)
         {
             if (ShaderReflection.HasAttribute<ConstantBufferAttribute>(syntax.AttributeLists))
                 context.Map.AddConstantBuffer(syntax);
@@ -26,7 +26,7 @@ namespace SharpShader
                 context.Map.AddStructure(syntax);
         }
 
-        protected override void OnPostprocess(ConversionContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnPostprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if(cbAttribute != null)
@@ -36,12 +36,12 @@ namespace SharpShader
                 if (argList.Count > 0)
                     int.TryParse(argList[0].ToString(), out slot);
 
-                string translated = context.Foundation.TranslateConstantBuffer(context, syntax, slot);
+                string translated = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, slot);
                 source.Replace(syntax.ToString(), translated);
             }
             else
             {
-                string translated = context.Foundation.TranslateStruct(context, syntax);
+                string translated = context.Parent.Foundation.TranslateStruct(context, syntax);
                 source.Replace(syntax.ToString(), translated);
             }
         }

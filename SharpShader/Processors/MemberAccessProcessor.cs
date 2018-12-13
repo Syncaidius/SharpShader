@@ -14,16 +14,16 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
-        protected override void OnMap(ConversionContext context, MemberAccessExpressionSyntax syntax)
+        protected override void OnMap(ShaderContext context, MemberAccessExpressionSyntax syntax)
         {
             context.Map.AddMemberAccess(syntax);
         }
 
-        protected override void OnPostprocess(ConversionContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnPostprocess(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderComponent component)
         {
             if (context.Map.Fields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {
-                if (!context.Foundation.InstancedConstantBuffers)
+                if (!context.Parent.Foundation.InstancedConstantBuffers)
                 {
                     if (context.Map.ConstantBuffers.ContainsKey(fieldSyntax.Declaration.Type.ToString()))
                         source.Remove(syntax.Expression.SpanStart, syntax.Expression.Span.Length + syntax.OperatorToken.Span.Length);

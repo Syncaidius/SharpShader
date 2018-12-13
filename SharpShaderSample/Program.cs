@@ -30,7 +30,7 @@ namespace SharpShaderSample
             // Store the output to file so we can take a look at it ourselves.
             if (output != null)
             {
-                foreach (KeyValuePair<string, ConversionResult.Shader> kvp in output)
+                foreach (KeyValuePair<string, ShaderResult> kvp in output)
                 {
                     using (FileStream fs = new FileStream($"{kvp.Key}.hlsl", FileMode.Create, FileAccess.Write))
                     {

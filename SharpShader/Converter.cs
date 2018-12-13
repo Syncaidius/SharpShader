@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Emit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,6 +50,11 @@ namespace SharpShader
                 if (pp.HasStageFlags(NodeProcessStageFlags.PostProcess))
                     _postProcessors.Add(pp.ParsedType, pp);
             }
+        }
+
+        internal static void Message(string msg)
+        {
+            Console.WriteLine($"[SharpShader] {msg}");
         }
 
         /// <summary>
@@ -167,55 +173,103 @@ namespace SharpShader
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
-            foreach(KeyValuePair<string,string> kvp in cSharpSources)
+            Message("Analyzing...");
+            Analyze(context, cSharpSources);
+            int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+            int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
+            foreach (ConversionMessage msg in context.Messages)
+                Message($"[{msg.MessageType}] {msg.Text}");
+            
+            Message($"Analysis complete. {errors} errors and {warnings} in C# source.");
+
+            if (errors > 0)
             {
-                Console.WriteLine($"Translating '{kvp.Key}'");
+                Message($"Cannot proceed until {errors} errors are fixed. Aborting.");
+                return context.ToResult();
+            }
+
+            foreach(ShaderContext shader in context.Shaders)
+            {
+                Message($"Translating '{shader.Name}'...");
                 Stopwatch timer = new Stopwatch();
                 timer.Start();
-                context.StartNewShader(kvp.Key);
-                context.RegenerateTree(kvp.Value);
 
-                Console.WriteLine("  Stage 1/3 (pre-process)...");
+                Message("  Stage 1/3 (pre-process)...");
                 List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
                 foreach (Type t in _preprocessors.Keys)
                 {
-                    Console.WriteLine($"    Processing {t.Name} nodes");
-                    GatherNodes(context, context.Root, t, nodesToProcess);
-                    Preprocess(context, t, nodesToProcess);
+                    Message($"    Processing {t.Name} nodes");
+                    GatherNodes(context, shader.Root, t, nodesToProcess);
+                    Preprocess(shader, t, nodesToProcess);
                     nodesToProcess.Clear();
                 }
 
-                Console.WriteLine("  Stage 2/3 (mapping)...");
-                Map(context, context.Root);
+                Message("  Stage 2/3 (mapping)...");
+                Map(shader, shader.Root);
 
-                Console.WriteLine("  Stage 3/3 (post-process)...");
-                context.CurrentShader.SourceCode = PostProcess(context);
+                Message("  Stage 3/3 (post-process)...");
+                shader.Source = PostProcess(shader);
 
                 if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
                 {
                     if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
                     {
-                        context.CurrentShader.SourceCode = RemoveWhitespace(context.CurrentShader.SourceCode, flags);
-                        Console.WriteLine("  Stripped whitespace");
+                        shader.Source = RemoveWhitespace(shader.Source, flags);
+                        Message("  Stripped whitespace");
                     }
                     else
                     {
-                        context.CurrentShader.SourceCode = CorrectIndents(context.CurrentShader.SourceCode, flags);
-                        Console.WriteLine("  Corrected indentation");
+                        shader.Source = CorrectIndents(shader.Source, flags);
+                        Message("  Corrected indentation");
                     }
                 }
                 else
-                    Console.WriteLine($"  Skipped formatting step");
+                    Message($"  Skipped formatting step");
 
                 timer.Stop();
-                Console.WriteLine($"  Finished '{kvp.Key}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
-                context.Clear();
+                Message($"  Finished '{shader.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             }
 
             mainTimer.Stop();
-            Console.WriteLine($"  Converted {cSharpSources.Count} source(s) in {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
+            Message($"  Converted {cSharpSources.Count} source(s) in {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
-            return context.Result;
+            return context.ToResult();
+        }
+
+        private void Analyze(ConversionContext context, Dictionary<string, string> cSharpSources)
+        {
+            List<SyntaxTree> sourceTrees = new List<SyntaxTree>();
+            foreach (string sourceName in cSharpSources.Keys)
+            {
+                ShaderContext shaderContext = context.AddShader(sourceName);
+                shaderContext.RegenerateTree(cSharpSources[sourceName]);
+                sourceTrees.Add(shaderContext.Tree);
+            }
+
+            List<MetadataReference> references = new List<MetadataReference>();
+            references.Add(MetadataReference.CreateFromFile(typeof(Single).Assembly.Location));
+            references.Add(MetadataReference.CreateFromFile(typeof(Vector4).Assembly.Location));
+
+            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            CSharpCompilation compilation = CSharpCompilation.Create("sharp_shader_temp", sourceTrees, references, options);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                EmitResult result = compilation.Emit(ms);
+                foreach(Diagnostic d in result.Diagnostics)
+                {
+                    FileLinePositionSpan pos = d.Location.GetLineSpan();
+                    switch (d.Severity)
+                    {
+                        case DiagnosticSeverity.Error:
+                            context.AddMessage(d.GetMessage(), pos.StartLinePosition.Line, pos.StartLinePosition.Character);
+                            break;
+
+                        case DiagnosticSeverity.Warning:
+                            context.AddMessage(d.GetMessage(), pos.StartLinePosition.Line, pos.StartLinePosition.Character, ConversionMessageType.Warning);
+                            break;
+                    }
+                }
+            }
         }
 
         private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
@@ -229,7 +283,7 @@ namespace SharpShader
                 GatherNodes(context, child, nodeType, nodesToProcess, depth + 1);
         }
 
-        private void Preprocess(ConversionContext context, Type nodeType, List<SyntaxNode> nodes)
+        private void Preprocess(ShaderContext context, Type nodeType, List<SyntaxNode> nodes)
         {
             StringBuilder source = new StringBuilder(context.Tree.ToString());
             NodeProcessor processor = _preprocessors[nodeType];
@@ -242,7 +296,7 @@ namespace SharpShader
             context.RegenerateTree(source.ToString());
         }
 
-        private void Map(ConversionContext context, SyntaxNode node)
+        private void Map(ShaderContext shader, SyntaxNode node)
         {
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();  
             foreach (SyntaxNode child in stuff)
@@ -251,29 +305,29 @@ namespace SharpShader
 
                 if (_mappers.TryGetValue(t, out NodeProcessor mapper))
                 {
-                    SyntaxTree tree = context.Tree;
-                    mapper.Map(context, child);
-                    if (tree != context.Tree)
+                    SyntaxTree tree = shader.Tree;
+                    mapper.Map(shader, child);
+                    if (tree != shader.Tree)
                         throw new Exception("The syntax tree was modified during mapping stage");
                 }
 
-                Map(context, child);
+                Map(shader, child);
             }
         }
 
-        private string PostProcess(ConversionContext context)
+        private string PostProcess(ShaderContext shader)
         {
-            StringBuilder source = new StringBuilder(context.Tree.ToString());
+            StringBuilder source = new StringBuilder(shader.Tree.ToString());
 
             // Iterate backwards; Bottom to top. 
             // Iterating in this way ensures any changes made by post-processors will not invalidate the locations of earlier nodes.
-            for (int i = context.Map.Components.Count - 1; i >= 0; i--)
+            for (int i = shader.Map.Components.Count - 1; i >= 0; i--)
             {
-                ShaderComponent com = context.Map.Components[i];
+                ShaderComponent com = shader.Map.Components[i];
                 SyntaxNode node = com.Node;
                 Type test = node.GetType();
                 if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))
-                    proc.Postprocess(context, node, source, com);
+                    proc.Postprocess(shader, node, source, com);
             }
 
             return source.ToString();

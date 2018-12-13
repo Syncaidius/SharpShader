@@ -14,11 +14,11 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping;
 
-        protected override void OnPreprocess(ConversionContext context, InvocationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, InvocationExpressionSyntax syntax, StringBuilder source)
         {
             string strName = syntax.Expression.ToString();
             string invocName = char.ToLowerInvariant(strName[0]) + strName.Substring(1);  
-            if (context.Foundation.IsIntrinsic(invocName))
+            if (context.Parent.Foundation.IsIntrinsic(invocName))
                 source.Replace(strName, invocName, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
         }
     }

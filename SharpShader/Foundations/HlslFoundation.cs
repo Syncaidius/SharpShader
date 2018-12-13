@@ -14,7 +14,7 @@ namespace SharpShader
 
         internal HlslFoundation(ShaderLanguage language) : base(language) { }
 
-        internal override string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot)
+        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, int slot)
         {
             string strRegister = slot > -1 ? $" : register(b{slot}" : "";
             string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
@@ -28,7 +28,7 @@ namespace SharpShader
             return result;
         }
 
-        internal override string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax)
+        internal override string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax)
         {
             string result = $"struct {syntax.Identifier}{Environment.NewLine}";
             result += "{" + Environment.NewLine;
@@ -42,7 +42,7 @@ namespace SharpShader
             return result;
         }
 
-        internal override string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax)
+        internal override string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax)
         {
             AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(syntax.AttributeLists);
             if (packAttribute != null)
@@ -62,7 +62,7 @@ namespace SharpShader
                             if (Enum.TryParse(comName, out PackOffsetComponent component))
                                 return $"{syntax.Declaration} : packoffset(c{register}.{component.ToString().ToLower()})";
                             else
-                                context.CurrentShader.AddError($"Incorrect pack offset component name: {comName}", 0, 0);
+                                context.AddMessage($"Incorrect pack offset component name: {comName}", 0, 0);
                         }
 
                         return $"{syntax.Declaration} : packoffset(c{register})";
@@ -70,7 +70,7 @@ namespace SharpShader
                 }
                 else
                 {
-                    context.CurrentShader.AddError($"Incorrect PackOffsetAttribute arguments. 1 or more expected arguments are missing.", 0, 0);
+                    context.AddMessage($"Incorrect PackOffsetAttribute arguments. 1 or more expected arguments are missing.", 0, 0);
                 }
             }
 
@@ -95,11 +95,11 @@ namespace SharpShader
                                 if (slot > -1)
                                     return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
                                 else
-                                    context.CurrentShader.AddError($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
+                                    context.AddMessage($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
                             }
                             else
                             {
-                                context.CurrentShader.AddError($"Invalid SemanticAttribute slot value. Expected value greater than, or equal to 0. Got: {strArgSlot}", 0, 0);
+                                context.AddMessage($"Invalid SemanticAttribute slot value. Expected value greater than, or equal to 0. Got: {strArgSlot}", 0, 0);
                             }
                         }
 
@@ -107,19 +107,19 @@ namespace SharpShader
                     }
                     else
                     {
-                        context.CurrentShader.AddError($"Invalid semantic name: {strSemantic}", 0, 0);
+                        context.AddMessage($"Invalid semantic name: {strSemantic}", 0, 0);
                     }
                 }
                 else
                 {
-                    context.CurrentShader.AddError($"Unexpected number of SemanticAttribute arguments ({semanticAttribute.ArgumentList.Arguments.Count}). Expected at least 1.", 0, 0);
+                    context.AddMessage($"Unexpected number of SemanticAttribute arguments ({semanticAttribute.ArgumentList.Arguments.Count}). Expected at least 1.", 0, 0);
                 }
             }
 
             return $"{syntax.Declaration}";
         }
 
-        internal override string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header)
+        internal override string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header)
         {
             if (ep.EntryType == EntryPointType.VertexShader)
             {
@@ -143,14 +143,14 @@ namespace SharpShader
                             if (int.TryParse(strSlot, out int slot))
                                 result += slot;
                             else
-                                context.CurrentShader.AddError($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strSlot}", 0, 0);
+                                context.Parent.AddMessage($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strSlot}", 0, 0);
                         }
 
                         return result;
                     }
                     else
                     {
-                        context.CurrentShader.AddError($"Invalid semantic name: {enumVal}", 0, 0);
+                        context.Parent.AddMessage($"Invalid semantic name: {enumVal}", 0, 0);
                     }
                 }
             }
@@ -159,7 +159,7 @@ namespace SharpShader
             return header;
         }
 
-        internal override string TranslateNumber(ConversionContext context, string number)
+        internal override string TranslateNumber(ShaderContext context, string number)
         {
             // NOTE: hexadecimal literals are supported, binary literals are not, so we'll need to translate those.
             if (number.StartsWith("0b")) // Binary literal.

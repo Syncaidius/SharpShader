@@ -14,7 +14,7 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnPreprocess(ConversionContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
         {
             /* Considerations:
              *  - If the parent node is ReturnStatementSyntax, reformat to return by variable, if needed.
@@ -28,7 +28,7 @@ namespace SharpShader
             if (syntax.Parent is AssignmentExpressionSyntax assignment)
                 varName = assignment.Left.ToString();
             else
-                varName = context.GetNewVariableName("ret");
+                varName = context.Parent.GetNewVariableName("ret");
 
             // Translate initializer block
             if(syntax.Initializer != null)

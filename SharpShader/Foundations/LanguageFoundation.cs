@@ -13,11 +13,11 @@ namespace SharpShader
 {
     internal abstract class LanguageFoundation
     {
-        internal abstract string TranslateConstantBuffer(ConversionContext context, StructDeclarationSyntax syntax, int slot);
+        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, int slot);
 
-        internal abstract string TranslateStruct(ConversionContext context, StructDeclarationSyntax syntax);
+        internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
 
-        internal abstract string TranslateStructField(ConversionContext context, FieldDeclarationSyntax syntax);
+        internal abstract string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax);
 
         /// <summary>
         /// Occurs when the first line of an entry point method/function declaration requires translating. The content of the method should not be translated.
@@ -25,9 +25,9 @@ namespace SharpShader
         /// <param name="context"></param>
         /// <param name="ep"></param>
         /// <returns></returns>
-        internal abstract string TranslateEntryPointHeader(ConversionContext context, EntryPoint ep, ref string header);
+        internal abstract string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header);
 
-        internal abstract string TranslateNumber(ConversionContext context, string number);
+        internal abstract string TranslateNumber(ShaderContext context, string number);
 
         protected static string TranslateBinaryLiteral(string number)
         {
