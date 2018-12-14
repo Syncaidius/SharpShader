@@ -25,6 +25,12 @@ namespace SharpShader
 
         protected override void OnMap(ShaderContext context, FieldDeclarationSyntax syntax)
         {
+            AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
+            if (regAttribute != null)
+            {
+                // TODO determine whether or not the field declaration is for a shader construct (sampler, texture, const buffer, etc) by it's type name.
+            }
+
             if (syntax.Parent == context.Root)
                 context.Map.AddField(syntax);
         }
@@ -33,7 +39,7 @@ namespace SharpShader
         {
             if (!context.Parent.Foundation.InstancedConstantBuffers)
             {
-                if (context.Map.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
+                if (context.Map.ConstantBuffers.Contains(syntax.Declaration.Type.ToString()))
                     source.Remove(syntax.SpanStart, syntax.Span.Length);
             }
         }

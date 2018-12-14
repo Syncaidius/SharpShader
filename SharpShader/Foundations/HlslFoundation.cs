@@ -14,9 +14,9 @@ namespace SharpShader
 
         internal HlslFoundation(ShaderLanguage language) : base(language) { }
 
-        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, int slot)
+        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
         {
-            string strRegister = slot > -1 ? $" : register(b{slot}" : "";
+            string strRegister = registerID != null ? $" : register(b{registerID}" : "";
             string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
             result += "{" + Environment.NewLine;
             foreach (MemberDeclarationSyntax m in syntax.Members)

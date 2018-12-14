@@ -72,9 +72,6 @@ namespace SharpShader
                     }
                 }
             }
-
-            if (!attributed)
-                context.Map.AddMethod(syntax);
         }
 
         protected override void OnPostprocess(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
@@ -85,8 +82,9 @@ namespace SharpShader
                 int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;
                 string toReplace = syntax.ToString().Substring(0, methodHeaderLength);
                 string methodHeader = toReplace;
+                string methodName = syntax.Identifier.ToString();
 
-                string translated = context.Parent.Foundation.TranslateEntryPointHeader(context, context.Map.EntryPoints[component.Name], ref methodHeader);
+                string translated = context.Parent.Foundation.TranslateEntryPointHeader(context, context.Map.EntryPoints[methodName], ref methodHeader);
                 source.Replace(toReplace, translated);
             }
         }

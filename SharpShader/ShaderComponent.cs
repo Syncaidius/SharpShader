@@ -9,15 +9,13 @@ namespace SharpShader
 {
     internal class ShaderComponent
     {
-        public string Name;
-
         public SyntaxNode Node;
 
         public ShaderComponentType Type;
 
         public override string ToString()
         {
-            return $"{Type} - {Node.GetType().Name} - {Name}";
+            return $"{Type} - {Node.GetType().Name}";
         }
     }
 
@@ -27,7 +25,9 @@ namespace SharpShader
 
         ConstantBuffer = 1,
 
-        TextureSampler = 2,
+        Sampler = 2,
+
+        Texture = 2,
 
         Buffer = 3,
 

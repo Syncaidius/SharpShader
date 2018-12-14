@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [AttributeUsage(AttributeTargets.Struct)]
     public class ConstantBufferAttribute : SharpShaderAttribute
     {
-        public ConstantBufferAttribute() { }
-
-        public ConstantBufferAttribute(int index) { }
     }
 }

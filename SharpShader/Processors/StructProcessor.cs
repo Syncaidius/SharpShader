@@ -20,7 +20,8 @@ namespace SharpShader
 
         protected override void OnMap(ShaderContext context, StructDeclarationSyntax syntax)
         {
-            if (ShaderReflection.HasAttribute<ConstantBufferAttribute>(syntax.AttributeLists))
+            AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
+            if (cbAttribute != null)
                 context.Map.AddConstantBuffer(syntax);
             else
                 context.Map.AddStructure(syntax);
@@ -31,12 +32,16 @@ namespace SharpShader
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if(cbAttribute != null)
             {
-                SeparatedSyntaxList<AttributeArgumentSyntax> argList = cbAttribute.ArgumentList.Arguments;
-                int slot = -1;
-                if (argList.Count > 0)
-                    int.TryParse(argList[0].ToString(), out slot);
+                uint? registerID = null;
+                AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
+                if (regAttribute != null)
+                {
+                    SeparatedSyntaxList<AttributeArgumentSyntax> registerArgs = regAttribute.ArgumentList.Arguments;
+                    if(uint.TryParse(registerArgs[0].ToString(), out uint parsedID))
+                        registerID = parsedID;
+                }
 
-                string translated = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, slot);
+                string translated = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
                 source.Replace(syntax.ToString(), translated);
             }
             else

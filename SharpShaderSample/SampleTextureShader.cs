@@ -22,7 +22,8 @@ namespace SharpShaderSample
             public Vector2 UV;
         }
 
-        [ConstantBuffer(0)]
+        [ConstantBuffer]
+        [Register(0)]
         public struct CommonData
         {
             [PackOffset(0)]
@@ -38,7 +39,8 @@ namespace SharpShaderSample
             public Matrix4x4 InvViewProjection;
         }
 
-        [ConstantBuffer(1)]
+        [ConstantBuffer]
+        [Register(1)]
         public struct ObjectData
         {
             [PackOffset(0)]
@@ -49,7 +51,11 @@ namespace SharpShaderSample
         }
 
         public ObjectData cbObject;
+
+        [Register(0)]
         public Texture2D mapTexture;
+
+        [Register(0)]
         public TextureSampler texSampler;
 
         [VertexShader]

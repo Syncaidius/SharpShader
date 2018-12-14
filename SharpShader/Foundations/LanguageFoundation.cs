@@ -13,7 +13,7 @@ namespace SharpShader
 {
     internal abstract class LanguageFoundation
     {
-        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, int slot);
+        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
 
         internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
 

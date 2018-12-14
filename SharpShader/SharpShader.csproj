@@ -185,7 +185,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
+    <Compile Include="Attributes\RegisterAttribute.cs" />
     <Compile Include="Attributes\SemanticAttribute.cs" />
     <Compile Include="Attributes\PackOffsetAttribute.cs" />
     <Compile Include="Attributes\ComputeShaderAttribute.cs" />
@@ -223,7 +225,6 @@
     <Compile Include="ShaderComponent.cs" />
     <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
