@@ -39,7 +39,7 @@ namespace SharpShader
         {
             if (!context.Parent.Foundation.InstancedConstantBuffers)
             {
-                if (context.Map.ConstantBuffers.Contains(syntax.Declaration.Type.ToString()))
+                if (context.Map.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
                     source.Remove(syntax.SpanStart, syntax.Span.Length);
             }
         }

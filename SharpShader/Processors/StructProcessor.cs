@@ -22,9 +22,15 @@ namespace SharpShader
         {
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if (cbAttribute != null)
-                context.Map.AddConstantBuffer(syntax);
+            {
+ 
+                AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
+                context.Map.AddConstantBuffer(syntax, regAttribute);
+            }
             else
+            {
                 context.Map.AddStructure(syntax);
+            }
         }
 
         protected override void OnPostprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)

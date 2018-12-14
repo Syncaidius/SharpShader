@@ -199,7 +199,6 @@
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
     <Compile Include="ConversionResult.cs" />
-    <Compile Include="ConstantBufferStructure.cs" />
     <Compile Include="CSharpShader.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -219,11 +218,11 @@
     <Compile Include="Processors\NamespaceProcessor.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\UsingProcessor.cs" />
+    <Compile Include="RegisteredObject.cs" />
     <Compile Include="SemanticType.cs" />
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderReflection.cs" />
     <Compile Include="ShaderComponent.cs" />
-    <Compile Include="ShaderMethod.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />

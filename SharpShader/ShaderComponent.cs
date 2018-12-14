@@ -13,6 +13,12 @@ namespace SharpShader
 
         public ShaderComponentType Type;
 
+        internal ShaderComponent(SyntaxNode node, ShaderComponentType type)
+        {
+            Node = node;
+            Type = type;
+        }
+
         public override string ToString()
         {
             return $"{Type} - {Node.GetType().Name}";

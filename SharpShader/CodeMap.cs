@@ -20,13 +20,13 @@ namespace SharpShader
 
         internal List<ShaderComponent> Components = new List<ShaderComponent>();
 
-        internal List<string> ConstantBuffers = new List<string>();
+        internal Dictionary<string, RegisteredObject> ConstantBuffers = new Dictionary<string, RegisteredObject>();
 
-        internal List<string> Textures = new List<string>();
+        internal Dictionary<string, RegisteredObject> Textures = new Dictionary<string, RegisteredObject>();
 
-        internal List<string> Samplers = new List<string>();
+        internal Dictionary<string, RegisteredObject> Samplers = new Dictionary<string, RegisteredObject>();
 
-        internal List<string> UAVs = new List<string>();
+        internal Dictionary<string, RegisteredObject> UAVs = new Dictionary<string, RegisteredObject>();
 
         internal void Clear()
         {
@@ -42,31 +42,19 @@ namespace SharpShader
         {
             string name = ep.MethodSyntax.Identifier.ToString();
             EntryPoints.Add(name, ep);
-            Components.Add(new ShaderComponent()
-            {
-                Node = ep.MethodSyntax,
-                Type = ShaderComponentType.EntryPoint,
-            });
+            Components.Add(new ShaderComponent(ep.MethodSyntax, ShaderComponentType.EntryPoint));
         }
 
         internal void AddMemberAccess(MemberAccessExpressionSyntax syntax)
         {
-            Components.Add(new ShaderComponent()
-            {
-                Node = syntax,
-                Type = ShaderComponentType.MemberAccess,
-            });
+            Components.Add(new ShaderComponent(syntax, ShaderComponentType.MemberAccess));
         }
 
         internal void AddField(FieldDeclarationSyntax syntax)
         {
             string name = syntax.Declaration.Variables[0].Identifier.ToString();
             Fields.Add(name, syntax);
-            Components.Add(new ShaderComponent()
-            {
-                Node = syntax,
-                Type = ShaderComponentType.CSharpField,
-            });
+            Components.Add(new ShaderComponent(syntax, ShaderComponentType.CSharpField));
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)
@@ -77,37 +65,22 @@ namespace SharpShader
         internal void AddStructure(StructDeclarationSyntax syntax)
         {
             Structures.Add(syntax);
-            Components.Add(new ShaderComponent()
-            {
-                Node = syntax,
-                Type = ShaderComponentType.Struct,
-            });
+            Components.Add(new ShaderComponent(syntax, ShaderComponentType.Struct));
         }
 
-        internal void AddConstantBuffer(StructDeclarationSyntax syntax)
+        internal void AddConstantBuffer(StructDeclarationSyntax syntax, AttributeSyntax regAttribute)
         {
             string name = syntax.Identifier.ToString();
-            ConstantBuffers.Add(name);
-            Components.Add(new ShaderComponent()
-            {
-                Node = syntax,
-                Type = ShaderComponentType.ConstantBuffer,
-            });
+
+            ConstantBuffers.Add(name, new RegisteredObject(regAttribute));
+            Components.Add(new ShaderComponent(syntax, ShaderComponentType.ConstantBuffer));
         }
 
-        internal void AddSampler(VariableDeclarationSyntax syntax)
+        internal void AddSampler(VariableDeclaratorSyntax syntax, AttributeSyntax attSyntax)
         {
-            foreach (VariableDeclaratorSyntax variable in syntax.Variables)
-            {
-                string name = variable.ToString();
-                ConstantBuffers.Add(name);
-            }
-
-            Components.Add(new ShaderComponent()
-            {
-                Node = syntax,
-                Type = ShaderComponentType.Sampler,
-            });
+            string name = syntax.ToString();
+            Samplers.Add(name, new RegisteredObject(attSyntax));
+            Components.Add(new ShaderComponent(syntax, ShaderComponentType.Sampler));
         }
     }
 }
