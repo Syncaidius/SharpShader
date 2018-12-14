@@ -15,11 +15,33 @@ namespace SharpShader
 
         protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
+            // Separate the declaration into individual single-variable declarations.
             if (syntax.Variables.Count > 1)
             {
+                string strAttributes = "";
+                AttributeSyntax regAttribute = null;
+                int nextRegister = 0;
+                string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
+
+                if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
+                {
+                    foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
+                        strAttributes += attList.ToString() + Environment.NewLine;
+
+                    regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
+                    int.TryParse(regAttribute.ArgumentList.Arguments[0].ToString(), out nextRegister);
+                    nextRegister++;
+                }
+
                 string replacement = "";
                 foreach (VariableDeclaratorSyntax vds in syntax.Variables)
+                {
+                    // The first set of attributes already exist, so don't add them again.
+                    if (replacement.Length > 0)
+                        replacement += strAttributes.Replace(regAttribute.ToString(), $"{strRegAttName}({nextRegister++})");
+
                     replacement += $"{syntax.Type} {vds};{Environment.NewLine}";
+                }
 
                 if(syntax.Parent is LocalDeclarationStatementSyntax parentDeclaration)
                     source.Replace(parentDeclaration.ToString(), replacement, parentDeclaration.SpanStart, parentDeclaration.Span.Length);

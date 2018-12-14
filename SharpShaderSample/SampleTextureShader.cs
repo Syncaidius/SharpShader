@@ -53,7 +53,7 @@ namespace SharpShaderSample
         public ObjectData cbObject;
 
         [Register(0)]
-        public Texture2D mapTexture;
+        public Texture2D mapTexture, mapNormals, mapSpecular;
 
         [Register(0)]
         public TextureSampler texSampler;
