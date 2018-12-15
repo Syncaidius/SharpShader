@@ -173,19 +173,27 @@ namespace SharpShader
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
-            Message("Analyzing...");
-            Analyze(context, cSharpSources);
-            int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
-            int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
-            foreach (ConversionMessage msg in context.Messages)
-                Message($"[{msg.MessageType}] {msg.Text}");
-            
-            Message($"Analysis complete. {errors} errors and {warnings} in C# source.");
-
-            if (errors > 0)
+            if ((flags & ConversionFlags.SkipAnalysis) != ConversionFlags.SkipAnalysis)
             {
-                Message($"Cannot proceed until {errors} errors are fixed. Aborting.");
-                return context.ToResult();
+                Message("Analyzing...");
+                Analyze(context, cSharpSources);
+                int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+                int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
+                foreach (ConversionMessage msg in context.Messages)
+                    Message($"[{msg.MessageType}] {msg.Text}");
+
+                Message($"Analysis complete. {errors} errors and {warnings} in C# source.");
+
+                if (errors > 0)
+                {
+                    Message($"Cannot proceed until {errors} errors are fixed. Aborting.");
+                    return context.ToResult();
+                }
+            }
+            else
+            {
+                Message($"Skipping analysis");
+                GenerateSourceTrees(context, cSharpSources);
             }
 
             foreach(ShaderContext shader in context.Shaders)
@@ -236,8 +244,9 @@ namespace SharpShader
             return context.ToResult();
         }
 
-        private void Analyze(ConversionContext context, Dictionary<string, string> cSharpSources)
+        private List<SyntaxTree> GenerateSourceTrees(ConversionContext context, Dictionary<string, string> cSharpSources)
         {
+            Message($"Generating trees for {cSharpSources.Count} source(s)");
             List<SyntaxTree> sourceTrees = new List<SyntaxTree>();
             foreach (string sourceName in cSharpSources.Keys)
             {
@@ -246,11 +255,17 @@ namespace SharpShader
                 sourceTrees.Add(shaderContext.Tree);
             }
 
+            return sourceTrees;
+        }
+
+        private void Analyze(ConversionContext context, Dictionary<string, string> cSharpSources)
+        {
+            List<SyntaxTree> sourceTrees = GenerateSourceTrees(context, cSharpSources);
             List<MetadataReference> references = new List<MetadataReference>();
             references.Add(MetadataReference.CreateFromFile(typeof(Single).Assembly.Location));
             references.Add(MetadataReference.CreateFromFile(typeof(Vector4).Assembly.Location));
 
-            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: OptimizationLevel.Release);
             CSharpCompilation compilation = CSharpCompilation.Create("sharp_shader_temp", sourceTrees, references, options);
             using (MemoryStream ms = new MemoryStream())
             {
