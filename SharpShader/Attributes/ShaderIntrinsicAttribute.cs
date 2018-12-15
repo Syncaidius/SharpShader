@@ -17,11 +17,17 @@ namespace SharpShader
         internal ShaderIntrinsicAttribute(ShaderLanguage language, string name)
         {
             Language = language;
-            ShaderLanguageName = name;
+            NativeName = name;
         }
 
+        /// <summary>
+        /// Gets the shader language that the intrinsic is part of.
+        /// </summary>
         public ShaderLanguage Language { get; }
 
-        public string ShaderLanguageName { get; }
+        /// <summary>
+        /// Gets the name of the intrinsic function in it's native shader language.
+        /// </summary>
+        public string NativeName { get; }
     }
 }

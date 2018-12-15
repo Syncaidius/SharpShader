@@ -61,7 +61,6 @@ namespace SharpShader
             public string Text;
         }
         Dictionary<Type, Word> _words = new Dictionary<Type, Word>();
-        Dictionary<string, List<Intrinsic>> _intrinsics = new Dictionary<string, List<Intrinsic>>();
 
         public ShaderLanguage Language { get; }
 
@@ -81,11 +80,6 @@ namespace SharpShader
                 return word;
             else
                 return null;
-        }
-
-        internal bool IsIntrinsic(string name)
-        {
-            return _intrinsics.ContainsKey(name);
         }
         #endregion
 
@@ -119,10 +113,6 @@ namespace SharpShader
                         {
                             case "Word":
                                 ParseWord(foundation, node);
-                                break;
-
-                            case "Intrinsic":
-                                ParseIntrinsic(foundation, node);
                                 break;
                         }
                     }
@@ -163,25 +153,6 @@ namespace SharpShader
                     });
                 }
             }
-        }
-
-        private static void ParseIntrinsic(LanguageFoundation foundation, XmlNode node)
-        {
-            XmlAttribute attName = node.Attributes["name"];
-            if (attName == null)
-                return;
-
-            List<Intrinsic> intrinsicList = null;
-            if (!foundation._intrinsics.TryGetValue(attName.InnerText, out intrinsicList))
-            {
-                intrinsicList = new List<Intrinsic>();
-                foundation._intrinsics.Add(attName.InnerText, intrinsicList);
-            }
-
-            Intrinsic i = new Intrinsic();
-            i.Name = attName.InnerText;
-            intrinsicList.Add(i);
-
         }
         #endregion
     }

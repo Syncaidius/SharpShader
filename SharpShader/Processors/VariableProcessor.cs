@@ -38,7 +38,12 @@ namespace SharpShader
                 {
                     // The first set of attributes already exist, so don't add them again.
                     if (replacement.Length > 0)
-                        replacement += strAttributes.Replace(regAttribute.ToString(), $"{strRegAttName}({nextRegister++})");
+                    {
+                        if (regAttribute != null)
+                            replacement += strAttributes.Replace(regAttribute.ToString(), $"{strRegAttName}({nextRegister++})");
+                        else
+                            replacement += strAttributes;
+                    }
 
                     replacement += $"{syntax.Type} {vds};{Environment.NewLine}";
                 }

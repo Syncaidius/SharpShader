@@ -16,10 +16,10 @@ namespace SharpShader
 
         protected override void OnPreprocess(ShaderContext context, InvocationExpressionSyntax syntax, StringBuilder source)
         {
-            string strName = syntax.Expression.ToString();
-            string invocName = char.ToLowerInvariant(strName[0]) + strName.Substring(1);  
-            if (context.Parent.Foundation.IsIntrinsic(invocName))
-                source.Replace(strName, invocName, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
+            string cSharpName = syntax.Expression.ToString();
+            string translation = ShaderReflection.GetIntrinsicTranslation(context, cSharpName);
+            if (!string.IsNullOrEmpty(translation))
+                source.Replace(cSharpName, translation, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
         }
     }
 }
