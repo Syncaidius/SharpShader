@@ -15,7 +15,7 @@ namespace SharpShaderSample
             Converter converter = new Converter();
             ConversionResult output = null;
 
-            using(FileStream fs = new FileStream("SampleShader.cs", FileMode.Open, FileAccess.Read))
+            using(FileStream fs = new FileStream("SampleTextureShader.cs", FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fs))
                 {

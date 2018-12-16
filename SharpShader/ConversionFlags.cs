@@ -28,7 +28,7 @@ namespace SharpShader
         StripComments = 4,
 
         /// <summary>
-        /// Skips the analysis stage of conversion. Useful when you can guarantee that the input source code is error-free.
+        /// Skips the analysis stage of conversion. Useful if you can guarantee that the input source code is already error-free.
         /// </summary>
         SkipAnalysis = 5,
     }

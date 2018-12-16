@@ -32,27 +32,37 @@ namespace SharpShader
             Type t = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
             if (t != null)
             {
-                Type[] iTypes = t.GetInterfaces();
-                foreach (Type implemented in iTypes)
+                // First attempt to directly translate the type. 
+                // If we fail, check for any implemented interfaces we can translate instead.
+                LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(t);
+                if (translation != null)
                 {
-                    LanguageFoundation.Word translation = context.Parent.Foundation.GetWord(implemented);
-                    if (translation != null)
+                    return translation.NativeText;
+                }
+                else
+                {
+                    Type[] iTypes = t.GetInterfaces();
+                    foreach (Type implemented in iTypes)
                     {
-                        string original = syntax.ToString();
-                        string replacement = null;
-                        if (typeof(IVector).IsAssignableFrom(implemented))
-                            replacement = original.Replace("Vector", "");
-                        else if (typeof(IMatrix).IsAssignableFrom(implemented))
-                            replacement = original.Replace("Matrix", "");
-
-                        if (translation.UniformSizeIsSingular)
+                        translation = context.Parent.Foundation.GetKeyword(implemented);
+                        if (translation != null)
                         {
-                            if (typeof(UniformDimensions).IsAssignableFrom(t))
-                                replacement = replacement.Substring(0, replacement.Length - 2);
-                        }
+                            string original = syntax.ToString();
+                            string replacement = null;
+                            if (typeof(IVector).IsAssignableFrom(implemented))
+                                replacement = original.Replace("Vector", "");
+                            else if (typeof(IMatrix).IsAssignableFrom(implemented))
+                                replacement = original.Replace("Matrix", "");
 
-                        replacement = translation.Text + replacement;
-                        return replacement;
+                            if (translation.UniformSizeIsSingular)
+                            {
+                                if (typeof(UniformDimensions).IsAssignableFrom(t))
+                                    replacement = replacement.Substring(0, replacement.Length - 2);
+                            }
+
+                            replacement = translation.NativeText + replacement;
+                            return replacement;
+                        }
                     }
                 }
             }

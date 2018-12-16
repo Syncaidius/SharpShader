@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Lexicon>
   <Language>GLSL</Language>
-  <Word t="SharpShader.IVector`1" intrinsic="true">
+  <Word type="SharpShader.IVector`1">
     <Generic type="System.Int32" to="ivec" />
     <Generic type="System.UInt32" to="uivec" />
     <Generic type="System.Single" to="vec" />
     <Generic type="System.Double" to="dvec" />
     <Generic type="System.Boolean" to="bvec" />
   </Word>
-  <Word t="SharpShader.IMatrix`1" intrinsic="true"  uniformSizeIsSingular="false">
+  <Word type="SharpShader.IMatrix`1" uniformSizeIsSingular="false">
     <Generic type="System.Int32" to="imat" />
     <Generic type="System.UInt32" to="uimat" />
     <Generic type="System.Single" to="mat" />

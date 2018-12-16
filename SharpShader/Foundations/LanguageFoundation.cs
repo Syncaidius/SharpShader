@@ -49,18 +49,20 @@ namespace SharpShader
         internal abstract bool InstancedConstantBuffers { get; }
 
         #region Instance members
-        internal class Intrinsic
+        internal class Keyword
         {
-            internal string Name { get; set; }
-            internal List<string> Parameters = new List<string>();
+            /// <summary>
+            /// if true, uniform, multi-dimensional type names will be translated to single-dimension names. For example, Matrix4x4 will translate into Matrix4, Mat4 or Float4.
+            /// </summary>
+            public bool UniformSizeIsSingular;
+
+            /// <summary>
+            /// The word in it's native language.
+            /// </summary>
+            public string NativeText;
         }
 
-        internal class Word
-        {
-            public bool UniformSizeIsSingular;
-            public string Text;
-        }
-        Dictionary<Type, Word> _words = new Dictionary<Type, Word>();
+        Dictionary<Type, Keyword> _keywords = new Dictionary<Type, Keyword>();
 
         public ShaderLanguage Language { get; }
 
@@ -74,9 +76,9 @@ namespace SharpShader
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        internal Word GetWord(Type t)
+        internal Keyword GetKeyword(Type t)
         {
-            if (_words.TryGetValue(t, out Word word))
+            if (_keywords.TryGetValue(t, out Keyword word))
                 return word;
             else
                 return null;
@@ -128,27 +130,46 @@ namespace SharpShader
 
         private static void ParseWord(LanguageFoundation foundation, XmlNode wordNode)
         {
-            Type translatedType = Type.GetType(wordNode.Attributes["t"].InnerText);
-            bool uniformDimensionSingular = false;
+            Type translatedType = Type.GetType(wordNode.Attributes["type"].InnerText);
+            if (translatedType == null)
+                return;
 
+            bool uniformDimensionSingular = false;
             if (wordNode.Attributes["uniformSizeIsSingular"] != null)
                 bool.TryParse(wordNode.Attributes["uniformSizeIsSingular"].InnerText, out uniformDimensionSingular);
 
-            foreach (XmlNode subTypeNode in wordNode)
+            if (translatedType.IsGenericType)
             {
-                if (subTypeNode.Name != "Generic")
-                    continue;
-
-                string generic = subTypeNode.Attributes["type"]?.InnerText;
-                string toWord = subTypeNode.Attributes["to"]?.InnerText;
-
-                if (!string.IsNullOrWhiteSpace(generic))
+                foreach (XmlNode subTypeNode in wordNode)
                 {
-                    Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {foundation.Language} lexicon.");
-                    Type translatedGeneric = translatedType.MakeGenericType(genericType);
-                    foundation._words.Add(translatedGeneric, new Word()
+                    if (subTypeNode.Name != "Generic")
+                        continue;
+
+                    string generic = subTypeNode.Attributes["type"]?.InnerText;
+                    string nativeName = subTypeNode.Attributes["name"]?.InnerText;
+
+                    if (!string.IsNullOrWhiteSpace(generic) && !string.IsNullOrWhiteSpace(nativeName))
                     {
-                        Text = toWord,
+                        Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {foundation.Language} lexicon.");
+                        Type translatedGeneric = translatedType.MakeGenericType(genericType);
+                        foundation._keywords.Add(translatedGeneric, new Keyword()
+                        {
+                            NativeText = nativeName,
+                            UniformSizeIsSingular = uniformDimensionSingular,
+                        });
+                    }
+                }
+            }
+            else
+            {
+                string generic = wordNode.Attributes["type"]?.InnerText;
+                string nativeName = wordNode.Attributes["name"]?.InnerText;
+
+                if (!string.IsNullOrWhiteSpace(generic) && !string.IsNullOrWhiteSpace(nativeName))
+                {
+                    foundation._keywords.Add(translatedType, new Keyword()
+                    {
+                        NativeText = nativeName,
                         UniformSizeIsSingular = uniformDimensionSingular,
                     });
                 }
