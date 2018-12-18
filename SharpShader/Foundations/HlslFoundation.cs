@@ -52,7 +52,7 @@ namespace SharpShader
                 registerChar = 't';
 
             if (registerChar != null)
-                return $"{syntax.Declaration}; : register({registerChar}{registerID})";
+                return $"{syntax.Declaration} : register({registerChar}{registerID});";
             else
                 return syntax.ToString();
         }
