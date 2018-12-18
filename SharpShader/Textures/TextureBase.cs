@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     /// <summary>A base class for SharpShader's texture types.</summary>
+    [RegisteredType]
     public abstract class TextureBase
     {
         internal TextureBase() { }

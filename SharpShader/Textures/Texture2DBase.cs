@@ -9,6 +9,7 @@ namespace SharpShader
     /// <summary>A base class for SharpShader's 2D texture types.</summary>
     /// <typeparam name="T">The texture's template type (it's structural type).</typeparam>
     /// <typeparam name="LOC">The location data type.</typeparam>
+    [RegisteredType]
     public abstract class Texture2DBase<T, LOC> : TextureBase
         where T: struct
         where LOC : struct

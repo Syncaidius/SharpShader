@@ -33,7 +33,7 @@ namespace SharpShader
             }
         }
 
-        protected override void OnPostprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);
             if(cbAttribute != null)

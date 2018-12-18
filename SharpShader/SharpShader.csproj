@@ -210,7 +210,7 @@
     <Compile Include="Foundations\LanguageFoundation.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
-    <Compile Include="NodeProcessor.cs" />
+    <Compile Include="Processors\NodeProcessor.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\ObjectCreationProcessor.cs" />
     <Compile Include="Processors\InvocationProcessor.cs" />
@@ -235,6 +235,7 @@
     <Compile Include="ShaderResult.cs" />
     <Compile Include="Textures\Texture2DBase.cs" />
     <Compile Include="Textures\TextureComparisonSampler.cs" />
+    <Compile Include="Textures\TextureSampler1D.cs" />
     <Compile Include="Textures\TextureSampler2D.cs" />
     <Compile Include="Textures\TextureSampler.cs" />
     <Compile Include="Textures\TextureBase.cs" />

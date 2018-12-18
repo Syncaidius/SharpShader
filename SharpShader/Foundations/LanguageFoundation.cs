@@ -13,46 +13,10 @@ namespace SharpShader
 {
     internal abstract class LanguageFoundation
     {
-        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
-
-        internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
-
-        internal abstract string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax);
-
-        /// <summary>
-        /// Occurs when the first line of an entry point method/function declaration requires translating. The content of the method should not be translated.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="ep"></param>
-        /// <returns></returns>
-        internal abstract string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header);
-
-        internal abstract string TranslateNumber(ShaderContext context, string number);
-
-        protected static string TranslateBinaryLiteral(string number)
-        {
-            number = number.Substring(2);
-            int result = 0;
-            number = string.Concat(number.Reverse()).Replace("_", "");
-            for (int i = 0; i < number.Length; i++)
-            {
-                if (number[i] == '1')
-                    result |= 1 << i;
-            }
-
-            return result.ToString();
-        }
-
-        /// <summary>
-        /// Gets whether or not constant buffers are referred to as if they are instanced objects in their respective shader language.
-        /// </summary>
-        internal abstract bool InstancedConstantBuffers { get; }
-
-        #region Instance members
         internal class Keyword
         {
             /// <summary>
-            /// if true, uniform, multi-dimensional type names will be translated to single-dimension names. For example, Matrix4x4 will translate into Matrix4, Mat4 or Float4.
+            /// If true, uniform, multi-dimensional type names will be translated to single-dimension names. For example, Matrix4x4 will translate into Matrix4, Mat4 or Float4.
             /// </summary>
             public bool UniformSizeIsSingular;
 
@@ -62,6 +26,12 @@ namespace SharpShader
             public string NativeText;
         }
 
+        #region Instance members
+        /// <summary>
+        /// Gets whether or not constant buffers are referred to as if they are instanced objects in their respective shader language.
+        /// </summary>
+        internal abstract bool InstancedConstantBuffers { get; }
+
         Dictionary<Type, Keyword> _keywords = new Dictionary<Type, Keyword>();
 
         public ShaderLanguage Language { get; }
@@ -70,6 +40,25 @@ namespace SharpShader
         {
             Language = language;
         }
+
+        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
+
+        internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
+
+        internal abstract string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax);
+
+        internal abstract string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID);
+
+        /// <summary>
+        /// Occurs when the first line of an entry point method/function declaration requires translating. The content of the method should not be translated.
+        /// </summary>
+        /// <param name="context">The current shader conversion context.</param>
+        /// <param name="ep">The entry point.</param>
+        /// <param name="header">A string containing the header portion of the entry-point method.</param>
+        /// <returns></returns>
+        internal abstract string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header);
+
+        internal abstract string TranslateNumber(ShaderContext context, string number);
 
         /// <summary>
         /// Returns the translated string for a type, or null if no translation is found.
@@ -91,6 +80,20 @@ namespace SharpShader
         internal static LanguageFoundation Get(ShaderLanguage outputLanguage)
         {
             return _foundations[outputLanguage];
+        }
+
+        protected static string TranslateBinaryLiteral(string number)
+        {
+            number = number.Substring(2);
+            int result = 0;
+            number = string.Concat(number.Reverse()).Replace("_", "");
+            for (int i = 0; i < number.Length; i++)
+            {
+                if (number[i] == '1')
+                    result |= 1 << i;
+            }
+
+            return result.ToString();
         }
 
         internal static void LoadEmbedded<T>(string embeddedName) where T : LanguageFoundation

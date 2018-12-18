@@ -42,6 +42,21 @@ namespace SharpShader
             return result;
         }
 
+        internal override string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID)
+        {
+            char? registerChar = null;
+
+            if (typeof(TextureSampler).IsAssignableFrom(fieldType))
+                registerChar = 's';
+            if (typeof(TextureBase).IsAssignableFrom(fieldType))
+                registerChar = 't';
+
+            if (registerChar != null)
+                return $"{syntax.Declaration}; : register({registerChar}{registerID})";
+            else
+                return syntax.ToString();
+        }
+
         internal override string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax)
         {
             AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(syntax.AttributeLists);

@@ -21,7 +21,6 @@ namespace SharpShader
             for (int i = paramList.Count - 1; i >= 0; i--)
                 TranslateTypeSyntax(context, paramList[i].Type, source);
 
-            //syntax.TypeParameterList
             // Update the type first, this comes after the modifiers.
             TranslateTypeSyntax(context, syntax.ReturnType, source);
 
@@ -74,7 +73,7 @@ namespace SharpShader
             }
         }
 
-        protected override void OnPostprocess(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
             if(component.Type == ShaderComponentType.EntryPoint)
             {

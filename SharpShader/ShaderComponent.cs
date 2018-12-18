@@ -39,8 +39,10 @@ namespace SharpShader
 
         Struct = 4,
 
-        CSharpField = 5,
+        MainField = 5,
 
-        MemberAccess = 6,
+        ChildField = 6,
+
+        MemberAccess = 7,
     }
 }

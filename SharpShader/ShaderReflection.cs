@@ -11,6 +11,16 @@ namespace SharpShader
 {
     public class ShaderReflection
     {
+        /// <summary>
+        /// The name of the Sharp Shader namespace.
+        /// </summary>
+        public const string NAMESPACE = "SharpShader";
+
+        /// <summary>
+        /// The full namespace prefix that is usually found attached to the start of types in declarations.
+        /// </summary>
+        public const string NAMESPACE_PREFIX = NAMESPACE + ".";
+
         class LanguageMethodInfo
         {
             public string NativeName;
@@ -24,11 +34,24 @@ namespace SharpShader
         }
 
         static Dictionary<ShaderLanguage, LanguageInfo> _intrinsicMethods;
+        static HashSet<Type> _registerTypes;
 
         static ShaderReflection()
         {
             _intrinsicMethods = new Dictionary<ShaderLanguage, LanguageInfo>();
+            _registerTypes = new HashSet<Type>();
             Type t = typeof(CSharpShader);
+
+            // Find all of the types that are compatible with RegisteredTypeAttribute.
+            IEnumerable<Type> allTypes = t.Assembly.GetTypes();
+            foreach(Type type in allTypes)
+            {
+                RegisteredTypeAttribute rta = type.GetCustomAttribute<RegisteredTypeAttribute>();
+                if (rta != null)
+                    _registerTypes.Add(type);
+            }
+
+            // Run through all intrinsic methods in CSharpShader class.
             MethodInfo[] methods = t.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach(MethodInfo mi in methods)
             {
@@ -53,6 +76,11 @@ namespace SharpShader
                     methodInfo.Methods.Add(mi);
                 }
             }
+        }
+
+        internal static bool IsRegisteredType(Type type)
+        {
+            return _registerTypes.Contains(type);
         }
 
         internal static bool IsIntrinsicFunction(ShaderContext context, string cSharpName)
@@ -84,7 +112,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"SharpShader.{name}");
+                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
                     if (attType != null)
                     {
                         if (attType == typeof(T))
@@ -106,7 +134,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"SharpShader.{name}");
+                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
                     if (attType != null)
                     {
                         if (attType == typeof(T))
@@ -128,7 +156,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"SharpShader.{name}");
+                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
                     if (attType != null)
                         callback(attType);
                 }

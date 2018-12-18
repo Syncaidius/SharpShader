@@ -35,12 +35,36 @@ namespace SharpShader
                 context.Map.AddField(syntax);
         }
 
-        protected override void OnPostprocess(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
         {
+            string typeName = syntax.Declaration.Type.ToString(); 
+
+            // If we're removing the field, we can skip translating it.
             if (!context.Parent.Foundation.InstancedConstantBuffers)
             {
-                if (context.Map.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
+                if (context.Map.ConstantBuffers.ContainsKey(typeName))
+                {
                     source.Remove(syntax.SpanStart, syntax.Span.Length);
+                    return;
+                }
+            }
+
+            Type t = context.Map.GetOriginalType(typeName);
+            if (t != null)
+            {
+                AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
+
+                if (regAttribute != null)
+                {
+                    if (ShaderReflection.IsRegisteredType(t))
+                    {
+                        if (uint.TryParse(regAttribute.ArgumentList.Arguments[0].ToString(), out uint registerID))
+                        {
+                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID);
+                            source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
+                        }
+                    }
+                }
             }
         }
     }

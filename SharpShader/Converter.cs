@@ -215,7 +215,7 @@ namespace SharpShader
                 Message("  Stage 2/3 (mapping)...");
                 Map(shader, shader.Root);
 
-                Message("  Stage 3/3 (post-process)...");
+                Message("  Stage 3/3 (translation)...");
                 shader.Source = PostProcess(shader);
 
                 if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
@@ -342,7 +342,7 @@ namespace SharpShader
                 SyntaxNode node = com.Node;
                 Type test = node.GetType();
                 if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))
-                    proc.Postprocess(shader, node, source, com);
+                    proc.Translate(shader, node, source, com);
             }
 
             return source.ToString();

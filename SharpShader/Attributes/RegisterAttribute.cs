@@ -16,4 +16,10 @@ namespace SharpShader
 
         public uint Slot { get; }
     }
+
+    /// <summary>
+    /// Used for tagging types as compatible with <see cref="RegisterAttribute"/>.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
+    internal class RegisteredTypeAttribute : SharpShaderAttribute { }
 }

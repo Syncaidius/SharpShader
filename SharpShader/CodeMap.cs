@@ -14,7 +14,7 @@ namespace SharpShader
     {
         internal Dictionary<string, EntryPoint> EntryPoints = new Dictionary<string, EntryPoint>();
 
-        internal Dictionary<string, FieldDeclarationSyntax> Fields = new Dictionary<string, FieldDeclarationSyntax>();
+        internal Dictionary<string, FieldDeclarationSyntax> MainFields = new Dictionary<string, FieldDeclarationSyntax>();
 
         internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
 
@@ -28,14 +28,21 @@ namespace SharpShader
 
         internal Dictionary<string, RegisteredObject> UAVs = new Dictionary<string, RegisteredObject>();
 
+        internal Dictionary<string, Type> TranslatedTypes = new Dictionary<string, Type>();
+
         internal void Clear()
         {
             EntryPoints.Clear();
-            Fields.Clear();
+            MainFields.Clear();
             Structures.Clear();
             Components.Clear();
             ConstantBuffers.Clear();
             UAVs.Clear();
+        }
+
+        internal Type GetOriginalType(string translatedName)
+        {
+            return TranslatedTypes[translatedName];
         }
 
         internal void AddEntryPoint(EntryPoint ep)
@@ -50,16 +57,19 @@ namespace SharpShader
             Components.Add(new ShaderComponent(syntax, ShaderComponentType.MemberAccess));
         }
 
-        internal void AddField(FieldDeclarationSyntax syntax)
+        internal void AddField(FieldDeclarationSyntax syntax, bool isChild = false)
         {
             string name = syntax.Declaration.Variables[0].Identifier.ToString();
-            Fields.Add(name, syntax);
-            Components.Add(new ShaderComponent(syntax, ShaderComponentType.CSharpField));
+
+            if (!isChild)
+                MainFields.Add(name, syntax);
+
+            Components.Add(new ShaderComponent(syntax, isChild ? ShaderComponentType.ChildField : ShaderComponentType.MainField));
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)
         {
-            return Fields.ContainsKey(syntax.Variables[0].Identifier.ToString());
+            return MainFields.ContainsKey(syntax.Variables[0].Identifier.ToString());
         }
 
         internal void AddStructure(StructDeclarationSyntax syntax)

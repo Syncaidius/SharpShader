@@ -18,30 +18,39 @@ namespace SharpShader
 
         internal virtual void Map(ShaderContext context, SyntaxNode node) { }
 
-        internal virtual void Postprocess(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
+        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
 
         protected void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
         {
             string original = syntax.ToString();
-            string replacement = GetTypeTranslation(context, syntax);
+            Type t = null;
+            string replacement = GetTypeTranslation(context, syntax, out t);
             source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
+
+            if (t != null)
+                context.Map.TranslatedTypes[replacement] = t;
         }
 
         protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
         {
-            Type t = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
-            if (t != null)
+            return GetTypeTranslation(context, syntax, out Type dummy);
+        }
+
+        protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax, out Type originalType)
+        {
+            originalType = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
+            if (originalType != null)
             {
                 // First attempt to directly translate the type. 
                 // If we fail, check for any implemented interfaces we can translate instead.
-                LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(t);
+                LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
                 if (translation != null)
                 {
                     return translation.NativeText;
                 }
                 else
                 {
-                    Type[] iTypes = t.GetInterfaces();
+                    Type[] iTypes = originalType.GetInterfaces();
                     foreach (Type implemented in iTypes)
                     {
                         translation = context.Parent.Foundation.GetKeyword(implemented);
@@ -56,7 +65,7 @@ namespace SharpShader
 
                             if (translation.UniformSizeIsSingular)
                             {
-                                if (typeof(UniformDimensions).IsAssignableFrom(t))
+                                if (typeof(UniformDimensions).IsAssignableFrom(originalType))
                                     replacement = replacement.Substring(0, replacement.Length - 2);
                             }
 
@@ -112,16 +121,16 @@ namespace SharpShader
             OnMap(context, node as T);
         }
 
-        internal override sealed void Postprocess(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
+        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
         {
-            OnPostprocess(context, node as T, source, component);
+            OnTranslate(context, node as T, source, component);
         }
 
         protected virtual void OnPreprocess(ShaderContext context, T syntax, StringBuilder source) { }
 
         protected virtual void OnMap(ShaderContext context, T syntax) { }
 
-        protected virtual void OnPostprocess(ShaderContext context, T syntax, StringBuilder source, ShaderComponent component) { }
+        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source, ShaderComponent component) { }
     }
 
     [Flags]

@@ -19,9 +19,9 @@ namespace SharpShader
             context.Map.AddMemberAccess(syntax);
         }
 
-        protected override void OnPostprocess(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderComponent component)
         {
-            if (context.Map.Fields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
+            if (context.Map.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {
                 if (!context.Parent.Foundation.InstancedConstantBuffers)
                 {

@@ -38,5 +38,10 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

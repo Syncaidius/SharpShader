@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public abstract class TextureSampler2D
+    [RegisteredType]
+    public abstract class TextureSampler2D : TextureSampler
     {
         internal TextureSampler2D() { }
     }
