@@ -64,6 +64,12 @@ namespace SharpShader
                             source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
                         }
                     }
+                    else
+                    {
+                        Location location = syntax.GetLocation();
+                        FileLinePositionSpan line = location.GetLineSpan();
+                        context.Parent.AddMessage($"Attribute: {regAttribute.ToString()} cannot be used on type '{typeName}'.", line.StartLinePosition.Line, line.StartLinePosition.Character);
+                    }
                 }
             }
         }

@@ -177,16 +177,15 @@ namespace SharpShader
             {
                 Message("Analyzing...");
                 Analyze(context, cSharpSources);
-                int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
-                int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
-                foreach (ConversionMessage msg in context.Messages)
-                    Message($"[{msg.MessageType}] {msg.Text}");
+                int analysisErrors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+                Message($"Analysis completed");
 
-                Message($"Analysis complete. {errors} errors and {warnings} in C# source.");
-
-                if (errors > 0)
+                if (analysisErrors > 0)
                 {
-                    Message($"Cannot proceed until {errors} errors are fixed. Aborting.");
+                    foreach (ConversionMessage msg in context.Messages)
+                        Message($"[{msg.MessageType}] {msg.Text}");
+
+                    Message($"Cannot proceed until {analysisErrors} errors are fixed. Aborting.");
                     return context.ToResult();
                 }
             }
@@ -239,7 +238,14 @@ namespace SharpShader
             }
 
             mainTimer.Stop();
-            Message($"  Converted {cSharpSources.Count} source(s) in {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
+            int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+            int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
+
+            foreach (ConversionMessage msg in context.Messages)
+                Message($"[{msg.MessageType}] {msg.Text}");
+
+            Message($"Finished conversion of { cSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
+            Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
             return context.ToResult();
         }
