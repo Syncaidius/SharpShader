@@ -148,7 +148,6 @@ It is worth noting that while the above C# code has defined `Register` and `Pack
 
 C#: 
 ```csharp        
-[Register(0)]
 public TextureSampler texSampler;
 ```
 
