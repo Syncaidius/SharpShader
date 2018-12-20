@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Foundations.HLSL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,11 @@ namespace SharpShader
     {
         internal override bool InstancedConstantBuffers => false;
 
-        internal HlslFoundation(ShaderLanguage language) : base(language) { }
+        internal HlslFoundation(ShaderLanguage language) : base(language)
+        {
+            AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
+            AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
+        }
 
         internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
         {
@@ -132,46 +137,6 @@ namespace SharpShader
             }
 
             return $"{syntax.Declaration}";
-        }
-
-        internal override string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header)
-        {
-            if (ep.EntryType == EntryPointType.VertexShader)
-            {
-                return header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "");
-            }
-            else if (ep.EntryType == EntryPointType.FragmentShader)
-            {
-                // Attribute is a FragmentShaderAttribute. First argument is always the output semantic, if present.
-                SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
-                if (args.Count > 0)
-                {
-                    string enumVal = args[0].ToString().Replace($"{nameof(SemanticFragmentOutputType)}.", "");
-
-                    if (Enum.TryParse(enumVal, out SemanticFragmentOutputType outputType))
-                    {
-                        string result = $"{header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "").Trim()} : {outputType.ToString().ToUpper()}{Environment.NewLine}";
-                        // Second argument is always the semantic slot ID.
-                        if (args.Count > 1)
-                        {
-                            string strSlot = args[1].ToString();
-                            if (int.TryParse(strSlot, out int slot))
-                                result += slot;
-                            else
-                                context.Parent.AddMessage($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strSlot}", 0, 0);
-                        }
-
-                        return result;
-                    }
-                    else
-                    {
-                        context.Parent.AddMessage($"Invalid semantic name: {enumVal}", 0, 0);
-                    }
-                }
-            }
-
-            // TODO parse geometry, hull, domain and compute shader attributes into shader-specific versions.
-            return header;
         }
 
         internal override string TranslateNumber(ShaderContext context, string number)

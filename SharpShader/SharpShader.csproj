@@ -205,8 +205,11 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Foundations\IEntryPointTranslator.cs" />
     <Compile Include="Foundations\GlslFoundation.cs" />
     <Compile Include="Foundations\HlslFoundation.cs" />
+    <Compile Include="Foundations\HLSL\VertexEntryPointTranslator.cs" />
+    <Compile Include="Foundations\HLSL\PixelEntryPointTranslator.cs" />
     <Compile Include="Foundations\LanguageFoundation.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />

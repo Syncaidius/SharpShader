@@ -271,7 +271,11 @@ namespace SharpShader
             references.Add(MetadataReference.CreateFromFile(typeof(Single).Assembly.Location));
             references.Add(MetadataReference.CreateFromFile(typeof(Vector4).Assembly.Location));
 
-            CSharpCompilationOptions options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: OptimizationLevel.Release);
+            CSharpCompilationOptions options = new CSharpCompilationOptions(
+                OutputKind.DynamicallyLinkedLibrary, 
+                optimizationLevel: OptimizationLevel.Release,
+                concurrentBuild: true);
+
             CSharpCompilation compilation = CSharpCompilation.Create("sharp_shader_temp", sourceTrees, references, options);
             using (MemoryStream ms = new MemoryStream())
             {

@@ -83,8 +83,13 @@ namespace SharpShader
                 string methodHeader = toReplace;
                 string methodName = syntax.Identifier.ToString();
 
-                string translated = context.Parent.Foundation.TranslateEntryPointHeader(context, context.Map.EntryPoints[methodName], ref methodHeader);
-                source.Replace(toReplace, translated);
+                EntryPoint ep = context.Map.EntryPoints[methodName];
+                IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
+                if (epTranslator != null)
+                {
+                    string translated = epTranslator.Translate(context, ep, ref methodHeader);
+                    source.Replace(toReplace, translated);
+                }
             }
         }
     }

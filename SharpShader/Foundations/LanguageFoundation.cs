@@ -32,13 +32,16 @@ namespace SharpShader
         /// </summary>
         internal abstract bool InstancedConstantBuffers { get; }
 
-        Dictionary<Type, Keyword> _keywords = new Dictionary<Type, Keyword>();
-
         public ShaderLanguage Language { get; }
+
+        Dictionary<Type, Keyword> _keywords;
+        Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators;
 
         internal LanguageFoundation(ShaderLanguage language)
         {
             Language = language;
+            _keywords = new Dictionary<Type, Keyword>();
+            _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>();
         }
 
         internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
@@ -49,14 +52,10 @@ namespace SharpShader
 
         internal abstract string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID);
 
-        /// <summary>
-        /// Occurs when the first line of an entry point method/function declaration requires translating. The content of the method should not be translated.
-        /// </summary>
-        /// <param name="context">The current shader conversion context.</param>
-        /// <param name="ep">The entry point.</param>
-        /// <param name="header">A string containing the header portion of the entry-point method.</param>
-        /// <returns></returns>
-        internal abstract string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header);
+        internal IEntryPointTranslator GetEntryPointTranslator(EntryPointType type)
+        {
+            return _epTranslators[type];
+        }
 
         internal abstract string TranslateNumber(ShaderContext context, string number);
 
@@ -71,6 +70,12 @@ namespace SharpShader
                 return word;
             else
                 return null;
+        }
+
+        protected void AddEntryPointTranslator<T>(EntryPointType type) where T : class, IEntryPointTranslator, new()
+        {
+            T translator = new T();
+            _epTranslators.Add(type, translator);
         }
         #endregion
 

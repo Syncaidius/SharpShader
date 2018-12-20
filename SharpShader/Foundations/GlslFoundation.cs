@@ -29,11 +29,6 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override string TranslateEntryPointHeader(ShaderContext context, EntryPoint ep, ref string header)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override string TranslateNumber(ShaderContext context, string number)
         {
             throw new NotImplementedException();
