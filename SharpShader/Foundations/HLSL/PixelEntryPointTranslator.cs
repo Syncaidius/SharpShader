@@ -12,7 +12,6 @@ namespace SharpShader.Foundations.HLSL
     {
         public string Translate(ShaderContext context, EntryPoint ep, ref string header)
         {
-            // Attribute is a FragmentShaderAttribute. First argument is always the output semantic, if present.
             SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
             if (args.Count > 0)
             {

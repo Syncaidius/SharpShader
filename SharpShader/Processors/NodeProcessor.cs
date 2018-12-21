@@ -38,7 +38,7 @@ namespace SharpShader
 
         protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax, out Type originalType)
         {
-            originalType = Type.GetType($"SharpShader.{syntax}") ?? Type.GetType($"System.{syntax}");
+            originalType = ShaderReflection.ResolveType(syntax.ToString());
             if (originalType != null)
             {
                 // First attempt to directly translate the type. 

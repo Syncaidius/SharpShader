@@ -282,15 +282,14 @@ namespace SharpShader
                 EmitResult result = compilation.Emit(ms);
                 foreach(Diagnostic d in result.Diagnostics)
                 {
-                    FileLinePositionSpan pos = d.Location.GetLineSpan();
                     switch (d.Severity)
                     {
                         case DiagnosticSeverity.Error:
-                            context.AddMessage(d.GetMessage(), pos.StartLinePosition.Line, pos.StartLinePosition.Character);
+                            context.AddMessage(d.GetMessage(), d.Location);
                             break;
 
                         case DiagnosticSeverity.Warning:
-                            context.AddMessage(d.GetMessage(), pos.StartLinePosition.Line, pos.StartLinePosition.Character, ConversionMessageType.Warning);
+                            context.AddMessage(d.GetMessage(), d.Location, ConversionMessageType.Warning);
                             break;
                     }
                 }

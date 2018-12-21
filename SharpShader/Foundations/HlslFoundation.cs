@@ -16,6 +16,7 @@ namespace SharpShader
         internal HlslFoundation(ShaderLanguage language) : base(language)
         {
             AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
+            AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);
             AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 

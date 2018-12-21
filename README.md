@@ -5,9 +5,9 @@ Current Status:
  - It is possible to generate basic HLSL shaders from C# source.
  - GLSL shaders are not support in any shape or form, yet
  - Geometry, hull, domain and compute shaders are not properly handled yet
- - Many parts of the C# syntax are not supported yet, such as lamda, inheritance and properties.
+ - Many elements of C# syntax are not supported yet, such as lamda, inheritance and properties.
  - There is currently no way to target a specific shader model (or GLSL version).
- - Lots of unfinished things
+ - Lots of unfinished things!
  - A lot of bugs. Probably! 
 
 # Example

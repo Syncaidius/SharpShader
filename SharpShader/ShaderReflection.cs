@@ -9,17 +9,15 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class ShaderReflection
+    public static class ShaderReflection
     {
         /// <summary>
         /// The name of the Sharp Shader namespace.
         /// </summary>
         public const string NAMESPACE = "SharpShader";
 
-        /// <summary>
-        /// The full namespace prefix that is usually found attached to the start of types in declarations.
-        /// </summary>
-        public const string NAMESPACE_PREFIX = NAMESPACE + ".";
+        static readonly char[] _namespaceDelimiters = new char[] { '.' };
+        static readonly string[] _whitelistedNamespaces = new string[] { NAMESPACE, "System" };
 
         class LanguageMethodInfo
         {
@@ -112,7 +110,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
+                    Type attType = Type.GetType($"{NAMESPACE}.{name}");
                     if (attType != null)
                     {
                         if (attType == typeof(T))
@@ -134,7 +132,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
+                    Type attType = Type.GetType($"{NAMESPACE}.{name}");
                     if (attType != null)
                     {
                         if (attType == typeof(T))
@@ -146,21 +144,21 @@ namespace SharpShader
             return null;
         }
 
-        internal static void IterateAttributes(SyntaxList<AttributeListSyntax> attLists, Action<Type> callback)
+        internal static Type ResolveType(string typeName)
         {
-            foreach (AttributeListSyntax list in attLists)
+            Type t = null;
+            string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0)
             {
-                foreach (AttributeSyntax attSyntax in list.Attributes)
+                for (int i = 0; i < _whitelistedNamespaces.Length; i++)
                 {
-                    string name = attSyntax.Name.ToString();
-                    if (!name.EndsWith("Attribute"))
-                        name += "Attribute";
-
-                    Type attType = Type.GetType($"{NAMESPACE_PREFIX}{name}");
-                    if (attType != null)
-                        callback(attType);
+                    t = Type.GetType($"{NAMESPACE}.{parts[parts.Length - 1]}");
+                    if (t != null)
+                        break;
                 }
             }
+
+            return t;
         }
     }
 }

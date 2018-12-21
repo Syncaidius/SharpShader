@@ -28,6 +28,19 @@ namespace SharpShader
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
         }
 
+        internal void AddMessage(string text, SyntaxNode syntax, ConversionMessageType type = ConversionMessageType.Error)
+        {
+            Location loc = syntax.GetLocation();
+            FileLinePositionSpan linePos = loc.GetLineSpan();
+            AddMessage(text, linePos.StartLinePosition.Line, linePos.StartLinePosition.Character, type);
+        }
+
+        internal void AddMessage(string text, Location location, ConversionMessageType type = ConversionMessageType.Error)
+        {
+            FileLinePositionSpan linePos = location.GetLineSpan();
+            AddMessage(text, linePos.StartLinePosition.Line, linePos.StartLinePosition.Character, type);
+        }
+
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
         {
             Messages.Add(new ConversionMessage()

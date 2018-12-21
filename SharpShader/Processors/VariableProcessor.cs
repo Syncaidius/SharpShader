@@ -20,7 +20,7 @@ namespace SharpShader
             {
                 string strAttributes = "";
                 AttributeSyntax regAttribute = null;
-                int nextRegister = 0;
+                uint? nextRegister = 0;
                 string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
 
                 if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
@@ -29,8 +29,11 @@ namespace SharpShader
                         strAttributes += attList.ToString() + Environment.NewLine;
 
                     regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
-                    int.TryParse(regAttribute.ArgumentList.Arguments[0].ToString(), out nextRegister);
-                    nextRegister++;
+                    if (regAttribute != null)
+                    {
+                        RegisterAttribute.Parse(regAttribute, out nextRegister);
+                        nextRegister++;
+                    }
                 }
 
                 string replacement = "";

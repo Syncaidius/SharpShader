@@ -8,5 +8,6 @@ namespace SharpShader
 {
     public class VertexShaderAttribute : SharpShaderAttribute
     {
+
     }
 }

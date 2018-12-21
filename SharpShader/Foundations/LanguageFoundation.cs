@@ -54,7 +54,10 @@ namespace SharpShader
 
         internal IEntryPointTranslator GetEntryPointTranslator(EntryPointType type)
         {
-            return _epTranslators[type];
+            if (_epTranslators.TryGetValue(type, out IEntryPointTranslator translator))
+                return translator;
+            else
+                return null;
         }
 
         internal abstract string TranslateNumber(ShaderContext context, string number);

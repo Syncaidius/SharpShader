@@ -25,12 +25,6 @@ namespace SharpShader
 
         protected override void OnMap(ShaderContext context, FieldDeclarationSyntax syntax)
         {
-            AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
-            if (regAttribute != null)
-            {
-                // TODO determine whether or not the field declaration is for a shader construct (sampler, texture, const buffer, etc) by it's type name.
-            }
-
             if (syntax.Parent == context.Root)
                 context.Map.AddField(syntax);
         }
@@ -53,22 +47,20 @@ namespace SharpShader
             if (t != null)
             {
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
-
                 if (regAttribute != null)
                 {
                     if (ShaderReflection.IsRegisteredType(t))
                     {
-                        if (uint.TryParse(regAttribute.ArgumentList.Arguments[0].ToString(), out uint registerID))
+                        RegisterAttribute.Parse(regAttribute, out uint? registerID);
+                        if (registerID != null)
                         {
-                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID);
+                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
                             source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
                         }
                     }
                     else
                     {
-                        Location location = syntax.GetLocation();
-                        FileLinePositionSpan line = location.GetLineSpan();
-                        context.Parent.AddMessage($"Attribute: {regAttribute.ToString()} cannot be used on type '{typeName}'.", line.StartLinePosition.Line, line.StartLinePosition.Character);
+                        context.Parent.AddMessage($"Attribute: {regAttribute.ToString()} cannot be used on type '{typeName}'.", syntax);
                     }
                 }
             }
