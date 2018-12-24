@@ -36,6 +36,61 @@ namespace SharpShader
 			W = w;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Double4"/>.
+        /// </summary>
+		public Double4(Double3 p, double w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = p.Z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Double4"/>.
+        /// </summary>
+		public Double4(double x, Double3 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = p.Z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Double4"/>.
+        /// </summary>
+		public Double4(Double2 p, double z, double w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Double4"/>.
+        /// </summary>
+		public Double4(double x, Double2 p, double w)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Double4"/>.
+        /// </summary>
+		public Double4(double x, double y, Double2 p)
+		{
+			X = x;
+			Y = y;
+			Z = p.X;
+			W = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="Double2"/> comprised of X, X from the current <see cref="Double2"/>.
 		/// </summary>

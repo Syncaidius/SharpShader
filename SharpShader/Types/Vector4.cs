@@ -36,6 +36,61 @@ namespace SharpShader
 			W = w;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Vector4"/>.
+        /// </summary>
+		public Vector4(Vector3 p, float w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = p.Z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Vector4"/>.
+        /// </summary>
+		public Vector4(float x, Vector3 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = p.Z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Vector4"/>.
+        /// </summary>
+		public Vector4(Vector2 p, float z, float w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Vector4"/>.
+        /// </summary>
+		public Vector4(float x, Vector2 p, float w)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Vector4"/>.
+        /// </summary>
+		public Vector4(float x, float y, Vector2 p)
+		{
+			X = x;
+			Y = y;
+			Z = p.X;
+			W = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="Vector2"/> comprised of X, X from the current <see cref="Vector2"/>.
 		/// </summary>

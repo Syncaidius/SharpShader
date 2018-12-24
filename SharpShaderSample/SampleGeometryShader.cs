@@ -188,7 +188,7 @@ namespace SharpShaderSample
             float segs = input[0].Rotation;
             Vector2 radius = input[0].Size;
             Vector2 startEnd = input[0].Origin;
-            float range = startEnd.y - startEnd.X;
+            float range = startEnd.Y - startEnd.X;
             float angleInc = degToRad360 / segs;
             float angle = startEnd.X;
             float remaining = range;
@@ -198,7 +198,7 @@ namespace SharpShaderSample
             float vCount = (segs * 2) + 2;
             for (int i = 0; i < vCount; i++)
             {
-                v.Pos = center + (doEdge * new Vector4(Sin(angle) * radius.X, Cos(angle) * radius.y, 0, 0));
+                v.Pos = center + (doEdge * new Vector4(Sin(angle) * radius.X, Cos(angle) * radius.Y, 0, 0));
                 v.Pos = Mul(v.Pos, wvp);
 
                 inc = Min(angleInc, remaining);

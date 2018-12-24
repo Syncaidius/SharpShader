@@ -30,6 +30,26 @@ namespace SharpShader
 			Z = z;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt3"/>.
+        /// </summary>
+		public UInt3(UInt2 p, uint z)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt3"/>.
+        /// </summary>
+		public UInt3(uint x, UInt2 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="UInt2"/> comprised of X, X from the current <see cref="UInt2"/>.
 		/// </summary>

@@ -67,6 +67,53 @@ namespace SharpShader
 		}
 
 <#
+		// Generate constructor overloads which augments vectors below the size of the current to partially populate the new vector.
+		for(int ci = i - 1; ci >= 2; ci--) // Size of vector to augment into constructor
+		{
+			string vArgTypeName = vectorNames[t] + ci;
+			for(int vOffset = 0; vOffset <= i - ci; vOffset++)
+			{
+				constructorParams = "";
+				for(int c = 0; c < i; c++)
+				{
+					if(c > 0) constructorParams += ", ";
+
+					if(c == vOffset)
+					{
+						constructorParams += $"{vArgTypeName} p";
+						c += ci - 1;
+					}
+					else
+					{
+						constructorParams += $"{vectorTypes[t]} {componentNames[c].ToLower()}";
+					}
+				}
+
+#>
+        /// <summary>
+        /// Creates a new instance of <see cref="<#=name#>"/>.
+        /// </summary>
+		public <#=name#>(<#=constructorParams#>)
+		{
+<#
+			for(int j = 0; j < i; j++)
+			{
+				string pValue = "";
+				if(j >= vOffset && j < vOffset + ci)
+					pValue = $"p.{componentNames[j-vOffset]}";
+				else
+					pValue = componentNames[j].ToLower();
+#>
+			<#=componentNames[j]#> = <#=pValue#>;
+<#
+			}
+#>
+		}
+
+<#
+			}
+		}
+
 		// Generate component swizzles
 		IEnumerable<string> swizzlePermutations = null;
 		IEnumerable<string> compNames = componentNames.Take(i);

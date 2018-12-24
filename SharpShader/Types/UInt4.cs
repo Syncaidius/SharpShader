@@ -36,6 +36,61 @@ namespace SharpShader
 			W = w;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt4"/>.
+        /// </summary>
+		public UInt4(UInt3 p, uint w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = p.Z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt4"/>.
+        /// </summary>
+		public UInt4(uint x, UInt3 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = p.Z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt4"/>.
+        /// </summary>
+		public UInt4(UInt2 p, uint z, uint w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt4"/>.
+        /// </summary>
+		public UInt4(uint x, UInt2 p, uint w)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UInt4"/>.
+        /// </summary>
+		public UInt4(uint x, uint y, UInt2 p)
+		{
+			X = x;
+			Y = y;
+			Z = p.X;
+			W = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="UInt2"/> comprised of X, X from the current <see cref="UInt2"/>.
 		/// </summary>

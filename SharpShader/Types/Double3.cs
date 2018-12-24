@@ -30,6 +30,26 @@ namespace SharpShader
 			Z = z;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Double3"/>.
+        /// </summary>
+		public Double3(Double2 p, double z)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Double3"/>.
+        /// </summary>
+		public Double3(double x, Double2 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="Double2"/> comprised of X, X from the current <see cref="Double2"/>.
 		/// </summary>

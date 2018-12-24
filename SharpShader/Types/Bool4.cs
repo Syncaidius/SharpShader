@@ -36,6 +36,61 @@ namespace SharpShader
 			W = w;
 		}
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Bool4"/>.
+        /// </summary>
+		public Bool4(Bool3 p, bool w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = p.Z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Bool4"/>.
+        /// </summary>
+		public Bool4(bool x, Bool3 p)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = p.Z;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Bool4"/>.
+        /// </summary>
+		public Bool4(Bool2 p, bool z, bool w)
+		{
+			X = p.X;
+			Y = p.Y;
+			Z = z;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Bool4"/>.
+        /// </summary>
+		public Bool4(bool x, Bool2 p, bool w)
+		{
+			X = x;
+			Y = p.X;
+			Z = p.Y;
+			W = w;
+		}
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Bool4"/>.
+        /// </summary>
+		public Bool4(bool x, bool y, Bool2 p)
+		{
+			X = x;
+			Y = y;
+			Z = p.X;
+			W = p.Y;
+		}
+
 		/// <summary>
 		/// Gets a new <see cref="Bool2"/> comprised of X, X from the current <see cref="Bool2"/>.
 		/// </summary>
