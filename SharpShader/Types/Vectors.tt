@@ -112,6 +112,9 @@ namespace SharpShader
 				if(needSetter)
 				{
 #>
+		/// <summary>
+		/// Gets or sets a <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newParams#> on the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
+		/// </summary>
 		public <#=pReturnType#> <#=pName#>
 		{
 			get => new <#=pReturnType#>(<#=newParams#>); 	
@@ -128,6 +131,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newColParams#> on the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
+		/// </summary>
 		public <#=pReturnType#> <#=pColName#>
 		{
 			get => new <#=pReturnType#>(<#=newColParams#>);	

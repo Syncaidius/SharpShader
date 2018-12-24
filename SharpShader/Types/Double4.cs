@@ -46,6 +46,9 @@ namespace SharpShader
 		/// </summary>
 		public Double2 RR => new Double2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of X, Y on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 XY
 		{
 			get => new Double2(X, Y); 	
@@ -56,6 +59,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of R, G on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 RG
 		{
 			get => new Double2(R, G);	
@@ -66,6 +72,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of X, Z on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 XZ
 		{
 			get => new Double2(X, Z); 	
@@ -76,6 +85,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of R, B on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 RB
 		{
 			get => new Double2(R, B);	
@@ -86,6 +98,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of X, W on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 XW
 		{
 			get => new Double2(X, W); 	
@@ -96,6 +111,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of R, A on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 RA
 		{
 			get => new Double2(R, A);	
@@ -106,6 +124,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Y, X on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 YX
 		{
 			get => new Double2(Y, X); 	
@@ -116,6 +137,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of G, R on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 GR
 		{
 			get => new Double2(G, R);	
@@ -136,6 +160,9 @@ namespace SharpShader
 		/// </summary>
 		public Double2 GG => new Double2(G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Y, Z on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 YZ
 		{
 			get => new Double2(Y, Z); 	
@@ -146,6 +173,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of G, B on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 GB
 		{
 			get => new Double2(G, B);	
@@ -156,6 +186,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Y, W on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 YW
 		{
 			get => new Double2(Y, W); 	
@@ -166,6 +199,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of G, A on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 GA
 		{
 			get => new Double2(G, A);	
@@ -176,6 +212,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Z, X on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 ZX
 		{
 			get => new Double2(Z, X); 	
@@ -186,6 +225,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of B, R on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 BR
 		{
 			get => new Double2(B, R);	
@@ -196,6 +238,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Z, Y on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 ZY
 		{
 			get => new Double2(Z, Y); 	
@@ -206,6 +251,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of B, G on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 BG
 		{
 			get => new Double2(B, G);	
@@ -226,6 +274,9 @@ namespace SharpShader
 		/// </summary>
 		public Double2 BB => new Double2(B, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Z, W on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 ZW
 		{
 			get => new Double2(Z, W); 	
@@ -236,6 +287,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of B, A on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 BA
 		{
 			get => new Double2(B, A);	
@@ -246,6 +300,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of W, X on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 WX
 		{
 			get => new Double2(W, X); 	
@@ -256,6 +313,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of A, R on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 AR
 		{
 			get => new Double2(A, R);	
@@ -266,6 +326,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of W, Y on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 WY
 		{
 			get => new Double2(W, Y); 	
@@ -276,6 +339,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of A, G on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 AG
 		{
 			get => new Double2(A, G);	
@@ -286,6 +352,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of W, Z on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 WZ
 		{
 			get => new Double2(W, Z); 	
@@ -296,6 +365,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of A, B on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 AB
 		{
 			get => new Double2(A, B);	
@@ -376,6 +448,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 RGG => new Double3(R, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, Y, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XYZ
 		{
 			get => new Double3(X, Y, Z); 	
@@ -387,6 +462,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, G, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RGB
 		{
 			get => new Double3(R, G, B);	
@@ -398,6 +476,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, Y, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XYW
 		{
 			get => new Double3(X, Y, W); 	
@@ -409,6 +490,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, G, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RGA
 		{
 			get => new Double3(R, G, A);	
@@ -430,6 +514,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 RBR => new Double3(R, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, Z, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XZY
 		{
 			get => new Double3(X, Z, Y); 	
@@ -441,6 +528,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, B, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RBG
 		{
 			get => new Double3(R, B, G);	
@@ -462,6 +552,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 RBB => new Double3(R, B, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, Z, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XZW
 		{
 			get => new Double3(X, Z, W); 	
@@ -473,6 +566,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, B, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RBA
 		{
 			get => new Double3(R, B, A);	
@@ -494,6 +590,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 RAR => new Double3(R, A, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, W, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XWY
 		{
 			get => new Double3(X, W, Y); 	
@@ -505,6 +604,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, A, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RAG
 		{
 			get => new Double3(R, A, G);	
@@ -516,6 +618,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of X, W, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 XWZ
 		{
 			get => new Double3(X, W, Z); 	
@@ -527,6 +632,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of R, A, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 RAB
 		{
 			get => new Double3(R, A, B);	
@@ -568,6 +676,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 GRG => new Double3(G, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, X, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YXZ
 		{
 			get => new Double3(Y, X, Z); 	
@@ -579,6 +690,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, R, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GRB
 		{
 			get => new Double3(G, R, B);	
@@ -590,6 +704,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, X, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YXW
 		{
 			get => new Double3(Y, X, W); 	
@@ -601,6 +718,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, R, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GRA
 		{
 			get => new Double3(G, R, A);	
@@ -652,6 +772,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 GGA => new Double3(G, G, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, Z, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YZX
 		{
 			get => new Double3(Y, Z, X); 	
@@ -663,6 +786,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, B, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GBR
 		{
 			get => new Double3(G, B, R);	
@@ -694,6 +820,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 GBB => new Double3(G, B, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, Z, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YZW
 		{
 			get => new Double3(Y, Z, W); 	
@@ -705,6 +834,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, B, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GBA
 		{
 			get => new Double3(G, B, A);	
@@ -716,6 +848,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, W, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YWX
 		{
 			get => new Double3(Y, W, X); 	
@@ -727,6 +862,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, A, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GAR
 		{
 			get => new Double3(G, A, R);	
@@ -748,6 +886,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 GAG => new Double3(G, A, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Y, W, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 YWZ
 		{
 			get => new Double3(Y, W, Z); 	
@@ -759,6 +900,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of G, A, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 GAB
 		{
 			get => new Double3(G, A, B);	
@@ -790,6 +934,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 BRR => new Double3(B, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, X, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZXY
 		{
 			get => new Double3(Z, X, Y); 	
@@ -801,6 +948,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, R, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BRG
 		{
 			get => new Double3(B, R, G);	
@@ -822,6 +972,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 BRB => new Double3(B, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, X, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZXW
 		{
 			get => new Double3(Z, X, W); 	
@@ -833,6 +986,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, R, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BRA
 		{
 			get => new Double3(B, R, A);	
@@ -844,6 +1000,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, Y, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZYX
 		{
 			get => new Double3(Z, Y, X); 	
@@ -855,6 +1014,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, G, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BGR
 		{
 			get => new Double3(B, G, R);	
@@ -886,6 +1048,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 BGB => new Double3(B, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, Y, W on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZYW
 		{
 			get => new Double3(Z, Y, W); 	
@@ -897,6 +1062,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, G, A on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BGA
 		{
 			get => new Double3(B, G, A);	
@@ -948,6 +1116,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 BBA => new Double3(B, B, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, W, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZWX
 		{
 			get => new Double3(Z, W, X); 	
@@ -959,6 +1130,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, A, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BAR
 		{
 			get => new Double3(B, A, R);	
@@ -970,6 +1144,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of Z, W, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ZWY
 		{
 			get => new Double3(Z, W, Y); 	
@@ -981,6 +1158,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of B, A, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 BAG
 		{
 			get => new Double3(B, A, G);	
@@ -1022,6 +1202,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 ARR => new Double3(A, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, X, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WXY
 		{
 			get => new Double3(W, X, Y); 	
@@ -1033,6 +1216,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, R, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ARG
 		{
 			get => new Double3(A, R, G);	
@@ -1044,6 +1230,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, X, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WXZ
 		{
 			get => new Double3(W, X, Z); 	
@@ -1055,6 +1244,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, R, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ARB
 		{
 			get => new Double3(A, R, B);	
@@ -1076,6 +1268,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 ARA => new Double3(A, R, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, Y, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WYX
 		{
 			get => new Double3(W, Y, X); 	
@@ -1087,6 +1282,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, G, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 AGR
 		{
 			get => new Double3(A, G, R);	
@@ -1108,6 +1306,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 AGG => new Double3(A, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, Y, Z on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WYZ
 		{
 			get => new Double3(W, Y, Z); 	
@@ -1119,6 +1320,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, G, B on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 AGB
 		{
 			get => new Double3(A, G, B);	
@@ -1140,6 +1344,9 @@ namespace SharpShader
 		/// </summary>
 		public Double3 AGA => new Double3(A, G, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, Z, X on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WZX
 		{
 			get => new Double3(W, Z, X); 	
@@ -1151,6 +1358,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, B, R on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ABR
 		{
 			get => new Double3(A, B, R);	
@@ -1162,6 +1372,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of W, Z, Y on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 WZY
 		{
 			get => new Double3(W, Z, Y); 	
@@ -1173,6 +1386,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double3"/> comprised of A, B, G on the current <see cref="Double3"/>.
+		/// </summary>
 		public Double3 ABG
 		{
 			get => new Double3(A, B, G);	
@@ -1514,6 +1730,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RGBB => new Double4(R, G, B, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, Y, Z, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XYZW
 		{
 			get => new Double4(X, Y, Z, W); 	
@@ -1526,6 +1745,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, G, B, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RGBA
 		{
 			get => new Double4(R, G, B, A);	
@@ -1558,6 +1780,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RGAG => new Double4(R, G, A, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, Y, W, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XYWZ
 		{
 			get => new Double4(X, Y, W, Z); 	
@@ -1570,6 +1795,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, G, A, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RGAB
 		{
 			get => new Double4(R, G, A, B);	
@@ -1662,6 +1890,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RBGB => new Double4(R, B, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, Z, Y, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XZYW
 		{
 			get => new Double4(X, Z, Y, W); 	
@@ -1674,6 +1905,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, B, G, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RBGA
 		{
 			get => new Double4(R, B, G, A);	
@@ -1736,6 +1970,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RBAR => new Double4(R, B, A, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, Z, W, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XZWY
 		{
 			get => new Double4(X, Z, W, Y); 	
@@ -1748,6 +1985,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, B, A, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RBAG
 		{
 			get => new Double4(R, B, A, G);	
@@ -1840,6 +2080,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RAGG => new Double4(R, A, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, W, Y, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XWYZ
 		{
 			get => new Double4(X, W, Y, Z); 	
@@ -1852,6 +2095,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, A, G, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RAGB
 		{
 			get => new Double4(R, A, G, B);	
@@ -1884,6 +2130,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 RABR => new Double4(R, A, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of X, W, Z, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 XWZY
 		{
 			get => new Double4(X, W, Z, Y); 	
@@ -1896,6 +2145,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of R, A, B, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 RABG
 		{
 			get => new Double4(R, A, B, G);	
@@ -2078,6 +2330,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GRBB => new Double4(G, R, B, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, X, Z, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YXZW
 		{
 			get => new Double4(Y, X, Z, W); 	
@@ -2090,6 +2345,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, R, B, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GRBA
 		{
 			get => new Double4(G, R, B, A);	
@@ -2122,6 +2380,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GRAG => new Double4(G, R, A, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, X, W, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YXWZ
 		{
 			get => new Double4(Y, X, W, Z); 	
@@ -2134,6 +2395,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, R, A, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GRAB
 		{
 			get => new Double4(G, R, A, B);	
@@ -2346,6 +2610,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GBRB => new Double4(G, B, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, Z, X, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YZXW
 		{
 			get => new Double4(Y, Z, X, W); 	
@@ -2358,6 +2625,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, B, R, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GBRA
 		{
 			get => new Double4(G, B, R, A);	
@@ -2450,6 +2720,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GBBA => new Double4(G, B, B, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, Z, W, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YZWX
 		{
 			get => new Double4(Y, Z, W, X); 	
@@ -2462,6 +2735,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, B, A, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GBAR
 		{
 			get => new Double4(G, B, A, R);	
@@ -2524,6 +2800,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GARG => new Double4(G, A, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, W, X, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YWXZ
 		{
 			get => new Double4(Y, W, X, Z); 	
@@ -2536,6 +2815,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, A, R, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GARB
 		{
 			get => new Double4(G, A, R, B);	
@@ -2598,6 +2880,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GAGA => new Double4(G, A, G, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Y, W, Z, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 YWZX
 		{
 			get => new Double4(Y, W, Z, X); 	
@@ -2610,6 +2895,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of G, A, B, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 GABR
 		{
 			get => new Double4(G, A, B, R);	
@@ -2762,6 +3050,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BRGB => new Double4(B, R, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, X, Y, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZXYW
 		{
 			get => new Double4(Z, X, Y, W); 	
@@ -2774,6 +3065,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, R, G, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BRGA
 		{
 			get => new Double4(B, R, G, A);	
@@ -2836,6 +3130,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BRAR => new Double4(B, R, A, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, X, W, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZXWY
 		{
 			get => new Double4(Z, X, W, Y); 	
@@ -2848,6 +3145,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, R, A, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BRAG
 		{
 			get => new Double4(B, R, A, G);	
@@ -2910,6 +3210,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BGRB => new Double4(B, G, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, Y, X, W on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZYXW
 		{
 			get => new Double4(Z, Y, X, W); 	
@@ -2922,6 +3225,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, G, R, A on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BGRA
 		{
 			get => new Double4(B, G, R, A);	
@@ -3014,6 +3320,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BGBA => new Double4(B, G, B, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, Y, W, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZYWX
 		{
 			get => new Double4(Z, Y, W, X); 	
@@ -3026,6 +3335,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, G, A, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BGAR
 		{
 			get => new Double4(B, G, A, R);	
@@ -3238,6 +3550,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BARR => new Double4(B, A, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, W, X, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZWXY
 		{
 			get => new Double4(Z, W, X, Y); 	
@@ -3250,6 +3565,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, A, R, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BARG
 		{
 			get => new Double4(B, A, R, G);	
@@ -3282,6 +3600,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BARA => new Double4(B, A, R, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of Z, W, Y, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ZWYX
 		{
 			get => new Double4(Z, W, Y, X); 	
@@ -3294,6 +3615,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of B, A, G, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 BAGR
 		{
 			get => new Double4(B, A, G, R);	
@@ -3476,6 +3800,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 ARGG => new Double4(A, R, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, X, Y, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WXYZ
 		{
 			get => new Double4(W, X, Y, Z); 	
@@ -3488,6 +3815,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, R, G, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ARGB
 		{
 			get => new Double4(A, R, G, B);	
@@ -3520,6 +3850,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 ARBR => new Double4(A, R, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, X, Z, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WXZY
 		{
 			get => new Double4(W, X, Z, Y); 	
@@ -3532,6 +3865,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, R, B, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ARBG
 		{
 			get => new Double4(A, R, B, G);	
@@ -3624,6 +3960,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 AGRG => new Double4(A, G, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, Y, X, Z on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WYXZ
 		{
 			get => new Double4(W, Y, X, Z); 	
@@ -3636,6 +3975,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, G, R, B on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 AGRB
 		{
 			get => new Double4(A, G, R, B);	
@@ -3698,6 +4040,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 AGGA => new Double4(A, G, G, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, Y, Z, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WYZX
 		{
 			get => new Double4(W, Y, Z, X); 	
@@ -3710,6 +4055,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, G, B, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 AGBR
 		{
 			get => new Double4(A, G, B, R);	
@@ -3802,6 +4150,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 ABRR => new Double4(A, B, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, Z, X, Y on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WZXY
 		{
 			get => new Double4(W, Z, X, Y); 	
@@ -3814,6 +4165,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, B, R, G on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ABRG
 		{
 			get => new Double4(A, B, R, G);	
@@ -3846,6 +4200,9 @@ namespace SharpShader
 		/// </summary>
 		public Double4 ABRA => new Double4(A, B, R, A);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of W, Z, Y, X on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 WZYX
 		{
 			get => new Double4(W, Z, Y, X); 	
@@ -3858,6 +4215,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double4"/> comprised of A, B, G, R on the current <see cref="Double4"/>.
+		/// </summary>
 		public Double4 ABGR
 		{
 			get => new Double4(A, B, G, R);	

@@ -40,6 +40,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector2 RR => new Vector2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of X, Y on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 XY
 		{
 			get => new Vector2(X, Y); 	
@@ -50,6 +53,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of R, G on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 RG
 		{
 			get => new Vector2(R, G);	
@@ -60,6 +66,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of X, Z on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 XZ
 		{
 			get => new Vector2(X, Z); 	
@@ -70,6 +79,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of R, B on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 RB
 		{
 			get => new Vector2(R, B);	
@@ -80,6 +92,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of Y, X on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 YX
 		{
 			get => new Vector2(Y, X); 	
@@ -90,6 +105,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of G, R on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 GR
 		{
 			get => new Vector2(G, R);	
@@ -110,6 +128,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector2 GG => new Vector2(G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of Y, Z on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 YZ
 		{
 			get => new Vector2(Y, Z); 	
@@ -120,6 +141,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of G, B on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 GB
 		{
 			get => new Vector2(G, B);	
@@ -130,6 +154,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of Z, X on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 ZX
 		{
 			get => new Vector2(Z, X); 	
@@ -140,6 +167,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of B, R on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 BR
 		{
 			get => new Vector2(B, R);	
@@ -150,6 +180,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of Z, Y on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 ZY
 		{
 			get => new Vector2(Z, Y); 	
@@ -160,6 +193,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector2"/> comprised of B, G on the current <see cref="Vector2"/>.
+		/// </summary>
 		public Vector2 BG
 		{
 			get => new Vector2(B, G);	
@@ -230,6 +266,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 RGG => new Vector3(R, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of X, Y, Z on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 XYZ
 		{
 			get => new Vector3(X, Y, Z); 	
@@ -241,6 +280,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of R, G, B on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 RGB
 		{
 			get => new Vector3(R, G, B);	
@@ -262,6 +304,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 RBR => new Vector3(R, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of X, Z, Y on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 XZY
 		{
 			get => new Vector3(X, Z, Y); 	
@@ -273,6 +318,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of R, B, G on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 RBG
 		{
 			get => new Vector3(R, B, G);	
@@ -314,6 +362,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 GRG => new Vector3(G, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of Y, X, Z on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 YXZ
 		{
 			get => new Vector3(Y, X, Z); 	
@@ -325,6 +376,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of G, R, B on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 GRB
 		{
 			get => new Vector3(G, R, B);	
@@ -366,6 +420,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 GGB => new Vector3(G, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of Y, Z, X on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 YZX
 		{
 			get => new Vector3(Y, Z, X); 	
@@ -377,6 +434,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of G, B, R on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 GBR
 		{
 			get => new Vector3(G, B, R);	
@@ -418,6 +478,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 BRR => new Vector3(B, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of Z, X, Y on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 ZXY
 		{
 			get => new Vector3(Z, X, Y); 	
@@ -429,6 +492,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of B, R, G on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 BRG
 		{
 			get => new Vector3(B, R, G);	
@@ -450,6 +516,9 @@ namespace SharpShader
 		/// </summary>
 		public Vector3 BRB => new Vector3(B, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of Z, Y, X on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 ZYX
 		{
 			get => new Vector3(Z, Y, X); 	
@@ -461,6 +530,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Vector3"/> comprised of B, G, R on the current <see cref="Vector3"/>.
+		/// </summary>
 		public Vector3 BGR
 		{
 			get => new Vector3(B, G, R);	

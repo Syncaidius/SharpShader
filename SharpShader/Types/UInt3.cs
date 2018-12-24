@@ -40,6 +40,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt2 RR => new UInt2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of X, Y on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 XY
 		{
 			get => new UInt2(X, Y); 	
@@ -50,6 +53,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of R, G on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 RG
 		{
 			get => new UInt2(R, G);	
@@ -60,6 +66,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of X, Z on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 XZ
 		{
 			get => new UInt2(X, Z); 	
@@ -70,6 +79,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of R, B on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 RB
 		{
 			get => new UInt2(R, B);	
@@ -80,6 +92,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of Y, X on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 YX
 		{
 			get => new UInt2(Y, X); 	
@@ -90,6 +105,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of G, R on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 GR
 		{
 			get => new UInt2(G, R);	
@@ -110,6 +128,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt2 GG => new UInt2(G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of Y, Z on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 YZ
 		{
 			get => new UInt2(Y, Z); 	
@@ -120,6 +141,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of G, B on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 GB
 		{
 			get => new UInt2(G, B);	
@@ -130,6 +154,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of Z, X on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 ZX
 		{
 			get => new UInt2(Z, X); 	
@@ -140,6 +167,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of B, R on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 BR
 		{
 			get => new UInt2(B, R);	
@@ -150,6 +180,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of Z, Y on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 ZY
 		{
 			get => new UInt2(Z, Y); 	
@@ -160,6 +193,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of B, G on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 BG
 		{
 			get => new UInt2(B, G);	
@@ -230,6 +266,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 RGG => new UInt3(R, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of X, Y, Z on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 XYZ
 		{
 			get => new UInt3(X, Y, Z); 	
@@ -241,6 +280,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of R, G, B on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 RGB
 		{
 			get => new UInt3(R, G, B);	
@@ -262,6 +304,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 RBR => new UInt3(R, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of X, Z, Y on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 XZY
 		{
 			get => new UInt3(X, Z, Y); 	
@@ -273,6 +318,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of R, B, G on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 RBG
 		{
 			get => new UInt3(R, B, G);	
@@ -314,6 +362,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 GRG => new UInt3(G, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of Y, X, Z on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 YXZ
 		{
 			get => new UInt3(Y, X, Z); 	
@@ -325,6 +376,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of G, R, B on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 GRB
 		{
 			get => new UInt3(G, R, B);	
@@ -366,6 +420,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 GGB => new UInt3(G, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of Y, Z, X on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 YZX
 		{
 			get => new UInt3(Y, Z, X); 	
@@ -377,6 +434,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of G, B, R on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 GBR
 		{
 			get => new UInt3(G, B, R);	
@@ -418,6 +478,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 BRR => new UInt3(B, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of Z, X, Y on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 ZXY
 		{
 			get => new UInt3(Z, X, Y); 	
@@ -429,6 +492,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of B, R, G on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 BRG
 		{
 			get => new UInt3(B, R, G);	
@@ -450,6 +516,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt3 BRB => new UInt3(B, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of Z, Y, X on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 ZYX
 		{
 			get => new UInt3(Z, Y, X); 	
@@ -461,6 +530,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt3"/> comprised of B, G, R on the current <see cref="UInt3"/>.
+		/// </summary>
 		public UInt3 BGR
 		{
 			get => new UInt3(B, G, R);	

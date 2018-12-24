@@ -147,7 +147,7 @@ namespace SharpShaderSample
         {
             PS_IN v = new PS_IN();
             v.Color = input[0].Color;
-            v.UV = new Vector3(0, 0, 0);
+            v.UV = new Vector4();
             Vector2 p1 = input[0].Pos;
             Vector2 p2 = input[0].Size;
             Vector2 dir = p2 - p1;

@@ -40,6 +40,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool2 RR => new Bool2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of X, Y on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 XY
 		{
 			get => new Bool2(X, Y); 	
@@ -50,6 +53,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of R, G on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 RG
 		{
 			get => new Bool2(R, G);	
@@ -60,6 +66,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of X, Z on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 XZ
 		{
 			get => new Bool2(X, Z); 	
@@ -70,6 +79,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of R, B on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 RB
 		{
 			get => new Bool2(R, B);	
@@ -80,6 +92,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of Y, X on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 YX
 		{
 			get => new Bool2(Y, X); 	
@@ -90,6 +105,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of G, R on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 GR
 		{
 			get => new Bool2(G, R);	
@@ -110,6 +128,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool2 GG => new Bool2(G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of Y, Z on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 YZ
 		{
 			get => new Bool2(Y, Z); 	
@@ -120,6 +141,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of G, B on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 GB
 		{
 			get => new Bool2(G, B);	
@@ -130,6 +154,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of Z, X on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 ZX
 		{
 			get => new Bool2(Z, X); 	
@@ -140,6 +167,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of B, R on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 BR
 		{
 			get => new Bool2(B, R);	
@@ -150,6 +180,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of Z, Y on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 ZY
 		{
 			get => new Bool2(Z, Y); 	
@@ -160,6 +193,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of B, G on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 BG
 		{
 			get => new Bool2(B, G);	
@@ -230,6 +266,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 RGG => new Bool3(R, G, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of X, Y, Z on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 XYZ
 		{
 			get => new Bool3(X, Y, Z); 	
@@ -241,6 +280,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of R, G, B on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 RGB
 		{
 			get => new Bool3(R, G, B);	
@@ -262,6 +304,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 RBR => new Bool3(R, B, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of X, Z, Y on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 XZY
 		{
 			get => new Bool3(X, Z, Y); 	
@@ -273,6 +318,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of R, B, G on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 RBG
 		{
 			get => new Bool3(R, B, G);	
@@ -314,6 +362,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 GRG => new Bool3(G, R, G);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of Y, X, Z on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 YXZ
 		{
 			get => new Bool3(Y, X, Z); 	
@@ -325,6 +376,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of G, R, B on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 GRB
 		{
 			get => new Bool3(G, R, B);	
@@ -366,6 +420,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 GGB => new Bool3(G, G, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of Y, Z, X on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 YZX
 		{
 			get => new Bool3(Y, Z, X); 	
@@ -377,6 +434,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of G, B, R on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 GBR
 		{
 			get => new Bool3(G, B, R);	
@@ -418,6 +478,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 BRR => new Bool3(B, R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of Z, X, Y on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 ZXY
 		{
 			get => new Bool3(Z, X, Y); 	
@@ -429,6 +492,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of B, R, G on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 BRG
 		{
 			get => new Bool3(B, R, G);	
@@ -450,6 +516,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool3 BRB => new Bool3(B, R, B);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of Z, Y, X on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 ZYX
 		{
 			get => new Bool3(Z, Y, X); 	
@@ -461,6 +530,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool3"/> comprised of B, G, R on the current <see cref="Bool3"/>.
+		/// </summary>
 		public Bool3 BGR
 		{
 			get => new Bool3(B, G, R);	

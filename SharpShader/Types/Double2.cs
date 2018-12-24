@@ -34,6 +34,9 @@ namespace SharpShader
 		/// </summary>
 		public Double2 RR => new Double2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of X, Y on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 XY
 		{
 			get => new Double2(X, Y); 	
@@ -44,6 +47,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of R, G on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 RG
 		{
 			get => new Double2(R, G);	
@@ -54,6 +60,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of Y, X on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 YX
 		{
 			get => new Double2(Y, X); 	
@@ -64,6 +73,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Double2"/> comprised of G, R on the current <see cref="Double2"/>.
+		/// </summary>
 		public Double2 GR
 		{
 			get => new Double2(G, R);	

@@ -34,6 +34,9 @@ namespace SharpShader
 		/// </summary>
 		public UInt2 RR => new UInt2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of X, Y on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 XY
 		{
 			get => new UInt2(X, Y); 	
@@ -44,6 +47,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of R, G on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 RG
 		{
 			get => new UInt2(R, G);	
@@ -54,6 +60,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of Y, X on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 YX
 		{
 			get => new UInt2(Y, X); 	
@@ -64,6 +73,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="UInt2"/> comprised of G, R on the current <see cref="UInt2"/>.
+		/// </summary>
 		public UInt2 GR
 		{
 			get => new UInt2(G, R);	

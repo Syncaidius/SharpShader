@@ -34,6 +34,9 @@ namespace SharpShader
 		/// </summary>
 		public Bool2 RR => new Bool2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of X, Y on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 XY
 		{
 			get => new Bool2(X, Y); 	
@@ -44,6 +47,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of R, G on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 RG
 		{
 			get => new Bool2(R, G);	
@@ -54,6 +60,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of Y, X on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 YX
 		{
 			get => new Bool2(Y, X); 	
@@ -64,6 +73,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Bool2"/> comprised of G, R on the current <see cref="Bool2"/>.
+		/// </summary>
 		public Bool2 GR
 		{
 			get => new Bool2(G, R);	

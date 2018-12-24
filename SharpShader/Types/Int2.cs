@@ -34,6 +34,9 @@ namespace SharpShader
 		/// </summary>
 		public Int2 RR => new Int2(R, R);
 
+		/// <summary>
+		/// Gets or sets a <see cref="Int2"/> comprised of X, Y on the current <see cref="Int2"/>.
+		/// </summary>
 		public Int2 XY
 		{
 			get => new Int2(X, Y); 	
@@ -44,6 +47,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Int2"/> comprised of R, G on the current <see cref="Int2"/>.
+		/// </summary>
 		public Int2 RG
 		{
 			get => new Int2(R, G);	
@@ -54,6 +60,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Int2"/> comprised of Y, X on the current <see cref="Int2"/>.
+		/// </summary>
 		public Int2 YX
 		{
 			get => new Int2(Y, X); 	
@@ -64,6 +73,9 @@ namespace SharpShader
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets a <see cref="Int2"/> comprised of G, R on the current <see cref="Int2"/>.
+		/// </summary>
 		public Int2 GR
 		{
 			get => new Int2(G, R);	
