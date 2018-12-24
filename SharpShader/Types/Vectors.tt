@@ -99,6 +99,7 @@ namespace SharpShader
 			foreach(string pName in swizzlePermutations)
 			{
 				char[] chars = pName.ToCharArray();
+				bool needSetter = new string(chars.Distinct().ToArray()) == pName;
 				string newParams = string.Join(", ", chars);
 				string pReturnType = $"{vectorNames[t]}{chars.Length}";	
 
@@ -108,18 +109,58 @@ namespace SharpShader
 				char[] charsCol = pColName.ToCharArray();
 				string newColParams = string.Join(", ", charsCol);
 
+				if(needSetter)
+				{
+#>
+		public <#=pReturnType#> <#=pName#>
+		{
+			get => new <#=pReturnType#>(<#=newParams#>); 	
+			set
+			{
+<#
+					for(int pid = 0; pid < chars.Length; pid++)
+					{
+#>
+				<#=chars[pid]#> = value.<#=componentNames[pid]#>;
+<#
+					}
+#>
+			}
+		}
+
+		public <#=pReturnType#> <#=pColName#>
+		{
+			get => new <#=pReturnType#>(<#=newColParams#>);	
+			set
+			{
+<#
+					for(int pid = 0; pid < charsCol.Length; pid++)
+					{
+#>
+				<#=charsCol[pid]#> = value.<#=channelNames[pid]#>;
+<#
+					}
+#>
+			}
+		}
+
+<#
+				}
+				else
+				{
 #>
 		/// <summary>
-		/// Returns a new <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newParams#> from the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
+		/// Gets a new <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newParams#> from the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
 		/// </summary>
 		public <#=pReturnType#> <#=pName#> => new <#=pReturnType#>(<#=newParams#>);
 
 		/// <summary>
-		/// Returns a new <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newColParams#> from the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
+		/// Gets a new <see cref="<#=vectorNames[t]+chars.Length#>"/> comprised of <#=newColParams#> from the current <see cref="<#=vectorNames[t]+chars.Length#>"/>.
 		/// </summary>
 		public <#=pReturnType#> <#=pColName#> => new <#=pReturnType#>(<#=newColParams#>);
 
 <#
+				}
 			}
 		}
 

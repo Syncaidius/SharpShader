@@ -57,10 +57,10 @@ namespace SharpShaderSample
             input.UV.YW /= textureSize.Y;
 
             //invert y axis.
-            input.Pos.y = -input.Pos.y;
+            input.Pos.Y = -input.Pos.Y;
 
             // Invert Y origin
-            input.Origin.y = -input.Origin.y;
+            input.Origin.Y = -input.Origin.Y;
 
             return input;
         }
@@ -214,7 +214,7 @@ namespace SharpShaderSample
         {
             PS_IN v = new PS_IN();
             v.Color = input[0].Color;
-            v.UV = new Vector3(0, 0, 0);
+            v.UV = new Vector4();
 
             // p1
             v.Pos = Mul(new Vector4(input[0].Pos, 0, 1), wvp);
