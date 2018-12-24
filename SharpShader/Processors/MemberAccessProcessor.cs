@@ -19,7 +19,7 @@ namespace SharpShader
             context.Map.AddMemberAccess(syntax);
         }
 
-        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderElement component)
         {
             if (context.Map.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ShaderComponent
+    internal class ShaderElement
     {
         public SyntaxNode Node;
 
         public ShaderComponentType Type;
 
-        internal ShaderComponent(SyntaxNode node, ShaderComponentType type)
+        internal ShaderElement(SyntaxNode node, ShaderComponentType type)
         {
             Node = node;
             Type = type;
@@ -44,5 +44,7 @@ namespace SharpShader
         ChildField = 6,
 
         MemberAccess = 7,
+
+        Method = 8,
     }
 }

@@ -18,27 +18,21 @@ namespace SharpShader
 
         internal virtual void Map(ShaderContext context, SyntaxNode node) { }
 
-        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component) { }
+        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderElement component) { }
 
         protected void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
         {
             string original = syntax.ToString();
-            Type t = null;
-            string replacement = GetTypeTranslation(context, syntax, out t);
+            (string replacement, Type t) = GetTypeTranslation(context, syntax);
             source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
 
             if (t != null)
                 context.Map.TranslatedTypes[replacement] = t;
         }
 
-        protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
+        protected (string, Type) GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
         {
-            return GetTypeTranslation(context, syntax, out Type dummy);
-        }
-
-        protected string GetTypeTranslation(ShaderContext context, TypeSyntax syntax, out Type originalType)
-        {
-            originalType = ShaderReflection.ResolveType(syntax.ToString());
+            Type originalType = ShaderReflection.ResolveType(syntax.ToString());
             if (originalType != null)
             {
                 // First attempt to directly translate the type. 
@@ -46,7 +40,7 @@ namespace SharpShader
                 LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
                 if (translation != null)
                 {
-                    return translation.NativeText;
+                    return (translation.NativeText, originalType);
                 }
                 else
                 {
@@ -70,13 +64,13 @@ namespace SharpShader
                             }
 
                             replacement = translation.NativeText + replacement;
-                            return replacement;
+                            return (replacement, originalType);
                         }
                     }
                 }
             }
 
-            return syntax.ToString();
+            return (syntax.ToString(), null);
         }
 
         internal bool HasStageFlags(NodeProcessStageFlags stage)
@@ -121,16 +115,16 @@ namespace SharpShader
             OnMap(context, node as T);
         }
 
-        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderComponent component)
+        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderElement element)
         {
-            OnTranslate(context, node as T, source, component);
+            OnTranslate(context, node as T, source, element);
         }
 
         protected virtual void OnPreprocess(ShaderContext context, T syntax, StringBuilder source) { }
 
         protected virtual void OnMap(ShaderContext context, T syntax) { }
 
-        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source, ShaderComponent component) { }
+        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source, ShaderElement element) { }
     }
 
     [Flags]

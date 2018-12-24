@@ -17,14 +17,16 @@ namespace SharpShader
             Slot = slot;
         }
 
-        internal static void Parse(AttributeSyntax syntax, out uint? register)
+        internal static uint? Parse(AttributeSyntax syntax)
         {
-            register = null;
+            uint? register = null;
             if (syntax.ArgumentList.Arguments.Count > 0)
             {
                 if (uint.TryParse(syntax.ArgumentList.Arguments[0].ToString(), out uint val))
                     register = val;
             }
+
+            return register;
         }
     }
 

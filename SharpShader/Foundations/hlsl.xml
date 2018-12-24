@@ -1232,7 +1232,7 @@
     <call>
       <generic type="SharpShader.IVector[Single]" name="T" />
       <param generic="T" name="x" />
-      <return type="System.Single" />
+      <return generic="T" />
     </call>
   </Intrinsic>
 

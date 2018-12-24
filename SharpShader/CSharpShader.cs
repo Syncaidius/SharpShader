@@ -826,7 +826,7 @@ namespace SharpShader
 
 		/// <summary>HLSL: Normalizes the specified floating-point vector according to x / length(x).</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "normalize")]
-		protected Single Normalize<T>(T x) where T : struct, IVector<Single> { return default(Single); }
+		protected T Normalize<T>(T x) where T : struct, IVector<Single> { return default(T); }
 
 		/// <summary>HLSL: Returns the specified value raised to the specified power.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "pow")]

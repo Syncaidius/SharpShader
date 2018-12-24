@@ -33,14 +33,14 @@ namespace SharpShader
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderElement component)
         {
             if(component.Type == ShaderComponentType.ConstantBuffer)
             {
                 uint? registerID = null;
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
                 if (regAttribute != null)
-                    RegisterAttribute.Parse(regAttribute, out registerID);
+                    registerID = RegisterAttribute.Parse(regAttribute);
 
                 string translated = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
                 source.Replace(syntax.ToString(), translated);

@@ -29,7 +29,7 @@ namespace SharpShader
                 context.Map.AddField(syntax);
         }
 
-        protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source, ShaderElement component)
         {
             string typeName = syntax.Declaration.Type.ToString(); 
 
@@ -51,7 +51,7 @@ namespace SharpShader
                 {
                     if (ShaderReflection.IsRegisteredType(t))
                     {
-                        RegisterAttribute.Parse(regAttribute, out uint? registerID);
+                        uint? registerID = RegisterAttribute.Parse(regAttribute);
                         if (registerID != null)
                         {
                             string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);

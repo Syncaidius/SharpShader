@@ -20,6 +20,7 @@ namespace SharpShader.Foundations.HLSL
                 if (Enum.TryParse(enumVal, out SemanticFragmentOutputType outputType))
                 {
                     string result = $"{header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "").Trim()} : {outputType.ToString().ToUpper()}{Environment.NewLine}";
+
                     // Second argument is always the semantic slot ID.
                     if (args.Count > 1)
                     {

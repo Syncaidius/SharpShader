@@ -68,12 +68,6 @@ namespace SharpShaderSample
             };
         }
 
-        [GeometryShader(GeometryInputType.Point, 4)]
-        public VertexInput DummyGeometryFunc(VertexInput[] input)
-        {
-            return input[0];
-        }
-
         [FragmentShader(SemanticFragmentOutputType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {

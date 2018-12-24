@@ -30,7 +30,6 @@ namespace SharpShader
 
         protected override void OnMap(ShaderContext context, MethodDeclarationSyntax syntax)
         {
-            bool attributed = false;
             foreach (AttributeListSyntax list in syntax.AttributeLists)
             {
                 foreach (AttributeSyntax attSyntax in list.Attributes)
@@ -39,7 +38,7 @@ namespace SharpShader
                     if (!name.EndsWith("Attribute"))
                         name += "Attribute";
 
-                    Type attType = Type.GetType($"SharpShader.{name}");
+                    Type attType = ShaderReflection.ResolveType(name);
                     if (attType != null)
                     {
                         EntryPointType ep = EntryPointType.Invalid;
@@ -58,24 +57,15 @@ namespace SharpShader
                             ep = EntryPointType.ComputeShader;
 
                         if (ep != EntryPointType.Invalid)
-                        {
-                            context.Map.AddEntryPoint(new EntryPoint()
-                            {
-                                AttributeType = attType,
-                                EntryType = ep,
-                                MethodSyntax = syntax,
-                                AttributeSyntax = attSyntax,
-                            });
-                            attributed = true;
-                        }
+                            context.Map.AddEntryPoint(new EntryPoint(attType, attSyntax, syntax, ep));
                     }
                 }
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderComponent component)
+        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
         {
-            if(component.Type == ShaderComponentType.EntryPoint)
+            if(element.Type == ShaderComponentType.EntryPoint)
             {
                 SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
                 int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;

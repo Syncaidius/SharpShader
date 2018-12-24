@@ -347,7 +347,7 @@ namespace SharpShader
             // Iterating in this way ensures any changes made by post-processors will not invalidate the locations of earlier nodes.
             for (int i = shader.Map.Components.Count - 1; i >= 0; i--)
             {
-                ShaderComponent com = shader.Map.Components[i];
+                ShaderElement com = shader.Map.Components[i];
                 SyntaxNode node = com.Node;
                 Type test = node.GetType();
                 if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))

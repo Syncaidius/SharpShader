@@ -9,10 +9,18 @@ namespace SharpShader
 {
     internal class EntryPoint
     {
-        public Type AttributeType;
-        public AttributeSyntax AttributeSyntax;
-        public MethodDeclarationSyntax MethodSyntax;
-        public EntryPointType EntryType;
+        internal Type EntryPointAttributeType { get; }
+        internal AttributeSyntax AttributeSyntax { get; }
+        internal MethodDeclarationSyntax MethodSyntax;
+        internal EntryPointType EntryType;
+
+        internal EntryPoint(Type epAttributeType, AttributeSyntax epAttributeSyntax, MethodDeclarationSyntax syntax, EntryPointType type)
+        {
+            MethodSyntax = syntax;
+            EntryPointAttributeType = epAttributeType;
+            AttributeSyntax = epAttributeSyntax;
+            EntryType = type;
+        }
 
         public override string ToString()
         {

@@ -212,6 +212,7 @@
     <Compile Include="Foundations\HLSL\VertexEntryPointTranslator.cs" />
     <Compile Include="Foundations\HLSL\PixelEntryPointTranslator.cs" />
     <Compile Include="Foundations\LanguageFoundation.cs" />
+    <Compile Include="GeometryShader.Streams.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />
@@ -226,7 +227,7 @@
     <Compile Include="SemanticType.cs" />
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderReflection.cs" />
-    <Compile Include="ShaderComponent.cs" />
+    <Compile Include="ShaderElement.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />

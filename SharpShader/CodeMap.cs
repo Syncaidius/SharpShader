@@ -18,7 +18,7 @@ namespace SharpShader
 
         internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
 
-        internal List<ShaderComponent> Components = new List<ShaderComponent>();
+        internal List<ShaderElement> Components = new List<ShaderElement>();
 
         internal Dictionary<string, RegisteredObject> ConstantBuffers = new Dictionary<string, RegisteredObject>();
 
@@ -49,12 +49,12 @@ namespace SharpShader
         {
             string name = ep.MethodSyntax.Identifier.ToString();
             EntryPoints.Add(name, ep);
-            Components.Add(new ShaderComponent(ep.MethodSyntax, ShaderComponentType.EntryPoint));
+            Components.Add(new ShaderElement(ep.MethodSyntax, ShaderComponentType.EntryPoint));
         }
 
         internal void AddMemberAccess(MemberAccessExpressionSyntax syntax)
         {
-            Components.Add(new ShaderComponent(syntax, ShaderComponentType.MemberAccess));
+            Components.Add(new ShaderElement(syntax, ShaderComponentType.MemberAccess));
         }
 
         internal void AddField(FieldDeclarationSyntax syntax, bool isChild = false)
@@ -64,7 +64,7 @@ namespace SharpShader
             if (!isChild)
                 MainFields.Add(name, syntax);
 
-            Components.Add(new ShaderComponent(syntax, isChild ? ShaderComponentType.ChildField : ShaderComponentType.MainField));
+            Components.Add(new ShaderElement(syntax, isChild ? ShaderComponentType.ChildField : ShaderComponentType.MainField));
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)
@@ -75,7 +75,7 @@ namespace SharpShader
         internal void AddStructure(StructDeclarationSyntax syntax)
         {
             Structures.Add(syntax);
-            Components.Add(new ShaderComponent(syntax, ShaderComponentType.Struct));
+            Components.Add(new ShaderElement(syntax, ShaderComponentType.Struct));
         }
 
         internal void AddConstantBuffer(StructDeclarationSyntax syntax, AttributeSyntax regAttribute)
@@ -83,14 +83,14 @@ namespace SharpShader
             string name = syntax.Identifier.ToString();
 
             ConstantBuffers.Add(name, new RegisteredObject(regAttribute));
-            Components.Add(new ShaderComponent(syntax, ShaderComponentType.ConstantBuffer));
+            Components.Add(new ShaderElement(syntax, ShaderComponentType.ConstantBuffer));
         }
 
         internal void AddSampler(VariableDeclaratorSyntax syntax, AttributeSyntax attSyntax)
         {
             string name = syntax.ToString();
             Samplers.Add(name, new RegisteredObject(attSyntax));
-            Components.Add(new ShaderComponent(syntax, ShaderComponentType.Sampler));
+            Components.Add(new ShaderElement(syntax, ShaderComponentType.Sampler));
         }
     }
 }

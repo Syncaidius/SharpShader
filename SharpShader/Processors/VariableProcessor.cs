@@ -31,7 +31,7 @@ namespace SharpShader
                     regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
                     if (regAttribute != null)
                     {
-                        RegisterAttribute.Parse(regAttribute, out nextRegister);
+                        nextRegister = RegisterAttribute.Parse(regAttribute);
                         nextRegister++;
                     }
                 }
