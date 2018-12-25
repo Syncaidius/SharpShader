@@ -1,5 +1,6 @@
 
 
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -26,6 +27,18 @@ namespace SharpShader
 			Y = y;
 		}
 
+		public float this[int index]
+		{
+			get
+			{
+				switch(index)
+				{
+					case 0: return X;
+					case 1: return Y;
+					default: throw new IndexOutOfRangeException("The maximum index of a Vector2 is 1.");
+				}
+			}
+		}
 		/// <summary>
 		/// Gets a new <see cref="Vector2"/> comprised of X, X from the current <see cref="Vector2"/>.
 		/// </summary>

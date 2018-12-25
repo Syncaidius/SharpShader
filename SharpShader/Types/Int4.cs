@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -91,6 +92,20 @@ namespace SharpShader
 			W = p.Y;
 		}
 
+		public int this[int index]
+		{
+			get
+			{
+				switch(index)
+				{
+					case 0: return X;
+					case 1: return Y;
+					case 2: return Z;
+					case 3: return W;
+					default: throw new IndexOutOfRangeException("The maximum index of a Int4 is 3.");
+				}
+			}
+		}
 		/// <summary>
 		/// Gets a new <see cref="Int2"/> comprised of X, X from the current <see cref="Int2"/>.
 		/// </summary>

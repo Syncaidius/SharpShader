@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -50,6 +51,19 @@ namespace SharpShader
 			Z = p.Y;
 		}
 
+		public bool this[int index]
+		{
+			get
+			{
+				switch(index)
+				{
+					case 0: return X;
+					case 1: return Y;
+					case 2: return Z;
+					default: throw new IndexOutOfRangeException("The maximum index of a Bool3 is 2.");
+				}
+			}
+		}
 		/// <summary>
 		/// Gets a new <see cref="Bool2"/> comprised of X, X from the current <see cref="Bool2"/>.
 		/// </summary>

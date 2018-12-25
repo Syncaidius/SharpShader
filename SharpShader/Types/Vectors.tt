@@ -22,6 +22,7 @@
 		for(int i = 2; i <= 4; i++)
 		{
 #>
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -114,6 +115,27 @@ namespace SharpShader
 			}
 		}
 
+		// Generate indexer
+#>
+		public <#=vectorTypes[t]#> this[int index]
+		{
+			get
+			{
+				switch(index)
+				{
+<#
+				for(int ii=0; ii < i; ii++)
+				{
+#>
+					case <#=ii#>: return <#=componentNames[ii]#>;
+<#
+				}
+#>
+					default: throw new IndexOutOfRangeException("The maximum index of a <#=name#> is <#=i-1#>.");
+				}
+			}
+		}
+<#
 		// Generate component swizzles
 		IEnumerable<string> swizzlePermutations = null;
 		IEnumerable<string> compNames = componentNames.Take(i);

@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -24,6 +25,18 @@ namespace SharpShader
 			Y = y;
 		}
 
+		public uint this[int index]
+		{
+			get
+			{
+				switch(index)
+				{
+					case 0: return X;
+					case 1: return Y;
+					default: throw new IndexOutOfRangeException("The maximum index of a UInt2 is 1.");
+				}
+			}
+		}
 		/// <summary>
 		/// Gets a new <see cref="UInt2"/> comprised of X, X from the current <see cref="UInt2"/>.
 		/// </summary>
