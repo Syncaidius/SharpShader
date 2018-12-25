@@ -25,6 +25,9 @@ namespace SharpShader
 			Y = y;
 		}
 
+		/// <summary>
+		/// Gets or sets a component of the current <see cref="Bool2"/> at the specified index.
+		/// </summary>
 		public bool this[int index]
 		{
 			get

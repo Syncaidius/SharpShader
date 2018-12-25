@@ -27,6 +27,9 @@ namespace SharpShader
 			Y = y;
 		}
 
+		/// <summary>
+		/// Gets or sets a component of the current <see cref="Vector2"/> at the specified index.
+		/// </summary>
 		public float this[int index]
 		{
 			get

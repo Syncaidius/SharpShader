@@ -51,6 +51,9 @@ namespace SharpShader
 			Z = p.Y;
 		}
 
+		/// <summary>
+		/// Gets or sets a component of the current <see cref="Vector3"/> at the specified index.
+		/// </summary>
 		public float this[int index]
 		{
 			get

@@ -117,6 +117,9 @@ namespace SharpShader
 
 		// Generate indexer
 #>
+		/// <summary>
+		/// Gets or sets a component of the current <see cref="<#=name#>"/> at the specified index.
+		/// </summary>
 		public <#=vectorTypes[t]#> this[int index]
 		{
 			get
