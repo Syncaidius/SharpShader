@@ -28,7 +28,7 @@ namespace SharpShader
 		}
 
 		/// <summary>
-		/// Gets or sets a component of the current <see cref="Vector2"/> at the specified index.
+		/// Gets or sets a component at the specified index for the current <see cref="Vector2"/> .
 		/// </summary>
 		public float this[int index]
 		{
