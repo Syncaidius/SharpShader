@@ -232,7 +232,7 @@ namespace SharpShaderSample
         [FragmentShader(SemanticFragmentOutputType.SV_Target)]
         Vector4 PS(PS_IN input)
         {
-            Vector4 col = mapDiffuse.Sample(diffuseSampler, input.UV);
+            Vector4 col = mapDiffuse.Sample(diffuseSampler, input.UV.XYZ);
             return col * input.Color;
         }
 

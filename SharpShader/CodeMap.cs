@@ -40,9 +40,33 @@ namespace SharpShader
             UAVs.Clear();
         }
 
+        /// <summary>
+        /// Attempts to retrieve the C# type of a translated shader type (by name). If it fails, the type name will be tested against supported namespaces. </para>
+        /// Null is returned if the type cannot be resolved.
+        /// </summary>
+        /// <param name="translatedName">The name of the translated shader type.</param>
+        /// <returns></returns>
         internal Type GetOriginalType(string translatedName)
         {
-            return TranslatedTypes[translatedName];
+            Type originalType = null;
+            if (!TranslatedTypes.TryGetValue(translatedName, out originalType))
+            {
+                for(int i = 0; i < ShaderReflection.SupportedNamespaces.Length; i++)
+                {
+                    string ns = ShaderReflection.SupportedNamespaces[i];
+
+                    string fullName = translatedName;
+                    if (!fullName.StartsWith($"{ns}."))
+                        fullName = $"{ns}.{fullName}";
+
+                    originalType = Type.GetType(translatedName);
+                    if (originalType != null)
+                        break;
+                }
+
+            }
+
+            return originalType;
         }
 
         internal void AddEntryPoint(EntryPoint ep)

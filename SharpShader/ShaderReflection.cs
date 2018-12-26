@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public static class ShaderReflection
+    internal static class ShaderReflection
     {
         /// <summary>
         /// The name of the Sharp Shader namespace.
         /// </summary>
-        public const string NAMESPACE = "SharpShader";
+        internal const string NAMESPACE = "SharpShader";
 
         static readonly char[] _namespaceDelimiters = new char[] { '.' };
-        static readonly string[] _whitelistedNamespaces = new string[] { NAMESPACE, "System" };
+        internal  static readonly string[] SupportedNamespaces = new string[] { NAMESPACE, "System" };
 
         class LanguageMethodInfo
         {
@@ -150,7 +150,7 @@ namespace SharpShader
             string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 0)
             {
-                for (int i = 0; i < _whitelistedNamespaces.Length; i++)
+                for (int i = 0; i < SupportedNamespaces.Length; i++)
                 {
                     t = Type.GetType($"{NAMESPACE}.{parts[parts.Length - 1]}");
                     if (t != null)

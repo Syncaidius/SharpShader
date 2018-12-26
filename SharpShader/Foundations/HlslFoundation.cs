@@ -150,7 +150,7 @@ namespace SharpShader
             else // Hexadecimal + everything else.
             {
                 int newLength = number.Length;
-                for(int i = number.Length - 1; i >= 0; i++)
+                for(int i = number.Length - 1; i >= 0; i--)
                 {
                     if (!char.IsNumber(number[i]))
                     {

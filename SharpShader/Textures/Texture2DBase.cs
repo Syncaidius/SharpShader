@@ -312,13 +312,13 @@ namespace SharpShader
         /// <returns></returns>
         public T SampleCmpLevelZero(TextureSampler sampler, LOC location, float compareValue, Int2 offset, float clamp, out uint status) { status = 0; return default(T); }
 
-        public T SampleGrad(TextureSampler sampler, LOC location, LOC ddx, LOC ddy) { return default(T); }
+        public T SampleGrad(TextureSampler sampler, LOC location, Vector2 ddx, Vector2 ddy) { return default(T); }
 
-        public T SampleGrad(TextureSampler sampler, LOC location, LOC ddx, LOC ddy, Int2 offset) { return default(T); }
+        public T SampleGrad(TextureSampler sampler, LOC location, Vector2 ddx, Vector2 ddy, Int2 offset) { return default(T); }
 
-        public T SampleGrad(TextureSampler sampler, LOC location, LOC ddx, LOC ddy, Int2 offset, float clamp) { return default(T); }
+        public T SampleGrad(TextureSampler sampler, LOC location, Vector2 ddx, Vector2 ddy, Int2 offset, float clamp) { return default(T); }
 
-        public T SampleGrad(TextureSampler sampler, LOC location, LOC ddx, LOC ddy, Int2 offset, float clamp, out uint status) { status = 0; return default(T); }
+        public T SampleGrad(TextureSampler sampler, LOC location, Vector2 ddx, Vector2 ddy, Int2 offset, float clamp, out uint status) { status = 0; return default(T); }
 
         public T SampleLevel(TextureSampler sampler, LOC location, float lod) { return default(T); }
 
