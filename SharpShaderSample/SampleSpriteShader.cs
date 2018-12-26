@@ -51,6 +51,7 @@ namespace SharpShaderSample
 
         static float degToRad360 = 6.28319f;
 
+        [VertexShader]
         VS_GS VS(VS_GS input)
         {
             input.UV.XZ /= textureSize.X;
@@ -65,6 +66,7 @@ namespace SharpShaderSample
             return input;
         }
 
+        [VertexShader]
         VS_GS VS_Line(VS_GS input)
         {
             //invert y axis.
@@ -73,6 +75,7 @@ namespace SharpShaderSample
             return input;
         }
 
+        [VertexShader]
         VS_GS VS_Circle(VS_GS input)
         {
             //invert y axis.
@@ -80,6 +83,7 @@ namespace SharpShaderSample
             return input;
         }
 
+        [VertexShader]
         VS_GS VS_Tri(VS_GS input)
         {
             //invert y axis.
