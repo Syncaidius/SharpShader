@@ -8,21 +8,30 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Double3x1 : IMatrix<double>
 	{
-			/// <summary>
-			///	The value at row 1, column 1 of the matrix.
-			/// </summary>
-			public double M11;
+		/// <summary>
+		///	The value at row 1, column 1 of the matrix.
+		/// </summary>
+		public double M11;
 
-			/// <summary>
-			///	The value at row 2, column 1 of the matrix.
-			/// </summary>
-			public double M21;
+		/// <summary>
+		///	The value at row 2, column 1 of the matrix.
+		/// </summary>
+		public double M21;
 
-			/// <summary>
-			///	The value at row 3, column 1 of the matrix.
-			/// </summary>
-			public double M31;
+		/// <summary>
+		///	The value at row 3, column 1 of the matrix.
+		/// </summary>
+		public double M31;
 
+		/// <summary>
+		/// Creates a new instance of <see cref="Double3x1"/>.
+		/// </summary>
+		public Double3x1(double m11, double m21, double m31)
+		{
+			M11 = m11;
+			M21 = m21;
+			M31 = m31;
+		}
 	}
 }
 

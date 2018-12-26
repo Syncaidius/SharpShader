@@ -42,15 +42,45 @@ namespace SharpShader
 		for(int x = 1; x <= colCount; x++)
 		{
 #>
-			/// <summary>
-			///	The value at row <#=y#>, column <#=x#> of the matrix.
-			/// </summary>
-			public <#=$"{matTypes[t]} M{y}{x}"#>;
+		/// <summary>
+		///	The value at row <#=y#>, column <#=x#> of the matrix.
+		/// </summary>
+		public <#=$"{matTypes[t]} M{y}{x}"#>;
 
 <#
 		}
 	}
+
+	string constructorParams = "";
+	for(int x = 1; x <= colCount; x++)
+	{
+		for(int y = 1; y <= rowCount; y++)
+		{		
+			if(constructorParams.Length > 0)
+				constructorParams += ", ";
+
+			constructorParams += $"{matTypes[t]} m{y}{x}";
+		}
+	}
+
 #>
+		/// <summary>
+		/// Creates a new instance of <see cref="<#=name#>"/>.
+		/// </summary>
+		public <#=name#>(<#=constructorParams#>)
+		{
+<#
+	for(int y = 1; y <= rowCount; y++)
+	{
+		for(int x = 1; x <= colCount; x++)
+		{
+#>
+			<#=$"M{y}{x} = m{y}{x}"#>;
+<#
+		}
+	}
+#>
+		}
 	}
 }
 
