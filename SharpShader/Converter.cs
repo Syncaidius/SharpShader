@@ -87,7 +87,7 @@ namespace SharpShader
                 }
 
                 // TODO improve this later. It's fugly!
-                bool blockStarted = lines[i].StartsWith(BlockOpen);
+                bool blockStarted = lines[i].StartsWith(BlockOpen) || lines[i].EndsWith(BlockOpen);
                 bool blockEnded = lines[i].EndsWith(BlockClosed) || 
                     lines[i].EndsWith(BlockClosed + ";") || 
                     lines[i].StartsWith(BlockClosed + "//") || 
