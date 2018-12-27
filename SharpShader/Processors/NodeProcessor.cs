@@ -22,9 +22,11 @@ namespace SharpShader
 
         protected void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
         {
-            string original = syntax.ToString();
-            (string replacement, Type t) = GetTypeTranslation(context, syntax);
-            source = source.Replace(original, replacement, syntax.SpanStart, syntax.Span.Length);
+            TypeSyntax typeSyntax = syntax is ArrayTypeSyntax arraySyntax ? arraySyntax.ElementType : syntax;
+
+            string original = typeSyntax.ToString();
+            (string replacement, Type t) = GetTypeTranslation(context, typeSyntax);
+            source = source.Replace(original, replacement, typeSyntax.SpanStart, typeSyntax.Span.Length);
 
             if (t != null)
                 context.Map.TranslatedTypes[replacement] = t;

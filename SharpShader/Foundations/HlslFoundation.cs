@@ -142,7 +142,7 @@ namespace SharpShader
 
         internal override string TranslateNumber(ShaderContext context, string number)
         {
-            // NOTE: hexadecimal literals are supported, binary literals are not, so we'll need to translate those.
+            // NOTE: hexadecimal literals are supported in HLSL, binary literals are not, so we'll need to translate those.
             if (number.StartsWith("0b")) // Binary literal.
             {
                 return TranslateBinaryLiteral(number);
@@ -160,6 +160,13 @@ namespace SharpShader
                 }
                 return number.Substring(0, newLength);
             }
+        }
+
+        internal override string TranslateArrayDeclaration(ShaderContext context, FieldDeclarationSyntax decSyntax)
+        {
+            IEnumerable<SyntaxNode> childNodes = decSyntax.ChildNodes();
+
+            return decSyntax.ToString();
         }
     }
 }

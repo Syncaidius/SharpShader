@@ -38,5 +38,10 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override string TranslateArrayDeclaration(ShaderContext context, FieldDeclarationSyntax arrayDeclarationSyntax)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

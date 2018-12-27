@@ -48,6 +48,9 @@ namespace SharpShader
         /// <returns></returns>
         internal Type GetOriginalType(string translatedName)
         {
+            if (translatedName.EndsWith("[]"))
+                translatedName = translatedName.Substring(0, translatedName.Length - 2);
+
             Type originalType = null;
             if (!TranslatedTypes.TryGetValue(translatedName, out originalType))
             {
