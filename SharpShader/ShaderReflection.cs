@@ -16,8 +16,9 @@ namespace SharpShader
         /// </summary>
         internal const string NAMESPACE = "SharpShader";
 
-        static readonly char[] _namespaceDelimiters = new char[] { '.' };
-        internal  static readonly string[] SupportedNamespaces = new string[] { NAMESPACE, "System" };
+        static readonly char[] _namespaceDelimiters = { '.' };
+        internal static readonly string[] SupportedNamespaces =  { NAMESPACE, "System" };
+        internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
 
         class LanguageMethodInfo
         {

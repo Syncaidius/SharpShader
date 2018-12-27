@@ -51,11 +51,9 @@ namespace SharpShader
                         if (translation != null)
                         {
                             string original = syntax.ToString();
-                            string replacement = null;
-                            if (typeof(IVector).IsAssignableFrom(implemented))
-                                replacement = original.Replace("Vector", "");
-                            else if (typeof(IMatrix).IsAssignableFrom(implemented))
-                                replacement = original.Replace("Matrix", "");
+                            string replacement = original;
+                            for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
+                                replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
 
                             if (translation.UniformSizeIsSingular)
                             {

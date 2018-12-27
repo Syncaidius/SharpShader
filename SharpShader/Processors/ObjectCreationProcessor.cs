@@ -31,7 +31,7 @@ namespace SharpShader
                 varName = context.Parent.GetNewVariableName("ret");
 
             // Translate initializer block
-            if(syntax.Initializer != null)
+            if (syntax.Initializer != null)
             {
                 string initializer = "";
                 IEnumerable<SyntaxNode> nodes = syntax.Initializer.ChildNodes();
@@ -51,16 +51,9 @@ namespace SharpShader
             }
             else
             {
-                string initializer = syntax.ToString().Replace(syntax.Type.ToString(), typeTranslation).Replace("new ", "");
-
-                // Check if the return syntax needs translating.
-                if (syntax.Parent is ReturnStatementSyntax)
-                {
-                    // Get a name for our temporary variable.
-                    string result = $"return {initializer};";
-
-                    source.Replace(syntax.Parent.ToString(), result, syntax.Parent.SpanStart, syntax.Parent.Span.Length);
-                }                
+                string strSyntax = syntax.ToString();
+                string replacement = strSyntax.Replace(syntax.Type.ToString(), typeTranslation).Replace("new ", "");
+                source.Replace(strSyntax, replacement, syntax.SpanStart, syntax.Span.Length);
             }
         }
     }
