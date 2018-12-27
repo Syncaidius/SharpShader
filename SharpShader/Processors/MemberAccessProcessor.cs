@@ -16,7 +16,7 @@ namespace SharpShader
 
         protected override void OnMap(ShaderContext context, MemberAccessExpressionSyntax syntax)
         {
-            context.Map.AddMemberAccess(syntax);
+            context.Map.AddComponent(syntax, ShaderComponentType.MemberAccess);
         }
 
         protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderElement component)

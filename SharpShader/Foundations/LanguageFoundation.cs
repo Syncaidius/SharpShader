@@ -62,7 +62,7 @@ namespace SharpShader
 
         internal abstract string TranslateNumber(ShaderContext context, string number);
 
-        internal abstract string TranslateArrayDeclaration(ShaderContext context, FieldDeclarationSyntax arrayDeclarationSyntax);
+        internal abstract string TranslateArrayDeclaration(ShaderContext context, string typeName, VariableDeclaratorSyntax varSyntax);
 
         /// <summary>
         /// Returns the translated string for a type, or null if no translation is found.

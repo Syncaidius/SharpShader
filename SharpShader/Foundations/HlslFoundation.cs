@@ -162,11 +162,23 @@ namespace SharpShader
             }
         }
 
-        internal override string TranslateArrayDeclaration(ShaderContext context, FieldDeclarationSyntax decSyntax)
+        internal override string TranslateArrayDeclaration(ShaderContext context, string typeName, VariableDeclaratorSyntax varSyntax)
         {
-            IEnumerable<SyntaxNode> childNodes = decSyntax.ChildNodes();
+            int arraySize = 0;
+            string strInitializer = "";
+            if(varSyntax.Initializer != null)
+            {
+                strInitializer = $" {varSyntax.ToString()}";
+                switch (varSyntax.Initializer.Value)
+                {
+                    case InitializerExpressionSyntax initSyntax:
+                        IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
+                        arraySize = initChildren.Count();
+                        break;
+                }
+            }
 
-            return decSyntax.ToString();
+            return $"{typeName} {varSyntax.Identifier}[{arraySize}]{strInitializer}";
         }
     }
 }

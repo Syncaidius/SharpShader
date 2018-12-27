@@ -11,69 +11,72 @@ namespace SharpShader
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
+        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
         protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
             // Separate the declaration into individual single-variable declarations.
-            if (syntax.Variables.Count > 1)
+            string strAttributes = "";
+            AttributeSyntax regAttribute = null;
+            uint? nextRegister = 0;
+            string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
+
+            if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
             {
-                string strAttributes = "";
-                AttributeSyntax regAttribute = null;
-                uint? nextRegister = 0;
-                string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
+                foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
+                    strAttributes += attList.ToString() + Environment.NewLine;
 
-                if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
+                regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
+                if (regAttribute != null)
                 {
-                    foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
-                        strAttributes += attList.ToString() + Environment.NewLine;
-
-                    regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
-                    if (regAttribute != null)
-                    {
-                        nextRegister = RegisterAttribute.Parse(regAttribute);
-                        nextRegister++;
-                    }
+                    nextRegister = RegisterAttribute.Parse(regAttribute);
+                    nextRegister++;
                 }
-
-                string replacement = "";
-                foreach (VariableDeclaratorSyntax vds in syntax.Variables)
-                {
-                    // The first set of attributes already exist, so don't add them again.
-                    if (replacement.Length > 0)
-                    {
-                        if (regAttribute != null)
-                            replacement += strAttributes.Replace(regAttribute.ToString(), $"{strRegAttName}({nextRegister++})");
-                        else
-                            replacement += strAttributes;
-                    }
-
-                    replacement += $"{syntax.Type} {vds};{Environment.NewLine}";
-                }
-
-                if(syntax.Parent is LocalDeclarationStatementSyntax parentDeclaration)
-                    source.Replace(parentDeclaration.ToString(), replacement, parentDeclaration.SpanStart, parentDeclaration.Span.Length);
-                else
-                    source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
             }
-        }
-    }
 
-    
-    internal class VariableDeclaratorProcessor : NodeProcessor<VariableDeclaratorSyntax>
-    {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
-        protected override void OnPreprocess(ShaderContext context, VariableDeclaratorSyntax syntax, StringBuilder source)
-        {
-            if (syntax.Initializer != null)
+            string replacement = "";
+            foreach (VariableDeclaratorSyntax vds in syntax.Variables)
             {
-                string initValue = syntax.Initializer.Value.ToString();
-                if (char.IsNumber(initValue[0]))
+                // The first set of attributes already exist, so don't add them again.
+                if (replacement.Length > 0)
                 {
-                    string translated = context.Parent.Foundation.TranslateNumber(context, initValue);
-                    source.Replace(initValue, translated, syntax.Initializer.SpanStart, syntax.Initializer.Span.Length);
+                    if (regAttribute != null)
+                        replacement += strAttributes.Replace(regAttribute.ToString(), $"{strRegAttName}({nextRegister++})");
+                    else
+                        replacement += strAttributes;
                 }
+
+                replacement += $"{syntax.Type} {vds};{Environment.NewLine}";
+            }
+
+            if (syntax.Variables.Count == 1)
+            {
+                if (replacement.EndsWith(Environment.NewLine))
+                    replacement = replacement.Substring(0, replacement.Length - Environment.NewLine.Length);
+            }
+
+            if (syntax.Parent is LocalDeclarationStatementSyntax parentDeclaration)
+                source.Replace(parentDeclaration.ToString(), replacement, parentDeclaration.SpanStart, parentDeclaration.Span.Length);
+            else
+                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+        }
+
+        protected override void OnMap(ShaderContext context, VariableDeclarationSyntax syntax)
+        {
+            context.Map.AddComponent(syntax, ShaderComponentType.Variable);
+        }
+
+        protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
+        {
+            TypeSyntax typeSyntax = syntax.Type;
+
+            if (typeSyntax is ArrayTypeSyntax arraySyntax && syntax.Variables.Count > 0)
+            {
+                typeSyntax = arraySyntax.ElementType;
+                string strArrayDeclaration = context.Parent.Foundation.TranslateArrayDeclaration(context, typeSyntax.ToString(), syntax.Variables[0]);
+                string replacement = strArrayDeclaration;
+
+                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
             }
         }
     }

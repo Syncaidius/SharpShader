@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,16 +73,16 @@ namespace SharpShader
             return originalType;
         }
 
+        internal void AddComponent(SyntaxNode node, ShaderComponentType type)
+        {
+            Components.Add(new ShaderElement(node, type));
+        }
+
         internal void AddEntryPoint(EntryPoint ep)
         {
             string name = ep.MethodSyntax.Identifier.ToString();
             EntryPoints.Add(name, ep);
-            Components.Add(new ShaderElement(ep.MethodSyntax, ShaderComponentType.EntryPoint));
-        }
-
-        internal void AddMemberAccess(MemberAccessExpressionSyntax syntax)
-        {
-            Components.Add(new ShaderElement(syntax, ShaderComponentType.MemberAccess));
+            AddComponent(ep.MethodSyntax, ShaderComponentType.EntryPoint);
         }
 
         internal void AddField(FieldDeclarationSyntax syntax, bool isChild = false)
@@ -91,7 +92,7 @@ namespace SharpShader
             if (!isChild)
                 MainFields.Add(name, syntax);
 
-            Components.Add(new ShaderElement(syntax, isChild ? ShaderComponentType.ChildField : ShaderComponentType.MainField));
+            AddComponent(syntax, ShaderComponentType.Variable);
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)
@@ -102,7 +103,7 @@ namespace SharpShader
         internal void AddStructure(StructDeclarationSyntax syntax)
         {
             Structures.Add(syntax);
-            Components.Add(new ShaderElement(syntax, ShaderComponentType.Struct));
+            AddComponent(syntax, ShaderComponentType.Struct);
         }
 
         internal void AddConstantBuffer(StructDeclarationSyntax syntax, AttributeSyntax regAttribute)
@@ -110,14 +111,14 @@ namespace SharpShader
             string name = syntax.Identifier.ToString();
 
             ConstantBuffers.Add(name, new RegisteredObject(regAttribute));
-            Components.Add(new ShaderElement(syntax, ShaderComponentType.ConstantBuffer));
+            AddComponent(syntax, ShaderComponentType.ConstantBuffer);
         }
 
         internal void AddSampler(VariableDeclaratorSyntax syntax, AttributeSyntax attSyntax)
         {
             string name = syntax.ToString();
             Samplers.Add(name, new RegisteredObject(attSyntax));
-            Components.Add(new ShaderElement(syntax, ShaderComponentType.Sampler));
+            AddComponent(syntax, ShaderComponentType.Sampler);
         }
     }
 }

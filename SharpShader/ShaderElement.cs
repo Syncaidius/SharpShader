@@ -33,18 +33,16 @@ namespace SharpShader
 
         Sampler = 2,
 
-        Texture = 2,
+        Texture = 3,
 
-        Buffer = 3,
+        Buffer = 4,
 
-        Struct = 4,
+        Struct = 5,
 
-        MainField = 5,
+        Method = 6,
 
-        ChildField = 6,
+        Variable = 7,
 
-        MemberAccess = 7,
-
-        Method = 8,
+        MemberAccess = 8,
     }
 }
