@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Lexicon>
-  <Language>HLSL</Language>
+<Lexicon language="HLSL">
+  <!-- Words-->
   <Word type="SharpShader.IVector`1" intrinsic="true">
     <Generic type="System.Int32" name="int" />
     <Generic type="System.UInt32" name="uint" />
@@ -19,7 +19,25 @@
   <Word type="SharpShader.TextureSampler1D" name="SamplerState" />
   <Word type="SharpShader.TextureSampler2D" name="SamplerState" />
   <Word type="SharpShader.TextureSampler3D" name="SamplerState" />
+
   
+  <!-- Modifiers-->
+  <Modifier name="const static">
+    <Requirement csharp="readonly" />
+    <Requirement csharp="static" />
+  </Modifier>
+  <Modifier name="const static">
+    <Requirement csharp="readonly" />
+  </Modifier>
+  <Modifier name="static">
+    <Requirement csharp="static" />
+  </Modifier>
+  <Modifier name="#define">
+    <Requirement csharp="const" />
+  </Modifier>
+  
+  
+  <!-- Intrinsic functions-->
   <Intrinsic name="abort">
     <summary>Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</summary>
   </Intrinsic>

@@ -14,7 +14,7 @@ namespace SharpShader
 
         protected override void OnPreprocess(ShaderContext context, UsingDirectiveSyntax node, StringBuilder source)
         {
-            RemoveSyntax(node, source);
+            source.Remove(node.SpanStart, node.Span.Length);
         }
     }
 }

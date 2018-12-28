@@ -21,11 +21,8 @@ namespace SharpShader
             for (int i = paramList.Count - 1; i >= 0; i--)
                 TranslateTypeSyntax(context, paramList[i].Type, source);
 
-            // Update the type first, this comes after the modifiers.
             TranslateTypeSyntax(context, syntax.ReturnType, source);
-
-            // Remove field modifiers (i.e. public, protected, etc).
-            RemoveTokens(syntax.Modifiers, source);
+            //TranslateModifiers(context, syntax.Modifiers, source);
         }
 
         protected override void OnMap(ShaderContext context, MethodDeclarationSyntax syntax)
@@ -65,7 +62,8 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
         {
-            if(element.Type == ShaderComponentType.EntryPoint)
+            string translation = "";
+            if (element.Type == ShaderComponentType.EntryPoint)
             {
                 SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
                 int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;
@@ -77,10 +75,12 @@ namespace SharpShader
                 IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
                 if (epTranslator != null)
                 {
-                    string translated = epTranslator.Translate(context, ep, ref methodHeader);
-                    source.Replace(toReplace, translated);
+                    translation = epTranslator.Translate(context, ep, ref methodHeader);
+                    source.Replace(toReplace, translation);
                 }
             }
+
+            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
         }
     }
 }

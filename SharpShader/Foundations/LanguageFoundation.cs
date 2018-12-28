@@ -11,21 +11,8 @@ using System.Xml;
 
 namespace SharpShader
 {
-    internal abstract class LanguageFoundation
-    {
-        internal class Keyword
-        {
-            /// <summary>
-            /// If true, uniform, multi-dimensional type names will be translated to single-dimension names. For example, Matrix4x4 will translate into Matrix4, Mat4 or Float4.
-            /// </summary>
-            public bool UniformSizeIsSingular;
-
-            /// <summary>
-            /// The word in it's native language.
-            /// </summary>
-            public string NativeText;
-        }
-
+    internal abstract partial class LanguageFoundation
+    { 
         #region Instance members
         /// <summary>
         /// Gets whether or not constant buffers are referred to as if they are instanced objects in their respective shader language.
@@ -35,13 +22,26 @@ namespace SharpShader
         public ShaderLanguage Language { get; }
 
         Dictionary<Type, Keyword> _keywords;
+        List<Modifier> _modifiers;
         Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators;
 
         internal LanguageFoundation(ShaderLanguage language)
         {
             Language = language;
             _keywords = new Dictionary<Type, Keyword>();
+            _modifiers = new List<Modifier>();
             _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>();
+        }
+
+        internal virtual string TranslateModifiers(SyntaxTokenList modifiers, SyntaxNode parentSyntax)
+        {
+            foreach (Modifier m in _modifiers)
+            {
+                if (m.IsMatch(modifiers))
+                    return m.NativeText;
+            }
+
+            return "";
         }
 
         internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
@@ -113,30 +113,38 @@ namespace SharpShader
                 XmlDocument doc = new XmlDocument();
                 doc.Load(stream);
 
-                XmlNode rootNode = doc["Lexicon"];
-                XmlNode langNode = rootNode["Language"];
-
-                if (Enum.TryParse(langNode.InnerText, out ShaderLanguage language))
+                foreach (XmlNode rootNode in doc)
                 {
-                    LanguageFoundation foundation = Activator.CreateInstance(typeof(T),
-                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                        null, new object[] { language }, null) as LanguageFoundation;
+                    if (rootNode.Name.ToLower() != "lexicon")
+                        continue;
 
-                    foreach (XmlNode node in rootNode)
+                    XmlAttribute attLanguage = rootNode.Attributes["language"];
+                    if (attLanguage != null && Enum.TryParse(attLanguage.InnerText, out ShaderLanguage language))
                     {
-                        switch (node.Name)
-                        {
-                            case "Word":
-                                ParseWord(foundation, node);
-                                break;
-                        }
-                    }
+                        LanguageFoundation foundation = Activator.CreateInstance(typeof(T),
+                            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+                            null, new object[] { language }, null) as LanguageFoundation;
 
-                    _foundations.Add(language, foundation);
-                }
-                else
-                {
-                    throw new XmlException("The specified shader language is invalid, or was missing.");
+                        foreach (XmlNode node in rootNode)
+                        {
+                            switch (node.Name.ToLower())
+                            {
+                                case "word":
+                                    ParseWord(foundation, node);
+                                    break;
+
+                                case "modifier":
+                                    ParseModifier(foundation, node);
+                                    break;
+                            }
+                        }
+
+                        _foundations.Add(language, foundation);
+                    }
+                    else
+                    {
+                        throw new XmlException("The specified shader language is invalid or missing.");
+                    }
                 }
             }
         }
@@ -155,7 +163,7 @@ namespace SharpShader
             {
                 foreach (XmlNode subTypeNode in wordNode)
                 {
-                    if (subTypeNode.Name != "Generic")
+                    if (wordNode.Name.ToLower() != "generic")
                         continue;
 
                     string generic = subTypeNode.Attributes["type"]?.InnerText;
@@ -187,6 +195,28 @@ namespace SharpShader
                     });
                 }
             }
+        }
+
+        private static void ParseModifier(LanguageFoundation foundation, XmlNode modifierNode)
+        {
+            XmlAttribute attName = modifierNode.Attributes["name"];
+            if (attName == null)
+                return;
+
+            Modifier modifier = new Modifier();
+            modifier.NativeText = attName.InnerText;
+            foreach (XmlNode child in modifierNode)
+            {
+                if (child.Name.ToLower() != "requirement")
+                    continue;
+
+                XmlAttribute attCSharp = child.Attributes["csharp"];
+                if (attCSharp != null && !string.IsNullOrWhiteSpace(attCSharp.InnerText))
+                    modifier.Requirements.Add(attCSharp.InnerText.ToLower());
+            }
+
+            if (modifier.Requirements.Count > 0 && !string.IsNullOrWhiteSpace(modifier.NativeText))
+                foundation._modifiers.Add(modifier);
         }
         #endregion
     }

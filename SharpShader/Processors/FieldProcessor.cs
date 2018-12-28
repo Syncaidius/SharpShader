@@ -16,11 +16,7 @@ namespace SharpShader
 
         protected override void OnPreprocess(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source)
         {
-            // Update the type first, this comes after the modifiers.
             TranslateTypeSyntax(context, syntax.Declaration.Type, source);
-
-            // Remove field modifiers (i.e. public, protected, etc).
-            RemoveTokens(syntax.Modifiers, source);
         }
 
         protected override void OnMap(ShaderContext context, FieldDeclarationSyntax syntax)
@@ -44,6 +40,7 @@ namespace SharpShader
             }
 
             Type t = context.Map.GetOriginalType(typeName);
+            string translation = "";
             if (t != null)
             {
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
@@ -54,7 +51,7 @@ namespace SharpShader
                         uint? registerID = RegisterAttribute.Parse(regAttribute);
                         if (registerID != null)
                         {
-                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
+                            translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
                             source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
                         }
                     }
@@ -64,6 +61,8 @@ namespace SharpShader
                     }
                 }
             }
+
+            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
         }
     }
 }

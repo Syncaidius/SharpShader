@@ -32,6 +32,17 @@ namespace SharpShader
                 context.Map.TranslatedTypes[replacement] = t;
         }
 
+        protected void TranslateModifiers(ShaderContext context, int translatedSpanLength, SyntaxNode node, SyntaxTokenList modifiers, StringBuilder source)
+        {
+            // Now translate any modifiers the field may have.
+            if (modifiers.Count > 0)
+            {
+                int replaceLength = Math.Max(translatedSpanLength, node.Span.Length);
+                string modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers, node);
+                source.Replace(modifiers.ToString(), modifierTranslation, node.SpanStart, replaceLength);
+            }
+        }
+
         protected (string, Type) GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
         {
             Type originalType = ShaderReflection.ResolveType(syntax.ToString());
@@ -76,23 +87,6 @@ namespace SharpShader
         internal bool HasStageFlags(NodeProcessStageFlags stage)
         {
             return (Stages & stage) == stage;
-        }
-
-
-        protected static void RemoveSyntax(SyntaxNode node, StringBuilder source)
-        {
-            source = source.Remove(node.SpanStart, node.Span.Length);
-        }
-
-        protected static void RemoveToken(SyntaxToken node, StringBuilder source)
-        {
-            source = source.Remove(node.SpanStart, node.Span.Length);
-        }
-
-        protected static void RemoveTokens(SyntaxTokenList tokens, StringBuilder source)
-        {
-            for (int i = tokens.Count - 1; i >= 0; i--)
-                RemoveToken(tokens[i], source);
         }
 
         internal abstract Type ParsedType { get; }

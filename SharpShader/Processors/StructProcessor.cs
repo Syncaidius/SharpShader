@@ -13,9 +13,9 @@ namespace SharpShader
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
 
-        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax node, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source)
         {
-            RemoveTokens(node.Modifiers, source);
+            //TranslateModifiers(context, syntax.Modifiers, source);
         }
 
         protected override void OnMap(ShaderContext context, StructDeclarationSyntax syntax)
@@ -35,6 +35,7 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderElement component)
         {
+            string translation = "";
             if(component.Type == ShaderComponentType.ConstantBuffer)
             {
                 uint? registerID = null;
@@ -42,14 +43,16 @@ namespace SharpShader
                 if (regAttribute != null)
                     registerID = RegisterAttribute.Parse(regAttribute);
 
-                string translated = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
-                source.Replace(syntax.ToString(), translated);
+                translation = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
+                source.Replace(syntax.ToString(), translation);
             }
             else
             {
-                string translated = context.Parent.Foundation.TranslateStruct(context, syntax);
-                source.Replace(syntax.ToString(), translated);
+                translation = context.Parent.Foundation.TranslateStruct(context, syntax);
+                source.Replace(syntax.ToString(), translation);
             }
+
+            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
         }
     }
 }

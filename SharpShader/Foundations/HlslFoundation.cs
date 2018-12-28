@@ -20,6 +20,14 @@ namespace SharpShader
             AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
+        internal override string TranslateModifiers(SyntaxTokenList modifiers, SyntaxNode modifierParentSyntax)
+        {
+            if (modifierParentSyntax is MethodDeclarationSyntax)
+                return "";
+            else
+                return base.TranslateModifiers(modifiers, modifierParentSyntax);
+        }
+
         internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
         {
             string strRegister = registerID != null ? $" : register(b{registerID}" : "";
@@ -54,6 +62,7 @@ namespace SharpShader
 
             if (typeof(TextureSampler).IsAssignableFrom(fieldType))
                 registerChar = 's';
+
             if (typeof(TextureBase).IsAssignableFrom(fieldType))
                 registerChar = 't';
 

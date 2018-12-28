@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Lexicon>
-  <Language>GLSL</Language>
+<Lexicon language="GLSL">
   <Word type="SharpShader.IVector`1">
     <Generic type="System.Int32" to="ivec" />
     <Generic type="System.UInt32" to="uivec" />
