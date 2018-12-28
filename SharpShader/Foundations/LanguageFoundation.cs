@@ -163,7 +163,7 @@ namespace SharpShader
             {
                 foreach (XmlNode subTypeNode in wordNode)
                 {
-                    if (wordNode.Name.ToLower() != "generic")
+                    if (subTypeNode.Name.ToLower() != "generic")
                         continue;
 
                     string generic = subTypeNode.Attributes["type"]?.InnerText;

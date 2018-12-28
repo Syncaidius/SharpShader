@@ -177,7 +177,7 @@ namespace SharpShader
             string strInitializer = "";
             if(varSyntax.Initializer != null)
             {
-                strInitializer = $" {varSyntax.ToString()}";
+                strInitializer = $" {varSyntax.Initializer.ToString()}";
                 switch (varSyntax.Initializer.Value)
                 {
                     case InitializerExpressionSyntax initSyntax:
