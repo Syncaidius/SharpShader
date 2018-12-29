@@ -86,7 +86,14 @@ namespace SharpShader
 			M33 = m33;
 			M34 = m34;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="Matrix3x4"/> .
+		/// </summary>
+		public float[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-

@@ -38,7 +38,14 @@ namespace SharpShader
 			M21 = m21;
 			M22 = m22;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="Double2x2"/> .
+		/// </summary>
+		public double[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-

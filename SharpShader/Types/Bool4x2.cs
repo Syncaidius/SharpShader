@@ -62,7 +62,14 @@ namespace SharpShader
 			M41 = m41;
 			M42 = m42;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="Bool4x2"/> .
+		/// </summary>
+		public bool[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-

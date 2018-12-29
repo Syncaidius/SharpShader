@@ -38,7 +38,14 @@ namespace SharpShader
 			M31 = m31;
 			M41 = m41;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="UInt4x1"/> .
+		/// </summary>
+		public uint[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-

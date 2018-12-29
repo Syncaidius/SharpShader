@@ -86,7 +86,14 @@ namespace SharpShader
 			M42 = m42;
 			M43 = m43;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="UInt4x3"/> .
+		/// </summary>
+		public uint[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-

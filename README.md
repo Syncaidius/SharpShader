@@ -144,7 +144,7 @@ float4 FragFunc(PixelInput input) : SV_TARGET
 }
 ```
 
-It is worth noting that while the above C# code has defined `Register` and `PackOffset` attributes on almost every struct and field, it is not mandatory to do so. The absence of such attributes will simply result in the associated HLSL being absent too, as shown in the example below:
+It is worth noting that while the above C# code has defined `Register` and `PackOffset` attributes on almost every struct and field, it is not mandatory to do so. The absence of such attributes will also result in the associated HLSL being absent, as shown in the example below:
 
 C#: 
 ```csharp        

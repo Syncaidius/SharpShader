@@ -32,7 +32,14 @@ namespace SharpShader
 			M12 = m12;
 			M13 = m13;
 		}
+
+		/// <summary>
+		/// Gets or sets a component at the specified index for the current <see cref="Int1x3"/> .
+		/// </summary>
+		public int[] this[int index]
+		{
+			get => null;
+			set {}
+		}
 	}
 }
-
-
