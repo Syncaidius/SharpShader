@@ -37,9 +37,8 @@ namespace SharpShader
             // Now translate any modifiers the field may have.
             if (modifiers.Count > 0)
             {
-                int replaceLength = Math.Max(translatedSpanLength, node.Span.Length);
                 string modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers, node);
-                source.Replace(modifiers.ToString(), modifierTranslation, node.SpanStart, replaceLength);
+                source.Replace(modifiers.ToString(), modifierTranslation, node.SpanStart, translatedSpanLength);
             }
         }
 

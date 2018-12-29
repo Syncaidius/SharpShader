@@ -40,7 +40,7 @@ namespace SharpShader
             }
 
             Type t = context.Map.GetOriginalType(typeName);
-            string translation = "";
+            int translationLength = syntax.Span.Length;
             if (t != null)
             {
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
@@ -51,7 +51,8 @@ namespace SharpShader
                         uint? registerID = RegisterAttribute.Parse(regAttribute);
                         if (registerID != null)
                         {
-                            translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
+                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
+                            translationLength = translation.Length;
                             source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
                         }
                     }
@@ -62,7 +63,7 @@ namespace SharpShader
                 }
             }
 
-            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
+            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }

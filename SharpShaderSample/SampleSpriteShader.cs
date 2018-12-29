@@ -96,18 +96,6 @@ namespace SharpShaderSample
             return input;
         }
 
-        readonly static Vector2[] testArray = {
-            new Vector2(0,-1),
-            new Vector2(0, 0),
-            new Vector2(1,-1),
-            new Vector2(1,0),
-        }, testArray2 =
-        {
-            new Vector2(5,0),
-            new Vector2(0, 4),
-            new Vector2(2,3),
-        };
-
         readonly static Vector2[] spriteCorners = {
             new Vector2(0,-1),
             new Vector2(0, 0),
@@ -161,6 +149,8 @@ namespace SharpShaderSample
             }
         }
 
+
+
         [GeometryShader(GeometryInputType.Line, 4)]
         void GS_Line(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
         {
@@ -196,36 +186,36 @@ namespace SharpShaderSample
         }
 
         [GeometryShader(GeometryInputType.Triangle, 4)]
-        static void GS_Circle(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
+        void GS_Circle(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
         {
-            //PS_IN v = new PS_IN();
-            //// center vertex
-            //v.Color = input[0].Color;
-            //v.UV = new Vector4();
-            //Vector4 center = new Vector4(input[0].Pos, 0, 1);
+            PS_IN v = new PS_IN();
+            // center vertex
+            v.Color = input[0].Color;
+            v.UV = new Vector4();
+            Vector4 center = new Vector4(input[0].Pos, 0, 1);
 
-            //float segs = input[0].Rotation;
-            //Vector2 radius = input[0].Size;
-            //Vector2 startEnd = input[0].Origin;
-            //float range = startEnd.Y - startEnd.X;
-            //float angleInc = degToRad360 / segs;
-            //float angle = startEnd.X;
-            //float remaining = range;
+            float segs = input[0].Rotation;
+            Vector2 radius = input[0].Size;
+            Vector2 startEnd = input[0].Origin;
+            float range = startEnd.Y - startEnd.X;
+            float angleInc = degToRad360 / segs;
+            float angle = startEnd.X;
+            float remaining = range;
 
-            //float inc = 0;
-            //float doEdge = 0; // if 0, we place a center point for the strip to orient around.
-            //float vCount = (segs * 2) + 2;
-            //for (int i = 0; i < vCount; i++)
-            //{
-            //    v.Pos = center + (doEdge * new Vector4(Sin(angle) * radius.X, Cos(angle) * radius.Y, 0, 0));
-            //    v.Pos = Mul(v.Pos, wvp);
+            float inc = 0;
+            float doEdge = 0; // if 0, we place a center point for the strip to orient around.
+            float vCount = (segs * 2) + 2;
+            for (int i = 0; i < vCount; i++)
+            {
+                v.Pos = center + (doEdge * new Vector4(Sin(angle) * radius.X, Cos(angle) * radius.Y, 0, 0));
+                v.Pos = Mul(v.Pos, wvp);
 
-            //    inc = Min(angleInc, remaining);
-            //    angle += inc * doEdge;
-            //    remaining -= inc * doEdge;
-            //    doEdge = 1 - doEdge;
-            //    spriteStream.Append(v);
-            //}
+                inc = Min(angleInc, remaining);
+                angle += inc * doEdge;
+                remaining -= inc * doEdge;
+                doEdge = 1 - doEdge;
+                spriteStream.Append(v);
+            }
         }
 
         [GeometryShader(GeometryInputType.Triangle, 3)]

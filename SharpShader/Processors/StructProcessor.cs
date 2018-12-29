@@ -44,15 +44,15 @@ namespace SharpShader
                     registerID = RegisterAttribute.Parse(regAttribute);
 
                 translation = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
-                source.Replace(syntax.ToString(), translation);
             }
             else
             {
                 translation = context.Parent.Foundation.TranslateStruct(context, syntax);
-                source.Replace(syntax.ToString(), translation);
             }
 
-            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
+            int translationLength = translation.Length;
+            source.Replace(syntax.ToString(), translation);
+            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }

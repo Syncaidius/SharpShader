@@ -62,7 +62,7 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
         {
-            string translation = "";
+            int translationLength = syntax.Span.Length;
             if (element.Type == ShaderComponentType.EntryPoint)
             {
                 SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
@@ -75,12 +75,13 @@ namespace SharpShader
                 IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
                 if (epTranslator != null)
                 {
-                    translation = epTranslator.Translate(context, ep, ref methodHeader);
+                    string translation = epTranslator.Translate(context, ep, ref methodHeader);
+                    translationLength = translation.Length;
                     source.Replace(toReplace, translation);
                 }
             }
 
-            TranslateModifiers(context, translation.Length, syntax, syntax.Modifiers, source);
+            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }

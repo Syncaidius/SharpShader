@@ -12,31 +12,47 @@ namespace SharpShaderSample
     {
         static void Main(string[] args)
         {
+            string[] samples = {
+                "FunctionalityTestShader.cs",
+                "SampleShader.cs",
+                "SampleTextureShader.cs",
+                "SampleSpriteShader.cs"
+            };
+
             Converter converter = new Converter();
             ConversionResult output = null;
+            ShaderLanguage language = ShaderLanguage.HLSL;
 
-            using(FileStream fs = new FileStream("SampleSpriteShader.cs", FileMode.Open, FileAccess.Read))
+            foreach(string fn in samples)
             {
-                using (StreamReader reader = new StreamReader(fs))
-                {
-                    Dictionary<string, string> input = new Dictionary<string, string>()
-                    {
-                        ["SampleShader"] = reader.ReadToEnd(),
-                    };
-                    output = converter.Convert(input, ShaderLanguage.HLSL);
-                }
-            }
+                string title = $"Translating {fn}";
+                Console.WriteLine(title, ConsoleColor.Green);
+                Console.WriteLine(new string('=', title.Length));
+                FileInfo fInfo = new FileInfo(fn);
 
-            // Store the output to file so we can take a look at it ourselves.
-            if (output != null)
-            {
-                foreach (KeyValuePair<string, ShaderResult> kvp in output)
+                using (FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read))
                 {
-                    using (FileStream fs = new FileStream($"{kvp.Key}.hlsl", FileMode.Create, FileAccess.Write))
+                    using (StreamReader reader = new StreamReader(fs))
                     {
-                        using (StreamWriter writer = new StreamWriter(fs))
+                        Dictionary<string, string> input = new Dictionary<string, string>()
                         {
-                            writer.Write(kvp.Value.SourceCode);
+                            [fInfo.Name] = reader.ReadToEnd(),
+                        };
+                        output = converter.Convert(input, language);
+                    }
+                }
+
+                // Store the output to file so we can take a look at it ourselves.
+                if (output != null)
+                {
+                    foreach (KeyValuePair<string, ShaderResult> kvp in output)
+                    {
+                        using (FileStream fs = new FileStream($"{fInfo.FullName}.{language.ToString().ToLower()}", FileMode.Create, FileAccess.Write))
+                        {
+                            using (StreamWriter writer = new StreamWriter(fs))
+                            {
+                                writer.Write(kvp.Value.SourceCode);
+                            }
                         }
                     }
                 }
