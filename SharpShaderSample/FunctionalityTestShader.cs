@@ -33,7 +33,11 @@ namespace SharpShaderSample
         #endregion
 
         #region Methods
-        int IAmALambdaTestMethod => 9;
+        int IAmALambdaMethod() => 9;
+
+        int AnotherLamdaMethod(int increment) => 9 + increment;
+
+        T GenericLamdaMethod<T>(int increment) where T : struct => default(T);
 
         public void AnonymousAnons(Action<int, float> test)
         {

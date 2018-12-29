@@ -16,13 +16,22 @@ namespace SharpShader
 
         protected override void OnPreprocess(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source)
         {
-            // Translate (if any) types of every parameter of the method.
+            // Expand arrow expression bodies into full bodies. This simplifies processing later.
+            // This is done first to avoid invalidating the spans of the method parameters and types.
+            if(syntax.ExpressionBody != null)
+            {
+                string replacement = $"{syntax.Modifiers} {syntax.ReturnType} {syntax.Identifier}{syntax.TypeParameterList}{syntax.ParameterList}{Environment.NewLine}";
+                replacement += "{" + Environment.NewLine;
+                replacement += $"return {syntax.ExpressionBody.Expression};{Environment.NewLine}";
+                replacement += "}";
+                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+            }
+
             SeparatedSyntaxList<ParameterSyntax> paramList = syntax.ParameterList.Parameters;
             for (int i = paramList.Count - 1; i >= 0; i--)
                 TranslateTypeSyntax(context, paramList[i].Type, source);
 
             TranslateTypeSyntax(context, syntax.ReturnType, source);
-            //TranslateModifiers(context, syntax.Modifiers, source);
         }
 
         protected override void OnMap(ShaderContext context, MethodDeclarationSyntax syntax)
