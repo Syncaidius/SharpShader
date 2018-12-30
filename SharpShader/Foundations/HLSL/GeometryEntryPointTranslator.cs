@@ -33,7 +33,7 @@ namespace SharpShader.Foundations.HLSL
                     string strVertexOutCount = args[1].ToString();
                     string result = header;
 
-                    if (int.TryParse(strVertexOutCount, out int vertexOutCount))
+                    if (int.TryParse(strVertexOutCount, out int vertexOutCount) && vertexOutCount > 0)
                     {
                         (int inputSize, string strInputName) = _primitiveInputs[inputType];
                         result = $"[maxvertexcount({vertexOutCount})]{Environment.NewLine}";
@@ -58,14 +58,14 @@ namespace SharpShader.Foundations.HLSL
                     }
                     else
                     {
-                        context.Parent.AddMessage($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strVertexOutCount}", 0, 0);
+                        context.Parent.AddMessage($"Invalid GeometryShader max vertex output count. Expected a value greater than 0. Got: {strVertexOutCount}", 0, 0);
                     }
 
                     return result;
                 }
                 else
                 {
-                    context.Parent.AddMessage($"Invalid geometry input type: {strInputType}", 0, 0);
+                    context.Parent.AddMessage($"Invalid geometry input type: {strInputType}. Expected a valid {nameof(GeometryInputType)} value. Got: {strInputType}.", 0, 0);
                 }
             }
 
