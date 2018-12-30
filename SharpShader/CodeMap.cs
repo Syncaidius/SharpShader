@@ -17,7 +17,7 @@ namespace SharpShader
 
         internal Dictionary<string, FieldDeclarationSyntax> MainFields = new Dictionary<string, FieldDeclarationSyntax>();
 
-        internal List<StructDeclarationSyntax> Structures = new List<StructDeclarationSyntax>();
+        internal Dictionary<string, StructDeclarationSyntax> Structures = new Dictionary<string, StructDeclarationSyntax>();
 
         internal List<ShaderElement> Components = new List<ShaderElement>();
 
@@ -102,7 +102,7 @@ namespace SharpShader
 
         internal void AddStructure(StructDeclarationSyntax syntax)
         {
-            Structures.Add(syntax);
+            Structures.Add(syntax.Identifier.ToString(), syntax);
             AddComponent(syntax, ShaderComponentType.Struct);
         }
 
