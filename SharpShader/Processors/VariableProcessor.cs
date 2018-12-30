@@ -21,6 +21,8 @@ namespace SharpShader
             uint? nextRegister = 0;
             string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
 
+            (string translatedType, Type originalType) = GetTypeTranslation(context, syntax.Type);
+
             if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
             {
                 foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
@@ -48,7 +50,7 @@ namespace SharpShader
                         replacement += strAttributes;
                 }
 
-                replacement += $"{syntax.Type} {vds};{Environment.NewLine}";
+                replacement += $"{translatedType} {vds};{Environment.NewLine}";
             }
 
             if (syntax.Variables.Count == 1)
