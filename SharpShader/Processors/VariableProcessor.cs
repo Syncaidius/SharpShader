@@ -26,6 +26,8 @@ namespace SharpShader
                 foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
                     strAttributes += attList.ToString() + Environment.NewLine;
 
+                // TODO clean this up. Attributes should have their own parsers for situations like this.
+                // Handle register increments.
                 regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(fieldSyntax.AttributeLists);
                 if (regAttribute != null)
                 {

@@ -21,7 +21,7 @@ namespace SharpShader
 
         public override string ToString()
         {
-            return $"{Type} - {Node.GetType().Name}";
+            return $"{Type} - {Node.GetType().Name} - {Node}";
         }
     }
 

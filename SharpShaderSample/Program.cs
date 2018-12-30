@@ -13,10 +13,10 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             string[] samples = {
-                "FunctionalityTestShader.cs",
-                "SampleShader.cs",
+                //"FunctionalityTestShader.cs",
+                //"SampleShader.cs",
                 "SampleTextureShader.cs",
-                "SampleSpriteShader.cs"
+                //"SampleSpriteShader.cs"
             };
 
             Converter converter = new Converter();
@@ -26,8 +26,11 @@ namespace SharpShaderSample
             foreach(string fn in samples)
             {
                 string title = $"Translating {fn}";
-                Console.WriteLine(title, ConsoleColor.Green);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(title);
                 Console.WriteLine(new string('=', title.Length));
+                Console.ForegroundColor = ConsoleColor.White;
+
                 FileInfo fInfo = new FileInfo(fn);
 
                 using (FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read))
@@ -56,6 +59,8 @@ namespace SharpShaderSample
                         }
                     }
                 }
+
+                Console.WriteLine();
             }
 
             Console.ReadKey();

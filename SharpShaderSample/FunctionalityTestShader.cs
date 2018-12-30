@@ -8,7 +8,7 @@ namespace SharpShaderSample
     /// </summary>
     public class FunctionalityTestShader : CSharpShader
     {
-#region Constants
+        #region Constants
         public const int LAPS = 5;
         public const float RADIUS = 0.5f;
         public const double PI = Math.PI;

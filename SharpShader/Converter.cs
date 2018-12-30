@@ -23,6 +23,8 @@ namespace SharpShader
         static Dictionary<Type, NodeProcessor> _mappers;
         static Dictionary<Type, NodeProcessor> _postProcessors;
         static readonly string[] _delimiters = { Environment.NewLine };
+        static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow };
+
         const string BlockOpen = "{";
         const string BlockClosed = "}";
 
@@ -52,9 +54,19 @@ namespace SharpShader
             }
         }
 
-        internal static void Message(string msg)
+        //internal static void Message(string msg)
+        //{
+        //    Message(msg, "MESSAGE", ConsoleColor.White);
+        //}
+
+        internal static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
         {
-            Console.WriteLine($"[SharpShader] {msg}");
+            ConsoleColor prevColor = Console.ForegroundColor;
+            Console.Write("[SharpShader] [");
+            Console.ForegroundColor = MessageColors[(int)type];
+            Console.Write(type);
+            Console.ForegroundColor = prevColor;
+            Console.WriteLine($"] {msg}");
         }
 
         /// <summary>
@@ -183,7 +195,7 @@ namespace SharpShader
                 if (analysisErrors > 0)
                 {
                     foreach (ConversionMessage msg in context.Messages)
-                        Message($"[{msg.MessageType}] {msg.Text}");
+                        Message(msg.Text, msg.MessageType);
 
                     Message($"Cannot proceed until {analysisErrors} errors are fixed. Aborting.");
                     return context.ToResult();
@@ -242,7 +254,7 @@ namespace SharpShader
             int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
 
             foreach (ConversionMessage msg in context.Messages)
-                Message($"[{msg.MessageType}] {msg.Text}");
+                Message(msg.Text, msg.MessageType);
 
             Message($"Finished conversion of { cSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
             Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");

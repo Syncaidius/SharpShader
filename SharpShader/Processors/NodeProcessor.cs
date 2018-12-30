@@ -80,7 +80,7 @@ namespace SharpShader
                 }
             }
 
-            return (syntax.ToString(), null);
+            return (syntax.ToString(), originalType);
         }
 
         internal bool HasStageFlags(NodeProcessStageFlags stage)
