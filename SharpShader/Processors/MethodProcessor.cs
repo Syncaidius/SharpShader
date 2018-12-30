@@ -20,7 +20,7 @@ namespace SharpShader
             // This is done first to avoid invalidating the spans of the method parameters and types.
             if(syntax.ExpressionBody != null)
             {
-                string replacement = $"{syntax.Modifiers} {syntax.ReturnType} {syntax.Identifier}{syntax.TypeParameterList}{syntax.ParameterList}{Environment.NewLine}";
+                string replacement = $"{syntax.Modifiers} {syntax.ReturnType} {syntax.Identifier}{syntax.TypeParameterList}{syntax.ParameterList} {syntax.ConstraintClauses}{Environment.NewLine}";
                 replacement += "{" + Environment.NewLine;
                 replacement += $"return {syntax.ExpressionBody.Expression};{Environment.NewLine}";
                 replacement += "}";
