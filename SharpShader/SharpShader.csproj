@@ -215,6 +215,7 @@
     <Compile Include="Foundations\LanguageFoundation.Modifier.cs" />
     <Compile Include="Foundations\LanguageFoundation.Keyword.cs" />
     <Compile Include="GeometryShader.Streams.cs" />
+    <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Processors\NamespaceProcessor.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\UsingProcessor.cs" />
+    <Compile Include="PropertyTranslation.cs" />
     <Compile Include="RegisteredObject.cs" />
     <Compile Include="SemanticType.cs" />
     <Compile Include="ShaderContext.cs" />

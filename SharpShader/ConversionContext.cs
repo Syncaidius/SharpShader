@@ -54,7 +54,7 @@ namespace SharpShader
 
         internal string GetNewVariableName(string prefix = null)
         {
-            return $"ss_{($"{prefix}_" ?? "val_")}{_nextVariable++}";
+            return $"{($"{prefix}_" ?? "val_")}SS_{_nextVariable++}";
         }
 
         internal ShaderContext AddShader(string name)

@@ -31,6 +31,8 @@ namespace SharpShader
 
         internal Dictionary<string, Type> TranslatedTypes = new Dictionary<string, Type>();
 
+        internal Dictionary<string, PropertyTranslation> Properties = new Dictionary<string, PropertyTranslation>();
+
         internal void Clear()
         {
             EntryPoints.Clear();
@@ -39,6 +41,8 @@ namespace SharpShader
             Components.Clear();
             ConstantBuffers.Clear();
             UAVs.Clear();
+            TranslatedTypes.Clear();
+            Properties.Clear();
         }
 
         /// <summary>
@@ -90,6 +94,11 @@ namespace SharpShader
                 MainFields.Add(name, syntax);
 
             AddComponent(syntax, ShaderComponentType.Variable);
+        }
+
+        internal void AddProperty(string propertyName, PropertyTranslation translation)
+        {
+            Properties.Add(propertyName, translation);
         }
 
         internal bool IsStructInstance(VariableDeclarationSyntax syntax)
