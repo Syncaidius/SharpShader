@@ -151,7 +151,7 @@ namespace SharpShaderSample
 
 
 
-        [GeometryShader(GeometryInputType.Line, 4)]
+        [GeometryShader(GeometryInputType.Point, 4)]
         void GS_Line(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
         {
             PS_IN v = new PS_IN();
@@ -185,7 +185,7 @@ namespace SharpShaderSample
             spriteStream.Append(v);
         }
 
-        [GeometryShader(GeometryInputType.Triangle, 4)]
+        [GeometryShader(GeometryInputType.Point, 4)]
         void GS_Circle(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
         {
             PS_IN v = new PS_IN();
@@ -218,7 +218,7 @@ namespace SharpShaderSample
             }
         }
 
-        [GeometryShader(GeometryInputType.Triangle, 3)]
+        [GeometryShader(GeometryInputType.Point, 3)]
         void GS_Tri(VS_GS[] input, TriangleStream<PS_IN> spriteStream)
         {
             PS_IN v = new PS_IN();
