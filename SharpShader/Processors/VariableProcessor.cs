@@ -23,8 +23,11 @@ namespace SharpShader
 
             (string translatedType, Type originalType) = GetTypeTranslation(context, syntax.Type);
 
+            string strModifiers = "";
+
             if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
             {
+                strModifiers = $"{fieldSyntax.Modifiers} ";
                 foreach (AttributeListSyntax attList in fieldSyntax.AttributeLists)
                     strAttributes += attList.ToString() + Environment.NewLine;
 
@@ -50,7 +53,10 @@ namespace SharpShader
                         replacement += strAttributes;
                 }
 
-                replacement += $"{translatedType} {vds};{Environment.NewLine}";
+                if (syntax.Variables.Count > 1)
+                    replacement += $"{strModifiers}{translatedType} {vds};{Environment.NewLine}";
+                else
+                    replacement += $"{translatedType} {vds};{Environment.NewLine}";
             }
 
             if (syntax.Variables.Count == 1)
