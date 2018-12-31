@@ -72,12 +72,10 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
         {
-            TypeSyntax typeSyntax = syntax.Type;
-
-            if (typeSyntax is ArrayTypeSyntax arraySyntax && syntax.Variables.Count > 0)
+            if (syntax.Type is ArrayTypeSyntax arraySyntax && syntax.Variables.Count > 0)
             {
-                typeSyntax = arraySyntax.ElementType;
-                string strArrayDeclaration = context.Parent.Foundation.TranslateArrayDeclaration(context, typeSyntax.ToString(), syntax.Variables[0]);
+                string strElementType = arraySyntax.ElementType.ToString();
+                string strArrayDeclaration = context.Parent.Foundation.TranslateArrayDeclaration(context, strElementType, syntax.Variables[0]);
                 string replacement = strArrayDeclaration;
 
                 source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);

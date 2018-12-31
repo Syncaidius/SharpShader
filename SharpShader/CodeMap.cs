@@ -47,11 +47,9 @@ namespace SharpShader
         /// </summary>
         /// <param name="translatedName">The name of the translated shader type.</param>
         /// <returns></returns>
-        internal Type GetOriginalType(string translatedName)
+        internal Type GetOriginalType(TypeSyntax typeSyntax)
         {
-            if (translatedName.EndsWith("[]"))
-                translatedName = translatedName.Substring(0, translatedName.Length - 2);
-
+            string translatedName = typeSyntax.ToString();
             Type originalType = null;
             if (!TranslatedTypes.TryGetValue(translatedName, out originalType))
             {
@@ -63,11 +61,10 @@ namespace SharpShader
                     if (!fullName.StartsWith($"{ns}."))
                         fullName = $"{ns}.{fullName}";
 
-                    originalType = Type.GetType(translatedName);
+                    originalType = Type.GetType(fullName);
                     if (originalType != null)
                         break;
                 }
-
             }
 
             return originalType;

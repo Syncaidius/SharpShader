@@ -34,7 +34,7 @@ namespace SharpShader
                 }
             }
 
-            Type t = context.Map.GetOriginalType(typeName);
+            Type t = context.Map.GetOriginalType(syntax.Declaration.Type);
             int translationLength = syntax.Span.Length;
             if (t != null)
             {
