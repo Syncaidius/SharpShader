@@ -14,7 +14,7 @@ namespace SharpShader
         protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax, StringBuilder source)
         {
             string identifier = syntax.ParameterList.ToString();
-            string uid = context.Parent.GetNewVariableName(context.Name);
+            string uid = context.Parent.GetNewVariableName(context.SanitizedName);
             PropertyTranslation translation = new PropertyTranslation()
             {
                 GetterMethod = $"get{uid}",

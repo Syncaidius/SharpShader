@@ -18,12 +18,14 @@ namespace SharpShader
 
         internal string Source { get; set; }
         internal string Name { get; }
+        internal string SanitizedName { get; }
 
         internal ShaderContext(ConversionContext parent, string name)
         {
             Parent = parent;
             Map = new CodeMap();
             Name = name;
+            SanitizedName = ShaderReflection.SanitizeString(name);
         }
 
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)

@@ -77,6 +77,18 @@ namespace SharpShader
             }
         }
 
+        internal static string SanitizeString(string input)
+        {
+            StringBuilder sb = new StringBuilder(input.Length);
+            foreach (char c in input)
+            {
+                if (char.IsLetter(c) || char.IsNumber(c) || c == '_')
+                    sb.Append(c);
+            }
+
+            return sb.ToString();
+        }
+
         internal static bool IsRegisteredType(Type type)
         {
             return _registerTypes.Contains(type);
