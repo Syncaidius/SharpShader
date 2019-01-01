@@ -52,17 +52,51 @@ namespace SharpShaderSample
         #endregion
 
         #region Properties
+        // Lamda property
         public bool AmIAShader => true;
 
+        // Property with lambda getter
         public bool AreBananasAVegetable
         {
             get => false;
         }
 
+        // Another property with a lambda getter.
         public static float FortyTwo
         {
-            get => 42;
+            get => 42.0f;
         }
+
+        // Property with two lambda accessors
+        public static Vector2 WaveOffset
+        {
+            get => new Vector2(8 * 4.2f, 8 * 4.0f);
+            set => new Vector2(value.X, value.Y);
+        }
+
+        // Fully-defined property
+        public static Vector2 WaveOffsetNumberTwo
+        {
+            get
+            {
+                return new Vector2(8 * 2.2f, 8 * 2.0f);
+            }
+            set
+            {
+                Vector2 test = new Vector2()
+                {
+                    X = value.X,
+                    Y = value.Y
+                };
+            }
+        }
+
+        // Plain ol' property
+        public float NumberOfWaves { get; set; }
+
+        // Read-only property
+        public float WaveHeight { get; } = 2.9f;
+
         #endregion
 
         #region Indexers
