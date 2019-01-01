@@ -7,14 +7,14 @@ using System.Text;
 
 namespace SharpShader
 {
-    internal class PropertyProcessor : NodeProcessor<PropertyDeclarationSyntax>
+    internal class IndexerProcessor : NodeProcessor<IndexerDeclarationSyntax>
     {
         internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
 
-        protected override void OnPreprocess(ShaderContext context, PropertyDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax, StringBuilder source)
         {
-            string identifier = syntax.Identifier.ToString();
-            string uid = context.Parent.GetNewVariableName(identifier);
+            string identifier = syntax.ParameterList.ToString();
+            string uid = context.Parent.GetNewVariableName(context.Name);
             PropertyTranslation translation = new PropertyTranslation()
             {
                 GetterMethod = $"get{uid}",
@@ -25,9 +25,11 @@ namespace SharpShader
             context.Map.TranslatedProperties.Add(identifier, translation);
 
             string replacement = "";
+            SeparatedSyntaxList<ParameterSyntax> parameters = syntax.ParameterList.Parameters;
+
             if (syntax.ExpressionBody != null) // Arrow getter property?
             {
-                replacement += translation.TranslateArrowGetter(syntax.ExpressionBody);
+                replacement += translation.TranslateArrowGetter(syntax.ExpressionBody, parameters);
             }
             else
             {
@@ -37,11 +39,11 @@ namespace SharpShader
                     {
                         if (accessor.ExpressionBody != null)
                         {
-                            replacement += translation.TranslateArrowGetter(accessor.ExpressionBody);
+                            replacement += translation.TranslateArrowGetter(accessor.ExpressionBody, parameters);
                         }
                         else
                         {
-                            replacement += translation.GetGetterHeader() + Environment.NewLine;
+                            replacement += translation.GetGetterHeader(parameters) + Environment.NewLine;
                             replacement += accessor.Body + Environment.NewLine;
                         }
                     }
@@ -49,11 +51,11 @@ namespace SharpShader
                     {
                         if (accessor.ExpressionBody != null)
                         {
-                            replacement += translation.TranslateArrowSetter(accessor.ExpressionBody);
+                            replacement += translation.TranslateArrowSetter(accessor.ExpressionBody, parameters);
                         }
                         else
                         {
-                            replacement += translation.GetSetterHeader() + Environment.NewLine;
+                            replacement += translation.GetSetterHeader(parameters) + Environment.NewLine;
                             replacement += accessor.Body + Environment.NewLine;
                         }
                     }

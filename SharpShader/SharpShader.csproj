@@ -215,6 +215,7 @@
     <Compile Include="Foundations\LanguageFoundation.Modifier.cs" />
     <Compile Include="Foundations\LanguageFoundation.Keyword.cs" />
     <Compile Include="GeometryShader.Streams.cs" />
+    <Compile Include="Processors\IndexerProcessor.cs" />
     <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
