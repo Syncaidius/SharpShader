@@ -21,7 +21,7 @@ namespace SharpShader
             uint? nextRegister = 0;
             string strRegAttName = nameof(RegisterAttribute).Replace("Attribute", "");
 
-            (string translatedType, Type originalType) = GetTypeTranslation(context, syntax.Type);
+            (string translatedType, Type originalType) = TranslationHelper.GetTypeTranslation(context, syntax.Type);
 
             string strModifiers = "";
 

@@ -22,7 +22,7 @@ namespace SharpShader
              *  - If we only have a 'new' constructor call, simply strip the 'new' keyword.
              */
 
-            (string typeTranslation, Type t) = GetTypeTranslation(context, syntax.Type);
+            (string typeTranslation, Type t) = TranslationHelper.GetTypeTranslation(context, syntax.Type);
             string varName = null;
 
             if (syntax.Parent is AssignmentExpressionSyntax assignment)

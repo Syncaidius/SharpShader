@@ -58,7 +58,7 @@ namespace SharpShader
                 }
             }
 
-            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }

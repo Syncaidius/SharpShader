@@ -29,9 +29,9 @@ namespace SharpShader
 
             SeparatedSyntaxList<ParameterSyntax> paramList = syntax.ParameterList.Parameters;
             for (int i = paramList.Count - 1; i >= 0; i--)
-                TranslateTypeSyntax(context, paramList[i].Type, source);
+                TranslationHelper.TranslateTypeSyntax(context, paramList[i].Type, source);
 
-            TranslateTypeSyntax(context, syntax.ReturnType, source);
+            TranslationHelper.TranslateTypeSyntax(context, syntax.ReturnType, source);
         }
 
         protected override void OnMap(ShaderContext context, MethodDeclarationSyntax syntax)
@@ -90,7 +90,7 @@ namespace SharpShader
                 }
             }
 
-            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }
