@@ -19,9 +19,7 @@ namespace SharpShader
     public class Converter
     {
         #region Static members
-        static Dictionary<Type, NodeProcessor> _preprocessors;
-        static Dictionary<Type, NodeProcessor> _mappers;
-        static Dictionary<Type, NodeProcessor> _postProcessors;
+        static Dictionary<Type, NodeProcessor> _processors;
         static readonly string[] _delimiters = { Environment.NewLine };
         static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow };
 
@@ -30,9 +28,7 @@ namespace SharpShader
 
         static Converter()
         {
-            _preprocessors = new Dictionary<Type, NodeProcessor>();
-            _mappers = new Dictionary<Type, NodeProcessor>();
-            _postProcessors = new Dictionary<Type, NodeProcessor>();
+            _processors = new Dictionary<Type, NodeProcessor>();
 
             LanguageFoundation.LoadEmbedded<HlslFoundation>("SharpShader.Foundations.hlsl.xml");
             LanguageFoundation.LoadEmbedded<GlslFoundation>("SharpShader.Foundations.glsl.xml");
@@ -42,15 +38,7 @@ namespace SharpShader
             foreach (Type t in types)
             {
                 NodeProcessor pp = Activator.CreateInstance(t) as NodeProcessor;
-
-                if(pp.HasStageFlags(NodeProcessStageFlags.PreProcess))
-                    _preprocessors.Add(pp.ParsedType, pp);
-
-                if (pp.HasStageFlags(NodeProcessStageFlags.Mapping))
-                    _mappers.Add(pp.ParsedType, pp);
-
-                if (pp.HasStageFlags(NodeProcessStageFlags.PostProcess))
-                    _postProcessors.Add(pp.ParsedType, pp);
+                _processors.Add(pp.ParsedType, pp);
             }
         }
 
@@ -215,19 +203,20 @@ namespace SharpShader
 
                 Message("  Stage 1/3 (pre-process)...");
                 List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
-                foreach (Type t in _preprocessors.Keys)
+                foreach (Type t in _processors.Keys)
                 {
                     Message($"    Processing {t.Name} nodes");
-                    GatherNodes(context, shader.Root, t, nodesToProcess);
+                    CollectNOdes(context, shader.Root, t, nodesToProcess);
                     Preprocess(shader, t, nodesToProcess);
                     nodesToProcess.Clear();
                 }
 
                 Message("  Stage 2/3 (mapping)...");
-                Map(shader, shader.Root);
+                List<NodeEntry> mappedEntries = new List<NodeEntry>();
+                Map(shader, shader.Root, mappedEntries);
 
                 Message("  Stage 3/3 (translation)...");
-                shader.Source = PostProcess(shader);
+                shader.Source = Translate(shader, mappedEntries);
 
                 if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
                 {
@@ -308,7 +297,7 @@ namespace SharpShader
             }
         }
 
-        private void GatherNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
+        private void CollectNOdes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
         {
             Type t = node.GetType();
             if (t == nodeType)
@@ -316,13 +305,13 @@ namespace SharpShader
 
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
-                GatherNodes(context, child, nodeType, nodesToProcess, depth + 1);
+                CollectNOdes(context, child, nodeType, nodesToProcess, depth + 1);
         }
 
         private void Preprocess(ShaderContext context, Type nodeType, List<SyntaxNode> nodes)
         {
             StringBuilder source = new StringBuilder(context.Tree.ToString());
-            NodeProcessor processor = _preprocessors[nodeType];
+            NodeProcessor processor = _processors[nodeType];
 
             // Iterate backwards; Bottom to top. 
             // Iterating in this way ensures any changes made by preprocessors will not invalidate the locations of earlier nodes.
@@ -332,38 +321,36 @@ namespace SharpShader
             context.RegenerateTree(source.ToString());
         }
 
-        private void Map(ShaderContext shader, SyntaxNode node)
+        private void Map(ShaderContext shader, SyntaxNode node, List<NodeEntry> mappedEntries)
         {
+            Type t = node.GetType();
+            if (_processors.TryGetValue(t, out NodeProcessor processor))
+            {
+                mappedEntries.Add(new NodeEntry()
+                {
+                    Node = node,
+                    Processor = processor
+                });
+                SyntaxTree tree = shader.Tree;
+                processor.Map(shader, node);
+                if (tree != shader.Tree)
+                    throw new Exception($"The syntax tree was modified during mapping stage by a '{t.Name}'.");
+            }
+
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();  
             foreach (SyntaxNode child in stuff)
-            {
-                Type t = child.GetType();
-
-                if (_mappers.TryGetValue(t, out NodeProcessor mapper))
-                {
-                    SyntaxTree tree = shader.Tree;
-                    mapper.Map(shader, child);
-                    if (tree != shader.Tree)
-                        throw new Exception("The syntax tree was modified during mapping stage");
-                }
-
-                Map(shader, child);
-            }
+                Map(shader, child, mappedEntries);
         }
 
-        private string PostProcess(ShaderContext shader)
+        private string Translate(ShaderContext shader, List<NodeEntry> mappedEntries)
         {
             StringBuilder source = new StringBuilder(shader.Tree.ToString());
 
-            // Iterate backwards; Bottom to top. 
-            // Iterating in this way ensures any changes made by post-processors will not invalidate the locations of earlier nodes.
-            for (int i = shader.Map.Components.Count - 1; i >= 0; i--)
+            // Iterate backwards to ensure preceeding nodes do not become mis-aligned with their spans.
+            for (int i = mappedEntries.Count - 1; i >= 0; i--)
             {
-                ShaderElement com = shader.Map.Components[i];
-                SyntaxNode node = com.Node;
-                Type test = node.GetType();
-                if (_postProcessors.TryGetValue(node.GetType(), out NodeProcessor proc))
-                    proc.Translate(shader, node, source, com);
+                NodeEntry e = mappedEntries[i];
+                e.Processor.Translate(shader, e.Node, source);
             }
 
             return source.ToString();

@@ -12,14 +12,7 @@ namespace SharpShader
 {
     internal class MemberAccessProcessor : NodeProcessor<MemberAccessExpressionSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
-
-        protected override void OnMap(ShaderContext context, MemberAccessExpressionSyntax syntax)
-        {
-            context.Map.AddComponent(syntax, ShaderComponentType.MemberAccess);
-        }
-
-        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source, ShaderElement component)
+        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source)
         {
             if (context.Map.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {

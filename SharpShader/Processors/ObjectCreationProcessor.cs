@@ -12,8 +12,6 @@ namespace SharpShader
 {
     internal class ObjectCreationProcessor : NodeProcessor<ObjectCreationExpressionSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
         {
             /* Considerations:

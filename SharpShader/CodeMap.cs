@@ -19,8 +19,6 @@ namespace SharpShader
 
         internal Dictionary<string, StructDeclarationSyntax> Structures = new Dictionary<string, StructDeclarationSyntax>();
 
-        internal List<ShaderElement> Components = new List<ShaderElement>();
-
         internal Dictionary<string, RegisteredObject> ConstantBuffers = new Dictionary<string, RegisteredObject>();
 
         internal Dictionary<string, RegisteredObject> Textures = new Dictionary<string, RegisteredObject>();
@@ -41,7 +39,6 @@ namespace SharpShader
             EntryPoints.Clear();
             MainFields.Clear();
             Structures.Clear();
-            Components.Clear();
             ConstantBuffers.Clear();
             UAVs.Clear();
             TranslatedTypes.Clear();
@@ -77,16 +74,10 @@ namespace SharpShader
             return originalType;
         }
 
-        internal void AddComponent(SyntaxNode node, ShaderComponentType type)
-        {
-            Components.Add(new ShaderElement(node, type));
-        }
-
         internal void AddEntryPoint(EntryPoint ep)
         {
             string name = ep.MethodSyntax.Identifier.ToString();
             EntryPoints.Add(name, ep);
-            AddComponent(ep.MethodSyntax, ShaderComponentType.EntryPoint);
         }
 
         internal void AddField(FieldDeclarationSyntax syntax, bool isChild = false)
@@ -95,8 +86,6 @@ namespace SharpShader
 
             if (!isChild)
                 MainFields.Add(name, syntax);
-
-            AddComponent(syntax, ShaderComponentType.Variable);
         }
 
         internal void AddProperty(string propertyName, PropertyTranslation translation)
@@ -112,7 +101,6 @@ namespace SharpShader
         internal void AddStructure(StructDeclarationSyntax syntax)
         {
             Structures.Add(syntax.Identifier.ToString(), syntax);
-            AddComponent(syntax, ShaderComponentType.Struct);
         }
 
         internal void AddConstantBuffer(StructDeclarationSyntax syntax, AttributeSyntax regAttribute)
@@ -120,14 +108,12 @@ namespace SharpShader
             string name = syntax.Identifier.ToString();
 
             ConstantBuffers.Add(name, new RegisteredObject(regAttribute));
-            AddComponent(syntax, ShaderComponentType.ConstantBuffer);
         }
 
         internal void AddSampler(VariableDeclaratorSyntax syntax, AttributeSyntax attSyntax)
         {
             string name = syntax.ToString();
             Samplers.Add(name, new RegisteredObject(attSyntax));
-            AddComponent(syntax, ShaderComponentType.Sampler);
         }
     }
 }

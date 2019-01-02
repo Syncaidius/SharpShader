@@ -18,7 +18,7 @@ namespace SharpShader
 
         internal virtual void Map(ShaderContext context, SyntaxNode node) { }
 
-        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderElement component) { }
+        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source) { }
 
         protected void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
         {
@@ -92,14 +92,7 @@ namespace SharpShader
             return (originalName, originalType);
         }
 
-        internal bool HasStageFlags(NodeProcessStageFlags stage)
-        {
-            return (Stages & stage) == stage;
-        }
-
         internal abstract Type ParsedType { get; }
-
-        internal abstract NodeProcessStageFlags Stages { get; }
     }
 
     internal abstract class NodeProcessor<T> : NodeProcessor
@@ -117,27 +110,15 @@ namespace SharpShader
             OnMap(context, node as T);
         }
 
-        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source, ShaderElement element)
+        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source)
         {
-            OnTranslate(context, node as T, source, element);
+            OnTranslate(context, node as T, source);
         }
 
         protected virtual void OnPreprocess(ShaderContext context, T syntax, StringBuilder source) { }
 
         protected virtual void OnMap(ShaderContext context, T syntax) { }
 
-        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source, ShaderElement element) { }
-    }
-
-    [Flags]
-    internal enum NodeProcessStageFlags
-    {
-        None = 0,
-
-        PreProcess = 1,
-
-        Mapping = 2,
-
-        PostProcess = 4
+        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source) { }
     }
 }

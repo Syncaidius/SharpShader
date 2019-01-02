@@ -9,8 +9,6 @@ namespace SharpShader
 {
     internal class IndexerProcessor : NodeProcessor<IndexerDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax, StringBuilder source)
         {
             string identifier = syntax.ParameterList.ToString();

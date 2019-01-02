@@ -9,8 +9,6 @@ namespace SharpShader.Processors
 {
     internal class LiteralExpressionProcessor : NodeProcessor<LiteralExpressionSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, LiteralExpressionSyntax syntax, StringBuilder source)
         {
             string initValue = syntax.ToString();

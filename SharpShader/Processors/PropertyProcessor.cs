@@ -9,8 +9,6 @@ namespace SharpShader
 {
     internal class PropertyProcessor : NodeProcessor<PropertyDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, PropertyDeclarationSyntax syntax, StringBuilder source)
         {
             string identifier = syntax.Identifier.ToString();

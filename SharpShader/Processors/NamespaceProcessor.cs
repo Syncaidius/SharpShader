@@ -10,8 +10,6 @@ namespace SharpShader
 {
     internal class NamespaceProcessor : NodeProcessor<NamespaceDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
         {
             IEnumerable<SyntaxNodeOrToken> children = syntax.ChildNodesAndTokens();

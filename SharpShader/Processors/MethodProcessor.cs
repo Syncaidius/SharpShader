@@ -12,8 +12,6 @@ namespace SharpShader
 {
     internal class MethodProcessor : NodeProcessor<MethodDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
-
         protected override void OnPreprocess(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source)
         {
             // Expand arrow expression bodies into full bodies. This simplifies processing later.
@@ -69,10 +67,10 @@ namespace SharpShader
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
+        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source)
         {
             int translationLength = syntax.Span.Length;
-            if (element.Type == ShaderComponentType.EntryPoint)
+            if (context.Map.EntryPoints.ContainsKey(syntax.Identifier.ValueText))
             {
                 SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
                 int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;

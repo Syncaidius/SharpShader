@@ -9,8 +9,6 @@ namespace SharpShader
 {
     internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess;
-
         protected override void OnPreprocess(ShaderContext context, ClassDeclarationSyntax syntax, StringBuilder source)
         {
             if(syntax.OpenBraceToken != null && syntax.CloseBraceToken != null)

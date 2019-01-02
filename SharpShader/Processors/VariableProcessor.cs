@@ -11,8 +11,6 @@ namespace SharpShader
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
-
         protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
             // Separate the declaration into individual single-variable declarations.
@@ -71,12 +69,7 @@ namespace SharpShader
                 source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
         }
 
-        protected override void OnMap(ShaderContext context, VariableDeclarationSyntax syntax)
-        {
-            context.Map.AddComponent(syntax, ShaderComponentType.Variable);
-        }
-
-        protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source, ShaderElement element)
+        protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
         {
             if (syntax.Type is ArrayTypeSyntax arraySyntax && syntax.Variables.Count > 0)
             {

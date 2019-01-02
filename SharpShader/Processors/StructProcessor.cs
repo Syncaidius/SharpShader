@@ -11,8 +11,6 @@ namespace SharpShader
 {
     internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
-        internal override NodeProcessStageFlags Stages => NodeProcessStageFlags.PreProcess | NodeProcessStageFlags.Mapping | NodeProcessStageFlags.PostProcess;
-
         protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source)
         {
             //TranslateModifiers(context, syntax.Modifiers, source);
@@ -33,10 +31,10 @@ namespace SharpShader
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source, ShaderElement component)
+        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source)
         {
             string translation = "";
-            if(component.Type == ShaderComponentType.ConstantBuffer)
+            if(context.Map.ConstantBuffers.ContainsKey(syntax.Identifier.ValueText))
             {
                 uint? registerID = null;
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);

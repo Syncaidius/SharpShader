@@ -215,6 +215,7 @@
     <Compile Include="Foundations\LanguageFoundation.Modifier.cs" />
     <Compile Include="Foundations\LanguageFoundation.Keyword.cs" />
     <Compile Include="GeometryShader.Streams.cs" />
+    <Compile Include="NodeEntry.cs" />
     <Compile Include="Processors\IndexerProcessor.cs" />
     <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
@@ -233,7 +234,6 @@
     <Compile Include="SemanticType.cs" />
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderReflection.cs" />
-    <Compile Include="ShaderElement.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
