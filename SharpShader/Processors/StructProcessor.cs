@@ -50,7 +50,7 @@ namespace SharpShader
 
             int translationLength = translation.Length;
             source.Replace(syntax.ToString(), translation);
-            TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
         }
     }
 }

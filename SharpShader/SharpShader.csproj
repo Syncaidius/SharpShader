@@ -253,6 +253,7 @@
     <Compile Include="Textures\TextureBase.cs" />
     <Compile Include="Textures\Texture2D.cs" />
     <Compile Include="Textures\Texture.cs" />
+    <Compile Include="TranslationHelper.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />
     <Compile Include="Types\Bool1x3.cs" />

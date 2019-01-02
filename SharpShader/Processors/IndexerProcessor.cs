@@ -11,54 +11,10 @@ namespace SharpShader
     {
         protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax, StringBuilder source)
         {
-            string identifier = syntax.ParameterList.ToString();
-            string uid = context.Parent.GetNewVariableName(context.SanitizedName);
-            PropertyTranslation translation = new PropertyTranslation()
-            {
-                GetterMethod = $"get{uid}",
-                SetterMethod = $"set{uid}",
-            };
-
-            (translation.TypeName, translation.OriginalType) = GetTypeTranslation(context, syntax.Type);
-            context.Map.TranslatedProperties.Add(identifier, translation);
-
-            string replacement = "";
-            SeparatedSyntaxList<ParameterSyntax> parameters = syntax.ParameterList.Parameters;
-
-            if (syntax.ExpressionBody != null) // Arrow getter property?
-            {
-                replacement += translation.TranslateArrowGetter(syntax.ExpressionBody, parameters);
-            }
-            else
-            {
-                foreach (AccessorDeclarationSyntax accessor in syntax.AccessorList.Accessors)
-                {
-                    if (accessor.Keyword.ValueText == "get")
-                    {
-                        if (accessor.ExpressionBody != null)
-                        {
-                            replacement += translation.TranslateArrowGetter(accessor.ExpressionBody, parameters);
-                        }
-                        else
-                        {
-                            replacement += translation.GetGetterHeader(parameters) + Environment.NewLine;
-                            replacement += accessor.Body + Environment.NewLine;
-                        }
-                    }
-                    else if (accessor.Keyword.ValueText == "set")
-                    {
-                        if (accessor.ExpressionBody != null)
-                        {
-                            replacement += translation.TranslateArrowSetter(accessor.ExpressionBody, parameters);
-                        }
-                        else
-                        {
-                            replacement += translation.GetSetterHeader(parameters) + Environment.NewLine;
-                            replacement += accessor.Body + Environment.NewLine;
-                        }
-                    }
-                }
-            }
+            string replacement = TranslationHelper.TranslateProperty(context, 
+                syntax, 
+                syntax.ExpressionBody, 
+                null, syntax.ParameterList.Parameters);
 
             if(replacement.Length > 0)
                 source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);

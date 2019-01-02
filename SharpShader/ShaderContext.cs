@@ -25,7 +25,7 @@ namespace SharpShader
             Parent = parent;
             Map = new CodeMap();
             Name = name;
-            SanitizedName = ShaderReflection.SanitizeString(name);
+            SanitizedName = TranslationHelper.SanitizeString(name);
         }
 
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
