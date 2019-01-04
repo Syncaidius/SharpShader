@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace SharpShader.Foundations.HLSL
 {
     internal class VertexEntryPointTranslator : IEntryPointTranslator
     {
-        public string Translate(ShaderContext context, EntryPoint ep, ref string header)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
         {
-            return header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "");
+            return $"{syntax.ReturnType} {syntax.Identifier}{syntax.ParameterList}";
         }
     }
 }

@@ -10,8 +10,10 @@ namespace SharpShader.Foundations.HLSL
 {
     internal class PixelEntryPointTranslator : IEntryPointTranslator
     {
-        public string Translate(ShaderContext context, EntryPoint ep, ref string header)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
         {
+            string result = $"{syntax.ReturnType} {syntax.Identifier}{syntax.ParameterList}";
+
             SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
             if (args.Count > 0)
             {
@@ -19,7 +21,7 @@ namespace SharpShader.Foundations.HLSL
 
                 if (Enum.TryParse(enumVal, out SemanticFragmentOutputType outputType))
                 {
-                    string result = $"{header.Replace(ep.MethodSyntax.AttributeLists.ToString(), "").Trim()} : {outputType.ToString().ToUpper()}{Environment.NewLine}";
+                    result += $" : {outputType.ToString().ToUpper()}";
 
                     // Second argument is always the semantic slot ID.
                     if (args.Count > 1)
@@ -30,8 +32,6 @@ namespace SharpShader.Foundations.HLSL
                         else
                             context.Parent.AddMessage($"Invalid FragmentShaderAttribute slot value. Expected value greater than, or equal to 0. Got: {strSlot}", 0, 0);
                     }
-
-                    return result;
                 }
                 else
                 {
@@ -39,7 +39,7 @@ namespace SharpShader.Foundations.HLSL
                 }
             }
 
-            return header;
+            return result;
         }
     }
 }

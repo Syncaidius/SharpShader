@@ -10,7 +10,7 @@ namespace SharpShader
 {
     internal class NamespaceProcessor : NodeProcessor<NamespaceDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, NamespaceDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, NamespaceDeclarationSyntax syntax)
         {
             IEnumerable<SyntaxNodeOrToken> children = syntax.ChildNodesAndTokens();
             SyntaxNodeOrToken last = children.Last();
@@ -34,7 +34,7 @@ namespace SharpShader
                     childSource += Environment.NewLine;
             }
 
-            source.Replace(syntax.ToString(), childSource, syntax.SpanStart, syntax.Span.Length);
+            context.ReplaceSource(syntax, childSource);
         }
 
         private static string ProcessTrivia(SyntaxTriviaList trivia)

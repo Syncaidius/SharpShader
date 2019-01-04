@@ -15,24 +15,24 @@ namespace SharpShader
         protected override void OnMap(ShaderContext context, FieldDeclarationSyntax syntax)
         {
             if (syntax.Parent == context.Root)
-                context.Map.AddField(syntax);
+                context.AddField(syntax);
         }
 
-        protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax)
         {
             string typeName = syntax.Declaration.Type.ToString(); 
 
             // If we're removing the field, we can skip translating it.
             if (!context.Parent.Foundation.InstancedConstantBuffers)
             {
-                if (context.Map.ConstantBuffers.ContainsKey(typeName))
+                if (context.ConstantBuffers.ContainsKey(typeName))
                 {
-                    source.Remove(syntax.SpanStart, syntax.Span.Length);
+                    context.RemoveSource(syntax);
                     return;
                 }
             }
 
-            Type t = context.Map.GetOriginalType(syntax.Declaration.Type);
+            Type t = context.GetOriginalType(syntax.Declaration.Type);
             int translationLength = syntax.Span.Length;
             if (t != null)
             {
@@ -46,7 +46,7 @@ namespace SharpShader
                         {
                             string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
                             translationLength = translation.Length;
-                            source.Replace(syntax.ToString(), translation, syntax.SpanStart, syntax.Span.Length);
+                            context.ReplaceSource(syntax, translation);
                         }
                     }
                     else
@@ -56,7 +56,7 @@ namespace SharpShader
                 }
             }
 
-            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            TranslationHelper.TranslateModifiers(context, syntax.Modifiers);
         }
     }
 }

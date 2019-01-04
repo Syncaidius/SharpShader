@@ -9,6 +9,6 @@ namespace SharpShader
 {
     internal interface IEntryPointTranslator
     {
-        string Translate(ShaderContext context, EntryPoint ep, ref string header);
+        string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax);
     }
 }

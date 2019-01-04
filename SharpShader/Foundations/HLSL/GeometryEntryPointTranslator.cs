@@ -20,9 +20,11 @@ namespace SharpShader.Foundations.HLSL
             [GeometryInputType.TriangleWithAdjacency] = (6, "triangleadj")
         };
 
-        public string Translate(ShaderContext context, EntryPoint ep, ref string header)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
         {
             SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
+            string result = "";
+
             if (args.Count > 1)
             {
                 string strInputType = args[0].ToString().Replace($"{nameof(GeometryInputType)}.", "");
@@ -31,15 +33,14 @@ namespace SharpShader.Foundations.HLSL
                 {
                     // Second argument is the output vertex count
                     string strVertexOutCount = args[1].ToString();
-                    string result = header;
 
                     if (int.TryParse(strVertexOutCount, out int vertexOutCount) && vertexOutCount > 0)
                     {
                         (int inputSize, string strInputName) = _primitiveInputs[inputType];
-                        result = $"[maxvertexcount({vertexOutCount})]{Environment.NewLine}";
+                        result += $"[maxvertexcount({vertexOutCount})]{Environment.NewLine}";
 
                         string strParameters = "";
-                        foreach (ParameterSyntax p in ep.MethodSyntax.ParameterList.Parameters)
+                        foreach (ParameterSyntax p in syntax.ParameterList.Parameters)
                         {
                             if (strParameters.Length > 0)
                                 strParameters += ", ";
@@ -48,20 +49,18 @@ namespace SharpShader.Foundations.HLSL
                             if (p.Type is ArrayTypeSyntax arraySyntax)
                                 typeSyntax = arraySyntax.ElementType;
 
-                            if (context.Map.Structures.ContainsKey(typeSyntax.ToString()))
+                            if (context.Structures.ContainsKey(typeSyntax.ToString()))
                                 strParameters += $"{strInputName} {typeSyntax} {p.Identifier}[{inputSize}]";
                             else
                                 strParameters += $"inout {typeSyntax} {p.Identifier}";
                         }
 
-                        result += $"void {ep.MethodSyntax.Identifier}({strParameters}){Environment.NewLine}";
+                        result += $"void {syntax.Identifier}({strParameters})";
                     }
                     else
                     {
                         context.Parent.AddMessage($"Invalid GeometryShader max vertex output count. Expected a value greater than 0. Got: {strVertexOutCount}", 0, 0);
                     }
-
-                    return result;
                 }
                 else
                 {
@@ -69,7 +68,7 @@ namespace SharpShader.Foundations.HLSL
                 }
             }
 
-            return header;
+            return result;
         }
     }
 }

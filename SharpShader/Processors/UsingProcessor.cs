@@ -10,9 +10,9 @@ namespace SharpShader
 {
     internal class UsingProcessor : NodeProcessor<UsingDirectiveSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, UsingDirectiveSyntax node, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, UsingDirectiveSyntax node)
         {
-            source.Remove(node.SpanStart, node.Span.Length);
+            context.RemoveSource(node);
         }
     }
 }

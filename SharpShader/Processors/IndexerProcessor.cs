@@ -9,15 +9,14 @@ namespace SharpShader
 {
     internal class IndexerProcessor : NodeProcessor<IndexerDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, IndexerDeclarationSyntax syntax)
         {
-            string replacement = TranslationHelper.TranslateProperty(context, 
-                syntax, 
-                syntax.ExpressionBody, 
+            string replacement = TranslationHelper.TranslateProperty(context,
+                syntax,
+                syntax.ExpressionBody,
                 null, syntax.ParameterList.Parameters);
 
-            if(replacement.Length > 0)
-                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+            context.ReplaceSource(syntax, replacement);
         }
     }
 }

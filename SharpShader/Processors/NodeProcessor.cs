@@ -14,11 +14,11 @@ namespace SharpShader
 
     internal abstract class NodeProcessor
     {
-        internal virtual void Preprocess(ShaderContext context, SyntaxNode node, StringBuilder source) { }
+        internal virtual void Preprocess(ShaderContext context, SyntaxNode node) { }
 
         internal virtual void Map(ShaderContext context, SyntaxNode node) { }
 
-        internal virtual void Translate(ShaderContext context, SyntaxNode node, StringBuilder source) { }
+        internal virtual void Translate(ShaderContext context, SyntaxNode node) { }
 
         internal abstract Type ParsedType { get; }
     }
@@ -28,9 +28,9 @@ namespace SharpShader
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed void Preprocess(ShaderContext context, SyntaxNode node, StringBuilder source)
+        internal override sealed void Preprocess(ShaderContext context, SyntaxNode node)
         {
-            OnPreprocess(context, node as T, source);
+            OnPreprocess(context, node as T);
         }
 
         internal override sealed void Map(ShaderContext context, SyntaxNode node)
@@ -38,15 +38,15 @@ namespace SharpShader
             OnMap(context, node as T);
         }
 
-        internal override sealed void Translate(ShaderContext context, SyntaxNode node, StringBuilder source)
+        internal override sealed void Translate(ShaderContext context, SyntaxNode node)
         {
-            OnTranslate(context, node as T, source);
+            OnTranslate(context, node as T);
         }
 
-        protected virtual void OnPreprocess(ShaderContext context, T syntax, StringBuilder source) { }
+        protected virtual void OnPreprocess(ShaderContext context, T syntax) { }
 
         protected virtual void OnMap(ShaderContext context, T syntax) { }
 
-        protected virtual void OnTranslate(ShaderContext context, T syntax, StringBuilder source) { }
+        protected virtual void OnTranslate(ShaderContext context, T syntax) { }
     }
 }

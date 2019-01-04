@@ -20,11 +20,7 @@ namespace SharpShader
     {
         #region Static members
         static Dictionary<Type, NodeProcessor> _processors;
-        static readonly string[] _delimiters = { Environment.NewLine };
         static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow };
-
-        const string BlockOpen = "{";
-        const string BlockClosed = "}";
 
         static Converter()
         {
@@ -42,11 +38,6 @@ namespace SharpShader
             }
         }
 
-        //internal static void Message(string msg)
-        //{
-        //    Message(msg, "MESSAGE", ConsoleColor.White);
-        //}
-
         internal static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
         {
             ConsoleColor prevColor = Console.ForegroundColor;
@@ -55,81 +46,6 @@ namespace SharpShader
             Console.Write(type);
             Console.ForegroundColor = prevColor;
             Console.WriteLine($"] {msg}");
-        }
-
-        /// <summary>
-        /// Strips and re-adds the correct amount of indentation to a code string.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="minIndent">The minimum level of indentation.</param>
-        /// <returns></returns>
-        private static string CorrectIndents(string input, ConversionFlags flags)
-        {
-            string[] lines = input.Trim().Split(_delimiters, StringSplitOptions.None);
-            int indent = 0;
-            bool prevLineEmpty = false;
-            int newLineCount = lines.Length;
-
-            for (int i = 0; i < newLineCount; i++)
-            {
-                lines[i] = lines[i].Trim();
-
-
-                // Remove consecutive empty lines.
-                bool curLineEmpty = string.IsNullOrWhiteSpace(lines[i]);
-                int cPos = i + 1;
-                if (prevLineEmpty && curLineEmpty && cPos < lines.Length)
-                {
-                    Array.Copy(lines, cPos, lines, i, lines.Length - cPos);
-                    i--;
-                    newLineCount--;
-                    continue;
-                }
-
-                // TODO improve this later. It's fugly!
-                bool blockStarted = lines[i].StartsWith(BlockOpen) || lines[i].EndsWith(BlockOpen);
-                bool blockEnded = lines[i].EndsWith(BlockClosed) || 
-                    lines[i].EndsWith(BlockClosed + ";") || 
-                    lines[i].StartsWith(BlockClosed + "//") || 
-                    lines[i].StartsWith(BlockClosed + " //");
-
-                if (lines[i].StartsWith(BlockClosed) && blockEnded)
-                    indent = Math.Max(indent - 1, 0);
-
-
-                lines[i] = new string('\t', indent) + lines[i];
-                if (lines[i].StartsWith("//"))
-                {
-                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
-                        lines[i] = "";
-                }
-
-                if (blockStarted && !blockEnded)
-                    indent++;
-
-                prevLineEmpty = curLineEmpty;
-            }
-
-            return string.Join(Environment.NewLine, lines, 0, newLineCount);
-        }
-
-        private static string RemoveWhitespace(string input, ConversionFlags flags)
-        {
-            string[] lines = input.Trim().Split(_delimiters, StringSplitOptions.None);
-            for (int i = 0; i < lines.Length; i++)
-            {
-                // TODO check if the output language supports comment blocks. If not, add a line break to the end of the comment.
-                lines[i] = lines[i].Trim();
-                if (lines[i].StartsWith("//"))
-                {
-                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
-                        lines[i] = "";
-                    else
-                        lines[i] = $"/* {lines[i]} */";
-                }
-            }
-
-            return string.Join("", lines);
         }
 
         private static IEnumerable<Type> FindOfType<T>() where T : class
@@ -186,7 +102,7 @@ namespace SharpShader
                         Message(msg.Text, msg.MessageType);
 
                     Message($"Cannot proceed until {analysisErrors} errors are fixed. Aborting.");
-                    return context.ToResult();
+                    return context.ToResult(flags);
                 }
             }
             else
@@ -216,27 +132,13 @@ namespace SharpShader
                 Map(shader, shader.Root, mappedEntries);
 
                 Message("  Stage 3/3 (translation)...");
-                shader.Source = Translate(shader, mappedEntries);
-
-                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
-                {
-                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
-                    {
-                        shader.Source = RemoveWhitespace(shader.Source, flags);
-                        Message("  Stripped whitespace");
-                    }
-                    else
-                    {
-                        shader.Source = CorrectIndents(shader.Source, flags);
-                        Message("  Corrected indentation");
-                    }
-                }
-                else
-                    Message($"  Skipped formatting step");
+                Translate(shader, mappedEntries);
 
                 timer.Stop();
                 Message($"  Finished '{shader.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
             }
+
+            ConversionResult result = context.ToResult(flags);
 
             mainTimer.Stop();
             int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
@@ -248,7 +150,7 @@ namespace SharpShader
             Message($"Finished conversion of { cSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
             Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
-            return context.ToResult();
+            return result;
         }
 
         private List<SyntaxTree> GenerateSourceTrees(ConversionContext context, Dictionary<string, string> cSharpSources)
@@ -257,8 +159,7 @@ namespace SharpShader
             List<SyntaxTree> sourceTrees = new List<SyntaxTree>();
             foreach (string sourceName in cSharpSources.Keys)
             {
-                ShaderContext shaderContext = context.AddShader(sourceName);
-                shaderContext.RegenerateTree(cSharpSources[sourceName]);
+                ShaderContext shaderContext = context.AddShader(sourceName, cSharpSources[sourceName]);
                 sourceTrees.Add(shaderContext.Tree);
             }
 
@@ -316,9 +217,9 @@ namespace SharpShader
             // Iterate backwards; Bottom to top. 
             // Iterating in this way ensures any changes made by preprocessors will not invalidate the locations of earlier nodes.
             for (int i = nodes.Count - 1; i >= 0; i--)
-                processor.Preprocess(context, nodes[i], source);
+                processor.Preprocess(context, nodes[i]);
 
-            context.RegenerateTree(source.ToString());
+            context.RegenerateTree();
         }
 
         private void Map(ShaderContext shader, SyntaxNode node, List<NodeEntry> mappedEntries)
@@ -350,7 +251,7 @@ namespace SharpShader
             for (int i = mappedEntries.Count - 1; i >= 0; i--)
             {
                 NodeEntry e = mappedEntries[i];
-                e.Processor.Translate(shader, e.Node, source);
+                e.Processor.Translate(shader, e.Node);
             }
 
             return source.ToString();

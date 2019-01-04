@@ -9,13 +9,13 @@ namespace SharpShader.Processors
 {
     internal class LiteralExpressionProcessor : NodeProcessor<LiteralExpressionSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, LiteralExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, LiteralExpressionSyntax syntax)
         {
             string initValue = syntax.ToString();
             if (char.IsNumber(initValue[0]))
             {
                 string translated = context.Parent.Foundation.TranslateNumber(context, initValue);
-                source.Replace(initValue, translated, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(initValue, translated, syntax.SpanStart, syntax.Span.Length);
             }
         }
     }

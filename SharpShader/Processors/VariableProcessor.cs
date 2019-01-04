@@ -11,7 +11,7 @@ namespace SharpShader
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, VariableDeclarationSyntax syntax)
         {
             // Separate the declaration into individual single-variable declarations.
             string strAttributes = "";
@@ -64,12 +64,12 @@ namespace SharpShader
             }
 
             if (syntax.Parent is LocalDeclarationStatementSyntax parentDeclaration)
-                source.Replace(parentDeclaration.ToString(), replacement, parentDeclaration.SpanStart, parentDeclaration.Span.Length);
+                context.ReplaceSource(parentDeclaration, replacement);
             else
-                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(syntax, replacement);
         }
 
-        protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnTranslate(ShaderContext context, VariableDeclarationSyntax syntax)
         {
             if (syntax.Type is ArrayTypeSyntax arraySyntax && syntax.Variables.Count > 0)
             {
@@ -77,7 +77,7 @@ namespace SharpShader
                 string strArrayDeclaration = context.Parent.Foundation.TranslateArrayDeclaration(context, strElementType, syntax.Variables[0]);
                 string replacement = strArrayDeclaration;
 
-                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(syntax, replacement);
             }
         }
     }

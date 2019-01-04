@@ -9,7 +9,7 @@ namespace SharpShader
 {
     internal class PropertyProcessor : NodeProcessor<PropertyDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, PropertyDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, PropertyDeclarationSyntax syntax)
         {
             string identifier = syntax.Identifier.ToString();
             string replacement = TranslationHelper.TranslateProperty(
@@ -18,8 +18,7 @@ namespace SharpShader
                 syntax.ExpressionBody,
                 identifier);
 
-            if(replacement.Length > 0)
-                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+            context.ReplaceSource(syntax, replacement);
         }
     }
 }

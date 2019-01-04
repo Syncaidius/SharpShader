@@ -9,7 +9,7 @@ namespace SharpShader
 {
     internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, ClassDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, ClassDeclarationSyntax syntax)
         {
             if(syntax.OpenBraceToken != null && syntax.CloseBraceToken != null)
             {
@@ -19,7 +19,7 @@ namespace SharpShader
                 start -= syntax.SpanStart;
 
                 string memberString = syntax.ToString().Substring(start + 1, len - 2);
-                source.Replace(syntax.ToString(), memberString, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(syntax, memberString);
             }
         }
     }

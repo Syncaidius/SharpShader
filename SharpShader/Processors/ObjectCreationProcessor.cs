@@ -12,7 +12,7 @@ namespace SharpShader
 {
     internal class ObjectCreationProcessor : NodeProcessor<ObjectCreationExpressionSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, ObjectCreationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, ObjectCreationExpressionSyntax syntax)
         {
             /* Considerations:
              *  - If the parent node is ReturnStatementSyntax, reformat to return by variable, if needed.
@@ -44,14 +44,14 @@ namespace SharpShader
                     result += initializer;
                     result += $"return {varName};";
 
-                    source.Replace(syntax.Parent.ToString(), result, syntax.Parent.SpanStart, syntax.Parent.Span.Length);
+                    context.ReplaceSource(syntax.Parent, result);
                 }
             }
             else
             {
                 string strSyntax = syntax.ToString();
                 string replacement = strSyntax.Replace(syntax.Type.ToString(), typeTranslation).Replace("new ", "");
-                source.Replace(strSyntax, replacement, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(strSyntax, replacement, syntax.SpanStart, syntax.Span.Length);
             }
         }
     }

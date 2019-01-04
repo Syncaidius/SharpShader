@@ -57,22 +57,35 @@ namespace SharpShader
             return $"{($"{prefix}_" ?? "val_")}SS_{_nextVariable++}";
         }
 
-        internal ShaderContext AddShader(string name)
+        internal ShaderContext AddShader(string name, string source)
         {
-            ShaderContext context = new ShaderContext(this, name);
+            ShaderContext context = new ShaderContext(this, name, ref source);
             Shaders.Add(context);
             return context;
         }
 
-        internal ConversionResult ToResult()
+        internal ConversionResult ToResult(ConversionFlags flags)
         {
             ConversionResult result = new ConversionResult();
             result.Messages.AddRange(Messages);
             foreach (ShaderContext sc in Shaders)
             {
                 ShaderResult shader = new ShaderResult();
-                shader.SourceCode = sc.Source;
+                string strSourceResult = sc.ToString();
+
+
+                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
+                {
+                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
+                        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
+                    else
+                        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
+                }
+
+                shader.SourceCode = strSourceResult;
                 result.Output.Add(sc.Name, shader);
+
+
             }
 
             return result;

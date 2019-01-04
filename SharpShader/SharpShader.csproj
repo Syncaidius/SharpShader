@@ -195,7 +195,6 @@
     <Compile Include="Attributes\HullShaderAttribute.cs" />
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
-    <Compile Include="CodeMap.cs" />
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
     <Compile Include="ConversionResult.cs" />
@@ -244,6 +243,7 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShaderResult.cs" />
+    <Compile Include="FormattingHelper.cs" />
     <Compile Include="Textures\Texture2DArray.cs" />
     <Compile Include="Textures\Texture2DBase.cs" />
     <Compile Include="Textures\TextureComparisonSampler.cs" />

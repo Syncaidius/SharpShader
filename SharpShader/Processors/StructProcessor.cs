@@ -11,7 +11,7 @@ namespace SharpShader
 {
     internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax syntax)
         {
             //TranslateModifiers(context, syntax.Modifiers, source);
         }
@@ -23,18 +23,18 @@ namespace SharpShader
             {
  
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
-                context.Map.AddConstantBuffer(syntax, regAttribute);
+                context.AddConstantBuffer(syntax, regAttribute);
             }
             else
             {
-                context.Map.AddStructure(syntax);
+                context.AddStructure(syntax);
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnTranslate(ShaderContext context, StructDeclarationSyntax syntax)
         {
             string translation = "";
-            if(context.Map.ConstantBuffers.ContainsKey(syntax.Identifier.ValueText))
+            if(context.ConstantBuffers.ContainsKey(syntax.Identifier.ValueText))
             {
                 uint? registerID = null;
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
@@ -48,9 +48,7 @@ namespace SharpShader
                 translation = context.Parent.Foundation.TranslateStruct(context, syntax);
             }
 
-            int translationLength = translation.Length;
-            source.Replace(syntax.ToString(), translation);
-            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            context.ReplaceSource(syntax, translation);
         }
     }
 }

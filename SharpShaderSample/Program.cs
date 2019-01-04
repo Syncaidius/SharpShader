@@ -13,9 +13,9 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             string[] samples = {
-                "FunctionalityTestShader.cs",
+                //"FunctionalityTestShader.cs",
                 "SampleShader.cs",
-                "SampleTextureShader.cs",
+                //"SampleTextureShader.cs",
                 "SampleSpriteShader.cs"
             };
 
@@ -23,6 +23,7 @@ namespace SharpShaderSample
             ConversionResult output = null;
             ShaderLanguage language = ShaderLanguage.HLSL;
 
+            // Translate each file individually.
             foreach(string fn in samples)
             {
                 string title = $"Translating {fn}";

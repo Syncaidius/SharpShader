@@ -33,7 +33,7 @@ namespace SharpShader
             _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>();
         }
 
-        internal virtual string TranslateModifiers(SyntaxTokenList modifiers, SyntaxNode parentSyntax)
+        internal string TranslateModifiers(SyntaxTokenList modifiers)
         {
             foreach (Modifier m in _modifiers)
             {

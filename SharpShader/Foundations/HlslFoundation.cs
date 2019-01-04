@@ -20,14 +20,6 @@ namespace SharpShader
             AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
-        internal override string TranslateModifiers(SyntaxTokenList modifiers, SyntaxNode modifierParentSyntax)
-        {
-            if (modifierParentSyntax is MethodDeclarationSyntax)
-                return "";
-            else
-                return base.TranslateModifiers(modifiers, modifierParentSyntax);
-        }
-
         internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
         {
             string strRegister = registerID != null ? $" : register(b{registerID}" : "";

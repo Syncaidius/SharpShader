@@ -12,12 +12,12 @@ namespace SharpShader
 {
     internal class InvocationProcessor : NodeProcessor<InvocationExpressionSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, InvocationExpressionSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, InvocationExpressionSyntax syntax)
         {
             string cSharpName = syntax.Expression.ToString();
             string translation = ShaderReflection.GetIntrinsicTranslation(context, cSharpName);
             if (!string.IsNullOrEmpty(translation))
-                source.Replace(cSharpName, translation, syntax.Expression.SpanStart, syntax.Expression.Span.Length);
+                context.ReplaceSource(syntax.Expression, translation);
         }
     }
 }

@@ -12,14 +12,14 @@ namespace SharpShader
 {
     internal class MemberAccessProcessor : NodeProcessor<MemberAccessExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax, StringBuilder source)
+        protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax)
         {
-            if (context.Map.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
+            if (context.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {
                 if (!context.Parent.Foundation.InstancedConstantBuffers)
                 {
-                    if (context.Map.ConstantBuffers.ContainsKey(fieldSyntax.Declaration.Type.ToString()))
-                        source.Remove(syntax.Expression.SpanStart, syntax.Expression.Span.Length + syntax.OperatorToken.Span.Length);
+                    if (context.ConstantBuffers.ContainsKey(fieldSyntax.Declaration.Type.ToString()))
+                        context.RemoveSource(syntax.Expression.SpanStart, syntax.Expression.Span.Length + syntax.OperatorToken.Span.Length);
                 }
             }
         }

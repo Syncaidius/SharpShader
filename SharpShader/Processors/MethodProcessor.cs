@@ -12,7 +12,7 @@ namespace SharpShader
 {
     internal class MethodProcessor : NodeProcessor<MethodDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnPreprocess(ShaderContext context, MethodDeclarationSyntax syntax)
         {
             // Expand arrow expression bodies into full bodies. This simplifies processing later.
             // This is done first to avoid invalidating the spans of the method parameters and types.
@@ -22,14 +22,14 @@ namespace SharpShader
                 replacement += "{" + Environment.NewLine;
                 replacement += $"return {syntax.ExpressionBody.Expression};{Environment.NewLine}";
                 replacement += "}";
-                source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
+                context.ReplaceSource(syntax, replacement);
             }
 
             SeparatedSyntaxList<ParameterSyntax> paramList = syntax.ParameterList.Parameters;
             for (int i = paramList.Count - 1; i >= 0; i--)
-                TranslationHelper.TranslateTypeSyntax(context, paramList[i].Type, source);
+                TranslationHelper.TranslateTypeSyntax(context, paramList[i].Type);
 
-            TranslationHelper.TranslateTypeSyntax(context, syntax.ReturnType, source);
+            TranslationHelper.TranslateTypeSyntax(context, syntax.ReturnType);
         }
 
         protected override void OnMap(ShaderContext context, MethodDeclarationSyntax syntax)
@@ -61,34 +61,38 @@ namespace SharpShader
                             ep = EntryPointType.ComputeShader;
 
                         if (ep != EntryPointType.Invalid)
-                            context.Map.AddEntryPoint(new EntryPoint(attType, attSyntax, syntax, ep));
+                            context.AddEntryPoint(new EntryPoint(attType, attSyntax, syntax, ep));
                     }
                 }
             }
         }
 
-        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax, StringBuilder source)
+        protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax)
         {
-            int translationLength = syntax.Span.Length;
-            if (context.Map.EntryPoints.ContainsKey(syntax.Identifier.ValueText))
+            if (context.EntryPoints.ContainsKey(syntax.Identifier.ValueText))
             {
-                SyntaxNode bodyNode = syntax.Body ?? syntax.ExpressionBody as SyntaxNode;
-                int methodHeaderLength = bodyNode.SpanStart - syntax.SpanStart;
-                string toReplace = syntax.ToString().Substring(0, methodHeaderLength);
-                string methodHeader = toReplace;
                 string methodName = syntax.Identifier.ToString();
+                EntryPoint ep = context.EntryPoints[methodName];
 
-                EntryPoint ep = context.Map.EntryPoints[methodName];
                 IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
                 if (epTranslator != null)
                 {
-                    string translation = epTranslator.Translate(context, ep, ref methodHeader);
-                    translationLength = translation.Length;
-                    source.Replace(toReplace, translation);
+                    string translation = epTranslator.TranslateHeader(context, ep, syntax);
+                    if (!string.IsNullOrWhiteSpace(translation))
+                    {
+                        translation += Environment.NewLine;
+                        string methodHeader = syntax.ToString();
+                        int firstBracket = methodHeader.IndexOf('{');
+                        methodHeader = methodHeader.Substring(0, firstBracket);
+
+                        context.ReplaceSource(methodHeader, translation, syntax.SpanStart, firstBracket);
+                    }
                 }
             }
-
-            TranslationHelper.TranslateModifiers(context, translationLength, syntax, syntax.Modifiers, source);
+            else
+            {
+                TranslationHelper.TranslateModifiers(context, syntax.Modifiers);
+            }
         }
     }
 }

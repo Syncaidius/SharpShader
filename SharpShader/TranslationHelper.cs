@@ -34,7 +34,7 @@ namespace SharpShader
             };
 
             (translation.TypeName, translation.OriginalType) = GetTypeTranslation(context, syntax.Type);
-            context.Map.TranslatedProperties.Add(identifier, translation);
+            context.TranslatedProperties.Add(identifier, translation);
 
             string replacement = "";
 
@@ -76,25 +76,22 @@ namespace SharpShader
             return string.IsNullOrWhiteSpace(replacement) ? syntax.ToString() : replacement;
         }
 
-        internal static void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax, StringBuilder source)
+        internal static void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax)
         {
             TypeSyntax typeSyntax = syntax is ArrayTypeSyntax arraySyntax ? arraySyntax.ElementType : syntax;
             (string replacement, Type t) = GetTypeTranslation(context, typeSyntax);
-            source = source.Replace(typeSyntax.ToString(), replacement, typeSyntax.SpanStart, typeSyntax.Span.Length);
+            context.ReplaceSource(typeSyntax, replacement);
         }
 
         internal static void TranslateModifiers(
             ShaderContext context, 
-            int translatedSpanLength, 
-            SyntaxNode node, 
-            SyntaxTokenList modifiers, 
-            StringBuilder source)
+            SyntaxTokenList modifiers)
         {
             // Now translate any modifiers the field may have.
             if (modifiers.Count > 0)
             {
-                string modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers, node);
-                source.Replace(modifiers.ToString(), modifierTranslation, node.SpanStart, translatedSpanLength);
+                string modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers);
+                context.ReplaceSource(modifiers.ToString(), modifierTranslation, modifiers.Span.Start, modifiers.Span.Length);
             }
         }
 
@@ -112,7 +109,7 @@ namespace SharpShader
                 LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
                 if (translation != null)
                 {
-                    context.Map.TranslatedTypes[translation.NativeText] = originalType;
+                    context.TranslatedTypes[translation.NativeText] = originalType;
 
                     if (arraySyntax != null)
                         return ($"{translation.NativeText}{arraySyntax.RankSpecifiers}", originalType);
@@ -142,7 +139,7 @@ namespace SharpShader
                             else
                                 replacement = translation.NativeText + replacement;
 
-                            context.Map.TranslatedTypes[replacement] = originalType;
+                            context.TranslatedTypes[replacement] = originalType;
 
                             return (replacement, originalType);
                         }
