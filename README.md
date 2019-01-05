@@ -1,10 +1,10 @@
 # Sharp Shader
 Write all of your cross-platform shaders in a single language. Use C# as an intermediate language for writing HLSL and GLSL shaders, saving you valuable development time.
 
-# Bytecode or Source Translator?
+## Bytecode or Source Translator?
 SharpShader is a source-to-source translator. This means that C# source is taken as input and the source of a chosen shader language is produced as output. The main advantage of this approach is that the bulk of shader optimization can be left to where it's done best, the native shader compilers. It also means that any future optimizations and changes made to native HLSL/GLSL compilers can instantly be leveraged without altering a single line of SharpShader's source code.
 
-# Current Status
+## Current Status
 [![Build Status](https://dev.azure.com/jyarwood/SharpShader/_apis/build/status/SharpShader-.NET%20Desktop-CI?branchName=master)](https://dev.azure.com/jyarwood/SharpShader/_build/latest?definitionId=4?branchName=master)  
  - It is possible to generate basic HLSL shaders from C# source.
  - GLSL shaders are not support in any shape or form, yet
@@ -14,7 +14,7 @@ SharpShader is a source-to-source translator. This means that C# source is taken
  - Lots of unfinished things!
  - A lot of bugs. Probably! 
 
-# Example
+## Example
 Here is a C# to HLSL example showing off what Sharp Shader is capable of so far.  
 
 C# source:
