@@ -13,9 +13,9 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             string[] samples = {
-                //"FunctionalityTestShader.cs",
+                "FunctionalityTestShader.cs",
                 "SampleShader.cs",
-                //"SampleTextureShader.cs",
+                "SampleTextureShader.cs",
                 "SampleSpriteShader.cs"
             };
 
@@ -33,18 +33,8 @@ namespace SharpShaderSample
                 Console.ForegroundColor = ConsoleColor.White;
 
                 FileInfo fInfo = new FileInfo(fn);
-
-                using (FileStream fs = new FileStream(fn, FileMode.Open, FileAccess.Read))
-                {
-                    using (StreamReader reader = new StreamReader(fs))
-                    {
-                        Dictionary<string, string> input = new Dictionary<string, string>()
-                        {
-                            [fInfo.Name] = reader.ReadToEnd(),
-                        };
-                        output = converter.Convert(input, language);
-                    }
-                }
+                string strInput = File.ReadAllText(fn);
+                output = converter.Convert(fInfo.Name, strInput, language);
 
                 // Store the output to file so we can take a look at it ourselves.
                 if (output != null)

@@ -14,7 +14,6 @@
     <copyright>Copyright ©2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
     <dependencies>
-      <dependency id="SampleDependency" version="1.0" />
       <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
       <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
