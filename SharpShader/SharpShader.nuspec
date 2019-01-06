@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SharpShader</id>
+    <version>0.0.1-alpha</version>
+    <authors>James Yarwood</authors>
+    <owners>James Yarwood</owners>
+    <licenseUrl>https://github.com/Syncaidius/SharpShader/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Syncaidius/SharpShader</projectUrl>
+    <iconUrl>https://github.com/Syncaidius/SharpShader/tree/master/RES/logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description> Write all of your cross-platform shaders in a single language. Use C# as an intermediate language for writing HLSL and GLSL shaders, saving you valuable development time.</description>
+    <releaseNotes>Initial test release.</releaseNotes>
+    <copyright>Copyright ©2019 James Yarwood</copyright>
+    <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
+    <dependencies>
+      <dependency id="SampleDependency" version="1.0" />
+      <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
+      <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
+      <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
+    </dependencies>
+  </metadata>
+</package>
