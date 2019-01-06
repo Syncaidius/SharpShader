@@ -13,8 +13,8 @@
     <releaseNotes>Initial test release.</releaseNotes>
     <copyright>Copyright ©2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
-    <frameworkAssemblies assemblyName="System.Xml">
-      <frameworkAssembly />
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Xml"/>
     </frameworkAssemblies>
     <dependencies>
       <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
