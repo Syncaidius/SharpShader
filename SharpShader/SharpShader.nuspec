@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\*.dll" target="lib"/>
-    <file src="bin\Release\*.xml" target="lib"/>
+    <file src="bin\Release\SharpShader.dll" target="lib"/>
+    <file src="bin\Release\SharpShader.xml" target="lib"/>
   </files>
 </package>
