@@ -13,10 +13,16 @@
     <releaseNotes>Initial test release.</releaseNotes>
     <copyright>Copyright ©2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
+    <frameworkAssemblies assemblyName="System.Xml">
+      <frameworkAssembly />
+    </frameworkAssemblies>
     <dependencies>
       <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
       <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
     </dependencies>
+    <files>
+      <file src="lib\**\*.*" exclude="**\*.cs;**\*.exe;**\*.tt;**\*.config;**\*.nuspec" />
+    </files>
   </metadata>
 </package>
