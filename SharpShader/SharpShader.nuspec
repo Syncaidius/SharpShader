@@ -21,8 +21,9 @@
       <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
     </dependencies>
-    <files>
-      <file src="lib\**\*.*" exclude="**\*.cs;**\*.exe;**\*.tt;**\*.config;**\*.nuspec" />
-    </files>
   </metadata>
+  <files>
+    <file src="bin\Release\*.dll" target="lib"/>
+    <file src="bin\Release\*.xml" target="lib"/>
+  </files>
 </package>
