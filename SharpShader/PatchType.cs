@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    [AttributeUsage(AttributeTargets.Method)]
-    public class ComputeShaderAttribute : SharpShaderAttribute
+    public enum PatchType
     {
+        Triangle = 0,
+
+        Quad = 1,
+
+        Isoline = 2,
     }
 }

@@ -16,7 +16,7 @@ namespace SharpShaderSample
                 "FunctionalityTestShader.cs",
                 "SampleShader.cs",
                 "SampleTextureShader.cs",
-                "SampleSpriteShader.cs"
+                "MoltenSpriteShader.cs"
             };
 
             Converter converter = new Converter();

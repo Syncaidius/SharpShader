@@ -5,7 +5,7 @@ using SharpShader;
 
 namespace SharpShaderSample
 {
-    class SampleSpriteShader : CSharpShader
+    class MoltenSpriteShader : CSharpShader
     {
         struct VS_GS
         {

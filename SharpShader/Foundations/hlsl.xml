@@ -54,7 +54,7 @@
     </call>
     <call>
       <generic type="SharpShader.IIntrinsicValue" name="T"/>
-      <param generic="T" />
+      <param generic="T" name="x" />
       <return generic="T"/>
     </call>
   </Intrinsic>

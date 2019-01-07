@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Method | AttributeTargets.Property)]
     public class SemanticAttribute : SharpShaderAttribute
     {
         internal SemanticType Semantic { get; }

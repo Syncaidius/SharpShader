@@ -242,52 +242,52 @@ void ParseLexicon(string fn, Dictionary<string, Dictionary<string, List<string>>
 		XmlDocument doc = new XmlDocument();
 		doc.Load(stream);
 		XmlNode rootNode = doc["Lexicon"];
-        XmlNode langNode = rootNode["Language"];
-		if(langNode == null)
+		if(rootNode == null)
+			return;
+        
+        XmlAttribute attLanguage = rootNode.Attributes["language"];
+		if(attLanguage == null)
 			return;
 
-		if(rootNode != null)
+		foreach(XmlNode node in rootNode)
 		{
-			foreach(XmlNode node in rootNode)
+			if(node.Name != "Intrinsic")
+				continue;
+
+			XmlAttribute attName = node.Attributes["name"];
+			if(attName != null)
 			{
-				if(node.Name == "Intrinsic")
+				if(string.IsNullOrWhiteSpace(attName.InnerText))
+					continue;
+				else
 				{
-					XmlAttribute attName = node.Attributes["name"];
-					if(attName != null)
+					XmlAttribute attCSharpName = node.Attributes["csharp"];
+					string strCSharpName = attCSharpName != null ? attCSharpName.InnerText.Replace(" ", "") : (char.ToUpper(attName.InnerText[0]) + attName.InnerText.Substring(1));
+					string nameKey = $"{attName.InnerText}--{strCSharpName}";
+
+					// If the node dictionary doesn't have the intrinsic's name, the summaries dictionary will not either.
+					Dictionary<string, List<string>> intrinsicMeta = null;
+					Dictionary<string, string> summariesByLanguage = null;
+					Dictionary<string, string> versionsByLanguage = null;
+
+					if(!nodes.TryGetValue(nameKey, out intrinsicMeta))
 					{
-						if(string.IsNullOrWhiteSpace(attName.InnerText))
-							continue;
-						else
-						{
-							XmlAttribute attCSharpName = node.Attributes["csharp"];
-							string strCSharpName = attCSharpName != null ? attCSharpName.InnerText.Replace(" ", "") : (char.ToUpper(attName.InnerText[0]) + attName.InnerText.Substring(1));
-							string nameKey = $"{attName.InnerText}--{strCSharpName}";
+						intrinsicMeta = new Dictionary<string, List<string>>();
+						nodes.Add(nameKey, intrinsicMeta);
 
-							// If the node dictionary doesn't have the intrinsic's name, the summaries dictionary will not either.
-							Dictionary<string, List<string>> intrinsicMeta = null;
-							Dictionary<string, string> summariesByLanguage = null;
-							Dictionary<string, string> versionsByLanguage = null;
+						summariesByLanguage = new Dictionary<string, string>();
+						summaries.Add(nameKey, summariesByLanguage);
 
-							if(!nodes.TryGetValue(nameKey, out intrinsicMeta))
-							{
-								intrinsicMeta = new Dictionary<string, List<string>>();
-								nodes.Add(nameKey, intrinsicMeta);
-
-								summariesByLanguage = new Dictionary<string, string>();
-								summaries.Add(nameKey, summariesByLanguage);
-
-								versionsByLanguage = new Dictionary<string, string>();
-								versions.Add(nameKey, versionsByLanguage);
-							}
-							else 
-							{
-								summariesByLanguage = summaries[nameKey];	
-								versionsByLanguage = versions[nameKey];
-							}
-							
-							ParseIntrinsic(node, strCSharpName, langNode.InnerText, intrinsicMeta, summariesByLanguage, versionsByLanguage);
-						}
+						versionsByLanguage = new Dictionary<string, string>();
+						versions.Add(nameKey, versionsByLanguage);
 					}
+					else 
+					{
+						summariesByLanguage = summaries[nameKey];	
+						versionsByLanguage = versions[nameKey];
+					}
+							
+					ParseIntrinsic(node, strCSharpName, attLanguage.InnerText, intrinsicMeta, summariesByLanguage, versionsByLanguage);
 				}
 			}
 		}

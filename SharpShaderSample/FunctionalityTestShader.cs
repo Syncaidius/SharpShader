@@ -4,7 +4,7 @@ using System;
 namespace SharpShaderSample
 {
     /// <summary>
-    /// A nonsensical shader for testing various translation capabilities during development. A playground. A sandbox. A scratchpad. Call it what you want!
+    /// A nonsensical shader made up of random pieces of code for testing purposes.
     /// </summary>
     public class FunctionalityTestShader : CSharpShader
     {
@@ -12,6 +12,54 @@ namespace SharpShaderSample
         public const int LAPS = 5;
         public const float RADIUS = 0.5f;
         public const double PI = Math.PI;
+        #endregion
+
+        #region Structs
+        private struct HS_OUTPUT
+        {
+            [Semantic(SemanticType.Position)]
+            public Vector3 HemiDir;
+
+            [Semantic(SemanticType.TexCoord)]
+            public uint LightID;
+        };
+
+        public struct DS_OUTPUT
+        {
+            [Semantic(SemanticType.SV_Position)]
+            public Vector4 Position;
+
+            [Semantic(SemanticType.TexCoord)]
+            public Vector3 PositionXYW;
+
+            [Semantic(SemanticType.BlendIndices)]
+            public uint LightID;
+        };
+
+        // Unsafe struct with fixed-size arrays. Syntax is very similar to GLSL and HLSL arrays.
+        public unsafe struct HS_CONSTANT_DATA_OUTPUT
+        {
+            [Semantic(SemanticType.SV_TessFactor)]
+            public fixed float Edges[4];
+
+            [Semantic(SemanticType.SV_InsideTessFactor)]
+            public fixed float Inside[2];
+        };
+
+        struct Light
+        {
+            public Matrix4x4 Transform;
+            public Vector3 Position;
+            public float RangeRcp;
+            public float Intensity;
+            public Vector3 Color;
+            public float Tess; // Tessellation factor
+
+            public Vector3 Forward;
+            public float Length;
+            public float HalfLength;
+        };
+
         #endregion
 
         #region Variables
@@ -30,6 +78,9 @@ namespace SharpShaderSample
             new Vector2(0, 4),
             new Vector2(2,3),
         };
+
+        [Register(8)]
+        StructuredBuffer<Light> LightData;
         #endregion
 
         #region Methods
@@ -48,6 +99,77 @@ namespace SharpShaderSample
         {
             double circumference = 2 * PI * trackRadius;
             return (float)(circumference * laps);
+        }
+
+        public Vector3 CookTorrenceMessyTest
+        (
+        in Vector3 normal, // normal
+        in Vector3 toEye, // direction to eye/camera
+        in Vector3 toLight, // direction to light
+        in Vector3 cLightCol, // light color
+        in Vector3 cDiffuse, // scene color
+        in Vector3 cSpecular // specular color
+        )
+        {
+            // Sample the textures
+            // TODO: These are to be mapped to a PBR texture.
+            float surfaceR = 0.1f; // IoR
+            float surfaceG = 0.2f; // Roughness
+            float surfaceB = 1; // Metallic
+
+            Vector2 Roughness = new Vector2(surfaceR, surfaceG);
+
+            Roughness.R *= 3.0f;
+
+            // Correct the input and compute aliases
+            Vector3 ViewDir = Normalize(toEye);
+            Vector3 LightDir = Normalize(toLight);
+            Vector3 vHalf = Normalize(LightDir + ViewDir);
+            float NormalDotHalf = Dot(normal, vHalf);
+            float ViewDotHalf = Dot(vHalf, ViewDir);
+            float NormalDotView = Dot(normal, ViewDir);
+            float NormalDotLight = Dot(normal, LightDir);
+
+            // Compute the geometric term
+            float G1 = (2.0f * NormalDotHalf * NormalDotView) / ViewDotHalf;
+            float G2 = (2.0f * NormalDotHalf * NormalDotLight) / ViewDotHalf;
+            float G = Min(1.0f, Max(0.0f, Min(G1, G2)));
+
+            // Compute the fresnel term
+            float F = Roughness.G + (1.0f - Roughness.G) * Pow(1.0f - NormalDotView, 5.0f);
+
+            // Compute the roughness term
+            float R_2 = Roughness.R * Roughness.R;
+            float NDotH_2 = NormalDotHalf * NormalDotHalf;
+            float A = 1.0f / (4.0f * R_2 * NDotH_2 * NDotH_2);
+            float B = Exp(-(1.0f - NDotH_2) / (R_2 * NDotH_2));
+            float R = A * B;
+
+            // Compute the final term
+            Vector3 S = cSpecular * ((G * F * R) / (NormalDotLight * NormalDotView));
+
+            // Clamp specular into a reasonable range to prevent patchy bloom glitches.
+            Vector3 finalS = Saturate(S) * 4;
+            finalS = Min(finalS, S);
+
+            Vector3 Final = cLightCol.RGB * Max(0.0f, NormalDotLight) * (cDiffuse + finalS);
+            return Final;
+        }
+
+        // Custom point light constant function
+        HS_CONSTANT_DATA_OUTPUT PointConstantHS([Semantic(SemanticType.SV_PrimitiveID)] uint PatchID)
+        {
+            HS_CONSTANT_DATA_OUTPUT Output;
+
+            uint id = (uint)Floor(0.5f * PatchID); // Light ID (2 patches per light)
+            // Conside also allowing f
+            unsafe
+            {
+                Output.Edges[0] = Output.Edges[1] = Output.Edges[2] = Output.Edges[3] = LightData[id].Tess;
+                Output.Inside[0] = Output.Inside[1] = LightData[id].Tess;
+            }
+
+            return Output;
         }
         #endregion
 
@@ -110,6 +232,35 @@ namespace SharpShaderSample
         {
             get => 0;
             set { }
+        }
+        #endregion
+
+        #region Entry points
+        [DomainShader(PatchType.Quad)]
+        DS_OUTPUT DS(HS_CONSTANT_DATA_OUTPUT input,
+            [Semantic(SemanticType.SV_DomainLocation)] Vector2 UV,
+            [OutputPatch(4)] in HS_OUTPUT[] quad)
+        {
+            // Transform the UV's into clip-space
+            Vector2 posClipSpace = UV.XY * 2.0 - 1.0;
+
+            // Find the absulate maximum distance from the center
+            Vector2 posClipSpaceAbs = Abs(posClipSpace.XY);
+            float maxLen = Max(posClipSpaceAbs.X, posClipSpaceAbs.Y);
+
+            // Generate the final position in clip-space
+            Vector3 normDir = Normalize(new Vector3(posClipSpace.XY, (maxLen - 1.0f)) * quad[0].HemiDir);
+            Vector4 posLS = new Vector4(normDir.XYZ, 1.0f);
+
+            // Transform all the way to projected space
+            DS_OUTPUT Output;
+            Output.LightID = quad[0].LightID;
+            Output.Position = Mul(posLS, LightData[Output.LightID].Transform);
+
+            // Store the clip space position
+            Output.PositionXYW = Output.Position.XYW;
+
+            return Output;
         }
         #endregion
     }

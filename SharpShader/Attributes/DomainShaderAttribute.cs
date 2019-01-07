@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [AttributeUsage(AttributeTargets.Method)]
     public class DomainShaderAttribute : SharpShaderAttribute
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="DomainShaderAttribute"/>
+        /// </summary>
+        /// <param name="pType">The patch type.</param>
+        public DomainShaderAttribute(PatchType pType)
+        {
+            PatchType = pType;
+        }
+
+        /// <summary>
+        /// Gets the patch type.
+        /// </summary>
+        public PatchType PatchType { get; }
     }
 }

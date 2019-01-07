@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [AttributeUsage(AttributeTargets.Method)]
     public class GeometryShaderAttribute : SharpShaderAttribute
     {
         /// <summary>

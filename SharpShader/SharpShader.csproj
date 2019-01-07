@@ -187,6 +187,8 @@
   <ItemGroup>
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
+    <Compile Include="Attributes\InputPatchAttribute.cs" />
+    <Compile Include="Attributes\OutputPatchAttribute.cs" />
     <Compile Include="Attributes\RegisterAttribute.cs" />
     <Compile Include="Attributes\SemanticAttribute.cs" />
     <Compile Include="Attributes\PackOffsetAttribute.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="Attributes\HullShaderAttribute.cs" />
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
+    <Compile Include="Buffers\StructuredBuffer.cs" />
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
     <Compile Include="ConversionResult.cs" />
@@ -213,8 +216,9 @@
     <Compile Include="Foundations\LanguageFoundation.cs" />
     <Compile Include="Foundations\LanguageFoundation.Modifier.cs" />
     <Compile Include="Foundations\LanguageFoundation.Keyword.cs" />
-    <Compile Include="GeometryShader.Streams.cs" />
+    <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="NodeEntry.cs" />
+    <Compile Include="PatchType.cs" />
     <Compile Include="Processors\IndexerProcessor.cs" />
     <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />

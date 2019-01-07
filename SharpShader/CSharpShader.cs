@@ -28,7 +28,7 @@ namespace SharpShader
 		/// GLSL: Returns the absolute value of the parameter.</summary>
 		[ShaderIntrinsic(ShaderLanguage.HLSL, "abs")]
 		[ShaderIntrinsic(ShaderLanguage.GLSL, "abs")]
-		protected T Abs<T>() where T : struct, IIntrinsicValue { return default(T); }
+		protected T Abs<T>(T x) where T : struct, IIntrinsicValue { return default(T); }
 
 		/// <summary>HLSL: Returns the absolute value of the specified value.<para/>
 		/// GLSL: Returns the absolute value of the parameter.</summary>
