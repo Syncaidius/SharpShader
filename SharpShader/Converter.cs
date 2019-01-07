@@ -122,7 +122,7 @@ namespace SharpShader
                 foreach (Type t in _processors.Keys)
                 {
                     Message($"    Processing {t.Name} nodes");
-                    CollectNOdes(context, shader.Root, t, nodesToProcess);
+                    CollectNodes(context, shader.Root, t, nodesToProcess);
                     Preprocess(shader, t, nodesToProcess);
                     nodesToProcess.Clear();
                 }
@@ -176,6 +176,7 @@ namespace SharpShader
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary, 
                 optimizationLevel: OptimizationLevel.Release,
+                allowUnsafe: true,
                 concurrentBuild: true);
 
             CSharpCompilation compilation = CSharpCompilation.Create("sharp_shader_temp", sourceTrees, references, options);
@@ -198,7 +199,7 @@ namespace SharpShader
             }
         }
 
-        private void CollectNOdes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
+        private void CollectNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
         {
             Type t = node.GetType();
             if (t == nodeType)
@@ -206,7 +207,7 @@ namespace SharpShader
 
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
-                CollectNOdes(context, child, nodeType, nodesToProcess, depth + 1);
+                CollectNodes(context, child, nodeType, nodesToProcess, depth + 1);
         }
 
         private void Preprocess(ShaderContext context, Type nodeType, List<SyntaxNode> nodes)
