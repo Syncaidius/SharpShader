@@ -26,10 +26,5 @@ namespace SharpShader
         /// Strips code comments and summaries from the translated shader code.
         /// </summary>
         StripComments = 4,
-
-        /// <summary>
-        /// Skips the analysis stage of conversion. Useful if you can guarantee that the input source code is already error-free.
-        /// </summary>
-        SkipAnalysis = 5,
     }
 }

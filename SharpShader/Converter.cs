@@ -89,26 +89,18 @@ namespace SharpShader
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
-            if ((flags & ConversionFlags.SkipAnalysis) != ConversionFlags.SkipAnalysis)
-            {
-                Message("Analyzing...");
-                Analyze(context, cSharpSources);
-                int analysisErrors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
-                Message($"Analysis completed");
+            Message("Analyzing...");
+            Analyze(context, cSharpSources);
+            int analysisErrors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+            Message($"Analysis completed");
 
-                if (analysisErrors > 0)
-                {
-                    foreach (ConversionMessage msg in context.Messages)
-                        Message(msg.Text, msg.MessageType);
-
-                    Message($"Cannot proceed until {analysisErrors} errors are fixed. Aborting.");
-                    return context.ToResult(flags);
-                }
-            }
-            else
+            if (analysisErrors > 0)
             {
-                Message($"Skipping analysis");
-                GenerateSourceTrees(context, cSharpSources);
+                foreach (ConversionMessage msg in context.Messages)
+                    Message(msg.Text, msg.MessageType);
+
+                Message($"Cannot proceed until {analysisErrors} errors are fixed. Aborting.");
+                return context.ToResult(flags);
             }
 
             foreach(ShaderContext shader in context.Shaders)
