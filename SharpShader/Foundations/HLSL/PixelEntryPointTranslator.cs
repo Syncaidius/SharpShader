@@ -10,9 +10,9 @@ namespace SharpShader.Foundations.HLSL
 {
     internal class PixelEntryPointTranslator : IEntryPointTranslator
     {
-        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodInformation info)
         {
-            string result = $"{syntax.ReturnType} {syntax.Identifier}{syntax.ParameterList}";
+            string result = $"{info.ReturnType} {info.Identifier}{info.GetParameterString()}";
 
             SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
             if (args.Count > 0)

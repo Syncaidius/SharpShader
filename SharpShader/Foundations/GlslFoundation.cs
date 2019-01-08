@@ -24,7 +24,12 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override string TranslateStructField(ShaderContext context, FieldDeclarationSyntax node)
+        internal override string TranslateVariable(ShaderContext context,
+            SyntaxNode parent,
+            TypeSyntax type,
+            SyntaxToken identifier,
+            SyntaxTokenList modifiers,
+            SyntaxList<AttributeListSyntax> attributes)
         {
             throw new NotImplementedException();
         }

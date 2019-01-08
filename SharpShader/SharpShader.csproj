@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeLookup.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
     <Compile Include="Attributes\InputPatchAttribute.cs" />
@@ -216,9 +217,9 @@
     <Compile Include="Foundations\LanguageFoundation.cs" />
     <Compile Include="Foundations\LanguageFoundation.Modifier.cs" />
     <Compile Include="Foundations\LanguageFoundation.Keyword.cs" />
+    <Compile Include="MethodInformation.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="NodeEntry.cs" />
-    <Compile Include="PatchType.cs" />
     <Compile Include="Processors\IndexerProcessor.cs" />
     <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="PropertyTranslation.cs" />
     <Compile Include="RegisteredObject.cs" />
     <Compile Include="SemanticType.cs" />
+    <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderReflection.cs" />
     <Compile Include="EntryPoint.cs" />

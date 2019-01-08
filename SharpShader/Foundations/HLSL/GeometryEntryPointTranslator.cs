@@ -20,7 +20,7 @@ namespace SharpShader.Foundations.HLSL
             [GeometryInputType.TriangleWithAdjacency] = (6, "triangleadj")
         };
 
-        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodInformation info)
         {
             SeparatedSyntaxList<AttributeArgumentSyntax> args = ep.AttributeSyntax.ArgumentList.Arguments;
             string result = "";
@@ -40,7 +40,7 @@ namespace SharpShader.Foundations.HLSL
                         result += $"[maxvertexcount({vertexOutCount})]{Environment.NewLine}";
 
                         string strParameters = "";
-                        foreach (ParameterSyntax p in syntax.ParameterList.Parameters)
+                        foreach (ParameterSyntax p in info.Syntax.ParameterList.Parameters)
                         {
                             if (strParameters.Length > 0)
                                 strParameters += ", ";
@@ -55,7 +55,7 @@ namespace SharpShader.Foundations.HLSL
                                 strParameters += $"inout {typeSyntax} {p.Identifier}";
                         }
 
-                        result += $"void {syntax.Identifier}({strParameters})";
+                        result += $"void {info.Identifier}({strParameters})";
                     }
                     else
                     {

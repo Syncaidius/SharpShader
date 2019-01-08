@@ -69,6 +69,9 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, MethodDeclarationSyntax syntax)
         {
+            MethodInformation info = new MethodInformation(syntax);
+
+            string methodHeader = "";
             if (context.EntryPoints.ContainsKey(syntax.Identifier.ValueText))
             {
                 string methodName = syntax.Identifier.ToString();
@@ -76,23 +79,38 @@ namespace SharpShader
 
                 IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
                 if (epTranslator != null)
-                {
-                    string translation = epTranslator.TranslateHeader(context, ep, syntax);
-                    if (!string.IsNullOrWhiteSpace(translation))
-                    {
-                        translation += Environment.NewLine;
-                        string methodHeader = syntax.ToString();
-                        int firstBracket = methodHeader.IndexOf('{');
-                        methodHeader = methodHeader.Substring(0, firstBracket);
+                    methodHeader = epTranslator.TranslateHeader(context, ep, info);
+            }
 
-                        context.ReplaceSource(methodHeader, translation, syntax.SpanStart, firstBracket);
-                    }
-                }
-            }
-            else
+            // Build a replacement method header which includes the necessary translations.
+            if (string.IsNullOrWhiteSpace(methodHeader))
             {
-                TranslationHelper.TranslateModifiers(context, syntax.Modifiers);
+                string mModifiers = context.Parent.Foundation.TranslateModifiers(syntax.Modifiers);
+                methodHeader += $"{mModifiers} {syntax.ReturnType} {syntax.Identifier}{syntax.TypeParameterList}(";
+
+                bool firstParam = true;
+                foreach (KeyValuePair<string, MethodParameterInformation> p in info.Parameters)
+                {
+                    if (!firstParam)
+                        methodHeader += ", ";
+
+                    string pModifiers = context.Parent.Foundation.TranslateModifiers(p.Value.Syntax.Modifiers);
+                    if (pModifiers.Length > 0)
+                        methodHeader += $"{pModifiers} ";
+
+                    methodHeader += $"{p.Value.Syntax.Type} {p.Value.Syntax.Identifier}";
+                    firstParam = false;
+                }
+
+                methodHeader += $") {syntax.ConstraintClauses}";
             }
+
+            methodHeader += Environment.NewLine;
+            string strMethod = syntax.ToString();
+            int firstBracket = strMethod.IndexOf('{');
+            strMethod = strMethod.Substring(0, firstBracket);
+
+            context.ReplaceSource(strMethod, methodHeader, syntax.SpanStart, firstBracket);
         }
     }
 }

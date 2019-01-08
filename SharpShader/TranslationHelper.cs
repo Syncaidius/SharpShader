@@ -55,7 +55,7 @@ namespace SharpShader
                         else
                         {
                             replacement += translation.GetGetterHeader(parameters) + Environment.NewLine;
-                            replacement += accessor.Body + Environment.NewLine;
+                            replacement += (accessor.Body?.ToString() ?? "{ }") + Environment.NewLine;
                         }
                     }
                     else if (accessor.Keyword.ValueText == "set")
@@ -67,7 +67,7 @@ namespace SharpShader
                         else
                         {
                             replacement += translation.GetSetterHeader(parameters) + Environment.NewLine;
-                            replacement += accessor.Body + Environment.NewLine;
+                            replacement += (accessor.Body?.ToString() ?? "{ }") + Environment.NewLine;
                         }
                     }
                 }

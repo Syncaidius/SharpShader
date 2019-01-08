@@ -11,11 +11,6 @@ namespace SharpShader
 {
     internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
-        protected override void OnPreprocess(ShaderContext context, StructDeclarationSyntax syntax)
-        {
-            //TranslateModifiers(context, syntax.Modifiers, source);
-        }
-
         protected override void OnMap(ShaderContext context, StructDeclarationSyntax syntax)
         {
             AttributeSyntax cbAttribute = ShaderReflection.GetAttribute<ConstantBufferAttribute>(syntax.AttributeLists);

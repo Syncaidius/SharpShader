@@ -9,9 +9,9 @@ namespace SharpShader.Foundations.HLSL
 {
     internal class VertexEntryPointTranslator : IEntryPointTranslator
     {
-        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodDeclarationSyntax syntax)
+        public string TranslateHeader(ShaderContext context, EntryPoint ep, MethodInformation info)
         {
-            return $"{syntax.ReturnType} {syntax.Identifier}{syntax.ParameterList}";
+            return $"{info.ReturnType} {info.Identifier}{info.GetParameterString()}";
         }
     }
 }

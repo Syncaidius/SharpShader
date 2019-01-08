@@ -35,6 +35,9 @@
   <Modifier name="#define">
     <Requirement csharp="const" />
   </Modifier>
+  <Modifier name="const">
+    <Requirement csharp="in" />
+  </Modifier>
   
   
   <!-- Intrinsic functions-->

@@ -48,7 +48,12 @@ namespace SharpShader
 
         internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
 
-        internal abstract string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax);
+        internal abstract string TranslateVariable(ShaderContext context, 
+            SyntaxNode parent, 
+            TypeSyntax type, 
+            SyntaxToken identifier, 
+            SyntaxTokenList modifiers, 
+            SyntaxList<AttributeListSyntax> attributes);
 
         internal abstract string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID);
 

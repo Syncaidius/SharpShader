@@ -28,7 +28,10 @@ namespace SharpShader
             foreach (MemberDeclarationSyntax m in syntax.Members)
             {
                 if (m is FieldDeclarationSyntax field)
-                    result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
+                {
+                    string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
+                    result += $"{fieldTranslation};{Environment.NewLine}";
+                }
             }
             result += "}" + Environment.NewLine;
             return result;
@@ -41,7 +44,10 @@ namespace SharpShader
             foreach (MemberDeclarationSyntax m in syntax.Members)
             {
                 if (m is FieldDeclarationSyntax field)
-                    result += $"{TranslateStructField(context, field)};{Environment.NewLine}";
+                {
+                    string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
+                    result += $"{fieldTranslation};{Environment.NewLine}";
+                }
             }
             result += "};" + Environment.NewLine;
 
@@ -54,8 +60,7 @@ namespace SharpShader
 
             if (typeof(TextureSampler).IsAssignableFrom(fieldType))
                 registerChar = 's';
-
-            if (typeof(TextureBase).IsAssignableFrom(fieldType))
+            else if (typeof(TextureBase).IsAssignableFrom(fieldType))
                 registerChar = 't';
 
             if (registerChar != null)
@@ -64,12 +69,25 @@ namespace SharpShader
                 return syntax.ToString();
         }
 
-        internal override string TranslateStructField(ShaderContext context, FieldDeclarationSyntax syntax)
+        internal override string TranslateVariable(ShaderContext context,
+            SyntaxNode parent,
+            TypeSyntax type,
+            SyntaxToken identifier,
+            SyntaxTokenList modifiers,
+            SyntaxList<AttributeListSyntax> attributes = default)
         {
-            AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(syntax.AttributeLists);
-            if (packAttribute != null)
+            string modifierTranslation = "";
+            bool isInConstBuffer = false;
+
+            if (parent is StructDeclarationSyntax structSyntax)
+                isInConstBuffer = context.ConstantBuffers.ContainsKey(structSyntax.Identifier.ValueText);
+
+
+            // PackOffset can only be used on constant buffer fields. Skip parsing of this entirely if we're not in a constant buffer.
+            if (isInConstBuffer)
             {
-                if (packAttribute.ArgumentList.Arguments.Count > 0)
+                AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(attributes);
+                if (packAttribute != null)
                 {
                     int register = -1;
 
@@ -82,31 +100,27 @@ namespace SharpShader
                             AttributeArgumentSyntax argComponent = packAttribute.ArgumentList.Arguments[1];
                             string comName = argComponent.ToString();
                             if (Enum.TryParse(comName, out PackOffsetComponent component))
-                                return $"{syntax.Declaration} : packoffset(c{register}.{component.ToString().ToLower()})";
-                            else
-                                context.AddMessage($"Incorrect pack offset component name: {comName}", 0, 0);
+                                return $"{type} {identifier} : packoffset(c{register}.{component.ToString().ToLower()})";
                         }
 
-                        return $"{syntax.Declaration} : packoffset(c{register})";
+                        return $"{type} {identifier} : packoffset(c{register})";
                     }
                 }
-                else
-                {
-                    context.AddMessage($"Incorrect PackOffsetAttribute arguments. 1 or more expected arguments are missing.", 0, 0);
-                }
             }
-
-            AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(syntax.AttributeLists);
-            if (semanticAttribute != null)
+            else
             {
-                if (semanticAttribute.ArgumentList.Arguments.Count > 0)
+                AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(attributes);
+                if (semanticAttribute != null)
                 {
+                    if (!isInConstBuffer)
+                        modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers);
+
                     int slot = -1;
-                    SemanticType type = SemanticType.Position;
+                    SemanticType semType = SemanticType.Position;
                     AttributeArgumentSyntax argSemantic = semanticAttribute.ArgumentList.Arguments[0];
                     string strSemantic = argSemantic.ToString().Replace($"{typeof(SemanticType).Name}.", "");
 
-                    if (Enum.TryParse(strSemantic, out type))
+                    if (Enum.TryParse(strSemantic, out semType))
                     {
                         if (semanticAttribute.ArgumentList.Arguments.Count > 1)
                         {
@@ -115,7 +129,7 @@ namespace SharpShader
                             if (int.TryParse(strArgSlot, out slot))
                             {
                                 if (slot > -1)
-                                    return $"{syntax.Declaration} : {strSemantic.ToUpper()}{slot}";
+                                    return $"{modifiers} {type} {identifier} : {strSemantic.ToUpper()}{slot}";
                                 else
                                     context.AddMessage($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
                             }
@@ -125,20 +139,16 @@ namespace SharpShader
                             }
                         }
 
-                        return $"{syntax.Declaration} : {strSemantic.ToUpper()}";
+                        return $"{modifiers} {type} {identifier} : {strSemantic.ToUpper()}";
                     }
                     else
                     {
                         context.AddMessage($"Invalid semantic name: {strSemantic}", 0, 0);
                     }
                 }
-                else
-                {
-                    context.AddMessage($"Unexpected number of SemanticAttribute arguments ({semanticAttribute.ArgumentList.Arguments.Count}). Expected at least 1.", 0, 0);
-                }
             }
 
-            return $"{syntax.Declaration}";
+            return $"{modifiers} {type} {identifier}";
         }
 
         internal override string TranslateNumber(ShaderContext context, string number)

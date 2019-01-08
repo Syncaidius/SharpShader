@@ -51,6 +51,13 @@ namespace SharpShader
             RegenerateTree();
         }
 
+        internal void AddMessage(string text, SyntaxNode node, ConversionMessageType type = ConversionMessageType.Error)
+        {
+            Location loc = node.GetLocation();
+            FileLinePositionSpan span = loc.GetLineSpan();
+            AddMessage(text, span.StartLinePosition.Line, span.StartLinePosition.Character);
+        }
+
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
         {
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);

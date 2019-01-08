@@ -23,7 +23,7 @@ namespace SharpShader
 
             internal bool IsMatch(SyntaxTokenList csharpModifiers)
             {
-                if (csharpModifiers.Count == Requirements.Count)
+                if (csharpModifiers.Count != Requirements.Count)
                     return false;
 
                 // The syntax token list must contain each of the requirements. 
