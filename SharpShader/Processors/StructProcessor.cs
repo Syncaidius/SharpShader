@@ -40,6 +40,7 @@ namespace SharpShader
             }
             else
             {
+                string test = syntax.ToString();
                 translation = context.Parent.Foundation.TranslateStruct(context, syntax);
             }
 

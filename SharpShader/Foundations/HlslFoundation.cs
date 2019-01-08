@@ -17,6 +17,7 @@ namespace SharpShader
         {
             AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
             AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);
+            AddEntryPointTranslator<DomainEntryPointTranslator>(EntryPointType.DomainShader);
             AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
@@ -118,10 +119,10 @@ namespace SharpShader
                     int slot = -1;
                     SemanticType semType = SemanticType.Position;
                     AttributeArgumentSyntax argSemantic = semanticAttribute.ArgumentList.Arguments[0];
-                    string strSemantic = argSemantic.ToString().Replace($"{typeof(SemanticType).Name}.", "");
 
-                    if (Enum.TryParse(strSemantic, out semType))
+                    if (ShaderReflection.ParseEnum(argSemantic.ToString(), out semType))
                     {
+                        string strSemType = semType.ToString().ToUpper();
                         if (semanticAttribute.ArgumentList.Arguments.Count > 1)
                         {
                             AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
@@ -129,7 +130,7 @@ namespace SharpShader
                             if (int.TryParse(strArgSlot, out slot))
                             {
                                 if (slot > -1)
-                                    return $"{modifiers} {type} {identifier} : {strSemantic.ToUpper()}{slot}";
+                                    return $"{modifierTranslation} {type} {identifier} : {strSemType}{slot}";
                                 else
                                     context.AddMessage($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
                             }
@@ -139,11 +140,11 @@ namespace SharpShader
                             }
                         }
 
-                        return $"{modifiers} {type} {identifier} : {strSemantic.ToUpper()}";
+                        return $"{modifierTranslation} {type} {identifier} : {strSemType}";
                     }
                     else
                     {
-                        context.AddMessage($"Invalid semantic name: {strSemantic}", 0, 0);
+                        context.AddMessage($"Invalid semantic name: {argSemantic}", 0, 0);
                     }
                 }
             }

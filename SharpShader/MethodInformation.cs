@@ -47,10 +47,16 @@ namespace SharpShader
 
         public ParameterSyntax Syntax { get; }
 
+        public TypeSyntax Type { get; }
+
+        public SyntaxToken Identifier { get; }
+
         internal MethodParameterInformation(ParameterSyntax syntax)
         {
             Attributes = new AttributeLookup(syntax.AttributeLists);
             Syntax = syntax;
+            Type = syntax.Type;
+            Identifier = syntax.Identifier;
         }
     }
 }

@@ -161,5 +161,19 @@ namespace SharpShader
 
             return t;
         }
+
+        internal static bool ParseEnum<T>(string input, out T value) where T : struct
+        {
+            value = default;
+            Type t = typeof(T);
+            if (!t.IsEnum)
+                return false;
+
+            string enumName = t.Name;
+            if (input.StartsWith($"{enumName}."))
+                input = input.Substring(enumName.Length + 1);
+
+            return Enum.TryParse<T>(input, out value);
+        }
     }
 }

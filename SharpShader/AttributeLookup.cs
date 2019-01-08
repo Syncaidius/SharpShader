@@ -45,20 +45,25 @@ namespace SharpShader
         }
 
         /// <summary>
-        /// Gets the first occurence of an attribute.
+        /// Attempts to retrieve the first occurrence of an attribute.
         /// </summary>
         /// <typeparam name="T">The type of attribute.</typeparam>
+        /// <param name="attSyntax">The destination for the retrieved attribute syntax node, if successful.</param>
         /// <returns></returns>
-        internal AttributeSyntax GetAttribute<T>() where T : Attribute
+        internal bool TryGetAttribute<T>(out AttributeSyntax attSyntax) where T : Attribute
         {
             if (_byType.TryGetValue(typeof(T), out List<AttributeSyntax> attList))
-                return attList[0];
-            else
-                return null;
+            {
+                attSyntax = attList[0];
+                return true;
+            }
+
+            attSyntax = null;
+            return false;
         }
 
         /// <summary>
-        /// Returns a list containing all occurences of the specified attribute, or null if none were found.
+        /// Returns a list containing all occurrences of the specified attribute, or null if none were found.
         /// </summary>
         /// <typeparam name="T">The type of attribute.</typeparam>
         /// <returns></returns>

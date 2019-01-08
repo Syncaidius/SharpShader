@@ -209,6 +209,7 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Foundations\HLSL\GeometryEntryPointTranslator.cs" />
+    <Compile Include="Foundations\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Foundations\IEntryPointTranslator.cs" />
     <Compile Include="Foundations\GlslFoundation.cs" />
     <Compile Include="Foundations\HlslFoundation.cs" />

@@ -20,6 +20,9 @@ namespace SharpShader
 
         protected override void OnTranslate(ShaderContext context, FieldDeclarationSyntax syntax)
         {
+            if (syntax.Parent is StructDeclarationSyntax)
+                return;
+
             string typeName = syntax.Declaration.Type.ToString(); 
 
             // If we're removing the field, we can skip translating it.
@@ -33,7 +36,7 @@ namespace SharpShader
             }
 
             Type t = context.GetOriginalType(syntax.Declaration.Type);
-            int translationLength = syntax.Span.Length;
+            string translation = "";
             if (t != null)
             {
                 AttributeSyntax regAttribute = ShaderReflection.GetAttribute<RegisterAttribute>(syntax.AttributeLists);
@@ -44,8 +47,7 @@ namespace SharpShader
                         uint? registerID = RegisterAttribute.Parse(regAttribute);
                         if (registerID != null)
                         {
-                            string translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
-                            translationLength = translation.Length;
+                            translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
                             context.ReplaceSource(syntax, translation);
                         }
                     }
@@ -56,7 +58,13 @@ namespace SharpShader
                 }
             }
 
-            TranslationHelper.TranslateModifiers(context, syntax.Modifiers);
+            if (string.IsNullOrWhiteSpace(translation))
+            {
+                string strModifiers = context.Parent.Foundation.TranslateModifiers(syntax.Modifiers);
+                translation = $"{strModifiers} {syntax.Declaration}";
+            }
+
+            context.ReplaceSource(syntax, translation);
         }
     }
 }

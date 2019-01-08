@@ -83,18 +83,6 @@ namespace SharpShader
             context.ReplaceSource(typeSyntax, replacement);
         }
 
-        internal static void TranslateModifiers(
-            ShaderContext context, 
-            SyntaxTokenList modifiers)
-        {
-            // Now translate any modifiers the field may have.
-            if (modifiers.Count > 0)
-            {
-                string modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers);
-                context.ReplaceSource(modifiers.ToString(), modifierTranslation, modifiers.Span.Start, modifiers.Span.Length);
-            }
-        }
-
         internal static (string, Type) GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
         {
             ArrayTypeSyntax arraySyntax = syntax as ArrayTypeSyntax;
