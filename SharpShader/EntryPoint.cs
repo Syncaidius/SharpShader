@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [Serializable]
     internal class EntryPoint
     {
-        internal Type EntryPointAttributeType { get; }
-        internal AttributeSyntax AttributeSyntax { get; }
+        [NonSerialized]
+        internal Type EntryPointAttributeType;
+
+        [NonSerialized]
+        internal AttributeSyntax AttributeSyntax;
+
+        [NonSerialized]
         internal MethodDeclarationSyntax MethodSyntax;
+
         internal EntryPointType EntryType;
 
         internal EntryPoint(Type epAttributeType, AttributeSyntax epAttributeSyntax, MethodDeclarationSyntax syntax, EntryPointType type)

@@ -10,15 +10,17 @@ namespace SharpShader
 {
     internal class MethodInformation
     {
-        public TypeSyntax ReturnType { get; }
+        public readonly TypeSyntax ReturnType;
 
-        public SyntaxToken Identifier { get; }
+        public readonly SyntaxToken Identifier;
 
-        public MethodDeclarationSyntax Syntax { get; }
+        public readonly MethodDeclarationSyntax Syntax;
 
-        public AttributeLookup Attributes { get; }
+        public readonly AttributeLookup Attributes;
 
-        public Dictionary<string, MethodParameterInformation> Parameters { get; }
+        public readonly Dictionary<string, MethodParameterInformation> Parameters;
+
+        public readonly List<string> OrderedParameterNames;
 
         internal MethodInformation(MethodDeclarationSyntax syntax)
         {
@@ -27,8 +29,13 @@ namespace SharpShader
             Identifier = syntax.Identifier;
             Attributes = new AttributeLookup(syntax.AttributeLists);
             Parameters = new Dictionary<string, MethodParameterInformation>();
-            foreach(ParameterSyntax p in syntax.ParameterList.Parameters)
+            OrderedParameterNames = new List<string>();
+
+            foreach (ParameterSyntax p in syntax.ParameterList.Parameters)
+            {
                 Parameters.Add(p.Identifier.ValueText, new MethodParameterInformation(p));
+                OrderedParameterNames.Add(p.Identifier.ValueText);
+            }
         }
 
         /// <summary>
@@ -43,13 +50,13 @@ namespace SharpShader
 
     internal class MethodParameterInformation
     {
-        public AttributeLookup Attributes { get; }
+        public readonly AttributeLookup Attributes;
 
-        public ParameterSyntax Syntax { get; }
+        public readonly ParameterSyntax Syntax;
 
-        public TypeSyntax Type { get; }
+        public readonly TypeSyntax Type;
 
-        public SyntaxToken Identifier { get; }
+        public readonly SyntaxToken Identifier;
 
         internal MethodParameterInformation(ParameterSyntax syntax)
         {

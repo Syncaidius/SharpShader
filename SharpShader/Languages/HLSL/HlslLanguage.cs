@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class HlslFoundation : LanguageFoundation
+    internal class HlslLanguage : ShaderLanguage
     {
         internal override bool InstancedConstantBuffers => false;
 
-        internal HlslFoundation(ShaderLanguage language) : base(language)
+        internal HlslLanguage(OutputLanguage language) : base(language)
         {
             AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
             AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);

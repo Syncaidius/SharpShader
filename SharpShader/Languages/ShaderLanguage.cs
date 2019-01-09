@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace SharpShader
 {
-    internal abstract partial class LanguageFoundation
+    internal abstract partial class ShaderLanguage
     { 
         #region Instance members
         /// <summary>
@@ -19,13 +19,13 @@ namespace SharpShader
         /// </summary>
         internal abstract bool InstancedConstantBuffers { get; }
 
-        public ShaderLanguage Language { get; }
+        public OutputLanguage Language { get; }
 
         Dictionary<Type, Keyword> _keywords;
         List<Modifier> _modifiers;
         Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators;
 
-        internal LanguageFoundation(ShaderLanguage language)
+        internal ShaderLanguage(OutputLanguage language)
         {
             Language = language;
             _keywords = new Dictionary<Type, Keyword>();
@@ -90,9 +90,9 @@ namespace SharpShader
         #endregion
 
         #region Static members
-        static Dictionary<ShaderLanguage, LanguageFoundation> _foundations = new Dictionary<ShaderLanguage, LanguageFoundation>();
+        static Dictionary<OutputLanguage, ShaderLanguage> _foundations = new Dictionary<OutputLanguage, ShaderLanguage>();
 
-        internal static LanguageFoundation Get(ShaderLanguage outputLanguage)
+        internal static ShaderLanguage Get(OutputLanguage outputLanguage)
         {
             return _foundations[outputLanguage];
         }
@@ -111,7 +111,7 @@ namespace SharpShader
             return result.ToString();
         }
 
-        internal static void LoadEmbedded<T>(string embeddedName) where T : LanguageFoundation
+        internal static void LoadEmbedded<T>(string embeddedName) where T : ShaderLanguage
         {
             using (Stream stream = EmbeddedResource.GetStream(embeddedName))
             {
@@ -124,11 +124,11 @@ namespace SharpShader
                         continue;
 
                     XmlAttribute attLanguage = rootNode.Attributes["language"];
-                    if (attLanguage != null && Enum.TryParse(attLanguage.InnerText, out ShaderLanguage language))
+                    if (attLanguage != null && Enum.TryParse(attLanguage.InnerText, out OutputLanguage language))
                     {
-                        LanguageFoundation foundation = Activator.CreateInstance(typeof(T),
+                        ShaderLanguage foundation = Activator.CreateInstance(typeof(T),
                             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                            null, new object[] { language }, null) as LanguageFoundation;
+                            null, new object[] { language }, null) as ShaderLanguage;
 
                         foreach (XmlNode node in rootNode)
                         {
@@ -154,7 +154,7 @@ namespace SharpShader
             }
         }
 
-        private static void ParseWord(LanguageFoundation foundation, XmlNode wordNode)
+        private static void ParseWord(ShaderLanguage foundation, XmlNode wordNode)
         {
             Type translatedType = Type.GetType(wordNode.Attributes["type"].InnerText);
             if (translatedType == null)
@@ -202,7 +202,7 @@ namespace SharpShader
             }
         }
 
-        private static void ParseModifier(LanguageFoundation foundation, XmlNode modifierNode)
+        private static void ParseModifier(ShaderLanguage foundation, XmlNode modifierNode)
         {
             XmlAttribute attName = modifierNode.Attributes["name"];
             if (attName == null)

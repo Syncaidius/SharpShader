@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class GlslFoundation : LanguageFoundation
+    internal class GlslFoundation : ShaderLanguage
     {
         internal override bool InstancedConstantBuffers => true;
 
-        internal GlslFoundation(ShaderLanguage language) : base(language) { }
+        internal GlslFoundation(OutputLanguage language) : base(language) { }
 
         internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax node, uint? register)
         {

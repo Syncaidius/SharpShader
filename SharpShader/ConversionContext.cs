@@ -11,16 +11,19 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ConversionContext
+    [Serializable]
+    public class ConversionContext : MarshalByRefObject
     {
-        internal LanguageFoundation Foundation { get; }
+        internal ShaderLanguage Foundation { get; }
         internal CSharpParseOptions ParseOptions { get; private set; }
+
         internal List<ShaderContext> Shaders { get; }
+
         internal List<ConversionMessage> Messages { get; }
 
         int _nextVariable = 0;
 
-        internal ConversionContext(LanguageFoundation foundatation)
+        internal ConversionContext(ShaderLanguage foundatation)
         {
             Foundation = foundatation;
             Shaders = new List<ShaderContext>();
@@ -62,33 +65,6 @@ namespace SharpShader
             ShaderContext context = new ShaderContext(this, name, ref source);
             Shaders.Add(context);
             return context;
-        }
-
-        internal ConversionResult ToResult(ConversionFlags flags)
-        {
-            ConversionResult result = new ConversionResult();
-            result.Messages.AddRange(Messages);
-            foreach (ShaderContext sc in Shaders)
-            {
-                ShaderResult shader = new ShaderResult();
-                string strSourceResult = sc.ToString();
-
-
-                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
-                {
-                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
-                        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
-                    else
-                        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
-                }
-
-                shader.SourceCode = strSourceResult;
-                result.Output.Add(sc.Name, shader);
-
-
-            }
-
-            return result;
         }
     }
 }

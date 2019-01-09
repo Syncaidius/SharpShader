@@ -310,8 +310,8 @@ namespace SharpShader
 	string[] genericDelims = {"="};
 	string[] genericDataDelims = {"|"};
 
-	ParseLexicon("Foundations/hlsl.xml", entries, intrinsicSummaries, intrinsicVersions);
-	ParseLexicon("Foundations/glsl.xml", entries, intrinsicSummaries, intrinsicVersions);
+	ParseLexicon("Languages/HLSL/lang.xml", entries, intrinsicSummaries, intrinsicVersions);
+	ParseLexicon("Languages/GLSL/lang.xml", entries, intrinsicSummaries, intrinsicVersions);
 
 	foreach(string intrinsicName in entries.Keys)
 	{
@@ -338,7 +338,7 @@ namespace SharpShader
 				if(strAttributes.Length > 0)
 					strAttributes += Environment.NewLine + "\t\t";
 
-				strAttributes += $"[ShaderIntrinsic(ShaderLanguage.{language}, \"{nameParts[0]}\")]";
+				strAttributes += $"[ShaderIntrinsic(OutputLanguage.{language}, \"{nameParts[0]}\")]";
 
 				if(versionsByLanguage.TryGetValue(language, out string versions))
 				{

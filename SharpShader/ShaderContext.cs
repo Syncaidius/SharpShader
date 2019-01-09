@@ -9,33 +9,49 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [Serializable]
     internal class ShaderContext
     {
+        [field: NonSerialized]
         internal SyntaxNode Root { get; private set; }
+
+        [field: NonSerialized]
         internal SyntaxTree Tree { get; private set; }
 
+        [NonSerialized]
         internal Dictionary<string, EntryPoint> EntryPoints = new Dictionary<string, EntryPoint>();
 
+        [NonSerialized]
         internal Dictionary<string, FieldDeclarationSyntax> MainFields = new Dictionary<string, FieldDeclarationSyntax>();
 
+        [NonSerialized]
         internal Dictionary<string, StructDeclarationSyntax> Structures = new Dictionary<string, StructDeclarationSyntax>();
 
+        [NonSerialized]
         internal Dictionary<string, RegisteredObject> ConstantBuffers = new Dictionary<string, RegisteredObject>();
 
+        [NonSerialized]
         internal Dictionary<string, RegisteredObject> Textures = new Dictionary<string, RegisteredObject>();
 
+        [NonSerialized]
         internal Dictionary<string, RegisteredObject> Samplers = new Dictionary<string, RegisteredObject>();
 
+        [NonSerialized]
         internal Dictionary<string, RegisteredObject> UAVs = new Dictionary<string, RegisteredObject>();
 
+        [NonSerialized]
         internal Dictionary<string, Type> TranslatedTypes = new Dictionary<string, Type>();
 
+
+        [NonSerialized]
         /// <summary>
         /// A dictionary of properties which have been translated into get/set methods, with their original name as a key.
         /// </summary>
         internal Dictionary<string, PropertyTranslation> TranslatedProperties = new Dictionary<string, PropertyTranslation>();
 
+        [field: NonSerialized]
         internal ConversionContext Parent { get; }
+
         internal string Name { get; }
         internal string SanitizedName { get; }
 

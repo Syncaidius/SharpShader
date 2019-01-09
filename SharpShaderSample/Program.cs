@@ -21,37 +21,37 @@ namespace SharpShaderSample
 
             Converter converter = new Converter();
             ConversionResult output = null;
-            ShaderLanguage language = ShaderLanguage.HLSL;
+            OutputLanguage language = OutputLanguage.HLSL;
 
-            // Translate each file individually.
-            foreach(string fn in samples)
+            // Load all of the sources into a dictionary,
+            // so that all of them can be translated in a single converter.Convert() call.
+            Dictionary<string, string> sources = new Dictionary<string, string>();
+            foreach (string fn in samples)
             {
-                string title = $"Translating {fn}";
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(title);
-                Console.WriteLine(new string('=', title.Length));
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"Reading {fn}");
 
                 FileInfo fInfo = new FileInfo(fn);
                 string strInput = File.ReadAllText(fn);
-                output = converter.Convert(fInfo.Name, strInput, language);
+                sources.Add(fn, strInput);
+            }
 
-                // Store the output to file so we can take a look at it ourselves.
-                if (output != null)
+            output = converter.Convert(sources, language);
+
+            // Store the output to file so we can take a look at it ourselves.
+            if (output != null)
+            {
+                string langExtension = $"{language.ToString().ToLower()}";
+
+                foreach (KeyValuePair<string, ShaderResult> kvp in output)
                 {
-                    foreach (KeyValuePair<string, ShaderResult> kvp in output)
+                    using (FileStream fs = new FileStream($"{kvp.Key}.{langExtension}", FileMode.Create, FileAccess.Write))
                     {
-                        using (FileStream fs = new FileStream($"{fInfo.FullName}.{language.ToString().ToLower()}", FileMode.Create, FileAccess.Write))
+                        using (StreamWriter writer = new StreamWriter(fs))
                         {
-                            using (StreamWriter writer = new StreamWriter(fs))
-                            {
-                                writer.Write(kvp.Value.SourceCode);
-                            }
+                            writer.Write(kvp.Value.SourceCode);
                         }
                     }
                 }
-
-                Console.WriteLine();
             }
 
             Console.ReadKey();

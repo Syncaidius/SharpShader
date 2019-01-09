@@ -17,8 +17,13 @@ namespace SharpShader
         internal const string NAMESPACE = "SharpShader";
 
         static readonly char[] _namespaceDelimiters = { '.' };
-        internal static readonly string[] SupportedNamespaces =  { NAMESPACE, "System" };
         internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
+
+        internal static readonly string[] SupportedNamespaces = { NAMESPACE, "System" };
+        internal static readonly AssemblyName[] SupportedAssemblies = {
+            typeof(CSharpShader).Assembly.GetName(),
+            typeof(float).Assembly.GetName(),
+        };
 
         class LanguageMethodInfo
         {
@@ -32,12 +37,12 @@ namespace SharpShader
             public Dictionary<string, LanguageMethodInfo> Intrinsics = new Dictionary<string, LanguageMethodInfo>();
         }
 
-        static Dictionary<ShaderLanguage, LanguageInfo> _intrinsicMethods;
+        static Dictionary<OutputLanguage, LanguageInfo> _intrinsicMethods;
         static HashSet<Type> _registerTypes;
 
         static ShaderReflection()
         {
-            _intrinsicMethods = new Dictionary<ShaderLanguage, LanguageInfo>();
+            _intrinsicMethods = new Dictionary<OutputLanguage, LanguageInfo>();
             _registerTypes = new HashSet<Type>();
             Type t = typeof(CSharpShader);
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [Serializable]
     public class ConversionMessage
     {
         /// <summary>

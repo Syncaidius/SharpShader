@@ -94,7 +94,7 @@ namespace SharpShader
             {
                 // First attempt to directly translate the type. 
                 // If we fail, check for any implemented interfaces we can translate instead.
-                LanguageFoundation.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
+                ShaderLanguage.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
                 if (translation != null)
                 {
                     context.TranslatedTypes[translation.NativeText] = originalType;

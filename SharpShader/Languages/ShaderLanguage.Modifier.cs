@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal abstract partial class LanguageFoundation
+    internal abstract partial class ShaderLanguage
     {
         internal class Modifier
         {
