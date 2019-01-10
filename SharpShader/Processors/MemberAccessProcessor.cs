@@ -14,9 +14,9 @@ namespace SharpShader
     {
         protected override void OnTranslate(ShaderContext context, MemberAccessExpressionSyntax syntax)
         {
-            if (context.MainFields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
+            if (context.Fields.TryGetValue(syntax.Expression.ToString(), out FieldDeclarationSyntax fieldSyntax))
             {
-                if (!context.Parent.Foundation.InstancedConstantBuffers)
+                if (!context.Parent.Language.InstancedConstantBuffers)
                 {
                     if (context.ConstantBuffers.ContainsKey(fieldSyntax.Declaration.Type.ToString()))
                         context.RemoveSource(syntax.Expression.SpanStart, syntax.Expression.Span.Length + syntax.OperatorToken.Span.Length);

@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class ComputeShaderAttribute : SharpShaderAttribute
+    public class ComputeShaderAttribute : EntryPointAttribute
     {
+        public override EntryPointType EntryType => EntryPointType.ComputeShader;
     }
 }

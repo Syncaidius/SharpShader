@@ -3,29 +3,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class RegisteredObject
+    /// <summary>
+    /// A member 
+    /// </summary>
+    internal class RegisteredMember<T>
+        where T : class
     {
+        internal readonly T Info;
+
         /// <summary>
-        /// Gets or sets the <see cref="RegisterAttribute"/> syntax node.
+        /// The <see cref="RegisterAttribute"/> syntax node, or null if not present.
         /// </summary>
-        internal AttributeSyntax Attribute { get; set; }
+        internal readonly RegisterAttribute[] Attributes;
 
-        internal uint? RegisterID { get; set; }
-
-        internal RegisteredObject(AttributeSyntax regAttribute)
+        internal RegisteredMember(T memberInfo, RegisterAttribute[] regAttributes)
         {
-            Attribute = regAttribute;
-            if (regAttribute != null)
-            {
-                SeparatedSyntaxList<AttributeArgumentSyntax> registerArgs = regAttribute.ArgumentList.Arguments;
-                if (uint.TryParse(registerArgs[0].ToString(), out uint parsedID))
-                    RegisterID = parsedID;
-            }
+            Info = memberInfo;
+            Attributes = regAttributes;
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,41 +13,40 @@ namespace SharpShader
     [Serializable]
     internal partial class ShaderContext
     {
-        [field: NonSerialized]
-        internal SyntaxNode Root { get; private set; }
+        internal ShaderLanguage Language => Parent.Language;
+
+        [ NonSerialized]
+        internal readonly SyntaxNode RootNode;
 
         [field: NonSerialized]
-        internal SyntaxTree Tree { get; private set; }
-
-        [field: NonSerialized]
-        internal ReflectionInfo Reflection { get; }
-
-        [field: NonSerialized]
-        internal ConversionContext Parent { get; }
+        internal Type ShaderType { get; }
 
         [NonSerialized]
-        internal Dictionary<string, EntryPoint> EntryPoints = new Dictionary<string, EntryPoint>();
+        internal readonly ConversionContext Parent;
 
         [NonSerialized]
-        internal Dictionary<string, FieldDeclarationSyntax> MainFields = new Dictionary<string, FieldDeclarationSyntax>();
+        internal readonly Dictionary<string, EntryPoint> EntryPoints;
 
         [NonSerialized]
-        internal Dictionary<string, StructDeclarationSyntax> Structures = new Dictionary<string, StructDeclarationSyntax>();
+        internal readonly Dictionary<string, FieldInfo> Fields;
 
         [NonSerialized]
-        internal Dictionary<string, RegisteredObject> ConstantBuffers = new Dictionary<string, RegisteredObject>();
+        internal readonly Dictionary<string, Type> Structures;
 
         [NonSerialized]
-        internal Dictionary<string, RegisteredObject> Textures = new Dictionary<string, RegisteredObject>();
+        internal readonly Dictionary<string, RegisteredMember<Type>> ConstantBuffers;
 
         [NonSerialized]
-        internal Dictionary<string, RegisteredObject> Samplers = new Dictionary<string, RegisteredObject>();
+        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> Textures;
 
         [NonSerialized]
-        internal Dictionary<string, RegisteredObject> UAVs = new Dictionary<string, RegisteredObject>();
+        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> Samplers;
 
         [NonSerialized]
-        internal Dictionary<string, Type> TranslatedTypes = new Dictionary<string, Type>();
+        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> UAVs;
+
+        [NonSerialized]
+        internal readonly Dictionary<string, Type> TranslatedTypes;
 
 
         [NonSerialized]
@@ -57,21 +57,105 @@ namespace SharpShader
 
         internal string Name { get; }
 
-        internal string SanitizedName { get; }
-
         StringBuilder _source;
 
         [NonSerialized]
         bool _treeDirty = true;
 
-        internal ShaderContext(ConversionContext parent, string name, ref string source)
+        internal ShaderContext(ConversionContext parent, ClassDeclarationSyntax syntax, Type shaderType)
         {
-            Reflection = new ReflectionInfo();
             Parent = parent;
-            Name = name;
-            _source = new StringBuilder(source);
-            SanitizedName = TranslationHelper.SanitizeString(name);
-            RegenerateTree();
+            Name = syntax.Identifier.ValueText;
+            ShaderType = shaderType;
+            SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
+            RootNode = tree.GetRoot();
+            _source = new StringBuilder(RootNode.ToString());
+
+            EntryPoints = new Dictionary<string, EntryPoint>();
+            Fields = new Dictionary<string, FieldInfo>();
+            Structures = new Dictionary<string, Type>();
+            ConstantBuffers = new Dictionary<string, RegisteredMember<Type>>();
+            Textures = new Dictionary<string, RegisteredMember<FieldInfo>>();
+            Samplers = new Dictionary<string, RegisteredMember<FieldInfo>>();
+            UAVs = new Dictionary<string, RegisteredMember<FieldInfo>>();
+            TranslatedTypes = new Dictionary<string, Type>();
+
+            BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            PopulateMethodInfo(bFlags);
+            PopulateFieldInfo(bFlags);
+            PopulateStructInfo(bFlags);
+        }
+
+        private void PopulateMethodInfo(BindingFlags bFlags)
+        {
+            MethodInfo[] mInfo = ShaderType.GetMethods(bFlags);
+            foreach (MethodInfo mi in mInfo)
+            {
+                IEnumerable<EntryPointAttribute> eps = mi.GetCustomAttributes<EntryPointAttribute>(true);
+                EntryPointAttribute epAttribute = eps.FirstOrDefault();
+                if (epAttribute != null)
+                {
+                    if (eps.Count() > 0)
+                        Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0);
+
+                    EntryPoints.Add(mi.Name, new EntryPoint(mi, epAttribute, epAttribute.EntryType));
+                }
+            }
+        }
+
+        private void PopulateFieldInfo(BindingFlags bFlags)
+        {
+            FieldInfo[] fInfo = ShaderType.GetFields(bFlags);
+            foreach (FieldInfo fi in fInfo)
+            {
+                // TODO If the field type is that of a constant buffer struct, check if the language allows instance-based access to constant buffer members.
+                //      If not, skip the field. If it's not present in the field dictionary when a field node processor hits it, it should be removed from the source code.
+
+                Fields.Add(fi.Name, fi);
+
+                RegisterAttribute[] regAttributes = fi.GetCustomAttributes<RegisterAttribute>().ToArray();
+                RegisteredTypeAttribute regTypeAttribute = fi.GetCustomAttribute<RegisteredTypeAttribute>();
+
+                if (regTypeAttribute != null)
+                {
+                    UnorderedAccessAttribute uav = fi.GetCustomAttribute<UnorderedAccessAttribute>();
+                    RegisteredMember<FieldInfo> regInfo = new RegisteredMember<FieldInfo>(fi, regAttributes);
+
+                    if (uav != null)
+                    {
+                        UAVs.Add(fi.Name, regInfo);
+                    }
+                    else
+                    {
+                        if (typeof(TextureBase).IsAssignableFrom(fi.FieldType) )
+                            Textures.Add(fi.Name, regInfo);
+                        else if (typeof(TextureSampler).IsAssignableFrom(fi.FieldType))
+                            Samplers.Add(fi.Name, regInfo);
+                    }
+                }
+            }
+        }
+
+        private void PopulateStructInfo(BindingFlags bFlags)
+        {
+            Type[] nestedTypes = ShaderType.GetNestedTypes();
+            foreach(Type t in nestedTypes)
+            {
+                if (!t.IsValueType)
+                    continue;
+
+                ConstantBufferAttribute cbAttribute = t.GetCustomAttribute<ConstantBufferAttribute>();
+                if (cbAttribute != null)
+                {
+                    RegisterAttribute[] regAttributes = t.GetCustomAttributes<RegisterAttribute>().ToArray();
+                    RegisteredMember<Type> regInfo = new RegisteredMember<Type>(t, regAttributes);
+                    ConstantBuffers.Add(t.Name, regInfo);
+                }
+                else
+                {
+                    Structures.Add(t.Name, t);
+                }
+            }
         }
 
         internal void AddMessage(string text, SyntaxNode node, ConversionMessageType type = ConversionMessageType.Error)
@@ -84,16 +168,6 @@ namespace SharpShader
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
         {
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);
-        }
-
-        internal void RegenerateTree()
-        {
-            if (_treeDirty)
-            {
-                Tree = CSharpSyntaxTree.ParseText(_source.ToString(), Parent.ParseOptions);
-                Root = Tree.GetRoot();
-                _treeDirty = false;
-            }
         }
 
         internal void ReplaceSource(string original, string replacement, int startIndex, int length)
@@ -134,7 +208,7 @@ namespace SharpShader
         internal void Clear()
         {
             EntryPoints.Clear();
-            MainFields.Clear();
+            Fields.Clear();
             Structures.Clear();
             ConstantBuffers.Clear();
             UAVs.Clear();
@@ -169,48 +243,6 @@ namespace SharpShader
             }
 
             return originalType;
-        }
-
-        internal void AddEntryPoint(EntryPoint ep)
-        {
-            string name = ep.MethodSyntax.Identifier.ToString();
-            EntryPoints.Add(name, ep);
-        }
-
-        internal void AddField(FieldDeclarationSyntax syntax, bool isChild = false)
-        {
-            string name = syntax.Declaration.Variables[0].Identifier.ToString();
-
-            if (!isChild)
-                MainFields.Add(name, syntax);
-        }
-
-        internal void AddProperty(string propertyName, PropertyTranslation translation)
-        {
-            TranslatedProperties.Add(propertyName, translation);
-        }
-
-        internal bool IsStructInstance(VariableDeclarationSyntax syntax)
-        {
-            return MainFields.ContainsKey(syntax.Variables[0].Identifier.ToString());
-        }
-
-        internal void AddStructure(StructDeclarationSyntax syntax)
-        {
-            Structures.Add(syntax.Identifier.ToString(), syntax);
-        }
-
-        internal void AddConstantBuffer(StructDeclarationSyntax syntax, AttributeSyntax regAttribute)
-        {
-            string name = syntax.Identifier.ToString();
-
-            ConstantBuffers.Add(name, new RegisteredObject(regAttribute));
-        }
-
-        internal void AddSampler(VariableDeclaratorSyntax syntax, AttributeSyntax attSyntax)
-        {
-            string name = syntax.ToString();
-            Samplers.Add(name, new RegisteredObject(attSyntax));
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,34 +11,28 @@ namespace SharpShader
     [Serializable]
     internal class EntryPoint
     {
-        [NonSerialized]
-        internal Type EntryPointAttributeType;
-
-        [NonSerialized]
-        internal AttributeSyntax AttributeSyntax;
-
-        [NonSerialized]
-        internal MethodDeclarationSyntax MethodSyntax;
-
         internal EntryPointType EntryType;
 
-        internal EntryPoint(Type epAttributeType, AttributeSyntax epAttributeSyntax, MethodDeclarationSyntax syntax, EntryPointType type)
+        internal MethodInfo Method;
+
+        internal EntryPointAttribute Attribute;
+
+        internal EntryPoint(MethodInfo info, EntryPointAttribute attribute, EntryPointType type)
         {
-            MethodSyntax = syntax;
-            EntryPointAttributeType = epAttributeType;
-            AttributeSyntax = epAttributeSyntax;
+            Method = info;
+            Attribute = attribute;
             EntryType = type;
         }
 
         public override string ToString()
         {
-            return $"{AttributeSyntax.Name} - {EntryType}";
+            return $"{Method} - {EntryType}";
         }
     }
 
     public enum EntryPointType
     {
-        Invalid = 0,
+        AnyOrNone = 0,
 
         VertexShader = 1,
 

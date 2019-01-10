@@ -89,7 +89,7 @@ namespace SharpShader
 
         internal static bool IsIntrinsicFunction(ShaderContext context, string cSharpName)
         {
-            if(_intrinsicMethods.TryGetValue(context.Parent.Foundation.Language, out LanguageInfo info))
+            if(_intrinsicMethods.TryGetValue(context.Parent.Language.Language, out LanguageInfo info))
                 return info.Intrinsics.ContainsKey(cSharpName);
             else
                 return false;
@@ -97,7 +97,7 @@ namespace SharpShader
 
         internal static string GetIntrinsicTranslation(ShaderContext context, string cSharpName)
         {
-            if (_intrinsicMethods.TryGetValue(context.Parent.Foundation.Language, out LanguageInfo info))
+            if (_intrinsicMethods.TryGetValue(context.Parent.Language.Language, out LanguageInfo info))
             {
                 if(info.Intrinsics.TryGetValue(cSharpName, out LanguageMethodInfo methodInfo))
                     return methodInfo.NativeName;

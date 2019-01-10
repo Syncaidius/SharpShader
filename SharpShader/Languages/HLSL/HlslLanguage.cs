@@ -114,7 +114,7 @@ namespace SharpShader
                 if (semanticAttribute != null)
                 {
                     if (!isInConstBuffer)
-                        modifierTranslation = context.Parent.Foundation.TranslateModifiers(modifiers);
+                        modifierTranslation = context.Parent.Language.TranslateModifiers(modifiers);
 
                     int slot = -1;
                     SemanticType semType = SemanticType.Position;

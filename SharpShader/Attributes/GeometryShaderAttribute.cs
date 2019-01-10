@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class GeometryShaderAttribute : SharpShaderAttribute
+    public class GeometryShaderAttribute : EntryPointAttribute
     {
         /// <summary>
         /// 
@@ -23,6 +23,8 @@ namespace SharpShader
         public GeometryInputType InputType { get; }
 
         uint MaxVertexOutCount { get; }
+
+        public override EntryPointType EntryType => EntryPointType.GeometryShader;
     }
 
     public enum GeometryInputType

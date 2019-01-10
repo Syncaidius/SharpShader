@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class DomainShaderAttribute : SharpShaderAttribute
+    public class DomainShaderAttribute : EntryPointAttribute
     {
         /// <summary>
         /// The argument ID of the patch type.
@@ -27,5 +27,7 @@ namespace SharpShader
         /// Gets the patch type.
         /// </summary>
         public PatchType PatchType { get; }
+
+        public override EntryPointType EntryType => EntryPointType.DomainShader;
     }
 }

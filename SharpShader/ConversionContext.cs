@@ -15,10 +15,8 @@ namespace SharpShader
     [Serializable]
     public partial class ConversionContext : MarshalByRefObject
     {
-
-
         [field: NonSerialized]
-        internal ShaderLanguage Foundation { get; }
+        internal ShaderLanguage Language { get; }
 
         [field: NonSerialized]
         internal CSharpParseOptions ParseOptions { get; private set; }
@@ -36,7 +34,7 @@ namespace SharpShader
         internal ConversionContext(ShaderLanguage foundatation)
         {
             Reflection = new ReflectionInfo();
-            Foundation = foundatation;
+            Language = foundatation;
             Shaders = new List<ShaderContext>();
             Messages = new List<ConversionMessage>();
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);

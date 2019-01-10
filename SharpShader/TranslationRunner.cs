@@ -91,7 +91,7 @@ namespace SharpShader
              */
 
             Message($"Isolating shader classes");
-            List<IsolatedShaderSyntax> shaders = Isolate(context, analysis.Trees);
+            List<ShaderContext> shaders = Isolate(context, analysis.Trees);
             Message($"Isolation completed. Found {shaders.Count} shader classes.");
 
             mainTimer.Stop();
@@ -190,9 +190,9 @@ namespace SharpShader
             return info;
         }
 
-        private List<IsolatedShaderSyntax> Isolate(ConversionContext context, List<SyntaxTree> trees)
+        private List<ShaderContext> Isolate(ConversionContext context, List<SyntaxTree> trees)
         {
-            List<IsolatedShaderSyntax> shaders = new List<IsolatedShaderSyntax>();
+            List<ShaderContext> shaders = new List<ShaderContext>();
 
             foreach(SyntaxTree tree in trees)
             {
@@ -203,7 +203,7 @@ namespace SharpShader
             return shaders;
         }
 
-        private void IsolateShaderNodes(ConversionContext context, SyntaxNode node, string strNamespace, List<IsolatedShaderSyntax> shaders)
+        private void IsolateShaderNodes(ConversionContext context, SyntaxNode node, string strNamespace, List<ShaderContext> shaders)
         {
             if (node is ClassDeclarationSyntax classNode)
             {
@@ -211,12 +211,7 @@ namespace SharpShader
                 Type t = context.Reflection.Assembly.GetType(typeName, false, false);
                 if (t != null && context.Reflection.IsShaderType(t))
                 {
-                    shaders.Add(new IsolatedShaderSyntax()
-                    {
-                        ShaderType = t,
-                        Namespace = strNamespace,
-                        Syntax = classNode,
-                    });
+                    shaders.Add(new ShaderContext(context, classNode, t));
                 }
             }
             else if (node is NamespaceDeclarationSyntax nsNode)
@@ -302,17 +297,6 @@ namespace SharpShader
             Console.Write(type);
             Console.ForegroundColor = prevColor;
             Console.WriteLine($"] {msg}");
-        }
-    }
-}
-
-namespace Chicken
-{
-    namespace Parts
-    {
-        namespace Wings
-        {
-
         }
     }
 }

@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class FragmentShaderAttribute : SharpShaderAttribute
+    public class FragmentShaderAttribute : EntryPointAttribute
     {
-        public SemanticFragmentOutputType Semantic { get; }
-
         public FragmentShaderAttribute(SemanticFragmentOutputType type = SemanticFragmentOutputType.None)
         {
             Semantic = type;
         }
+
+        public SemanticFragmentOutputType Semantic { get; }
+
+        public override EntryPointType EntryType => EntryPointType.FragmentShader;
     }
 }

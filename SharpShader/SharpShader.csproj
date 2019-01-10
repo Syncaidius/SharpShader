@@ -188,9 +188,11 @@
     <Compile Include="AnalysisInfo.cs" />
     <Compile Include="AttributeLookup.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
+    <Compile Include="Attributes\EntryPointAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
     <Compile Include="Attributes\InputPatchAttribute.cs" />
     <Compile Include="Attributes\OutputPatchAttribute.cs" />
+    <Compile Include="Attributes\UnorderedAccessAttribute.cs" />
     <Compile Include="Attributes\RegisterAttribute.cs" />
     <Compile Include="Attributes\SemanticAttribute.cs" />
     <Compile Include="Attributes\PackOffsetAttribute.cs" />
@@ -210,7 +212,6 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="IsolatedShaderSyntax.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -241,7 +242,7 @@
     <Compile Include="SemanticType.cs" />
     <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderContext.cs" />
-    <Compile Include="ShaderContext.ReflectionInfo.cs" />
+    <Compile Include="ShaderModel.cs" />
     <Compile Include="ShaderReflection.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />

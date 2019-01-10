@@ -26,7 +26,7 @@ namespace SharpShader
             string typeName = syntax.Declaration.Type.ToString(); 
 
             // If we're removing the field, we can skip translating it.
-            if (!context.Parent.Foundation.InstancedConstantBuffers)
+            if (!context.Parent.Language.InstancedConstantBuffers)
             {
                 if (context.ConstantBuffers.ContainsKey(typeName))
                 {
@@ -47,7 +47,7 @@ namespace SharpShader
                         uint? registerID = RegisterAttribute.Parse(regAttribute);
                         if (registerID != null)
                         {
-                            translation = context.Parent.Foundation.TranslateRegisterField(context, syntax, t, registerID.Value);
+                            translation = context.Parent.Language.TranslateRegisterField(context, syntax, t, registerID.Value);
                             context.ReplaceSource(syntax, translation);
                         }
                     }
@@ -60,7 +60,7 @@ namespace SharpShader
 
             if (string.IsNullOrWhiteSpace(translation))
             {
-                string strModifiers = context.Parent.Foundation.TranslateModifiers(syntax.Modifiers);
+                string strModifiers = context.Parent.Language.TranslateModifiers(syntax.Modifiers);
                 translation = $"{strModifiers} {syntax.Declaration}";
             }
 

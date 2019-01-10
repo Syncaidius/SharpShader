@@ -77,7 +77,7 @@ namespace SharpShader
                 string methodName = syntax.Identifier.ToString();
                 EntryPoint ep = context.EntryPoints[methodName];
 
-                IEntryPointTranslator epTranslator = context.Parent.Foundation.GetEntryPointTranslator(ep.EntryType);
+                IEntryPointTranslator epTranslator = context.Parent.Language.GetEntryPointTranslator(ep.EntryType);
                 if (epTranslator != null)
                     methodHeader = epTranslator.TranslateHeader(context, ep, info);
             }
@@ -85,7 +85,7 @@ namespace SharpShader
             // Build a replacement method header which includes the necessary translations.
             if (string.IsNullOrWhiteSpace(methodHeader))
             {
-                string mModifiers = context.Parent.Foundation.TranslateModifiers(syntax.Modifiers);
+                string mModifiers = context.Parent.Language.TranslateModifiers(syntax.Modifiers);
                 methodHeader += $"{mModifiers} {syntax.ReturnType} {syntax.Identifier}{syntax.TypeParameterList}(";
 
                 bool firstParam = true;
@@ -94,7 +94,7 @@ namespace SharpShader
                     if (!firstParam)
                         methodHeader += ", ";
 
-                    string pModifiers = context.Parent.Foundation.TranslateModifiers(p.Value.Syntax.Modifiers);
+                    string pModifiers = context.Parent.Language.TranslateModifiers(p.Value.Syntax.Modifiers);
                     if (pModifiers.Length > 0)
                         methodHeader += $"{pModifiers} ";
 

@@ -14,7 +14,7 @@ namespace SharpShader.Processors
             string initValue = syntax.ToString();
             if (char.IsNumber(initValue[0]))
             {
-                string translated = context.Parent.Foundation.TranslateNumber(context, initValue);
+                string translated = context.Parent.Language.TranslateNumber(context, initValue);
                 context.ReplaceSource(initValue, translated, syntax.SpanStart, syntax.Span.Length);
             }
         }

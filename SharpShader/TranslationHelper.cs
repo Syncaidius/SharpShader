@@ -94,7 +94,7 @@ namespace SharpShader
             {
                 // First attempt to directly translate the type. 
                 // If we fail, check for any implemented interfaces we can translate instead.
-                ShaderLanguage.Keyword translation = context.Parent.Foundation.GetKeyword(originalType);
+                ShaderLanguage.Keyword translation = context.Parent.Language.GetKeyword(originalType);
                 if (translation != null)
                 {
                     context.TranslatedTypes[translation.NativeText] = originalType;
@@ -109,7 +109,7 @@ namespace SharpShader
                     Type[] iTypes = originalType.GetInterfaces();
                     foreach (Type implemented in iTypes)
                     {
-                        translation = context.Parent.Foundation.GetKeyword(implemented);
+                        translation = context.Parent.Language.GetKeyword(implemented);
                         if (translation != null)
                         {
                             string replacement = originalName;
@@ -136,18 +136,6 @@ namespace SharpShader
             }
 
             return (originalName, originalType);
-        }
-
-        internal static string SanitizeString(string input)
-        {
-            StringBuilder sb = new StringBuilder(input.Length);
-            foreach (char c in input)
-            {
-                if (char.IsLetter(c) || char.IsNumber(c) || c == '_')
-                    sb.Append(c);
-            }
-
-            return sb.ToString();
         }
     }
 }

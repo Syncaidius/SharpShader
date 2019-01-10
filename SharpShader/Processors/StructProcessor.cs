@@ -36,12 +36,12 @@ namespace SharpShader
                 if (regAttribute != null)
                     registerID = RegisterAttribute.Parse(regAttribute);
 
-                translation = context.Parent.Foundation.TranslateConstantBuffer(context, syntax, registerID);
+                translation = context.Parent.Language.TranslateConstantBuffer(context, syntax, registerID);
             }
             else
             {
                 string test = syntax.ToString();
-                translation = context.Parent.Foundation.TranslateStruct(context, syntax);
+                translation = context.Parent.Language.TranslateStruct(context, syntax);
             }
 
             context.ReplaceSource(syntax, translation);
