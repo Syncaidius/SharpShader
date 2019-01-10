@@ -118,7 +118,7 @@ namespace SharpShader
 
                 if (regTypeAttribute != null)
                 {
-                    UnorderedAccessAttribute uav = fi.GetCustomAttribute<UnorderedAccessAttribute>();
+                    UnorderedAccessTypeAttributeAttribute uav = fi.GetCustomAttribute<UnorderedAccessTypeAttributeAttribute>();
                     RegisteredMember<FieldInfo> regInfo = new RegisteredMember<FieldInfo>(fi, regAttributes);
 
                     if (uav != null)
