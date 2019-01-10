@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalysisInfo.cs" />
     <Compile Include="AttributeLookup.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Buffers\StructuredBuffer.cs" />
+    <Compile Include="ConversionContext.ReflectionInfo.cs" />
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
     <Compile Include="ConversionResult.cs" />
@@ -208,6 +210,7 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="IsolatedShaderSyntax.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -219,6 +222,7 @@
     <Compile Include="Languages\ShaderLanguage.Modifier.cs" />
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="NodeEntry.cs" />
     <Compile Include="Processors\IndexerProcessor.cs" />
@@ -227,11 +231,9 @@
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />
-    <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\ObjectCreationProcessor.cs" />
     <Compile Include="Processors\InvocationProcessor.cs" />
     <Compile Include="Processors\MethodProcessor.cs" />
-    <Compile Include="Processors\NamespaceProcessor.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\UsingProcessor.cs" />
     <Compile Include="PropertyTranslation.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="SemanticType.cs" />
     <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderContext.cs" />
+    <Compile Include="ShaderContext.ReflectionInfo.cs" />
     <Compile Include="ShaderReflection.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />

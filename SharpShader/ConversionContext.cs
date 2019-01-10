@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,19 +13,29 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    public class ConversionContext : MarshalByRefObject
+    public partial class ConversionContext : MarshalByRefObject
     {
+
+
+        [field: NonSerialized]
         internal ShaderLanguage Foundation { get; }
+
+        [field: NonSerialized]
         internal CSharpParseOptions ParseOptions { get; private set; }
 
         internal List<ShaderContext> Shaders { get; }
 
         internal List<ConversionMessage> Messages { get; }
 
+        [NonSerialized]
+        internal ReflectionInfo Reflection;
+
+        [NonSerialized]
         int _nextVariable = 0;
 
         internal ConversionContext(ShaderLanguage foundatation)
         {
+            Reflection = new ReflectionInfo();
             Foundation = foundatation;
             Shaders = new List<ShaderContext>();
             Messages = new List<ConversionMessage>();

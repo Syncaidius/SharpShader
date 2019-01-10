@@ -10,13 +10,19 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal class ShaderContext
+    internal partial class ShaderContext
     {
         [field: NonSerialized]
         internal SyntaxNode Root { get; private set; }
 
         [field: NonSerialized]
         internal SyntaxTree Tree { get; private set; }
+
+        [field: NonSerialized]
+        internal ReflectionInfo Reflection { get; }
+
+        [field: NonSerialized]
+        internal ConversionContext Parent { get; }
 
         [NonSerialized]
         internal Dictionary<string, EntryPoint> EntryPoints = new Dictionary<string, EntryPoint>();
@@ -49,17 +55,18 @@ namespace SharpShader
         /// </summary>
         internal Dictionary<string, PropertyTranslation> TranslatedProperties = new Dictionary<string, PropertyTranslation>();
 
-        [field: NonSerialized]
-        internal ConversionContext Parent { get; }
-
         internal string Name { get; }
+
         internal string SanitizedName { get; }
 
         StringBuilder _source;
+
+        [NonSerialized]
         bool _treeDirty = true;
 
         internal ShaderContext(ConversionContext parent, string name, ref string source)
         {
+            Reflection = new ReflectionInfo();
             Parent = parent;
             Name = name;
             _source = new StringBuilder(source);

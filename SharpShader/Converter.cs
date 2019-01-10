@@ -47,9 +47,8 @@ namespace SharpShader
         {
             AppDomain domain = AppDomain.CreateDomain("SharpShader");
             foreach(AssemblyName an in ShaderReflection.SupportedAssemblies)
-            {
                 domain.Load(an);
-            }
+
 
             TranslationArgs tArgs = new TranslationArgs()
             {
