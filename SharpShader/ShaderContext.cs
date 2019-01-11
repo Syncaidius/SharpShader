@@ -52,6 +52,12 @@ namespace SharpShader
         /// </summary>
         internal Dictionary<string, PropertyTranslation> TranslatedProperties = new Dictionary<string, PropertyTranslation>();
 
+        /// <summary>
+        /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
+        /// </summary>
+        [NonSerialized]
+        internal readonly HashSet<SyntaxNode> SkippedNodes;
+
         internal string Name { get; }
 
         internal OutputSource Source { get; }
@@ -63,6 +69,7 @@ namespace SharpShader
             ShaderType = shaderType;
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
+            SkippedNodes = new HashSet<SyntaxNode>();
             Source = new OutputSource();
 
             EntryPoints = new Dictionary<string, EntryPoint>();

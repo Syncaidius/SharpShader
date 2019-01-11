@@ -12,11 +12,14 @@ namespace SharpShader
 {
     internal abstract class NodeProcessor
     {
-        internal abstract void Translate(ShaderContext context, SyntaxNode syntax);
+        /// <summary>
+        /// Returns true 
+        /// </summary>
+        /// <param name="sc">The <see cref="ShaderContext"/>.</param>
+        /// <param name="syntax">The <see cref="SyntaxNode"/> to be translated.</param>
+        internal abstract bool Translate(ShaderContext sc, SyntaxNode syntax);
 
-        internal abstract bool OpenBlock(ShaderContext context, SyntaxNode syntax);
-
-        internal abstract void CloseBlock(ShaderContext context, SyntaxNode syntax);
+        internal abstract void CloseBlock(ShaderContext sc, SyntaxNode syntax);
 
         internal abstract Type ParsedType { get; }
     }
@@ -26,25 +29,18 @@ namespace SharpShader
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed void Translate(ShaderContext context, SyntaxNode node)
+        internal override sealed bool Translate(ShaderContext sc, SyntaxNode node)
         {
-            OnTranslate(context, node as T);
+            return OnTranslate(sc, node as T);
         }
 
-        internal override sealed bool OpenBlock(ShaderContext context, SyntaxNode syntax)
+        internal override void CloseBlock(ShaderContext sc, SyntaxNode syntax)
         {
-            return OnOpenBlock(context, syntax as T);
+            OnCloseBlock(sc, syntax as T);
         }
 
-        internal override void CloseBlock(ShaderContext context, SyntaxNode syntax)
-        {
-            OnCloseBlock(context, syntax as T);
-        }
+        protected abstract bool OnTranslate(ShaderContext sc, T syntax);
 
-        protected abstract void OnTranslate(ShaderContext context, T syntax);
-
-        protected abstract bool OnOpenBlock(ShaderContext context, T syntax);
-
-        protected abstract bool OnCloseBlock(ShaderContext context, T syntax);
+        protected virtual void OnCloseBlock(ShaderContext sc, T syntax) { }
     }
 }

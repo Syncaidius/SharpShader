@@ -19,6 +19,11 @@ namespace SharpShader
         [NonSerialized]
         int _blockScopeDepth = 0;
 
+        internal void Append(SyntaxToken token)
+        {
+            _sb.Append(token.ValueText);
+        }
+
         internal void Append(string src)
         {
             _sb.Append(src);

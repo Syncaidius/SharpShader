@@ -225,6 +225,10 @@
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
     <Compile Include="OutputSource.cs" />
+    <Compile Include="Processors\ClassProcessor.cs" />
+    <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
+    <Compile Include="Processors\PredefinedTypeProcessor.cs" />
+    <Compile Include="Processors\LiteralExpressionProcessor.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />

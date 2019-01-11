@@ -203,18 +203,20 @@ namespace SharpShader
                 MapShaderNodes(context, child, strNamespace);
         }
 
-        private string Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
+        private void Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
         {
+            if (sc.SkippedNodes.Contains(syntax))
+                return;
+
             Type t = syntax.GetType();
             IEnumerable<SyntaxNode> children = syntax.ChildNodes();
 
             if (_processors.TryGetValue(t, out NodeProcessor processor))
             {
-                processor.Translate(sc, syntax);
-
-                bool blockOpened = processor.OpenBlock(sc, syntax);
+                bool blockOpened = processor.Translate(sc, syntax);
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
+
                 if(blockOpened)
                     processor.CloseBlock(sc, syntax);
             }
@@ -224,8 +226,6 @@ namespace SharpShader
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
             }
-
-            return sc.Source.ToString();
         }
 
         private static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
