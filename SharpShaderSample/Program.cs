@@ -14,9 +14,9 @@ namespace SharpShaderSample
         {
             string[] samples = {
                 "FunctionalityTestShader.cs",
-                "SampleShader.cs",
-                "SampleTextureShader.cs",
-                "MoltenSpriteShader.cs"
+                //"SampleShader.cs",
+                //"SampleTextureShader.cs",
+                //"MoltenSpriteShader.cs"
             };
 
             Converter converter = new Converter();

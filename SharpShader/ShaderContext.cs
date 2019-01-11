@@ -15,7 +15,7 @@ namespace SharpShader
     {
         internal ShaderLanguage Language => Parent.Language;
 
-        [ NonSerialized]
+        [NonSerialized]
         internal readonly SyntaxNode RootNode;
 
         [field: NonSerialized]
@@ -45,9 +45,6 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, RegisteredMember<FieldInfo>> UAVs;
 
-        [NonSerialized]
-        internal readonly Dictionary<string, Type> TranslatedTypes;
-
 
         [NonSerialized]
         /// <summary>
@@ -57,10 +54,7 @@ namespace SharpShader
 
         internal string Name { get; }
 
-        StringBuilder _source;
-
-        [NonSerialized]
-        bool _treeDirty = true;
+        internal OutputSource Source { get; }
 
         internal ShaderContext(ConversionContext parent, ClassDeclarationSyntax syntax, Type shaderType)
         {
@@ -69,7 +63,7 @@ namespace SharpShader
             ShaderType = shaderType;
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
-            _source = new StringBuilder(RootNode.ToString());
+            Source = new OutputSource();
 
             EntryPoints = new Dictionary<string, EntryPoint>();
             Fields = new Dictionary<string, FieldInfo>();
@@ -78,7 +72,6 @@ namespace SharpShader
             Textures = new Dictionary<string, RegisteredMember<FieldInfo>>();
             Samplers = new Dictionary<string, RegisteredMember<FieldInfo>>();
             UAVs = new Dictionary<string, RegisteredMember<FieldInfo>>();
-            TranslatedTypes = new Dictionary<string, Type>();
 
             BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
             PopulateMethodInfo(bFlags);
@@ -95,8 +88,8 @@ namespace SharpShader
                 EntryPointAttribute epAttribute = eps.FirstOrDefault();
                 if (epAttribute != null)
                 {
-                    if (eps.Count() > 0)
-                        Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0);
+                    if (eps.Count() > 1)
+                        Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, ConversionMessageType.Warning);
 
                     EntryPoints.Add(mi.Name, new EntryPoint(mi, epAttribute, epAttribute.EntryType));
                 }
@@ -118,7 +111,7 @@ namespace SharpShader
 
                 if (regTypeAttribute != null)
                 {
-                    UnorderedAccessTypeAttributeAttribute uav = fi.GetCustomAttribute<UnorderedAccessTypeAttributeAttribute>();
+                    UnorderedAccessTypeAttribute uav = fi.GetCustomAttribute<UnorderedAccessTypeAttribute>();
                     RegisteredMember<FieldInfo> regInfo = new RegisteredMember<FieldInfo>(fi, regAttributes);
 
                     if (uav != null)
@@ -162,7 +155,7 @@ namespace SharpShader
         {
             Location loc = node.GetLocation();
             FileLinePositionSpan span = loc.GetLineSpan();
-            AddMessage(text, span.StartLinePosition.Line, span.StartLinePosition.Character);
+            AddMessage(text, span.StartLinePosition.Line, span.StartLinePosition.Character, type);
         }
 
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
@@ -170,39 +163,9 @@ namespace SharpShader
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);
         }
 
-        internal void ReplaceSource(string original, string replacement, int startIndex, int length)
-        {
-            if (replacement.Length == 0)
-                return;
-
-            _source.Replace(original, replacement, startIndex, length);
-            _treeDirty = true;
-        }
-
-        internal void ReplaceSource(SyntaxNode syntax, string replacement)
-        {
-            if (string.IsNullOrWhiteSpace(replacement))
-                return;
-
-            _source.Replace(syntax.ToString(), replacement, syntax.SpanStart, syntax.Span.Length);
-            _treeDirty = true;
-        }
-
-        internal void RemoveSource(int startIndex, int length)
-        {
-            _source.Remove(startIndex, length);
-        }
-
-        internal void RemoveSource(SyntaxNode syntax)
-        {
-            _source.Remove(syntax.SpanStart, syntax.Span.Length);
-        }
-
-        /// <summary>Returns the current state of the translated source code for the current <see cref="ShaderContext"/>.</summary>
-        /// <returns></returns>
         public override string ToString()
         {
-            return _source.ToString();
+            return $"{Name} - {base.ToString()}";
         }
 
         internal void Clear()
@@ -212,37 +175,7 @@ namespace SharpShader
             Structures.Clear();
             ConstantBuffers.Clear();
             UAVs.Clear();
-            TranslatedTypes.Clear();
             TranslatedProperties.Clear();
-        }
-
-        /// <summary>
-        /// Attempts to retrieve the C# type of a translated shader type (by name). If it fails, the type name will be tested against supported namespaces. </para>
-        /// Null is returned if the type cannot be resolved.
-        /// </summary>
-        /// <param name="translatedName">The name of the translated shader type.</param>
-        /// <returns></returns>
-        internal Type GetOriginalType(TypeSyntax typeSyntax)
-        {
-            string translatedName = typeSyntax.ToString();
-            Type originalType = null;
-            if (!TranslatedTypes.TryGetValue(translatedName, out originalType))
-            {
-                for (int i = 0; i < ShaderReflection.SupportedNamespaces.Length; i++)
-                {
-                    string ns = ShaderReflection.SupportedNamespaces[i];
-
-                    string fullName = translatedName;
-                    if (!fullName.StartsWith($"{ns}."))
-                        fullName = $"{ns}.{fullName}";
-
-                    originalType = Type.GetType(fullName);
-                    if (originalType != null)
-                        break;
-                }
-            }
-
-            return originalType;
         }
     }
 }

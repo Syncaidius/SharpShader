@@ -26,7 +26,10 @@ namespace SharpShader
         internal List<ConversionMessage> Messages { get; }
 
         [NonSerialized]
-        internal ReflectionInfo Reflection;
+        internal readonly ReflectionInfo Reflection;
+
+        [field: NonSerialized]
+        internal Dictionary<string, Type> TranslatedTypes { get; }
 
         [NonSerialized]
         int _nextVariable = 0;
@@ -34,6 +37,7 @@ namespace SharpShader
         internal ConversionContext(ShaderLanguage foundatation)
         {
             Reflection = new ReflectionInfo();
+            TranslatedTypes = new Dictionary<string, Type>();
             Language = foundatation;
             Shaders = new List<ShaderContext>();
             Messages = new List<ConversionMessage>();
@@ -67,13 +71,6 @@ namespace SharpShader
         internal string GetNewVariableName(string prefix = null)
         {
             return $"{($"{prefix}_" ?? "val_")}SS_{_nextVariable++}";
-        }
-
-        internal ShaderContext AddShader(string name, string source)
-        {
-            ShaderContext context = new ShaderContext(this, name, ref source);
-            Shaders.Add(context);
-            return context;
         }
     }
 }

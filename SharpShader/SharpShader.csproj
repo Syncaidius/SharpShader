@@ -212,6 +212,7 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Exceptions\BlockScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -223,20 +224,10 @@
     <Compile Include="Languages\ShaderLanguage.Modifier.cs" />
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
+    <Compile Include="OutputSource.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />
-    <Compile Include="NodeEntry.cs" />
-    <Compile Include="Processors\IndexerProcessor.cs" />
-    <Compile Include="Processors\PropertyProcessor.cs" />
-    <Compile Include="Processors\LiteralExpressionProcessor.cs" />
-    <Compile Include="Processors\MemberAccessProcessor.cs" />
-    <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />
-    <Compile Include="Processors\ObjectCreationProcessor.cs" />
-    <Compile Include="Processors\InvocationProcessor.cs" />
-    <Compile Include="Processors\MethodProcessor.cs" />
-    <Compile Include="Processors\FieldProcessor.cs" />
-    <Compile Include="Processors\UsingProcessor.cs" />
     <Compile Include="PropertyTranslation.cs" />
     <Compile Include="RegisteredObject.cs" />
     <Compile Include="SemanticType.cs" />
@@ -249,7 +240,6 @@
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
     <Compile Include="ConversionContext.cs" />
-    <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="OutputLanguage.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

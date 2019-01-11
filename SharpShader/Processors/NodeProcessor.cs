@@ -10,15 +10,13 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal delegate string TranslateCallbackDelegate(ref string source, ref string nodeSource);
-
     internal abstract class NodeProcessor
     {
-        internal virtual void Preprocess(ShaderContext context, SyntaxNode node) { }
+        internal abstract void Translate(ShaderContext context, SyntaxNode syntax);
 
-        internal virtual void Map(ShaderContext context, SyntaxNode node) { }
+        internal abstract bool OpenBlock(ShaderContext context, SyntaxNode syntax);
 
-        internal virtual void Translate(ShaderContext context, SyntaxNode node) { }
+        internal abstract void CloseBlock(ShaderContext context, SyntaxNode syntax);
 
         internal abstract Type ParsedType { get; }
     }
@@ -28,25 +26,25 @@ namespace SharpShader
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed void Preprocess(ShaderContext context, SyntaxNode node)
-        {
-            OnPreprocess(context, node as T);
-        }
-
-        internal override sealed void Map(ShaderContext context, SyntaxNode node)
-        {
-            OnMap(context, node as T);
-        }
-
         internal override sealed void Translate(ShaderContext context, SyntaxNode node)
         {
             OnTranslate(context, node as T);
         }
 
-        protected virtual void OnPreprocess(ShaderContext context, T syntax) { }
+        internal override sealed bool OpenBlock(ShaderContext context, SyntaxNode syntax)
+        {
+            return OnOpenBlock(context, syntax as T);
+        }
 
-        protected virtual void OnMap(ShaderContext context, T syntax) { }
+        internal override void CloseBlock(ShaderContext context, SyntaxNode syntax)
+        {
+            OnCloseBlock(context, syntax as T);
+        }
 
-        protected virtual void OnTranslate(ShaderContext context, T syntax) { }
+        protected abstract void OnTranslate(ShaderContext context, T syntax);
+
+        protected abstract bool OnOpenBlock(ShaderContext context, T syntax);
+
+        protected abstract bool OnCloseBlock(ShaderContext context, T syntax);
     }
 }

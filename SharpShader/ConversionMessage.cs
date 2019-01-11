@@ -34,5 +34,7 @@ namespace SharpShader
         Error = 1,
 
         Warning = 2,
+
+        Status = 3,
     }
 }

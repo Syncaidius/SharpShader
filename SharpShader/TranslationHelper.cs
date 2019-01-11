@@ -20,7 +20,7 @@ namespace SharpShader
             if (string.IsNullOrWhiteSpace(identifier))
             {
                 identifier = parameters.ToString();
-                uid = context.Parent.GetNewVariableName(context.SanitizedName);
+                uid = context.Parent.GetNewVariableName(context.Name);
             }
             else
             {
@@ -78,9 +78,66 @@ namespace SharpShader
 
         internal static void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax)
         {
-            TypeSyntax typeSyntax = syntax is ArrayTypeSyntax arraySyntax ? arraySyntax.ElementType : syntax;
-            (string replacement, Type t) = GetTypeTranslation(context, typeSyntax);
-            context.ReplaceSource(typeSyntax, replacement);
+            //TypeSyntax typeSyntax = syntax is ArrayTypeSyntax arraySyntax ? arraySyntax.ElementType : syntax;
+            //(string replacement, Type t) = GetTypeTranslation(context, typeSyntax);
+            //context.ReplaceSource(typeSyntax, replacement);
+        }
+
+        internal static (string translation, Type originalType) TranslateType(ShaderContext sc, Type type)
+        {
+            // First attempt to directly translate the type. 
+            // If we fail, check for any implemented interfaces we can translate instead.
+            ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
+            if (translation != null)
+            {
+                sc.Parent.TranslatedTypes[translation.NativeText] = type;
+
+                if (type.IsArray)
+                {
+                    string rankSeparators = new string(',', type.GetArrayRank() - 1);
+                    return ($"{translation.NativeText}[{rankSeparators}]", type);
+                }
+                else
+                {
+                    return (translation.NativeText, type);
+                }
+            }
+            else // See if the type can be translated based on the interface(s) it implements instead.
+            {
+                Type[] iTypes = type.GetInterfaces();
+                foreach (Type implemented in iTypes)
+                {
+                    translation = sc.Parent.Language.GetKeyword(implemented);
+                    if (translation != null)
+                    {
+                        string replacement = type.Name;
+                        for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
+                            replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
+
+                        if (translation.UniformSizeIsSingular)
+                        {
+                            if (typeof(UniformDimensions).IsAssignableFrom(type))
+                                replacement = replacement.Substring(0, replacement.Length - 2);
+                        }
+
+                        if (type.IsArray)
+                        {
+                            string rankSeparators = new string(',', type.GetArrayRank() - 1);
+                            replacement = $"{translation.NativeText}{replacement}{rankSeparators}";
+                        }
+                        else
+                        {
+                            replacement = translation.NativeText + replacement;
+                        }
+
+                        sc.Parent.TranslatedTypes[replacement] = type;
+
+                        return (replacement, type);
+                    }
+                }
+            }
+
+            return (type.Name, type);
         }
 
         internal static (string, Type) GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
@@ -92,47 +149,7 @@ namespace SharpShader
 
             if (originalType != null)
             {
-                // First attempt to directly translate the type. 
-                // If we fail, check for any implemented interfaces we can translate instead.
-                ShaderLanguage.Keyword translation = context.Parent.Language.GetKeyword(originalType);
-                if (translation != null)
-                {
-                    context.TranslatedTypes[translation.NativeText] = originalType;
 
-                    if (arraySyntax != null)
-                        return ($"{translation.NativeText}{arraySyntax.RankSpecifiers}", originalType);
-                    else
-                        return (translation.NativeText, originalType);
-                }
-                else // See if the type can be translated based on the interface(s) it implements instead.
-                {
-                    Type[] iTypes = originalType.GetInterfaces();
-                    foreach (Type implemented in iTypes)
-                    {
-                        translation = context.Parent.Language.GetKeyword(implemented);
-                        if (translation != null)
-                        {
-                            string replacement = originalName;
-                            for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
-                                replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
-
-                            if (translation.UniformSizeIsSingular)
-                            {
-                                if (typeof(UniformDimensions).IsAssignableFrom(originalType))
-                                    replacement = replacement.Substring(0, replacement.Length - 2);
-                            }
-
-                            if (arraySyntax != null)
-                                replacement = $"{translation.NativeText}{replacement}{arraySyntax.RankSpecifiers}";
-                            else
-                                replacement = translation.NativeText + replacement;
-
-                            context.TranslatedTypes[replacement] = originalType;
-
-                            return (replacement, originalType);
-                        }
-                    }
-                }
             }
 
             return (originalName, originalType);

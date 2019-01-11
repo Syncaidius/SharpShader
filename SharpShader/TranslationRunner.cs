@@ -34,7 +34,7 @@ namespace SharpShader
     public class TranslationRunner : MarshalByRefObject
     {
         static Dictionary<Type, NodeProcessor> _processors;
-        static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow };
+        static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green };
 
         static TranslationRunner()
         {
@@ -59,7 +59,7 @@ namespace SharpShader
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
-            Message("Analyzing");
+            Message("Analyzing", ConversionMessageType.Status);
             AnalysisInfo analysis = Analyze(context, args.CSharpSources);
             Message($"Analysis completed");
 
@@ -72,16 +72,34 @@ namespace SharpShader
                 return context;
             }
 
-            /* TODO RESTRUCTURE:
-             *   -- Scrap the pre-process step. This is pointless.
-             *   -- Mapping stage will use node processors to tie information together from syntax nodes and reflection.
-             *   -- Translate stage will do mostly what it does now, but be cleaned up to make use of reflection whenever possible.
-             *   -- New stage: Isolate. When parsing a tree, locate every CSharpShader sub-type and isolate each one into it's own tree.
-             *      -- Track any namespace nodes while drilling into the tree. Any nested namespace declarations should be automatically caught and construction into a full namespace
-             *              -- E.g. nested namespaces of "Chicken" and then "Wings" will form "Chicken.Wings" when tracked down the tree.
-             *      -- This info will be stored in a ShaderContext.
-             *    
-             * NOTES:
+            Message($"Mapping shader classes", ConversionMessageType.Status);
+            Map(context, analysis.Trees);
+            Message($"Mapping completed. Found {context.Shaders.Count} shader classes.");
+
+            foreach (ShaderContext sc in context.Shaders)
+            {
+                Message($"Translating {sc.Name}", ConversionMessageType.Status);
+                Stopwatch timer = new Stopwatch();
+                timer.Reset();
+                timer.Start();
+
+                Message("Translating to {context.Language.Language}");
+                Translate(sc, sc.RootNode);
+
+                timer.Stop();
+                Message($"  Finished '{sc.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
+            }
+
+            mainTimer.Stop();
+            foreach (ConversionMessage msg in context.Messages)
+                    Message(msg.Text, msg.MessageType);
+
+                int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
+            int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
+            Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
+            Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
+
+            /* NOTES:
              *  -- Method declarations and calls can use reflection info attached during mapping to aid translation.
              *  -- Resolving types will now be MUCH easier
              *  -- Detecting whether a SharpShader type implements certain interfaces will be a lot easier.
@@ -89,48 +107,6 @@ namespace SharpShader
              *  -- Detailed info about an attributes arguments will be useful in speeding-up attribute parsing.
              *  -- Mapping the fields of a shader will simple, via reflection
              */
-
-            Message($"Isolating shader classes");
-            List<ShaderContext> shaders = Isolate(context, analysis.Trees);
-            Message($"Isolation completed. Found {shaders.Count} shader classes.");
-
-            mainTimer.Stop();
-
-            //foreach (ShaderContext shader in context.Shaders)
-            //{
-            //    Stopwatch timer = new Stopwatch();
-            //    timer.Start();
-
-            //    Message("  Stage 1/3 (pre-process)...");
-            //    List<SyntaxNode> nodesToProcess = new List<SyntaxNode>();
-            //    foreach (Type t in _processors.Keys)
-            //    {
-            //        Message($"    Processing {t.Name} nodes");
-            //        CollectNodes(context, shader.Root, t, nodesToProcess);
-            //        Preprocess(shader, t, nodesToProcess);
-            //        nodesToProcess.Clear();
-            //    }
-
-            //    Message("  Stage 2/3 (mapping)...");
-            //    List<NodeEntry> mappedEntries = new List<NodeEntry>();
-            //    Map(shader, shader.Root, mappedEntries);
-
-            //    Message("  Stage 3/3 (translation)...");
-            //    Translate(shader, mappedEntries);
-
-            //    timer.Stop();
-            //    Message($"  Finished '{shader.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
-            //}
-
-            //mainTimer.Stop();
-            //int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
-            //int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
-
-            //foreach (ConversionMessage msg in context.Messages)
-            //    Message(msg.Text, msg.MessageType);
-
-            //Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
-            //Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
             return context;
         }
@@ -190,20 +166,16 @@ namespace SharpShader
             return info;
         }
 
-        private List<ShaderContext> Isolate(ConversionContext context, List<SyntaxTree> trees)
+        private void Map(ConversionContext context, List<SyntaxTree> trees)
         {
-            List<ShaderContext> shaders = new List<ShaderContext>();
-
             foreach(SyntaxTree tree in trees)
             {
                 SyntaxNode root = tree.GetRoot();
-                IsolateShaderNodes(context, root, "", shaders);
+                MapShaderNodes(context, root, "");
             }
-
-            return shaders;
         }
 
-        private void IsolateShaderNodes(ConversionContext context, SyntaxNode node, string strNamespace, List<ShaderContext> shaders)
+        private void MapShaderNodes(ConversionContext context, SyntaxNode node, string strNamespace)
         {
             if (node is ClassDeclarationSyntax classNode)
             {
@@ -211,7 +183,11 @@ namespace SharpShader
                 Type t = context.Reflection.Assembly.GetType(typeName, false, false);
                 if (t != null && context.Reflection.IsShaderType(t))
                 {
-                    shaders.Add(new ShaderContext(context, classNode, t));
+                    context.Shaders.Add(new ShaderContext(context, classNode, t));
+                    Message($"Mapped {t.FullName}");
+
+                    // TODO: Remove this return if nested shaders are ever supported.
+                    return;
                 }
             }
             else if (node is NamespaceDeclarationSyntax nsNode)
@@ -224,72 +200,35 @@ namespace SharpShader
 
             IEnumerable<SyntaxNode> stuff = node.ChildNodes();
             foreach (SyntaxNode child in stuff)
-                IsolateShaderNodes(context, child, strNamespace, shaders);
+                MapShaderNodes(context, child, strNamespace);
         }
 
-        private void CollectNodes(ConversionContext context, SyntaxNode node, Type nodeType, List<SyntaxNode> nodesToProcess, int depth = 0)
+        private string Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
         {
-            Type t = node.GetType();
-            if (t == nodeType)
-                nodesToProcess.Add(node);
+            Type t = syntax.GetType();
+            IEnumerable<SyntaxNode> children = syntax.ChildNodes();
 
-            IEnumerable<SyntaxNode> stuff = node.ChildNodes();
-            foreach (SyntaxNode child in stuff)
-                CollectNodes(context, child, nodeType, nodesToProcess, depth + 1);
-        }
-
-        private void Preprocess(ShaderContext context, Type nodeType, List<SyntaxNode> nodes)
-        {
-            StringBuilder source = new StringBuilder(context.Tree.ToString());
-            NodeProcessor processor = _processors[nodeType];
-
-            // Iterate backwards; Bottom to top. 
-            // Iterating in this way ensures any changes made by preprocessors will not invalidate the locations of earlier nodes.
-            for (int i = nodes.Count - 1; i >= 0; i--)
-                processor.Preprocess(context, nodes[i]);
-
-            context.RegenerateTree();
-        }
-
-        private void Map(ShaderContext shader, SyntaxNode node, List<NodeEntry> mappedEntries)
-        {
-            Type t = node.GetType();
             if (_processors.TryGetValue(t, out NodeProcessor processor))
             {
-                mappedEntries.Add(new NodeEntry()
-                {
-                    Node = node,
-                    Processor = processor
-                });
-                SyntaxTree tree = shader.Tree;
-                processor.Map(shader, node);
-                if (tree != shader.Tree)
-                    throw new Exception($"The syntax tree was modified during mapping stage by a '{t.Name}'.");
+                processor.Translate(sc, syntax);
 
-                // TODO: Remove this return if nested shaders are ever supported.
-                return;
+                bool blockOpened = processor.OpenBlock(sc, syntax);
+                foreach (SyntaxNode child in children)
+                    Translate(sc, child, depth + 1);
+                if(blockOpened)
+                    processor.CloseBlock(sc, syntax);
             }
-
-            IEnumerable<SyntaxNode> stuff = node.ChildNodes();
-            foreach (SyntaxNode child in stuff)
-                Map(shader, child, mappedEntries);
-        }
-
-        private string Translate(ShaderContext shader, List<NodeEntry> mappedEntries)
-        {
-            StringBuilder source = new StringBuilder(shader.Tree.ToString());
-
-            // Iterate backwards to ensure preceeding nodes do not become mis-aligned with their spans.
-            for (int i = mappedEntries.Count - 1; i >= 0; i--)
+            else
             {
-                NodeEntry e = mappedEntries[i];
-                e.Processor.Translate(shader, e.Node);
+                sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// No translator for {t.Name}.");
+                foreach (SyntaxNode child in children)
+                    Translate(sc, child, depth + 1);
             }
 
-            return source.ToString();
+            return sc.Source.ToString();
         }
 
-        internal static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
+        private static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.Write("[SharpShader] [");

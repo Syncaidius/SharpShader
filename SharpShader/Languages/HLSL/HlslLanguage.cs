@@ -1,6 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SharpShader.Foundations.HLSL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +14,10 @@ namespace SharpShader
 
         internal HlslLanguage(OutputLanguage language) : base(language)
         {
-            AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
-            AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);
-            AddEntryPointTranslator<DomainEntryPointTranslator>(EntryPointType.DomainShader);
-            AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
+            //AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
+            //AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);
+            //AddEntryPointTranslator<DomainEntryPointTranslator>(EntryPointType.DomainShader);
+            //AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
         internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
