@@ -213,12 +213,12 @@ namespace SharpShader
 
             if (_processors.TryGetValue(t, out NodeProcessor processor))
             {
-                bool blockOpened = processor.Translate(sc, syntax);
+                bool blockOpened = processor.Translate(sc, syntax, sc.Source.CurrentScope);
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
 
                 if(blockOpened)
-                    processor.CloseBlock(sc, syntax);
+                    processor.CloseSclope(sc, syntax, sc.Source.CurrentScope);
             }
             else
             {

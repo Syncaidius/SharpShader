@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class PredefinedTypeProcessor : NodeProcessor<PredefinedTypeSyntax>
     {
-        protected override bool OnTranslate(ShaderContext context, PredefinedTypeSyntax syntax)
+        protected override bool OnTranslate(ShaderContext context, PredefinedTypeSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Keyword.ToString();
             Type t = ShaderReflection.ResolveType(typeName);

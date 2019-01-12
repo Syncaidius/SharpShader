@@ -224,6 +224,8 @@
     <Compile Include="Languages\ShaderLanguage.Modifier.cs" />
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
+    <Compile Include="Processors\FieldProcessor.cs" />
+    <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="ScopeInfo.cs" />
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />

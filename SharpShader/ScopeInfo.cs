@@ -65,5 +65,8 @@ namespace SharpShader
         /// The assignment of a default parameter value.
         /// </summary>
         ParameterDefaultAssignment = 14,
+
+        FieldDeclaration = 15,
+
     }
 }

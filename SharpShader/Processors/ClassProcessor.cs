@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, ClassDeclarationSyntax syntax)
+        protected override bool OnTranslate(ShaderContext sc, ClassDeclarationSyntax syntax, ScopeInfo scope)
         {
             if (syntax.Identifier.ValueText != sc.Name)
             {

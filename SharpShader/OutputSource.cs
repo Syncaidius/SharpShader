@@ -56,6 +56,7 @@ namespace SharpShader
                     c = '(';
                     break;
 
+                case OpenBlockType.FieldDeclaration:
                 case OpenBlockType.InitializerAssignment:
                 case OpenBlockType.InitializerMember:
                     newLine = NewLineLocation.None;
@@ -105,6 +106,7 @@ namespace SharpShader
                     c = ',';
                     break;
 
+                case OpenBlockType.FieldDeclaration:
                 case OpenBlockType.MemberAssignment:
                     newLine = NewLineLocation.After;
                     c = ';';
