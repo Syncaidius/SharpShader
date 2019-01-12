@@ -133,5 +133,7 @@ namespace SharpShader
         }
 
         public int CurrentBlockDepth => _blocks.Count;
+
+        internal ScopeInfo CurrentScope => _currentScope;
     }
 }
