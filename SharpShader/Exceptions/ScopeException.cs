@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpShader.Exceptions
 {
-    public class BlockScopeException : Exception
+    public class ScopeException : Exception
     {
-        internal BlockScopeException(string msg) : base(msg) { }
+        internal ScopeException(string msg) : base(msg) { }
     }
 }

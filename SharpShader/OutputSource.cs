@@ -11,13 +11,24 @@ namespace SharpShader
     [Serializable]
     internal class OutputSource
     {
-        const char STR_OPEN_BLOCK = '{';
-        const char STR_CLOSE_BLOCK = '}';
+        enum NewLineLocation
+        {
+            None = 0,
+
+            Before = 1,
+
+            After = 2,
+        }
 
         StringBuilder _sb = new StringBuilder();
 
         [NonSerialized]
-        int _blockScopeDepth = 0;
+        Stack<ScopeInfo> _blocks = new Stack<ScopeInfo>();
+
+        [NonSerialized]
+        ScopeInfo _currentScope = new ScopeInfo(null, OpenBlockType.None, 0);
+
+        // TODO Cache all the currently-switched values and flags in a lookup table. The switches can then be removed to speed things up.
 
         internal void Append(SyntaxToken token)
         {
@@ -29,19 +40,86 @@ namespace SharpShader
             _sb.Append(src);
         }
 
-        internal void OpenBlock()
+        internal void OpenScope(OpenBlockType type)
         {
-            _blockScopeDepth++;
-            _sb.Append(STR_OPEN_BLOCK);
+            ScopeInfo newScope = new ScopeInfo(_currentScope, type, _currentScope?.IndentationDepth + 1 ?? 1);
+            _blocks.Push(newScope);
+
+            NewLineLocation newLine = NewLineLocation.Before;
+            char c = '{';
+
+            switch (type)
+            {
+                case OpenBlockType.ArgumentParentheses:
+                case OpenBlockType.InvocationParentheses:
+                    newLine = NewLineLocation.None;
+                    c = '(';
+                    break;
+
+                case OpenBlockType.InitializerAssignment:
+                case OpenBlockType.InitializerMember:
+                    newLine = NewLineLocation.None;
+                    c = char.MinValue;
+                    break;
+            }
+
+            _currentScope = newScope;
+            if (newLine == NewLineLocation.Before)
+                _sb.Append(Environment.NewLine);
+
+
+            if (c != char.MinValue)
+                _sb.Append(c);
+
+            if (newLine == NewLineLocation.After)
+                _sb.Append(Environment.NewLine);
         }
 
-        internal void CloseBlock()
+        internal void CloseScope()
         {
-            if (_blockScopeDepth == 0)
-                throw new BlockScopeException("Cannot close block. No blocks left to close.");
+            if (_blocks.Count == 0)
+                throw new ScopeException("Cannot close block. No blocks left to close.");
 
-            _blockScopeDepth--;
-            _sb.Append(STR_CLOSE_BLOCK);
+            ScopeInfo info = _blocks.Pop();
+            if (info.Type == OpenBlockType.None)
+                return;
+
+            NewLineLocation newLine = NewLineLocation.Before;
+            char c = '}';
+
+            switch (info.Type)
+            {
+                case OpenBlockType.ArgumentParentheses:
+                case OpenBlockType.InvocationParentheses:
+                    newLine = NewLineLocation.None;
+                    c = ')';
+                    break;
+
+                case OpenBlockType.InitializerMember:
+                    newLine = NewLineLocation.After;
+                    c = ',';
+                    break;
+
+                case OpenBlockType.InitializerAssignment:
+                    newLine = NewLineLocation.After;
+                    c = ',';
+                    break;
+
+                case OpenBlockType.MemberAssignment:
+                    newLine = NewLineLocation.After;
+                    c = ';';
+                    break;
+            }
+
+            _currentScope = info.Parent;
+            if (newLine == NewLineLocation.Before)
+                _sb.Append(Environment.NewLine);
+
+            if (c != char.MinValue)
+                _sb.Append(c);
+
+            if (newLine == NewLineLocation.After)
+                _sb.Append(Environment.NewLine);
         }
 
         internal void Insert(string src, int index)
@@ -53,5 +131,7 @@ namespace SharpShader
         {
             return _sb.ToString();
         }
+
+        public int CurrentBlockDepth => _blocks.Count;
     }
 }

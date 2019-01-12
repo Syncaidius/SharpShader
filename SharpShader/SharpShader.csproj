@@ -212,7 +212,7 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="Exceptions\BlockScopeException.cs" />
+    <Compile Include="Exceptions\ScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -224,6 +224,7 @@
     <Compile Include="Languages\ShaderLanguage.Modifier.cs" />
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
+    <Compile Include="ScopeInfo.cs" />
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
