@@ -76,13 +76,6 @@ namespace SharpShader
             return string.IsNullOrWhiteSpace(replacement) ? syntax.ToString() : replacement;
         }
 
-        internal static void TranslateTypeSyntax(ShaderContext context, TypeSyntax syntax)
-        {
-            //TypeSyntax typeSyntax = syntax is ArrayTypeSyntax arraySyntax ? arraySyntax.ElementType : syntax;
-            //(string replacement, Type t) = GetTypeTranslation(context, typeSyntax);
-            //context.ReplaceSource(typeSyntax, replacement);
-        }
-
         internal static (string translation, Type originalType) TranslateType(ShaderContext sc, Type type)
         {
             // First attempt to directly translate the type. 
@@ -138,21 +131,6 @@ namespace SharpShader
             }
 
             return (type.Name, type);
-        }
-
-        internal static (string, Type) GetTypeTranslation(ShaderContext context, TypeSyntax syntax)
-        {
-            ArrayTypeSyntax arraySyntax = syntax as ArrayTypeSyntax;
-            TypeSyntax typeSyntax = arraySyntax != null ? arraySyntax.ElementType : syntax;
-            string originalName = typeSyntax.ToString();
-            Type originalType = ShaderReflection.ResolveType(originalName);
-
-            if (originalType != null)
-            {
-
-            }
-
-            return (originalName, originalType);
         }
     }
 }

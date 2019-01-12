@@ -12,6 +12,12 @@ namespace SharpShader.Processors
     {
         protected override bool OnTranslate(ShaderContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
         {
+            string typeName = syntax.Type.ToString();
+            Type t = ShaderReflection.ResolveType(typeName);
+            sc.Source.Append(t?.Name ?? typeName);
+
+            sc.SkippedNodes.Add(syntax.Type);
+
             return false;
         }
     }

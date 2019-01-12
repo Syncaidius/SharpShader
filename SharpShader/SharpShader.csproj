@@ -214,6 +214,7 @@
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Processors\ArgumentProcessor.cs" />
     <Compile Include="Processors\IdentifierProcessor.cs" />
+    <Compile Include="Processors\PredefinedTypeProcessor.cs" />
     <Compile Include="Scopes\ArgumentScope.cs" />
     <Compile Include="Scopes\ParenthesesScope.cs" />
     <Compile Include="Scopes\FieldScope.cs" />
@@ -238,7 +239,6 @@
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
-    <Compile Include="Processors\PredefinedTypeProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />

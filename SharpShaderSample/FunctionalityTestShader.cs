@@ -12,6 +12,7 @@ namespace SharpShaderSample
         public const int LAPS = 5;
         public const float RADIUS = 0.5f;
         public const double PI = Math.PI;
+        readonly static Vector3 DefaultPos = new Vector3(10.2f, 5.3f, 9.8f);
         #endregion
 
         #region Structs
