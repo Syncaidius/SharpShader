@@ -217,8 +217,8 @@ namespace SharpShader
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
 
-                if(blockOpened)
-                    processor.CloseSclope(sc, syntax, sc.Source.CurrentScope);
+                if (blockOpened)
+                    sc.Source.CloseScope();
             }
             else
             {

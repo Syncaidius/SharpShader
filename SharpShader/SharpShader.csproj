@@ -212,7 +212,14 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="Exceptions\ScopeException.cs" />
+    <Compile Include="Processors\ArgumentProcessor.cs" />
+    <Compile Include="Processors\IdentifierProcessor.cs" />
+    <Compile Include="Scopes\ArgumentScope.cs" />
+    <Compile Include="Scopes\ParenthesesScope.cs" />
+    <Compile Include="Scopes\FieldScope.cs" />
+    <Compile Include="Scopes\BlockScope.cs" />
+    <Compile Include="Scopes\InitializerAssignmentScope.cs" />
+    <Compile Include="Scopes\ScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -226,7 +233,8 @@
     <Compile Include="MethodInformation.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
-    <Compile Include="ScopeInfo.cs" />
+    <Compile Include="Scopes\InertScopeInfo.cs" />
+    <Compile Include="Scopes\ScopeInfo.cs" />
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />

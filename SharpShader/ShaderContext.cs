@@ -170,6 +170,13 @@ namespace SharpShader
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);
         }
 
+        internal void SkipChildren(SyntaxNode node)
+        {
+            IEnumerable<SyntaxNode> children = node.ChildNodes();
+            foreach (SyntaxNode n in children)
+                SkippedNodes.Add(node);
+        }
+
         public override string ToString()
         {
             return $"{Name} - {base.ToString()}";

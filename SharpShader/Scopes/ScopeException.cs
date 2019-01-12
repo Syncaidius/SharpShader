@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpShader.Exceptions
+namespace SharpShader
 {
     public class ScopeException : Exception
     {

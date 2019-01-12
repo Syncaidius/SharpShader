@@ -19,8 +19,6 @@ namespace SharpShader
         /// <param name="syntax">The <see cref="SyntaxNode"/> to be translated.</param>
         internal abstract bool Translate(ShaderContext sc, SyntaxNode syntax, ScopeInfo scope);
 
-        internal abstract void CloseSclope(ShaderContext sc, SyntaxNode syntax, ScopeInfo scope);
-
         internal abstract Type ParsedType { get; }
     }
 
@@ -34,13 +32,6 @@ namespace SharpShader
             return OnTranslate(sc, node as T, scope);
         }
 
-        internal override sealed void CloseSclope(ShaderContext sc, SyntaxNode syntax, ScopeInfo scope)
-        {
-            OnCloseScope(sc, syntax as T, scope);
-        }
-
         protected abstract bool OnTranslate(ShaderContext sc, T syntax, ScopeInfo scope);
-
-        protected virtual void OnCloseScope(ShaderContext sc, T syntax, ScopeInfo scope) { }
     }
 }

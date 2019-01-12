@@ -13,13 +13,8 @@ namespace SharpShader.Processors
         protected override bool OnTranslate(ShaderContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
         {
             // TODO store field attributes in scope. Variable declarators will need them.
-            sc.Source.OpenScope(OpenBlockType.FieldDeclaration);
+            sc.Source.OpenScope<FieldScope>();
             return true;
-        }
-
-        protected override void OnCloseScope(ShaderContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
-        {
-            sc.Source.CloseScope();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using SharpShader.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +10,13 @@ namespace SharpShader
     [Serializable]
     internal class OutputSource
     {
-        enum NewLineLocation
-        {
-            None = 0,
-
-            Before = 1,
-
-            After = 2,
-        }
-
         StringBuilder _sb = new StringBuilder();
 
         [NonSerialized]
         Stack<ScopeInfo> _blocks = new Stack<ScopeInfo>();
 
         [NonSerialized]
-        ScopeInfo _currentScope = new ScopeInfo(null, OpenBlockType.None, 0);
-
-        // TODO Cache all the currently-switched values and flags in a lookup table. The switches can then be removed to speed things up.
+        ScopeInfo _currentScope = new InertScopeInfo();
 
         internal void Append(SyntaxToken token)
         {
@@ -40,39 +28,24 @@ namespace SharpShader
             _sb.Append(src);
         }
 
-        internal void OpenScope(OpenBlockType type)
+        internal void OpenScope<T>() where T : ScopeInfo, new()
         {
-            ScopeInfo newScope = new ScopeInfo(_currentScope, type, _currentScope?.IndentationDepth + 1 ?? 1);
-            _blocks.Push(newScope);
-
-            NewLineLocation newLine = NewLineLocation.Before;
-            char c = '{';
-
-            switch (type)
+            ScopeInfo newScope = new T()
             {
-                case OpenBlockType.ArgumentParentheses:
-                case OpenBlockType.InvocationParentheses:
-                    newLine = NewLineLocation.None;
-                    c = '(';
-                    break;
+                Parent = _currentScope,
+                IndentationDepth = _currentScope.IndentationDepth + 1,
+            };
 
-                case OpenBlockType.FieldDeclaration:
-                case OpenBlockType.InitializerAssignment:
-                case OpenBlockType.InitializerMember:
-                    newLine = NewLineLocation.None;
-                    c = char.MinValue;
-                    break;
-            }
+            _blocks.Push(_currentScope); // Push old scope
+            _currentScope = newScope; // Set new as current
 
-            _currentScope = newScope;
-            if (newLine == NewLineLocation.Before)
+            if (_currentScope.OpeningSyntax.NewLine == NewLineLocation.Before)
                 _sb.Append(Environment.NewLine);
 
+            if (!string.IsNullOrEmpty(_currentScope.OpeningSyntax.Value))
+                _sb.Append(_currentScope.OpeningSyntax.Value);
 
-            if (c != char.MinValue)
-                _sb.Append(c);
-
-            if (newLine == NewLineLocation.After)
+            if (_currentScope.OpeningSyntax.NewLine == NewLineLocation.After)
                 _sb.Append(Environment.NewLine);
         }
 
@@ -81,47 +54,16 @@ namespace SharpShader
             if (_blocks.Count == 0)
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
-            ScopeInfo info = _blocks.Pop();
-            if (info.Type == OpenBlockType.None)
-                return;
-
-            NewLineLocation newLine = NewLineLocation.Before;
-            char c = '}';
-
-            switch (info.Type)
-            {
-                case OpenBlockType.ArgumentParentheses:
-                case OpenBlockType.InvocationParentheses:
-                    newLine = NewLineLocation.None;
-                    c = ')';
-                    break;
-
-                case OpenBlockType.InitializerMember:
-                    newLine = NewLineLocation.After;
-                    c = ',';
-                    break;
-
-                case OpenBlockType.InitializerAssignment:
-                    newLine = NewLineLocation.After;
-                    c = ',';
-                    break;
-
-                case OpenBlockType.FieldDeclaration:
-                case OpenBlockType.MemberAssignment:
-                    newLine = NewLineLocation.After;
-                    c = ';';
-                    break;
-            }
-
-            _currentScope = info.Parent;
-            if (newLine == NewLineLocation.Before)
+            if (_currentScope.ClosingSyntax.NewLine == NewLineLocation.Before)
                 _sb.Append(Environment.NewLine);
 
-            if (c != char.MinValue)
-                _sb.Append(c);
+            if (!string.IsNullOrEmpty(_currentScope.ClosingSyntax.Value))
+                _sb.Append(_currentScope.ClosingSyntax.Value);
 
-            if (newLine == NewLineLocation.After)
+            if (_currentScope.ClosingSyntax.NewLine == NewLineLocation.After)
                 _sb.Append(Environment.NewLine);
+
+            _currentScope = _blocks.Pop();
         }
 
         internal void Insert(string src, int index)

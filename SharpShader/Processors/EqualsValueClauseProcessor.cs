@@ -11,8 +11,7 @@ namespace SharpShader.Processors
     internal class EqualsValueClauseProcessor : NodeProcessor<EqualsValueClauseSyntax>
     {
         protected override bool OnTranslate(ShaderContext context, EqualsValueClauseSyntax syntax, ScopeInfo scope)
-        {
-            
+        {            
             context.Source.Append($" {syntax.EqualsToken} ");
             return false;
         }
