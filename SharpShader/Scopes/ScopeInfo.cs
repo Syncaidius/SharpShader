@@ -31,6 +31,8 @@ namespace SharpShader
 
         internal int IndentationDepth;
 
+        internal int StartPosition;
+
         internal abstract OpenCloseSyntax OpeningSyntax { get; }
 
         internal abstract OpenCloseSyntax ClosingSyntax { get; }

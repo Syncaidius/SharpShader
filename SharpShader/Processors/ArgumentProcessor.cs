@@ -10,10 +10,9 @@ namespace SharpShader.Processors
 {
     internal class ArgumentProcessor : NodeProcessor<ArgumentSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, ArgumentSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, ArgumentSyntax syntax, ScopeInfo scope)
         {
             sc.Source.OpenScope<ArgumentScope>();
-            return true;
         }
     }
 }

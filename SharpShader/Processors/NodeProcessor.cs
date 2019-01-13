@@ -17,7 +17,7 @@ namespace SharpShader
         /// </summary>
         /// <param name="sc">The <see cref="ShaderContext"/>.</param>
         /// <param name="syntax">The <see cref="SyntaxNode"/> to be translated.</param>
-        internal abstract bool Translate(ShaderContext sc, SyntaxNode syntax, ScopeInfo scope);
+        internal abstract void Translate(ShaderContext sc, SyntaxNode syntax, ScopeInfo scope);
 
         internal abstract Type ParsedType { get; }
     }
@@ -27,11 +27,11 @@ namespace SharpShader
     {
         internal override sealed Type ParsedType => typeof(T);
 
-        internal override sealed bool Translate(ShaderContext sc, SyntaxNode node, ScopeInfo scope)
+        internal override sealed void Translate(ShaderContext sc, SyntaxNode node, ScopeInfo scope)
         {
-            return OnTranslate(sc, node as T, scope);
+            OnTranslate(sc, node as T, scope);
         }
 
-        protected abstract bool OnTranslate(ShaderContext sc, T syntax, ScopeInfo scope);
+        protected abstract void OnTranslate(ShaderContext sc, T syntax, ScopeInfo scope);
     }
 }

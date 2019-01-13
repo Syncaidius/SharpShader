@@ -10,11 +10,10 @@ namespace SharpShader.Processors
 {
     internal class IdentifierProcessor : NodeProcessor<IdentifierNameSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, IdentifierNameSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, IdentifierNameSyntax syntax, ScopeInfo scope)
         {
             if (scope is ArgumentScope)
                 sc.Source.Append(syntax.Identifier);
-            return false;
         }
     }
 }

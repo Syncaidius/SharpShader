@@ -28,12 +28,13 @@ namespace SharpShader
             _sb.Append(src);
         }
 
-        internal void OpenScope<T>() where T : ScopeInfo, new()
+        internal T OpenScope<T>() where T : ScopeInfo, new()
         {
-            ScopeInfo newScope = new T()
+            T newScope = new T()
             {
                 Parent = _currentScope,
                 IndentationDepth = _currentScope.IndentationDepth + 1,
+                StartPosition = _sb.Length,
             };
 
             _blocks.Push(_currentScope); // Push old scope
@@ -47,6 +48,8 @@ namespace SharpShader
 
             if (_currentScope.OpeningSyntax.NewLine == NewLineLocation.After)
                 _sb.Append(Environment.NewLine);
+
+            return newScope;
         }
 
         internal void CloseScope()

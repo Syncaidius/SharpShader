@@ -10,30 +10,54 @@ namespace SharpShader.Processors
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Type.ToString();
-            Type t = ShaderReflection.ResolveType(typeName);
-            sc.Source.Append(t?.Name ?? typeName);
+            (string translatedName, Type originalType, bool isArray) = TranslationHelper.TranslateType2(sc, typeName);
 
-            sc.SkippedNodes.Add(syntax.Type);
+            TypedScope tScope = sc.Source.OpenScope<TypedScope>();
+            tScope.OriginalType = originalType;
+            tScope.TranslatedTypeName = translatedName;
 
-            return false;
+            sc.CompletedNodes.Add(syntax.Type);
         }
     }
 
     internal class VariableDeclaratorProcessor : NodeProcessor<VariableDeclaratorSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, VariableDeclaratorSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, VariableDeclaratorSyntax syntax, ScopeInfo scope)
         {
-            VariableDeclarationSyntax parent = syntax.Parent as VariableDeclarationSyntax;
+            if (scope is TypedScope tScope)
+            {
+                sc.Source.Append(tScope.TranslatedTypeName);
+                sc.Source.Append($" {syntax.Identifier}");
 
-            // TODO translate type
-            // TODO scope modifiers in ScopeInfo (e.g. field modifiers/attributes for child variables, etc).
 
+                if (tScope.OriginalType != null)
+                {
+                    if (tScope.OriginalType.IsArray)
+                    {
+                        if (syntax.Initializer != null)
+                        {
+                            switch (syntax.Initializer.Value)
+                            {
+                                case InitializerExpressionSyntax initSyntax:
+                                    IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
+                                    int arraySize = initChildren.Count();
+                                    sc.Source.Append($"[{arraySize}]");
+                                    break;
 
-            sc.Source.Append($" {syntax.Identifier}");
-            return false;
+                                case ArrayCreationExpressionSyntax arraySyntax:
+                                    TranslationRunner.Translate(sc, arraySyntax.Type);
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                // TODO scope modifiers in ScopeInfo (e.g. field modifiers/attributes for child variables, etc).
+                sc.Source.OpenScope<VariableScope>();
+            }
         }
     }
 }

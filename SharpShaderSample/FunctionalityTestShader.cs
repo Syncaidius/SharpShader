@@ -73,11 +73,17 @@ namespace SharpShaderSample
             new Vector2(0, 0),
             new Vector2(1,-1),
             new Vector2(1,0),
-        }, testArray2 =
+        }, testArray2 = new Vector2[]
 {
             new Vector2(5,0),
             new Vector2(0, 4),
             new Vector2(2,3),
+        }, testArray3 = new Vector2[4]
+        {
+            new Vector2(7,6),
+            new Vector2(93.0f, 0.5f),
+            new Vector2(1, 0.458f),
+            new Vector2(.34f, 19.431f),
         };
 
         [Register(8)]

@@ -28,16 +28,12 @@ namespace SharpShader
         [NonSerialized]
         internal readonly ReflectionInfo Reflection;
 
-        [field: NonSerialized]
-        internal Dictionary<string, Type> TranslatedTypes { get; }
-
         [NonSerialized]
         int _nextVariable = 0;
 
         internal ConversionContext(ShaderLanguage foundatation)
         {
             Reflection = new ReflectionInfo();
-            TranslatedTypes = new Dictionary<string, Type>();
             Language = foundatation;
             Shaders = new List<ShaderContext>();
             Messages = new List<ConversionMessage>();

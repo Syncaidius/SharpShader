@@ -33,7 +33,7 @@ namespace SharpShader
                 SetterMethod = $"set{uid}",
             };
 
-            (translation.TypeName, translation.OriginalType) = GetTypeTranslation(context, syntax.Type);
+            (translation.TypeName, translation.OriginalType) = TranslateType(context, syntax.Type.ToString());
             context.TranslatedProperties.Add(identifier, translation);
 
             string replacement = "";
@@ -76,61 +76,123 @@ namespace SharpShader
             return string.IsNullOrWhiteSpace(replacement) ? syntax.ToString() : replacement;
         }
 
-        internal static (string translation, Type originalType) TranslateType(ShaderContext sc, Type type)
+        internal static (string translation, Type originalType, bool isArray) TranslateType2(ShaderContext sc, string typeName)
         {
-            // First attempt to directly translate the type. 
-            // If we fail, check for any implemented interfaces we can translate instead.
-            ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
-            if (translation != null)
+            Type type = ShaderReflection.ResolveType(typeName);
+            if (type != null)
             {
-                sc.Parent.TranslatedTypes[translation.NativeText] = type;
+                Type elementType = type.GetElementType();
+                ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
+                if (translation != null)
+                {
+                    return (translation.NativeText, type, type.IsArray);
+                }
+                else // Attempt to find any interfaces on the type which can be translated instead.
+                {
+                    Type[] iTypes;
+                    if (elementType != null)
+                        iTypes = elementType.GetInterfaces();
+                    else
+                        iTypes = type.GetInterfaces();
 
-                if (type.IsArray)
-                {
-                    string rankSeparators = new string(',', type.GetArrayRank() - 1);
-                    return ($"{translation.NativeText}[{rankSeparators}]", type);
-                }
-                else
-                {
-                    return (translation.NativeText, type);
-                }
-            }
-            else // See if the type can be translated based on the interface(s) it implements instead.
-            {
-                Type[] iTypes = type.GetInterfaces();
-                foreach (Type implemented in iTypes)
-                {
-                    translation = sc.Parent.Language.GetKeyword(implemented);
-                    if (translation != null)
+
+                    foreach (Type implemented in iTypes)
                     {
-                        string replacement = type.Name;
-                        for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
-                            replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
+                        translation = sc.Parent.Language.GetKeyword(implemented);
+                        if (translation != null)
+                        {
+                            string replacement = elementType?.Name ?? type.Name;
 
-                        if (translation.UniformSizeIsSingular)
-                        {
-                            if (typeof(UniformDimensions).IsAssignableFrom(type))
-                                replacement = replacement.Substring(0, replacement.Length - 2);
-                        }
+                            // TODO Optimize replacement block?
+                            for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
+                                replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
 
-                        if (type.IsArray)
-                        {
-                            string rankSeparators = new string(',', type.GetArrayRank() - 1);
-                            replacement = $"{translation.NativeText}{replacement}{rankSeparators}";
-                        }
-                        else
-                        {
+                            if (translation.UniformSizeIsSingular)
+                            {
+                                if (typeof(UniformDimensions).IsAssignableFrom(type))
+                                    replacement = replacement.Substring(0, replacement.Length - 2);
+                            }
+
                             replacement = translation.NativeText + replacement;
+
+                            return (replacement, type, type.IsArray);
                         }
-
-                        sc.Parent.TranslatedTypes[replacement] = type;
-
-                        return (replacement, type);
                     }
                 }
             }
 
-            return (type.Name, type);
+            int openIndex = typeName.IndexOf("[");
+            bool isArray = false;
+
+            if (openIndex > -1 && typeName.EndsWith("]"))
+            {
+                typeName = typeName.Substring(0, openIndex);
+                isArray = true;
+            }
+
+            return (typeName, type, isArray);
+        }
+
+        internal static (string translation, Type originalType) TranslateType(ShaderContext sc, string typeName)
+        {
+            Type type = ShaderReflection.ResolveType(typeName);
+            if (type != null)
+            {
+                // First attempt to directly translate the type. 
+                // If we fail, check for any implemented interfaces we can translate instead.
+                ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
+                if (translation != null)
+                {
+                    if (type.IsArray)
+                    {
+                        string rankSeparators = new string(',', type.GetArrayRank() - 1);
+                        return ($"{translation.NativeText}[{rankSeparators}]", type);
+                    }
+                    else
+                    {
+                        return (translation.NativeText, type);
+                    }
+                }
+                else // See if the type can be translated based on the interface(s) it implements instead.
+                {
+                    Type[] iTypes;
+                    if (type.IsArray)
+                        iTypes = type.GetElementType().GetInterfaces();
+                    else
+                        iTypes = type.GetInterfaces();
+
+                    foreach (Type implemented in iTypes)
+                    {
+                        translation = sc.Parent.Language.GetKeyword(implemented);
+                        if (translation != null)
+                        {
+                            string replacement = type.Name;
+                            for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
+                                replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
+
+                            if (translation.UniformSizeIsSingular)
+                            {
+                                if (typeof(UniformDimensions).IsAssignableFrom(type))
+                                    replacement = replacement.Substring(0, replacement.Length - 2);
+                            }
+
+                            if (type.IsArray)
+                            {
+                                string rankSeparators = new string(',', type.GetArrayRank() - 1);
+                                replacement = $"{translation.NativeText}{replacement}{rankSeparators}";
+                            }
+                            else
+                            {
+                                replacement = translation.NativeText + replacement;
+                            }
+
+                            return (replacement, type);
+                        }
+                    }
+                }
+            }
+
+            return (typeName, type);
         }
     }
 }

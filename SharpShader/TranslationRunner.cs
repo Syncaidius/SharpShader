@@ -203,9 +203,9 @@ namespace SharpShader
                 MapShaderNodes(context, child, strNamespace);
         }
 
-        private void Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
+        internal static void Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
         {
-            if (sc.SkippedNodes.Contains(syntax))
+            if (sc.CompletedNodes.Contains(syntax))
                 return;
 
             Type t = syntax.GetType();
@@ -213,16 +213,22 @@ namespace SharpShader
 
             if (_processors.TryGetValue(t, out NodeProcessor processor))
             {
-                bool blockOpened = processor.Translate(sc, syntax, sc.Source.CurrentScope);
+                ScopeInfo lastScope = sc.Source.CurrentScope;
+                processor.Translate(sc, syntax, sc.Source.CurrentScope);
+                bool scopeOpened = lastScope != sc.Source.CurrentScope;
+
+                sc.CompletedNodes.Add(syntax);
+
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
 
-                if (blockOpened)
+                while(lastScope != sc.Source.CurrentScope)
                     sc.Source.CloseScope();
             }
             else
             {
-                sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// No translator for {t.Name}.");
+                sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// No translator for {t.Name}");
+                sc.CompletedNodes.Add(syntax);
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
             }

@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, ClassDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, ClassDeclarationSyntax syntax, ScopeInfo scope)
         {
             if (syntax.Identifier.ValueText != sc.Name)
             {
@@ -18,18 +18,13 @@ namespace SharpShader.Processors
             }
             else
             {
-                sc.SkippedNodes.Add(syntax.BaseList);
+                sc.CompletedNodes.Add(syntax.BaseList);
             }
-
-            return false;
         }
     }
 
     internal class CompilationSyntaxProcessor : NodeProcessor<CompilationUnitSyntax>
     {
-        protected override bool OnTranslate(ShaderContext sc, CompilationUnitSyntax syntax, ScopeInfo scope)
-        {
-            return false;
-        }
+        protected override void OnTranslate(ShaderContext sc, CompilationUnitSyntax syntax, ScopeInfo scope) { }
     }
 }

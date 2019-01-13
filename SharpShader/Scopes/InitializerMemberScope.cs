@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class FieldScope : ScopeInfo
+    /// <summary>
+    /// A <see cref="ScopeInfo"/> which does nothing but contain child syntax.
+    /// </summary>
+    internal class InitializerMemberScope : ScopeInfo
     {
         internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax(NewLineLocation.None);
 

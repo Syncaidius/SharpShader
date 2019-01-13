@@ -67,8 +67,6 @@ namespace SharpShader
 
         internal abstract string TranslateNumber(ShaderContext context, string number);
 
-        internal abstract string TranslateArrayDeclaration(ShaderContext context, string typeName, VariableDeclaratorSyntax varSyntax);
-
         /// <summary>
         /// Returns the translated string for a type, or null if no translation is found.
         /// </summary>
@@ -76,6 +74,9 @@ namespace SharpShader
         /// <returns></returns>
         internal Keyword GetKeyword(Type t)
         {
+            if (t.IsArray)
+                t = t.GetElementType();
+
             if (_keywords.TryGetValue(t, out Keyword word))
                 return word;
             else

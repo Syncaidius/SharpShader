@@ -172,24 +172,5 @@ namespace SharpShader
                 return number.Substring(0, newLength);
             }
         }
-
-        internal override string TranslateArrayDeclaration(ShaderContext context, string typeName, VariableDeclaratorSyntax varSyntax)
-        {
-            int arraySize = 0;
-            string strInitializer = "";
-            if(varSyntax.Initializer != null)
-            {
-                strInitializer = $" {varSyntax.Initializer.ToString()}";
-                switch (varSyntax.Initializer.Value)
-                {
-                    case InitializerExpressionSyntax initSyntax:
-                        IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
-                        arraySize = initChildren.Count();
-                        break;
-                }
-            }
-
-            return $"{typeName} {varSyntax.Identifier}[{arraySize}]{strInitializer}";
-        }
     }
 }
