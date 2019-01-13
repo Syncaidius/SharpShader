@@ -19,6 +19,9 @@ namespace SharpShader.Processors
             tScope.OriginalType = originalType;
             tScope.TranslatedTypeName = translatedName;
 
+            if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
+                tScope.TranslatedModifiers = sc.Language.TranslateModifiers(fieldSyntax.Modifiers);
+
             sc.CompletedNodes.Add(syntax.Type);
         }
     }
@@ -29,6 +32,7 @@ namespace SharpShader.Processors
         {
             if (scope is TypedScope tScope)
             {
+                sc.Source.Append($"{tScope.TranslatedModifiers} ");
                 sc.Source.Append(tScope.TranslatedTypeName);
                 sc.Source.Append($" {syntax.Identifier}");
 

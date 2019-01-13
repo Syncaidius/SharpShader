@@ -21,6 +21,11 @@ namespace SharpShader
         internal string TranslatedTypeName;
 
         /// <summary>
+        /// The translated version of the original modifiers, if any.
+        /// </summary>
+        internal string TranslatedModifiers = "";
+
+        /// <summary>
         /// The original type.
         /// </summary>
         internal Type OriginalType;

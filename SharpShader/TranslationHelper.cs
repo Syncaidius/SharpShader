@@ -37,7 +37,7 @@ namespace SharpShader
                         {
                             string replacement = elementType?.Name ?? type.Name;
 
-                            // TODO Optimize replacement block?
+                            // TODO Does this need optimizing? Benchmark before changing.
                             for (int i = 0; i < ShaderReflection.IntrinsicPrefixes.Length; i++)
                                 replacement = replacement.Replace(ShaderReflection.IntrinsicPrefixes[i], "");
 

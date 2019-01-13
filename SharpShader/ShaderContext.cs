@@ -175,6 +175,12 @@ namespace SharpShader
             CompletedNodes.Add(node);
         }
 
+        internal void SkipSelfAndChildren(SyntaxNode node)
+        {
+            CompletedNodes.Add(node);
+            SkipChildren(node);
+        }
+
         public override string ToString()
         {
             return $"{Name} - {base.ToString()}";

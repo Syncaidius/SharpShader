@@ -29,11 +29,15 @@
   <Modifier name="const static">
     <Requirement csharp="readonly" />
   </Modifier>
+  <Modifier name="const static">
+    <Requirement csharp="const" />
+  </Modifier>
+  <Modifier name="const static">
+    <Requirement csharp="const" />
+    <Requirement csharp="public" />
+  </Modifier>
   <Modifier name="static">
     <Requirement csharp="static" />
-  </Modifier>
-  <Modifier name="#define">
-    <Requirement csharp="const" />
   </Modifier>
   <Modifier name="const">
     <Requirement csharp="in" />
