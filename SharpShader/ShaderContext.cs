@@ -45,13 +45,6 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, RegisteredMember<FieldInfo>> UAVs;
 
-
-        [NonSerialized]
-        /// <summary>
-        /// A dictionary of properties which have been translated into get/set methods, with their original name as a key.
-        /// </summary>
-        internal Dictionary<string, PropertyTranslation> TranslatedProperties = new Dictionary<string, PropertyTranslation>();
-
         /// <summary>
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
         /// </summary>
@@ -185,16 +178,6 @@ namespace SharpShader
         public override string ToString()
         {
             return $"{Name} - {base.ToString()}";
-        }
-
-        internal void Clear()
-        {
-            EntryPoints.Clear();
-            Fields.Clear();
-            Structures.Clear();
-            ConstantBuffers.Clear();
-            UAVs.Clear();
-            TranslatedProperties.Clear();
         }
     }
 }

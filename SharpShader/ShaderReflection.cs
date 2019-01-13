@@ -82,11 +82,6 @@ namespace SharpShader
             }
         }
 
-        internal static bool IsRegisteredType(Type type)
-        {
-            return _registerTypes.Contains(type);
-        }
-
         internal static bool IsIntrinsicFunction(ShaderContext context, string cSharpName)
         {
             if(_intrinsicMethods.TryGetValue(context.Parent.Language.Language, out LanguageInfo info))
@@ -104,28 +99,6 @@ namespace SharpShader
             }
 
             return null;
-        }
-
-        internal static bool HasAttribute<T>(SyntaxList<AttributeListSyntax> attLists) where T : SharpShaderAttribute
-        {
-            foreach (AttributeListSyntax list in attLists)
-            {
-                foreach (AttributeSyntax attSyntax in list.Attributes)
-                {
-                    string name = attSyntax.Name.ToString();
-                    if (!name.EndsWith("Attribute"))
-                        name += "Attribute";
-
-                    Type attType = Type.GetType($"{NAMESPACE}.{name}");
-                    if (attType != null)
-                    {
-                        if (attType == typeof(T))
-                            return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         internal static AttributeSyntax GetAttribute<T>(SyntaxList<AttributeListSyntax> attLists) where T : SharpShaderAttribute
