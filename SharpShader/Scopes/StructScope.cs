@@ -8,15 +8,19 @@ namespace SharpShader
 {
     internal class StructScope : BlockScope
     {
-        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("};", NewLineLocation.Before | NewLineLocation.After);
+        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("};", NewLineLocation.After);
 
         internal StructScopeType StructType;
+
+        internal Type TypeInfo;
     }
 
     internal enum StructScopeType
     {
-        Struct = 0,
+        None = 0,
 
         ConstantBuffer = 1,
+
+        Struct = 2,
     }
 }

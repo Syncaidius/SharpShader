@@ -46,7 +46,7 @@ namespace SharpShaderSample
             [PackOffset(0)]
             public Matrix4x4 Wvp;
 
-            [PackOffset(4)]
+            [PackOffset(4, PackOffsetComponent.Y)]
             public Matrix4x4 World;
         }
 

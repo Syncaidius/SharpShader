@@ -43,16 +43,19 @@ namespace SharpShader
         internal readonly Dictionary<string, Type> Structures;
 
         [NonSerialized]
-        internal readonly Dictionary<string, RegisteredMember<Type>> ConstantBuffers;
+        internal readonly Dictionary<string, Type> ConstantBuffers;
 
         [NonSerialized]
-        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> Textures;
+        internal readonly Dictionary<string, FieldInfo> Textures;
 
         [NonSerialized]
-        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> Samplers;
+        internal readonly Dictionary<string, FieldInfo> Samplers;
 
         [NonSerialized]
-        internal readonly Dictionary<string, RegisteredMember<FieldInfo>> UAVs;
+        internal readonly Dictionary<string, FieldInfo> Buffers;
+
+        [NonSerialized]
+        internal readonly Dictionary<string, FieldInfo> UAVs;
 
         /// <summary>
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
@@ -78,10 +81,11 @@ namespace SharpShader
             ShaderFields = new Dictionary<string, FieldInfo>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
-            ConstantBuffers = new Dictionary<string, RegisteredMember<Type>>();
-            Textures = new Dictionary<string, RegisteredMember<FieldInfo>>();
-            Samplers = new Dictionary<string, RegisteredMember<FieldInfo>>();
-            UAVs = new Dictionary<string, RegisteredMember<FieldInfo>>();
+            ConstantBuffers = new Dictionary<string, Type>();
+            Textures = new Dictionary<string, FieldInfo>();
+            Samplers = new Dictionary<string, FieldInfo>();
+            Buffers = new Dictionary<string, FieldInfo>();
+            UAVs = new Dictionary<string, FieldInfo>();
 
             BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
             PopulateStructInfo(bFlags);
@@ -113,24 +117,24 @@ namespace SharpShader
             {
                 AllFields.Add(fi.Name, fi);
 
-                RegisterAttribute[] regAttributes = fi.GetCustomAttributes<RegisterAttribute>().ToArray();
-                RegisteredTypeAttribute regTypeAttribute = fi.GetCustomAttribute<RegisteredTypeAttribute>();
+                RegisteredTypeAttribute regTypeAttribute = fi.FieldType.GetCustomAttribute<RegisteredTypeAttribute>();
 
                 if (regTypeAttribute != null)
                 {
-                    UnorderedAccessTypeAttribute uav = fi.GetCustomAttribute<UnorderedAccessTypeAttribute>();
-                    RegisteredMember<FieldInfo> regInfo = new RegisteredMember<FieldInfo>(fi, regAttributes);
+                    UnorderedAccessTypeAttribute uav = fi.FieldType.GetCustomAttribute<UnorderedAccessTypeAttribute>();
 
                     if (uav != null)
                     {
-                        UAVs.Add(fi.Name, regInfo);
+                        UAVs.Add(fi.Name, fi);
                     }
                     else
                     {
-                        if (typeof(TextureBase).IsAssignableFrom(fi.FieldType) )
-                            Textures.Add(fi.Name, regInfo);
+                        if (typeof(TextureBase).IsAssignableFrom(fi.FieldType))
+                            Textures.Add(fi.Name, fi);
                         else if (typeof(TextureSampler).IsAssignableFrom(fi.FieldType))
-                            Samplers.Add(fi.Name, regInfo);
+                            Samplers.Add(fi.Name, fi);
+                        else if (typeof(StructuredBuffer<>).IsAssignableFrom(fi.FieldType))
+                            Buffers.Add(fi.Name, fi);
                     }
                 }
                 else
@@ -152,8 +156,7 @@ namespace SharpShader
                 if (cbAttribute != null)
                 {
                     RegisterAttribute[] regAttributes = t.GetCustomAttributes<RegisterAttribute>().ToArray();
-                    RegisteredMember<Type> regInfo = new RegisteredMember<Type>(t, regAttributes);
-                    ConstantBuffers.Add(t.Name, regInfo);
+                    ConstantBuffers.Add(t.Name, t);
                 }
                 else
                 {
@@ -190,6 +193,12 @@ namespace SharpShader
         {
             CompletedNodes.Add(node);
             SkipChildren(node);
+        }
+
+        internal void SkipSelfAndChildren<T>(SyntaxList<T> nodeList) where T : SyntaxNode
+        {
+            foreach (T node in nodeList)
+                SkipSelfAndChildren(node);
         }
 
         public override string ToString()

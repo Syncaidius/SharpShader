@@ -44,16 +44,11 @@ namespace SharpShader
             return "";
         }
 
-        internal abstract void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo);
+        internal abstract void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes);
 
-        internal abstract string TranslateVariable(ShaderContext context, 
-            SyntaxNode parent, 
-            TypeSyntax type, 
-            SyntaxToken identifier, 
-            SyntaxTokenList modifiers, 
-            SyntaxList<AttributeListSyntax> attributes);
+        internal abstract void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes);
 
-        internal abstract string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID);
+        internal abstract void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes);
 
         internal IEntryPointTranslator GetEntryPointTranslator(EntryPointType type)
         {

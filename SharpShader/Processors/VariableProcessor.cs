@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -32,10 +33,28 @@ namespace SharpShader.Processors
         {
             if (scope is TypedScope tScope)
             {
-                sc.Source.Append($"{tScope.TranslatedModifiers} ");
-                sc.Source.Append(tScope.TranslatedTypeName);
-                sc.Source.Append($" {syntax.Identifier}");
+                FieldInfo fInfo = null;
+                if (tScope.Parent is StructScope sScope)
+                    fInfo = sScope.TypeInfo.GetField(syntax.Identifier.ValueText);
 
+                if (fInfo == null)
+                    sc.AllFields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
+
+                if(fInfo != null)
+                { 
+                    IEnumerable<Attribute> fieldAttributes = fInfo.GetCustomAttributes();
+                    sc.Language.TranslateFieldPrefix(sc, syntax, fInfo, fieldAttributes);
+                    sc.Source.Append($"{tScope.TranslatedModifiers} ");
+                    sc.Source.Append(tScope.TranslatedTypeName);
+                    sc.Source.Append($" {syntax.Identifier.ValueText}");
+                    sc.Language.TranslateFieldPostfix(sc, syntax, fInfo, fieldAttributes);
+                }
+                else
+                {
+                    sc.Source.Append($"{tScope.TranslatedModifiers} ");
+                    sc.Source.Append(tScope.TranslatedTypeName);
+                    sc.Source.Append($" {syntax.Identifier.ValueText}");
+                }
 
                 if (tScope.OriginalType != null)
                 {
@@ -59,7 +78,6 @@ namespace SharpShader.Processors
                     }
                 }
 
-                // TODO scope modifiers in ScopeInfo (e.g. field modifiers/attributes for child variables, etc).
                 sc.Source.OpenScope<VariableScope>();
             }
         }

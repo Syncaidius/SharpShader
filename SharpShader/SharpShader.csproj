@@ -212,7 +212,7 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
-    <Compile Include="Processors\ArgumentProcessor.cs" />
+    <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
     <Compile Include="Processors\IdentifierProcessor.cs" />
@@ -249,7 +249,6 @@
     <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />
     <Compile Include="PropertyTranslation.cs" />
-    <Compile Include="RegisteredObject.cs" />
     <Compile Include="SemanticType.cs" />
     <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderContext.cs" />

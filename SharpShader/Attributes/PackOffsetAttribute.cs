@@ -9,6 +9,7 @@ namespace SharpShader
     public class PackOffsetAttribute : SharpShaderAttribute
     {
         internal PackOffsetComponent OffsetComponent { get; }
+
         internal int OffsetRegister { get; }
 
         public PackOffsetAttribute(int offsetRegister, PackOffsetComponent offsetComponent = PackOffsetComponent.X)

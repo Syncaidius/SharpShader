@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,135 +31,80 @@ namespace SharpShader
             //AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
-        //internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
-        //{
-        //    string strRegister = registerID != null ? $" : register(b{registerID}" : "";
-        //    string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
-        //    result += "{" + Environment.NewLine;
-        //    foreach (MemberDeclarationSyntax m in syntax.Members)
-        //    {
-        //        if (m is FieldDeclarationSyntax field)
-        //        {
-        //            string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
-        //            result += $"{fieldTranslation};{Environment.NewLine}";
-        //        }
-        //    }
-        //    result += "}" + Environment.NewLine;
-        //    return result;
-        //}
-
-        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo)
+        private void TranslateAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer)
         {
-            sc.Source.Append($"cbuffer {cBufferInfo.Info.Name}");
-            foreach(RegisterAttribute regAtt in cBufferInfo.Attributes)
+            foreach (Attribute a in attributes)
             {
-                if (regAtt.ApplicableEntryPoint == EntryPointType.AnyOrNone)
+                switch (a)
                 {
-                    sc.Source.Append($" : register(c{regAtt.Slot}");
-                }
-                else
-                {
-                    string profile = regAtt.Model.ToString().Replace("SM", _profileNames[regAtt.ApplicableEntryPoint]);
-                    sc.Source.Append($" : register({profile}, c{regAtt.Slot}");
+                    case RegisterAttribute regAtt:
+                        if (registerName == null)
+                            continue;
+
+                        if (regAtt.ApplicableEntryPoint == EntryPointType.AnyOrNone)
+                        {
+                            sc.Source.Append($" : register({registerName}{regAtt.Slot})");
+                        }
+                        else
+                        {
+                            string profile = regAtt.Model.ToString().Replace("SM", _profileNames[regAtt.ApplicableEntryPoint]);
+                            sc.Source.Append($" : register({profile}, {registerName}{regAtt.Slot})");
+                        }
+                        break;
+
+                    case PackOffsetAttribute packAtt:
+                        if (!isConstBuffer)
+                            continue;
+
+                        if (packAtt.OffsetComponent != PackOffsetComponent.X)
+                        {
+                            string componentName = packAtt.OffsetComponent.ToString().ToLower();
+                            sc.Source.Append($" : packoffset(c{packAtt.OffsetRegister}.{componentName})");
+                        }
+                        else
+                        {
+                            sc.Source.Append($" : packoffset(c{packAtt.OffsetRegister})");
+                        }
+                        break;
+
+                    case SemanticAttribute semAtt:
+                        if (isConstBuffer)
+                            continue;
+
+                        string semanticName = semAtt.Semantic.ToString().ToUpper();
+                        sc.Source.Append($" : {semanticName}");
+
+                        if (semAtt.Slot >= 0)
+                            sc.Source.Append(semAtt.Slot.ToString());
+                        break;
                 }
             }
         }
 
-        internal override string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID)
+        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
         {
-            char? registerChar = null;
-
-            if (typeof(TextureSampler).IsAssignableFrom(fieldType))
-                registerChar = 's';
-            else if (typeof(TextureBase).IsAssignableFrom(fieldType))
-                registerChar = 't';
-
-            if (registerChar != null)
-                return $"{syntax.Declaration} : register({registerChar}{registerID});";
-            else
-                return syntax.ToString();
+            sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferInfo.Name}");
+            TranslateAttributes(sc, attributes, 'b', true);
         }
 
-        internal override string TranslateVariable(ShaderContext context,
-            SyntaxNode parent,
-            TypeSyntax type,
-            SyntaxToken identifier,
-            SyntaxTokenList modifiers,
-            SyntaxList<AttributeListSyntax> attributes = default)
+        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes) { }
+
+        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
         {
-            string modifierTranslation = "";
-            bool isInConstBuffer = false;
+            char? regName = null;
+            bool inConstantBuffer = false;
 
-            if (parent is StructDeclarationSyntax structSyntax)
-                isInConstBuffer = context.ConstantBuffers.ContainsKey(structSyntax.Identifier.ValueText);
+            if (info.DeclaringType?.IsValueType == true)
+                inConstantBuffer = sc.ConstantBuffers.ContainsKey(info.DeclaringType.Name);
 
+            if (sc.Samplers.ContainsKey(info.Name))
+                regName = 's';
+            else if (sc.Textures.ContainsKey(info.Name) || sc.Buffers.ContainsKey(info.Name))
+                regName = 't';
+            else if (sc.UAVs.ContainsKey(info.Name))
+                regName = 'u';
 
-            // PackOffset can only be used on constant buffer fields. Skip parsing of this entirely if we're not in a constant buffer.
-            if (isInConstBuffer)
-            {
-                AttributeSyntax packAttribute = ShaderReflection.GetAttribute<PackOffsetAttribute>(attributes);
-                if (packAttribute != null)
-                {
-                    int register = -1;
-
-                    // Pack offset attribute has either 1 or 2 arguments. Second argument is optional
-                    AttributeArgumentSyntax argRegister = packAttribute.ArgumentList.Arguments[0];
-                    if (int.TryParse(argRegister.ToString(), out register))
-                    {
-                        if (packAttribute.ArgumentList.Arguments.Count == 2)
-                        {
-                            AttributeArgumentSyntax argComponent = packAttribute.ArgumentList.Arguments[1];
-                            string comName = argComponent.ToString();
-                            if (Enum.TryParse(comName, out PackOffsetComponent component))
-                                return $"{type} {identifier} : packoffset(c{register}.{component.ToString().ToLower()})";
-                        }
-
-                        return $"{type} {identifier} : packoffset(c{register})";
-                    }
-                }
-            }
-            else
-            {
-                AttributeSyntax semanticAttribute = ShaderReflection.GetAttribute<SemanticAttribute>(attributes);
-                if (semanticAttribute != null)
-                {
-                    if (!isInConstBuffer)
-                        modifierTranslation = context.Parent.Language.TranslateModifiers(modifiers);
-
-                    int slot = -1;
-                    SemanticType semType = SemanticType.Position;
-                    AttributeArgumentSyntax argSemantic = semanticAttribute.ArgumentList.Arguments[0];
-
-                    if (ShaderReflection.ParseEnum(argSemantic.ToString(), out semType))
-                    {
-                        string strSemType = semType.ToString().ToUpper();
-                        if (semanticAttribute.ArgumentList.Arguments.Count > 1)
-                        {
-                            AttributeArgumentSyntax argSlot = semanticAttribute.ArgumentList.Arguments[1];
-                            string strArgSlot = argSlot.ToString();
-                            if (int.TryParse(strArgSlot, out slot))
-                            {
-                                if (slot > -1)
-                                    return $"{modifierTranslation} {type} {identifier} : {strSemType}{slot}";
-                                else
-                                    context.AddMessage($"Invalid SemanticAttribute slot value. Must be greater than, or equal to 0", 0, 0);
-                            }
-                            else
-                            {
-                                context.AddMessage($"Invalid SemanticAttribute slot value. Expected value greater than, or equal to 0. Got: {strArgSlot}", 0, 0);
-                            }
-                        }
-
-                        return $"{modifierTranslation} {type} {identifier} : {strSemType}";
-                    }
-                    else
-                    {
-                        context.AddMessage($"Invalid semantic name: {argSemantic}", 0, 0);
-                    }
-                }
-            }
-
-            return $"{modifiers} {type} {identifier}";
+            TranslateAttributes(sc, attributes, regName, inConstantBuffer);
         }
 
         internal override string TranslateNumber(ShaderContext context, string number)

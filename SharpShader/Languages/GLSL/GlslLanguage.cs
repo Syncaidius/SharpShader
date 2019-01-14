@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,27 +15,22 @@ namespace SharpShader
 
         internal GlslFoundation(OutputLanguage language) : base(language) { }
 
-        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string TranslateVariable(ShaderContext context,
-            SyntaxNode parent,
-            TypeSyntax type,
-            SyntaxToken identifier,
-            SyntaxTokenList modifiers,
-            SyntaxList<AttributeListSyntax> attributes)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override string TranslateNumber(ShaderContext context, string number)
         {
             throw new NotImplementedException();
         }
 
-        internal override string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID)
+        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
         {
             throw new NotImplementedException();
         }

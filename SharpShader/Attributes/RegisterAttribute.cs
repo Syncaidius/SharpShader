@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    /// <summary>
+    /// Specifies the register or slot ID for a field or constant buffer structure. <para/>
+    /// Multiple register attributes can be used to specify different slots for different stages of the shader pipeline, on the same object.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Struct | AttributeTargets.Field, AllowMultiple = true)]
     public class RegisterAttribute : SharpShaderAttribute
     {
+        /// <summary>
+        /// Gets the register or slot ID.
+        /// </summary>
         public uint Slot { get; }
 
         /// <summary>
@@ -22,6 +29,12 @@ namespace SharpShader
         /// </summary>
         public EntryPointType ApplicableEntryPoint { get; }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="RegisterAttribute"/>.
+        /// </summary>
+        /// <param name="slot"></param>
+        /// <param name="entryPoint">The target shader profile of the register.</param>
+        /// <param name="model">The target shader model of the register.</param>
         public RegisterAttribute(uint slot, EntryPointType entryPoint = EntryPointType.AnyOrNone, ShaderModel model = ShaderModel.SM_5_0)
         {
             Slot = slot;

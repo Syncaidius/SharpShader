@@ -8,28 +8,36 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Processors
 {
-    internal class structProcessor : NodeProcessor<StructDeclarationSyntax>
+    internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
         protected override void OnTranslate(ShaderContext sc, StructDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Identifier.ToString();
             string headerTranslation = "";
             StructScopeType scopeType = StructScopeType.Struct;
+            Type structInfo = null;
 
-            if (sc.ConstantBuffers.TryGetValue(typeName, out RegisteredMember<Type> cBufferInfo))
+            if (sc.ConstantBuffers.TryGetValue(typeName, out structInfo))
             {
-                sc.Language.TranslateConstBufferHeader(sc, syntax, cBufferInfo);
+                IEnumerable<Attribute> cBufferAttributes = structInfo.GetCustomAttributes(false).Cast<Attribute>();
+                sc.Language.TranslateConstBufferHeader(sc, syntax, structInfo, cBufferAttributes);
                 scopeType = StructScopeType.ConstantBuffer;
             }
-            else if (sc.Structures.TryGetValue(typeName, out Type structInfo))
+            else if (sc.Structures.TryGetValue(typeName, out structInfo))
             {
-                sc.Source.Append($"struct {syntax.Identifier}");
+                //IEnumerable<Attribute> cBufferAttributes = structInfo.GetCustomAttributes(false).Cast<Attribute>();
+                // TODO Add translation of struct attributes (e.g. [InputStructure] or [OutputStructure]).
+
+                sc.Source.Append($"{Environment.NewLine}struct {syntax.Identifier}");
                 scopeType = StructScopeType.Struct;
             }
 
             sc.Source.Append(headerTranslation);
             StructScope structScope = sc.Source.OpenScope<StructScope>();
             structScope.StructType = scopeType;
+            structScope.TypeInfo = structInfo;
+
+            sc.SkipSelfAndChildren(syntax.AttributeLists);
         }
     }
 }
