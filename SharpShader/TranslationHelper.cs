@@ -48,13 +48,13 @@ namespace SharpShader
                             }
 
                             replacement = translation.NativeText + replacement;
-
                             return (replacement, type, type.IsArray);
                         }
                     }
                 }
             }
 
+            // We have no known Type instance to use, so try to figure out if it's an array or not, manually.
             int openIndex = typeName.IndexOf("[");
             bool isArray = false;
 

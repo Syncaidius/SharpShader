@@ -10,6 +10,16 @@ namespace SharpShader
 {
     internal class HlslLanguage : ShaderLanguage
     {
+        static readonly Dictionary<EntryPointType, string> _profileNames = new Dictionary<EntryPointType, string>()
+        {
+            [EntryPointType.ComputeShader] = "cs",
+            [EntryPointType.DomainShader] = "ds",
+            [EntryPointType.FragmentShader] = "ps",
+            [EntryPointType.GeometryShader] = "gs",
+            [EntryPointType.HullShader] = "hs",
+            [EntryPointType.VertexShader] = "vs",
+        };
+
         internal override bool InstancedConstantBuffers => false;
 
         internal HlslLanguage(OutputLanguage language) : base(language)
@@ -20,38 +30,38 @@ namespace SharpShader
             //AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
         }
 
-        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
+        //internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID)
+        //{
+        //    string strRegister = registerID != null ? $" : register(b{registerID}" : "";
+        //    string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
+        //    result += "{" + Environment.NewLine;
+        //    foreach (MemberDeclarationSyntax m in syntax.Members)
+        //    {
+        //        if (m is FieldDeclarationSyntax field)
+        //        {
+        //            string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
+        //            result += $"{fieldTranslation};{Environment.NewLine}";
+        //        }
+        //    }
+        //    result += "}" + Environment.NewLine;
+        //    return result;
+        //}
+
+        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo)
         {
-            string strRegister = registerID != null ? $" : register(b{registerID}" : "";
-            string result = $"cbuffer {syntax.Identifier}{strRegister}){Environment.NewLine}";
-            result += "{" + Environment.NewLine;
-            foreach (MemberDeclarationSyntax m in syntax.Members)
+            sc.Source.Append($"cbuffer {cBufferInfo.Info.Name}");
+            foreach(RegisterAttribute regAtt in cBufferInfo.Attributes)
             {
-                if (m is FieldDeclarationSyntax field)
+                if (regAtt.ApplicableEntryPoint == EntryPointType.AnyOrNone)
                 {
-                    string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
-                    result += $"{fieldTranslation};{Environment.NewLine}";
+                    sc.Source.Append($" : register(c{regAtt.Slot}");
+                }
+                else
+                {
+                    string profile = regAtt.Model.ToString().Replace("SM", _profileNames[regAtt.ApplicableEntryPoint]);
+                    sc.Source.Append($" : register({profile}, c{regAtt.Slot}");
                 }
             }
-            result += "}" + Environment.NewLine;
-            return result;
-        }
-
-        internal override string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax)
-        {
-            string result = $"struct {syntax.Identifier}{Environment.NewLine}";
-            result += "{" + Environment.NewLine;
-            foreach (MemberDeclarationSyntax m in syntax.Members)
-            {
-                if (m is FieldDeclarationSyntax field)
-                {
-                    string fieldTranslation = TranslateVariable(context, syntax, field.Declaration.Type, field.Declaration.Variables[0].Identifier, field.Modifiers, field.AttributeLists);
-                    result += $"{fieldTranslation};{Environment.NewLine}";
-                }
-            }
-            result += "};" + Environment.NewLine;
-
-            return result;
         }
 
         internal override string TranslateRegisterField(ShaderContext context, FieldDeclarationSyntax syntax, Type fieldType, uint registerID)

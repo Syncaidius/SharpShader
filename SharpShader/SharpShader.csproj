@@ -213,6 +213,7 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Processors\ArgumentProcessor.cs" />
+    <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
     <Compile Include="Processors\IdentifierProcessor.cs" />
     <Compile Include="Processors\ArrayRankProcessor.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="Scopes\IndexerScope.cs" />
     <Compile Include="Scopes\TypedScope.cs" />
     <Compile Include="Scopes\ParenthesesScope.cs" />
+    <Compile Include="Scopes\StructScope.cs" />
     <Compile Include="Scopes\VariableScope.cs" />
     <Compile Include="Scopes\BlockScope.cs" />
     <Compile Include="Scopes\InitializerScope.cs" />

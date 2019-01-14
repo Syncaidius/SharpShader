@@ -227,7 +227,7 @@ namespace SharpShader
             }
             else
             {
-                sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// No translator for {t.Name}");
+                sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// [[No translator for {t.Name}]] ");
                 sc.CompletedNodes.Add(syntax);
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);

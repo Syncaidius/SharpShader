@@ -38,6 +38,7 @@ namespace SharpShader
         internal abstract OpenCloseSyntax ClosingSyntax { get; }
     }
 
+    [Flags]
     internal enum NewLineLocation
     {
         None = 0,

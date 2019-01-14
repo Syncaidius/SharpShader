@@ -27,8 +27,17 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, EntryPoint> EntryPoints;
 
+        /// <summary>
+        /// All fields that are to be treated as standard 'fields' in the output source.
+        /// </summary>
         [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> Fields;
+        internal readonly Dictionary<string, FieldInfo> ShaderFields;
+
+        /// <summary>
+        /// All C#-based fields contained within the shader class.
+        /// </summary>
+        [NonSerialized]
+        internal readonly Dictionary<string, FieldInfo> AllFields;
 
         [NonSerialized]
         internal readonly Dictionary<string, Type> Structures;
@@ -66,7 +75,8 @@ namespace SharpShader
             Source = new OutputSource();
 
             EntryPoints = new Dictionary<string, EntryPoint>();
-            Fields = new Dictionary<string, FieldInfo>();
+            ShaderFields = new Dictionary<string, FieldInfo>();
+            AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
             ConstantBuffers = new Dictionary<string, RegisteredMember<Type>>();
             Textures = new Dictionary<string, RegisteredMember<FieldInfo>>();
@@ -74,9 +84,9 @@ namespace SharpShader
             UAVs = new Dictionary<string, RegisteredMember<FieldInfo>>();
 
             BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            PopulateStructInfo(bFlags);
             PopulateMethodInfo(bFlags);
             PopulateFieldInfo(bFlags);
-            PopulateStructInfo(bFlags);
         }
 
         private void PopulateMethodInfo(BindingFlags bFlags)
@@ -101,10 +111,7 @@ namespace SharpShader
             FieldInfo[] fInfo = ShaderType.GetFields(bFlags);
             foreach (FieldInfo fi in fInfo)
             {
-                // TODO If the field type is that of a constant buffer struct, check if the language allows instance-based access to constant buffer members.
-                //      If not, skip the field. If it's not present in the field dictionary when a field node processor hits it, it should be removed from the source code.
-
-                Fields.Add(fi.Name, fi);
+                AllFields.Add(fi.Name, fi);
 
                 RegisterAttribute[] regAttributes = fi.GetCustomAttributes<RegisterAttribute>().ToArray();
                 RegisteredTypeAttribute regTypeAttribute = fi.GetCustomAttribute<RegisteredTypeAttribute>();
@@ -126,12 +133,16 @@ namespace SharpShader
                             Samplers.Add(fi.Name, regInfo);
                     }
                 }
+                else
+                {
+                    ShaderFields.Add(fi.Name, fi);
+                }
             }
         }
 
         private void PopulateStructInfo(BindingFlags bFlags)
         {
-            Type[] nestedTypes = ShaderType.GetNestedTypes();
+            Type[] nestedTypes = ShaderType.GetNestedTypes(bFlags);
             foreach(Type t in nestedTypes)
             {
                 if (!t.IsValueType)

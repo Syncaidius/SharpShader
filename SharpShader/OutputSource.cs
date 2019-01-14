@@ -40,13 +40,13 @@ namespace SharpShader
             _blocks.Push(_currentScope); // Push old scope
             _currentScope = newScope; // Set new as current
 
-            if (_currentScope.OpeningSyntax.NewLine == NewLineLocation.Before)
+            if ((_currentScope.OpeningSyntax.NewLine & NewLineLocation.Before) == NewLineLocation.Before)
                 _sb.Append(Environment.NewLine);
 
             if (!string.IsNullOrEmpty(_currentScope.OpeningSyntax.Value))
                 _sb.Append(_currentScope.OpeningSyntax.Value);
 
-            if (_currentScope.OpeningSyntax.NewLine == NewLineLocation.After)
+            if ((_currentScope.OpeningSyntax.NewLine & NewLineLocation.After) == NewLineLocation.After)
                 _sb.Append(Environment.NewLine);
 
             return newScope;
@@ -57,13 +57,13 @@ namespace SharpShader
             if (_blocks.Count == 0)
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
-            if (_currentScope.ClosingSyntax.NewLine == NewLineLocation.Before)
+            if ((_currentScope.ClosingSyntax.NewLine & NewLineLocation.Before) == NewLineLocation.Before)
                 _sb.Append(Environment.NewLine);
 
             if (!string.IsNullOrEmpty(_currentScope.ClosingSyntax.Value))
                 _sb.Append(_currentScope.ClosingSyntax.Value);
 
-            if (_currentScope.ClosingSyntax.NewLine == NewLineLocation.After)
+            if ((_currentScope.ClosingSyntax.NewLine & NewLineLocation.After) == NewLineLocation.After)
                 _sb.Append(Environment.NewLine);
 
             _currentScope = _blocks.Pop();

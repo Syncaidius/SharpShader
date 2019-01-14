@@ -22,9 +22,4 @@ namespace SharpShader.Processors
             }
         }
     }
-
-    internal class CompilationSyntaxProcessor : NodeProcessor<CompilationUnitSyntax>
-    {
-        protected override void OnTranslate(ShaderContext sc, CompilationUnitSyntax syntax, ScopeInfo scope) { }
-    }
 }

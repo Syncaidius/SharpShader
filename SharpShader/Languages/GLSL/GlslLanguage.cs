@@ -14,12 +14,7 @@ namespace SharpShader
 
         internal GlslFoundation(OutputLanguage language) : base(language) { }
 
-        internal override string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax node, uint? register)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override string TranslateStruct(ShaderContext context, StructDeclarationSyntax node)
+        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo)
         {
             throw new NotImplementedException();
         }

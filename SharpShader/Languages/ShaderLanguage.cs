@@ -44,9 +44,7 @@ namespace SharpShader
             return "";
         }
 
-        internal abstract string TranslateConstantBuffer(ShaderContext context, StructDeclarationSyntax syntax, uint? registerID);
-
-        internal abstract string TranslateStruct(ShaderContext context, StructDeclarationSyntax syntax);
+        internal abstract void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, RegisteredMember<Type> cBufferInfo);
 
         internal abstract string TranslateVariable(ShaderContext context, 
             SyntaxNode parent, 

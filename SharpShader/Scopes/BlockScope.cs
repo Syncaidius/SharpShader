@@ -8,8 +8,8 @@ namespace SharpShader
 {
     internal class BlockScope : ScopeInfo
     {
-        internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax("{", NewLineLocation.Before);
+        internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax("{", NewLineLocation.Before | NewLineLocation.After);
 
-        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("}", NewLineLocation.Before);
+        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("}", NewLineLocation.Before | NewLineLocation.After);
     }
 }

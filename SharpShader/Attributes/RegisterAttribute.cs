@@ -28,18 +28,6 @@ namespace SharpShader
             Model = ShaderModel.SM_5_0;
             ApplicableEntryPoint = EntryPointType.AnyOrNone;
         }
-
-        internal static uint? Parse(AttributeSyntax syntax)
-        {
-            uint? register = null;
-            if (syntax.ArgumentList.Arguments.Count > 0)
-            {
-                if (uint.TryParse(syntax.ArgumentList.Arguments[0].ToString(), out uint val))
-                    register = val;
-            }
-
-            return register;
-        }
     }
 
     /// <summary>
