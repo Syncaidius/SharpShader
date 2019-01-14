@@ -26,6 +26,7 @@ namespace SharpShader
         /// <param name="cSharpSource">The C# source code to be converted.</param>
         /// <param name="outputLanguage">The output shader language.</param>
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
+        /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
         public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {

@@ -18,19 +18,19 @@ namespace SharpShader
         /// <summary>
         /// C# source strings, indexed by friendly name or file name.
         /// </summary>
-        internal Dictionary<string, string> CSharpSources;
+        public Dictionary<string, string> CSharpSources;
 
-        internal List<string> PreprocessorSymbols = new List<string>();
+        public List<string> PreprocessorSymbols = new List<string>();
 
         /// <summary>
         /// The output language.
         /// </summary>
-        internal OutputLanguage Language;
+        public OutputLanguage Language;
 
         /// <summary>
         /// The flags to apply to the conversion.
         /// </summary>
-        internal ConversionFlags Flags;
+        public ConversionFlags Flags;
     }
 
     internal class TranslationRunner : MarshalByRefObject
