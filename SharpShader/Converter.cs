@@ -27,7 +27,7 @@ namespace SharpShader
         /// <param name="outputLanguage">The output shader language.</param>
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <returns></returns>
-        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None)
+        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {
             return Convert(new Dictionary<string, string>()
             {
@@ -42,19 +42,19 @@ namespace SharpShader
         /// <param name="cSharpSources">A dictionary containing source code by file or friendly name.</param>
         /// <param name="outputLanguage">The language that the input source code should be translated to.</param>
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
+        /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public ConversionResult Convert(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None)
+        public ConversionResult Convert(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {
             AppDomain domain = AppDomain.CreateDomain("SharpShader");
             foreach(AssemblyName an in ShaderReflection.SupportedAssemblies)
                 domain.Load(an);
-
-
             TranslationArgs tArgs = new TranslationArgs()
             {
                 CSharpSources = new Dictionary<string, string>(cSharpSources),
                 Flags = flags,
                 Language = outputLanguage,
+                PreprocessorSymbols = preprocessorSymbols,
             };
 
             TranslationRunner runner = (TranslationRunner)domain.CreateInstanceAndUnwrap(typeof(TranslationRunner).Assembly.FullName, typeof(TranslationRunner).FullName);

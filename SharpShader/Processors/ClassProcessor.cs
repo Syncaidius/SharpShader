@@ -11,7 +11,7 @@ namespace SharpShader.Processors
     internal class ClassProcessor : NodeProcessor<ClassDeclarationSyntax>
     {
         protected override void OnTranslate(ShaderContext sc, ClassDeclarationSyntax syntax, ScopeInfo scope)
-        {
+        {            
             if (syntax.Identifier.ValueText != sc.Name)
             {
                 // TODO translate non-root class.

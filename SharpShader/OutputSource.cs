@@ -18,6 +18,12 @@ namespace SharpShader
         [NonSerialized]
         ScopeInfo _currentScope = new InertScopeInfo();
 
+        internal void Append(SyntaxTriviaList triviaList)
+        {
+            foreach(SyntaxTrivia trivia in triviaList)
+                _sb.Append(trivia.Token.ValueText);
+        }
+
         internal void Append(SyntaxToken token)
         {
             _sb.Append(token.ValueText);

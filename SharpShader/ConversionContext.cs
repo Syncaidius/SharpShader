@@ -31,13 +31,13 @@ namespace SharpShader
         [NonSerialized]
         int _nextVariable = 0;
 
-        internal ConversionContext(ShaderLanguage foundatation)
+        internal ConversionContext(ShaderLanguage foundatation, List<string> preprocessorSymbols)
         {
             Reflection = new ReflectionInfo();
             Language = foundatation;
             Shaders = new List<ShaderContext>();
             Messages = new List<ConversionMessage>();
-            ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular);
+            ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
         }
 
         internal void AddMessage(string text, SyntaxNode syntax, ConversionMessageType type = ConversionMessageType.Error)

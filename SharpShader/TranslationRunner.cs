@@ -13,25 +13,27 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class TranslationArgs : MarshalByRefObject
+    internal class TranslationArgs : MarshalByRefObject
     {
         /// <summary>
         /// C# source strings, indexed by friendly name or file name.
         /// </summary>
-        public Dictionary<string, string> CSharpSources;
+        internal Dictionary<string, string> CSharpSources;
+
+        internal List<string> PreprocessorSymbols = new List<string>();
 
         /// <summary>
         /// The output language.
         /// </summary>
-        public OutputLanguage Language;
-        
+        internal OutputLanguage Language;
+
         /// <summary>
         /// The flags to apply to the conversion.
         /// </summary>
-        public ConversionFlags Flags;
+        internal ConversionFlags Flags;
     }
 
-    public class TranslationRunner : MarshalByRefObject
+    internal class TranslationRunner : MarshalByRefObject
     {
         static Dictionary<Type, NodeProcessor> _processors;
         static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green };
@@ -52,10 +54,14 @@ namespace SharpShader
             }
         }
 
-        public ConversionContext Run(TranslationArgs args)
+        internal ConversionContext Run(TranslationArgs args)
         {
+            List<string> preprocessorSymbols = null;
+            if (args.PreprocessorSymbols != null)
+                preprocessorSymbols = new List<string>(args.PreprocessorSymbols);
+
             ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
-            ConversionContext context = new ConversionContext(foundation);
+            ConversionContext context = new ConversionContext(foundation, preprocessorSymbols);
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
@@ -215,6 +221,7 @@ namespace SharpShader
             {
                 ScopeInfo lastScope = sc.Source.CurrentScope;
                 processor.Translate(sc, syntax, sc.Source.CurrentScope);
+
                 bool scopeOpened = lastScope != sc.Source.CurrentScope;
 
                 sc.CompletedNodes.Add(syntax);

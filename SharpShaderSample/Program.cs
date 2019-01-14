@@ -13,7 +13,7 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             string[] samples = {
-                //"FunctionalityTestShader.cs",
+                "FunctionalityTestShader.cs",
                 //"SampleShader.cs",
                 "SampleTextureShader.cs",
                // "MoltenSpriteShader.cs"
