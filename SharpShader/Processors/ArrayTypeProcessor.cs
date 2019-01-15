@@ -8,11 +8,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Processors
 {
-    internal class ArrayCreationProcessor : NodeProcessor<ArrayCreationExpressionSyntax>
+    internal class ArrayTypeProcessor : NodeProcessor<ArrayTypeSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ArrayCreationExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, ArrayTypeSyntax syntax, ScopeInfo scope)
         {
-            sc.Source.OpenScope<ArrayBlockScope>();
+            sc.Skip(syntax.ElementType);
         }
     }
 }

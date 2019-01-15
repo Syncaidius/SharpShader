@@ -78,6 +78,7 @@ namespace SharpShader.Processors
                     }
                 }
 
+                // TODO do we need to use a different scope if inside an initializer? (i.e. InitializerMemberScope).
                 sc.Source.OpenScope<VariableScope>();
             }
         }

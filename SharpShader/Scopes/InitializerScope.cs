@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +8,10 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    /// <summary>
-    /// A <see cref="ScopeInfo"/> which does nothing but contain child syntax.
-    /// </summary>
-    internal class InitializerScope : ScopeInfo
+    internal class InitializerScope : BlockScope
     {
-        internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax(NewLineLocation.None);
+        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("}", NewLineLocation.Before);
 
-        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax(NewLineLocation.None);
-
-        /// <summary>
-        /// The name of the variable that initialized member belongs to.
-        /// </summary>
-        internal string VariableName;
+        internal SeparatedSyntaxList<ExpressionSyntax> Items;
     }
 }

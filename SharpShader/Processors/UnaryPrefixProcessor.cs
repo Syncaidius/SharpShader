@@ -8,11 +8,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Processors
 {
-    internal class IdentifierProcessor : NodeProcessor<IdentifierNameSyntax>
+    internal class UnaryPrefixProcessor : NodeProcessor<PrefixUnaryExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, IdentifierNameSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderContext sc, PrefixUnaryExpressionSyntax syntax, ScopeInfo scope)
         {
-            sc.Source.Append(syntax.Identifier);
+            sc.Source.Append(syntax.OperatorToken);
         }
     }
 }
