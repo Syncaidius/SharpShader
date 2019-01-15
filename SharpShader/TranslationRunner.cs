@@ -211,7 +211,7 @@ namespace SharpShader
 
         internal static void Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
         {
-            if (sc.CompletedNodes.Contains(syntax))
+            if (sc.IsCompleted(syntax))
                 return;
 
             Type t = syntax.GetType();
@@ -224,7 +224,7 @@ namespace SharpShader
 
                 bool scopeOpened = lastScope != sc.Source.CurrentScope;
 
-                sc.CompletedNodes.Add(syntax);
+                sc.Complete(syntax);
 
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
@@ -235,7 +235,7 @@ namespace SharpShader
             else
             {
                 sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// [[No translator for {t.Name}]] ");
-                sc.CompletedNodes.Add(syntax);
+                sc.Complete(syntax);
                 foreach (SyntaxNode child in children)
                     Translate(sc, child, depth + 1);
             }

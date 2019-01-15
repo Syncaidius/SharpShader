@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ArgumentScope : ScopeInfo
+    /// <summary>
+    /// A scope for an parameter or argument inside of parentheses.
+    /// </summary>
+    internal class ParenthesesItemScope : ScopeInfo
     {
         internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax( NewLineLocation.None);
 

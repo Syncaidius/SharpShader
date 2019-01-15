@@ -97,7 +97,9 @@ namespace SharpShaderSample
 
         T GenericLamdaMethod<T>(int increment) where T : struct => default(T);
 
-        public void AnonymousAnons(Action<int, float> test)
+        void NoReturnLamdaMethod(bool isValid) => CameraPos = new Vector3(5, 0.2f, -11);
+
+        public void DelegateParameterTest(Action<int, float> test)
         {
             test(LAPS, RADIUS);
         }

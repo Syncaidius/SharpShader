@@ -21,7 +21,7 @@ namespace SharpShader.Processors
             string typeName = syntax.Type.ToString();
             (string translatedName, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, typeName);
 
-            sc.CompletedNodes.Add(syntax.Type);
+            sc.Complete(syntax.Type);
             sc.Source.Append(translatedName);
         }
     }

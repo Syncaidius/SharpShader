@@ -212,9 +212,13 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="MethodBucket.cs" />
+    <Compile Include="Processors\ArrowExpressionProcessor.cs" />
+    <Compile Include="Processors\BinaryExpressionProcessor.cs" />
+    <Compile Include="Processors\ParameterProcessor.cs" />
+    <Compile Include="Processors\MethodDeclarationProcessor.cs" />
     <Compile Include="Processors\InitializerProcessor.cs" />
     <Compile Include="Processors\ArgumentProcessor.cs" />
-    <Compile Include="Processors\ArgumentListProcessor.cs" />
     <Compile Include="Processors\ObjectCreationProcessor.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\ArrayTypeProcessor.cs" />
@@ -224,7 +228,8 @@
     <Compile Include="Processors\IdentifierProcessor.cs" />
     <Compile Include="Processors\ArrayRankProcessor.cs" />
     <Compile Include="Processors\PredefinedTypeProcessor.cs" />
-    <Compile Include="Scopes\ArgumentScope.cs" />
+    <Compile Include="Scopes\MethodScope.cs" />
+    <Compile Include="Scopes\ParenthesesItemScope.cs" />
     <Compile Include="Scopes\IndexerScope.cs" />
     <Compile Include="Scopes\InitializerMemberScope.cs" />
     <Compile Include="Scopes\TypedScope.cs" />

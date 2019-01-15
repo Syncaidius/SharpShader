@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ArrayTypeSyntax syntax, ScopeInfo scope)
         {
-            sc.Skip(syntax.ElementType);
+            sc.Complete(syntax.ElementType);
         }
     }
 }

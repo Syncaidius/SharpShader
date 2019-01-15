@@ -18,6 +18,20 @@ namespace SharpShader
 
         static readonly char[] _namespaceDelimiters = { '.' };
         internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
+        internal static readonly Dictionary<string, Type> _baseTypeAliases = new Dictionary<string, Type>()
+        {
+            ["long"] = typeof(long),
+            ["ulong"] = typeof(ulong),
+            ["int"] = typeof(int),
+            ["uint"] = typeof(uint),
+            ["short"] = typeof(short),
+            ["ushort"] = typeof(ushort),
+            ["byte"] = typeof(byte),
+            ["sbyte"] = typeof(sbyte),
+            ["float"] = typeof(float),
+            ["double"] = typeof(double),
+            ["decimal"] = typeof(decimal),
+        };
 
         internal static readonly string[] SupportedNamespaces = { NAMESPACE, "System" };
         internal static readonly AssemblyName[] SupportedAssemblies = {
@@ -126,14 +140,18 @@ namespace SharpShader
         internal static Type ResolveType(string typeName)
         {
             Type t = null;
-            string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length > 0)
+
+            if (!_baseTypeAliases.TryGetValue(typeName, out t))
             {
-                for (int i = 0; i < SupportedNamespaces.Length; i++)
+                string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 0)
                 {
-                    t = Type.GetType($"{NAMESPACE}.{parts[parts.Length - 1]}");
-                    if (t != null)
-                        break;
+                    for (int i = 0; i < SupportedNamespaces.Length; i++)
+                    {
+                        t = Type.GetType($"{NAMESPACE}.{parts[parts.Length - 1]}");
+                        if (t != null)
+                            break;
+                    }
                 }
             }
 

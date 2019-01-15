@@ -61,7 +61,10 @@ namespace SharpShader
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
         /// </summary>
         [NonSerialized]
-        internal readonly HashSet<SyntaxNode> CompletedNodes;
+        readonly HashSet<SyntaxNode> _completedNodes;
+
+        [NonSerialized]
+        readonly Dictionary<string, MethodBucket> _methods;
 
         internal string Name { get; }
 
@@ -74,10 +77,11 @@ namespace SharpShader
             ShaderType = shaderType;
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
-            CompletedNodes = new HashSet<SyntaxNode>();
+            _completedNodes = new HashSet<SyntaxNode>();
             Source = new OutputSource();
 
             EntryPoints = new Dictionary<string, EntryPoint>();
+            _methods = new Dictionary<string, MethodBucket>();
             ShaderFields = new Dictionary<string, FieldInfo>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
@@ -106,6 +110,17 @@ namespace SharpShader
                         Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, ConversionMessageType.Warning);
 
                     EntryPoints.Add(mi.Name, new EntryPoint(mi, epAttribute, epAttribute.EntryType));
+                }
+                else
+                {
+                    MethodBucket bucket;
+                    if (!_methods.TryGetValue(mi.Name, out bucket))
+                    {
+                        bucket = new MethodBucket();
+                        _methods.Add(mi.Name, bucket);
+                    }
+
+                    bucket.Add(mi);
                 }
             }
         }
@@ -165,6 +180,14 @@ namespace SharpShader
             }
         }
 
+        internal MethodInfo GetMethodInfo(MethodDeclarationSyntax syntax)
+        {
+            if (_methods.TryGetValue(syntax.Identifier.ValueText, out MethodBucket bucket))
+                return bucket.Find(syntax);
+
+            return null;
+        }
+
         internal void AddMessage(string text, SyntaxNode node, ConversionMessageType type = ConversionMessageType.Error)
         {
             Location loc = node.GetLocation();
@@ -177,22 +200,39 @@ namespace SharpShader
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);
         }
 
+        /// <summary>
+        /// Marks the child nodes of the specified <see cref="SyntaxNode"/> as completed.
+        /// </summary>
+        /// <param name="node">The node who's children will be marked as completed.</param>
         internal void SkipChildren(SyntaxNode node)
         {
             IEnumerable<SyntaxNode> children = node.ChildNodes();
             foreach (SyntaxNode n in children)
-                CompletedNodes.Add(node);
+                _completedNodes.Add(node);
         }
 
-        internal void Skip(SyntaxNode node)
+        /// <summary>
+        /// Marks a <see cref="SyntaxNode"/> as completed. This means that it will be skipped if it comes up again later in the translation process.
+        /// </summary>
+        /// <param name="node">The node to be completed.</param>
+        internal void Complete(SyntaxNode node)
         {
-            CompletedNodes.Add(node);
+            _completedNodes.Add(node);
         }
 
+        /// <summary>
+        /// Marks a <see cref="SyntaxNode"/> and it's child nodes as completed. This means that it will be skipped if it comes up again later in the translation process.
+        /// </summary>
+        /// <param name="node">The node to be completed.</param>
         internal void SkipSelfAndChildren(SyntaxNode node)
         {
-            CompletedNodes.Add(node);
+            _completedNodes.Add(node);
             SkipChildren(node);
+        }
+
+        internal bool IsCompleted(SyntaxNode node)
+        {
+            return _completedNodes.Contains(node);
         }
 
         internal void SkipSelfAndChildren<T>(SyntaxList<T> nodeList) where T : SyntaxNode

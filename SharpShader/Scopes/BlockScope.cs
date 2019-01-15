@@ -10,6 +10,6 @@ namespace SharpShader
     {
         internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax("{", NewLineLocation.Before | NewLineLocation.After);
 
-        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("}", NewLineLocation.Before | NewLineLocation.After);
+        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax("}", NewLineLocation.After);
     }
 }

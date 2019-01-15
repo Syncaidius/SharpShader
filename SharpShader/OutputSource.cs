@@ -34,6 +34,11 @@ namespace SharpShader
             _sb.Append(src);
         }
 
+        internal void AppendLineBreak()
+        {
+            _sb.Append(Environment.NewLine);
+        }
+
         internal T OpenScope<T>() where T : ScopeInfo, new()
         {
             T newScope = new T()

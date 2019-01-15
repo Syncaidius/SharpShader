@@ -18,7 +18,7 @@ namespace SharpShader.Processors
             }
             else
             {
-                sc.CompletedNodes.Add(syntax.BaseList);
+                sc.Complete(syntax.BaseList);
             }
         }
     }

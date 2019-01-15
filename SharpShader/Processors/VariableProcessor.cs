@@ -23,7 +23,7 @@ namespace SharpShader.Processors
             if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
                 tScope.TranslatedModifiers = sc.Language.TranslateModifiers(fieldSyntax.Modifiers);
 
-            sc.CompletedNodes.Add(syntax.Type);
+            sc.Complete(syntax.Type);
         }
     }
 
