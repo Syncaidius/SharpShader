@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ParenthesesScope<T> : ScopeInfo where T: SyntaxNode
+    internal class ParenthesesScope : ScopeInfo
     {
         internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax("(", NewLineLocation.None);
 
         internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax(")", NewLineLocation.None);
+    }
 
+    internal class ParenthesesScope<T> : ParenthesesScope where T: SyntaxNode
+    {
         internal SeparatedSyntaxList<T> Items;
     }
 }
