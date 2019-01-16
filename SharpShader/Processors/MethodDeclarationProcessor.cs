@@ -21,6 +21,11 @@ namespace SharpShader.Processors
                 sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");
 
                 sc.Complete(syntax.ReturnType);
+                sc.Complete(syntax.ConstraintClauses);
+
+                if(syntax.TypeParameterList != null)
+                    sc.CompleteSelfAndChildren(syntax.TypeParameterList);
+
                 TranslationRunner.Translate(sc, syntax.ParameterList, 0); // Translate parameters before method body.
                 MethodScope mScope = sc.Source.OpenScope<MethodScope>();
                 mScope.Info = info;

@@ -37,7 +37,7 @@ namespace SharpShader.Processors
             structScope.StructType = scopeType;
             structScope.TypeInfo = structInfo;
 
-            sc.SkipSelfAndChildren(syntax.AttributeLists);
+            sc.CompleteSelfAndChildren(syntax.AttributeLists);
         }
     }
 }

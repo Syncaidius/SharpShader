@@ -13,7 +13,7 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
         {
             // Attribute info is retrieved via reflection, so we can completely skip processing of attribute syntax.
-            sc.SkipSelfAndChildren(syntax.AttributeLists);
+            sc.CompleteSelfAndChildren(syntax.AttributeLists);
         }
     }
 }

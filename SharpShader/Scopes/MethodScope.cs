@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MethodScope : BlockScope
+    internal class MethodScope : ScopeInfo
     {
         internal MethodInfo Info;
+
+        internal override OpenCloseSyntax OpeningSyntax => new OpenCloseSyntax(NewLineLocation.None);
+
+        internal override OpenCloseSyntax ClosingSyntax => new OpenCloseSyntax(NewLineLocation.None);
     }
 }

@@ -213,8 +213,12 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="MethodBucket.cs" />
+    <Compile Include="Processors\MemberAccessProcessor.cs" />
+    <Compile Include="Processors\BlockProcessor.cs" />
+    <Compile Include="Processors\AssignmentProcessor.cs" />
     <Compile Include="Processors\ArrowExpressionProcessor.cs" />
     <Compile Include="Processors\BinaryExpressionProcessor.cs" />
+    <Compile Include="Processors\GenericWhereProcessor.cs" />
     <Compile Include="Processors\ParameterProcessor.cs" />
     <Compile Include="Processors\MethodDeclarationProcessor.cs" />
     <Compile Include="Processors\InitializerProcessor.cs" />

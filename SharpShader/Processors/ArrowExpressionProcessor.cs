@@ -14,6 +14,7 @@ namespace SharpShader.Processors
         {
             if(scope is MethodScope mScope)
             {
+                sc.Source.OpenScope<BlockScope>();
                 if (mScope.Info.ReturnType != typeof(void))
                     sc.Source.Append("return ");
 

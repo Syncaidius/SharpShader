@@ -204,7 +204,7 @@ namespace SharpShader
         /// Marks the child nodes of the specified <see cref="SyntaxNode"/> as completed.
         /// </summary>
         /// <param name="node">The node who's children will be marked as completed.</param>
-        internal void SkipChildren(SyntaxNode node)
+        internal void CompleteChildren(SyntaxNode node)
         {
             IEnumerable<SyntaxNode> children = node.ChildNodes();
             foreach (SyntaxNode n in children)
@@ -220,14 +220,20 @@ namespace SharpShader
             _completedNodes.Add(node);
         }
 
+        internal void Complete<T>(SyntaxList<T> nodeList) where T : SyntaxNode
+        {
+            foreach (T node in nodeList)
+                _completedNodes.Add(node);
+        }
+
         /// <summary>
         /// Marks a <see cref="SyntaxNode"/> and it's child nodes as completed. This means that it will be skipped if it comes up again later in the translation process.
         /// </summary>
         /// <param name="node">The node to be completed.</param>
-        internal void SkipSelfAndChildren(SyntaxNode node)
+        internal void CompleteSelfAndChildren(SyntaxNode node)
         {
             _completedNodes.Add(node);
-            SkipChildren(node);
+            CompleteChildren(node);
         }
 
         internal bool IsCompleted(SyntaxNode node)
@@ -235,10 +241,10 @@ namespace SharpShader
             return _completedNodes.Contains(node);
         }
 
-        internal void SkipSelfAndChildren<T>(SyntaxList<T> nodeList) where T : SyntaxNode
+        internal void CompleteSelfAndChildren<T>(SyntaxList<T> nodeList) where T : SyntaxNode
         {
             foreach (T node in nodeList)
-                SkipSelfAndChildren(node);
+                CompleteSelfAndChildren(node);
         }
 
         public override string ToString()

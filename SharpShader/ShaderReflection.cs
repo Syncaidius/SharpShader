@@ -148,7 +148,7 @@ namespace SharpShader
                 {
                     for (int i = 0; i < SupportedNamespaces.Length; i++)
                     {
-                        t = Type.GetType($"{NAMESPACE}.{parts[parts.Length - 1]}");
+                        t = Type.GetType($"{SupportedNamespaces[i]}.{parts[parts.Length - 1]}");
                         if (t != null)
                             break;
                     }
