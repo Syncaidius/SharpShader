@@ -208,7 +208,7 @@ namespace SharpShader
         {
             IEnumerable<SyntaxNode> children = node.ChildNodes();
             foreach (SyntaxNode n in children)
-                _completedNodes.Add(node);
+                _completedNodes.Add(n);
         }
 
         /// <summary>

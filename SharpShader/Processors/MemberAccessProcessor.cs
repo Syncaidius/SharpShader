@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,9 +17,19 @@ namespace SharpShader.Processors
             if(syntax.Expression is IdentifierNameSyntax idSyntax)
             {
                 Type targetType = ShaderReflection.ResolveType(idSyntax.Identifier.ValueText);
-                if (targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
+                if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
                 {
-                    // TODO check if syntax.Name is a constant member value.
+                    FieldInfo fInfo = targetType.GetField(syntax.Name.Identifier.ValueText);
+                    if(fInfo != null && (fInfo.Attributes & FieldAttributes.Literal) == FieldAttributes.Literal)
+                    {
+                        object val = fInfo.GetValue(null);
+                        if (val != null)
+                        {
+                            sc.Source.Append(val.ToString());
+                            sc.CompleteChildren(syntax);
+                            return;
+                        }
+                    }
                 }
             }
 
