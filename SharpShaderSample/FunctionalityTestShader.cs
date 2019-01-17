@@ -93,16 +93,35 @@ namespace SharpShaderSample
         #region Methods
         int IAmALambdaMethod() => 9;
 
-        int AnotherLamdaMethod(int increment) => 9 + increment;
+        int AnotherLambdaMethod(int increment) => 9 + increment;
 
-        T GenericLamdaMethod<T>(int increment) where T : struct => default(T);
+        T GenericLambdaMethod<T>(int increment) where T : struct => default(T);
 
-        void NoReturnLamdaMethod(bool isValid) => CameraPos = new Vector3(5, 0.2f, -11);
+        void NoReturnLambdaMethod(bool isValid) => CameraPos = new Vector3(5, 0.2f, -11);
 
         public void DelegateParameterTest(Action<int, float> test)
         {
             test(LAPS, RADIUS);
         }
+
+        private Vector2 AccessibleThings(bool access)
+        {
+            if (access)
+            {
+                return this.Normalize(new Vector2(5,5));
+            }
+            else
+            {
+                return base.Normalize(new Vector2(32.0f, -23.0f));
+            }
+        }
+
+        private Vector2 AccessibleThingsShortened(bool access)
+        {
+            return access ? this.Normalize(new Vector2(5, 5)) : base.Normalize(new Vector2(32.0f, -23.0f));
+        }
+
+        private Vector2 AccessibleThingsShortenedLambdas(bool access) => access ? this.Normalize(new Vector2(5, 5)) : base.Normalize(new Vector2(32.0f, -23.0f));
 
         private float TotalLappedDistance(int laps, float trackRadius)
         {
