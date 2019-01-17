@@ -5,9 +5,6 @@ namespace SharpShader
 {
 	public abstract class CSharpShader
 	{
-		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise different functions will be generated with the same C# name, regardless of return/parameter types.
-
-
 		/// <summary>HLSL: Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</summary>
 		[ShaderIntrinsic(OutputLanguage.HLSL, "abort")]
 		protected void Abort() {  }

@@ -106,9 +106,16 @@ namespace SharpShaderSample
 
         private Vector2 AccessibleThings(bool access)
         {
+            bool invertedAccess = !access;
+
             if (access)
             {
                 return this.Normalize(new Vector2(5,5));
+            }
+            else if (invertedAccess)
+            {
+                Vector2 inv = new Vector2(-5, -5);
+                return Normalize(inv);
             }
             else
             {
@@ -283,6 +290,7 @@ namespace SharpShaderSample
             get => 0;
             set { }
         }
+  
         #endregion
 
         #region Entry points
