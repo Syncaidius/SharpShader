@@ -129,7 +129,29 @@ namespace SharpShaderSample
             return (float)(circumference * laps);
         }
 
-        public Vector3 CookTorrenceMessyTest
+        public (float, int) TupleTest(int value)
+        {
+            return (value / 2f, value);
+        }
+
+        public (float, int) TupleTestLambda(int value) => (value / 2f, value);
+
+        public int TupleTestParameter((float, int) value)
+        {
+            return value.Item2;
+        }
+
+        public int NamedTupleTestParameter((float f, int i) value)
+        {
+            return (int)(value.f * value.i);
+        }
+
+        public (float fResult, double dResult) NamedTupleTestReturnParameter((float f, int i) value)
+        {
+            return (value.f * 10.9f, value.i * 10.45f);
+        }
+
+        public Vector3 HalfCookedLighting
         (
         in Vector3 normal, // normal
         in Vector3 toEye, // direction to eye/camera

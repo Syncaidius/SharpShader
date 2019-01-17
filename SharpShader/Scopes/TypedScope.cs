@@ -29,5 +29,10 @@ namespace SharpShader
         /// The original type.
         /// </summary>
         internal Type OriginalType;
+
+        /// <summary>
+        /// Set to true if the scope is for a local variable.
+        /// </summary>
+        internal bool IsLocal;
     }
 }

@@ -19,6 +19,7 @@ namespace SharpShader.Processors
             TypedScope tScope = sc.Source.OpenScope<TypedScope>();
             tScope.OriginalType = originalType;
             tScope.TranslatedTypeName = translatedName;
+            tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
 
             if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
                 tScope.TranslatedModifiers = sc.Language.TranslateModifiers(fieldSyntax.Modifiers);
@@ -79,7 +80,10 @@ namespace SharpShader.Processors
                 }
 
                 // TODO do we need to use a different scope if inside an initializer? (i.e. InitializerMemberScope).
-                sc.Source.OpenScope<VariableScope>();
+                if(tScope.IsLocal)
+                    sc.Source.OpenScope<LocalVariableScope>();
+                else
+                    sc.Source.OpenScope<VariableScope>();
             }
         }
     }

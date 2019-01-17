@@ -213,6 +213,7 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="MethodBucket.cs" />
+    <Compile Include="Processors\StatementProcessor.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
     <Compile Include="Processors\BlockProcessor.cs" />
     <Compile Include="Processors\AssignmentProcessor.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Scopes\TypedScope.cs" />
     <Compile Include="Scopes\ParenthesesScope.cs" />
     <Compile Include="Scopes\StructScope.cs" />
+    <Compile Include="Scopes\LocalVariableScope.cs" />
     <Compile Include="Scopes\VariableScope.cs" />
     <Compile Include="Scopes\BlockScope.cs" />
     <Compile Include="Scopes\InitializerScope.cs" />

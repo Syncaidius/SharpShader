@@ -31,6 +31,7 @@ namespace SharpShader
             ["float"] = typeof(float),
             ["double"] = typeof(double),
             ["decimal"] = typeof(decimal),
+            ["bool"] = typeof(bool),
         };
 
         internal static readonly string[] SupportedNamespaces = { NAMESPACE, "System" };

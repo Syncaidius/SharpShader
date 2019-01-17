@@ -13,24 +13,33 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, MemberAccessExpressionSyntax syntax, ScopeInfo scope)
         {
-            // TODO check if we're accessing a constant value on a static class. If so, we can use reflection to retrieve the value and output it directly into the shader source.
-            if(syntax.Expression is IdentifierNameSyntax idSyntax)
+            switch (syntax.Expression)
             {
-                Type targetType = ShaderReflection.ResolveType(idSyntax.Identifier.ValueText);
-                if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
-                {
-                    FieldInfo fInfo = targetType.GetField(syntax.Name.Identifier.ValueText);
-                    if(fInfo != null && (fInfo.Attributes & FieldAttributes.Literal) == FieldAttributes.Literal)
+                case IdentifierNameSyntax idSyntax:
+                    Type targetType = ShaderReflection.ResolveType(idSyntax.Identifier.ValueText);
+                    if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
                     {
-                        object val = fInfo.GetValue(null);
-                        if (val != null)
+                        FieldInfo fInfo = targetType.GetField(syntax.Name.Identifier.ValueText);
+                        if (fInfo != null && (fInfo.Attributes & FieldAttributes.Literal) == FieldAttributes.Literal)
                         {
-                            sc.Source.Append(val.ToString());
-                            sc.CompleteChildren(syntax);
-                            return;
+                            object val = fInfo.GetValue(null);
+                            if (val != null)
+                            {
+                                sc.Source.Append(val.ToString());
+                                sc.CompleteChildren(syntax);
+                                return;
+                            }
                         }
                     }
-                }
+                    break;
+
+                case ThisExpressionSyntax thisSyntax:
+                        // TODO track inheritance chain of current shader.
+                    break;
+
+                case BaseExpressionSyntax baseSyntax:
+
+                    break;
             }
 
             TranslationRunner.Translate(sc, syntax.Expression);

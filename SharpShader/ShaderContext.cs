@@ -91,15 +91,24 @@ namespace SharpShader
             Buffers = new Dictionary<string, FieldInfo>();
             UAVs = new Dictionary<string, FieldInfo>();
 
-            BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-            PopulateStructInfo(bFlags);
-            PopulateMethodInfo(bFlags);
-            PopulateFieldInfo(bFlags);
+            BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
+
+            // Traverse inheritance chain until we hit the CSharpShader base class.
+            // We do not need members of the base shader class.
+            Type sType = ShaderType;
+            while (sType != typeof(CSharpShader))
+            {
+                PopulateStructInfo(sType, bFlags);
+                PopulateMethodInfo(sType, bFlags);
+                PopulateFieldInfo(sType, bFlags);
+
+                sType = sType.BaseType;
+            }
         }
 
-        private void PopulateMethodInfo(BindingFlags bFlags)
+        private void PopulateMethodInfo(Type classType, BindingFlags bFlags)
         {
-            MethodInfo[] mInfo = ShaderType.GetMethods(bFlags);
+            MethodInfo[] mInfo = classType.GetMethods(bFlags);
             foreach (MethodInfo mi in mInfo)
             {
                 IEnumerable<EntryPointAttribute> eps = mi.GetCustomAttributes<EntryPointAttribute>(true);
@@ -125,9 +134,9 @@ namespace SharpShader
             }
         }
 
-        private void PopulateFieldInfo(BindingFlags bFlags)
+        private void PopulateFieldInfo(Type classType, BindingFlags bFlags)
         {
-            FieldInfo[] fInfo = ShaderType.GetFields(bFlags);
+            FieldInfo[] fInfo = classType.GetFields(bFlags | BindingFlags.DeclaredOnly);
             foreach (FieldInfo fi in fInfo)
             {
                 AllFields.Add(fi.Name, fi);
@@ -159,9 +168,9 @@ namespace SharpShader
             }
         }
 
-        private void PopulateStructInfo(BindingFlags bFlags)
+        private void PopulateStructInfo(Type classType, BindingFlags bFlags)
         {
-            Type[] nestedTypes = ShaderType.GetNestedTypes(bFlags);
+            Type[] nestedTypes = classType.GetNestedTypes(bFlags);
             foreach(Type t in nestedTypes)
             {
                 if (!t.IsValueType)

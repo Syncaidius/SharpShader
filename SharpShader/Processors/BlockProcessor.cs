@@ -12,6 +12,9 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, BlockSyntax syntax, ScopeInfo scope)
         {
+            if (syntax.Parent is UnsafeStatementSyntax)
+                return;
+
             sc.Source.OpenScope<BlockScope>();
         }
     }
