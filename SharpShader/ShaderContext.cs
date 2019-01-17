@@ -157,7 +157,7 @@ namespace SharpShader
                             Textures.Add(fi.Name, fi);
                         else if (typeof(TextureSampler).IsAssignableFrom(fi.FieldType))
                             Samplers.Add(fi.Name, fi);
-                        else if (typeof(StructuredBuffer<>).IsAssignableFrom(fi.FieldType))
+                        else if (typeof(IStructureBuffer).IsAssignableFrom(fi.FieldType))
                             Buffers.Add(fi.Name, fi);
                     }
                 }
