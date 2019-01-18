@@ -16,7 +16,7 @@ namespace SharpShader.Processors
             TranslationRunner.Translate(sc, syntax.Condition);
             sc.Source.Append(")");
             if (!(syntax.Statement is BlockSyntax))
-                sc.Source.OpenScope<BlockScope>();
+                sc.Source.OpenScope(ScopeType.Block);
         }
     }
 
@@ -26,7 +26,7 @@ namespace SharpShader.Processors
         {
             sc.Source.Append("else ");
             if (!(syntax.Statement is BlockSyntax || syntax.Statement is IfStatementSyntax))
-                sc.Source.OpenScope<BlockScope>();
+                sc.Source.OpenScope(ScopeType.Block);
         }
     }
 }

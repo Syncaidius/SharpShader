@@ -213,6 +213,7 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="MethodBucket.cs" />
+    <Compile Include="ObjectPool.cs" />
     <Compile Include="Processors\IfStatementProcessor.cs" />
     <Compile Include="Processors\StatementProcessor.cs" />
     <Compile Include="Processors\MemberAccessProcessor.cs" />
@@ -235,18 +236,8 @@
     <Compile Include="Processors\IdentifierProcessor.cs" />
     <Compile Include="Processors\ArrayRankProcessor.cs" />
     <Compile Include="Processors\PredefinedTypeProcessor.cs" />
-    <Compile Include="Scopes\MethodScope.cs" />
-    <Compile Include="Scopes\ParenthesesItemScope.cs" />
-    <Compile Include="Scopes\IndexerScope.cs" />
-    <Compile Include="Scopes\InitializerMemberScope.cs" />
-    <Compile Include="Scopes\TypedScope.cs" />
-    <Compile Include="Scopes\ParenthesesScope.cs" />
-    <Compile Include="Scopes\StructScope.cs" />
-    <Compile Include="Scopes\LocalVariableScope.cs" />
-    <Compile Include="Scopes\VariableScope.cs" />
-    <Compile Include="Scopes\BlockScope.cs" />
-    <Compile Include="Scopes\InitializerScope.cs" />
-    <Compile Include="Scopes\ScopeException.cs" />
+    <Compile Include="ScopeSettings.cs" />
+    <Compile Include="Exceptions\ScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
@@ -259,8 +250,7 @@
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
     <Compile Include="MethodInformation.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
-    <Compile Include="Scopes\InertScopeInfo.cs" />
-    <Compile Include="Scopes\ScopeInfo.cs" />
+    <Compile Include="ScopeInfo.cs" />
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />

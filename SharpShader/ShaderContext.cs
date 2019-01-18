@@ -78,7 +78,7 @@ namespace SharpShader
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
             _completedNodes = new HashSet<SyntaxNode>();
-            Source = new OutputSource();
+            Source = new OutputSource(this);
 
             EntryPoints = new Dictionary<string, EntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();

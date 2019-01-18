@@ -17,6 +17,10 @@ namespace SharpShader.Processors
             if (info != null)
             {
                 sc.Source.AppendLineBreak();
+
+                ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
+                mScope.Method = info;
+
                 (string returnType, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, syntax.ReturnType.ToString());
                 sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");
 
@@ -27,8 +31,6 @@ namespace SharpShader.Processors
                     sc.CompleteSelfAndChildren(syntax.TypeParameterList);
 
                 TranslationRunner.Translate(sc, syntax.ParameterList, 0); // Translate parameters before method body.
-                MethodScope mScope = sc.Source.OpenScope<MethodScope>();
-                mScope.Info = info;
             }
         }
     }

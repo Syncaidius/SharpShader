@@ -12,10 +12,10 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ObjectCreationExpressionSyntax syntax, ScopeInfo scope)
         {
-            if (scope is InitializerScope iScope)
+            if (scope.Type == ScopeType.Initializer)
             {
-                if (syntax != iScope.Items.Last())
-                    sc.Source.OpenScope<InitializerMemberScope>();
+                if (syntax != scope.Items.Last())
+                    sc.Source.OpenScope(ScopeType.InitializerMember);
             }
 
             string typeName = syntax.Type.ToString();

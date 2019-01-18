@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ArrayRankSpecifierSyntax syntax, ScopeInfo scope)
         {
-            sc.Source.OpenScope<IndexerScope>();
+            sc.Source.OpenScope(ScopeType.Indexer);
         }
     }
 

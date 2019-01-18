@@ -16,8 +16,8 @@ namespace SharpShader.Processors
             string typeName = syntax.Type.ToString();
             (string translatedName, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, typeName);
 
-            TypedScope tScope = sc.Source.OpenScope<TypedScope>();
-            tScope.OriginalType = originalType;
+            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed);
+            tScope.TypeInfo = originalType;
             tScope.TranslatedTypeName = translatedName;
             tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
 
@@ -32,11 +32,11 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, VariableDeclaratorSyntax syntax, ScopeInfo scope)
         {
-            if (scope is TypedScope tScope)
+            if (scope.Type == ScopeType.Typed)
             {
                 FieldInfo fInfo = null;
-                if (tScope.Parent is StructScope sScope)
-                    fInfo = sScope.TypeInfo.GetField(syntax.Identifier.ValueText);
+                if (scope.Parent.Type == ScopeType.Struct)
+                    fInfo = scope.Parent.TypeInfo.GetField(syntax.Identifier.ValueText);
 
                 if (fInfo == null)
                     sc.AllFields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
@@ -45,21 +45,21 @@ namespace SharpShader.Processors
                 { 
                     IEnumerable<Attribute> fieldAttributes = fInfo.GetCustomAttributes();
                     sc.Language.TranslateFieldPrefix(sc, syntax, fInfo, fieldAttributes);
-                    sc.Source.Append($"{tScope.TranslatedModifiers} ");
-                    sc.Source.Append(tScope.TranslatedTypeName);
+                    sc.Source.Append($"{scope.TranslatedModifiers} ");
+                    sc.Source.Append(scope.TranslatedTypeName);
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
                     sc.Language.TranslateFieldPostfix(sc, syntax, fInfo, fieldAttributes);
                 }
                 else
                 {
-                    sc.Source.Append($"{tScope.TranslatedModifiers} ");
-                    sc.Source.Append(tScope.TranslatedTypeName);
+                    sc.Source.Append($"{scope.TranslatedModifiers} ");
+                    sc.Source.Append(scope.TranslatedTypeName);
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
                 }
 
-                if (tScope.OriginalType != null)
+                if (scope.TypeInfo != null)
                 {
-                    if (tScope.OriginalType.IsArray)
+                    if (scope.TypeInfo.IsArray)
                     {
                         if (syntax.Initializer != null)
                         {
@@ -80,10 +80,10 @@ namespace SharpShader.Processors
                 }
 
                 // TODO do we need to use a different scope if inside an initializer? (i.e. InitializerMemberScope).
-                if(tScope.IsLocal)
-                    sc.Source.OpenScope<LocalVariableScope>();
+                if(scope.IsLocal)
+                    sc.Source.OpenScope(ScopeType.LocalVariable);
                 else
-                    sc.Source.OpenScope<VariableScope>();
+                    sc.Source.OpenScope(ScopeType.Variable);
             }
         }
     }

@@ -16,7 +16,14 @@ namespace SharpShader
         Stack<ScopeInfo> _blocks = new Stack<ScopeInfo>();
 
         [NonSerialized]
-        ScopeInfo _currentScope = new InertScopeInfo();
+        ScopeInfo _currentScope;
+        ShaderContext _context;
+
+        internal OutputSource(ShaderContext sc)
+        {
+            _context = sc;
+            _currentScope = sc.Parent.ScopePool.Get();
+        }
 
         internal void Append(SyntaxTriviaList triviaList)
         {
@@ -39,25 +46,25 @@ namespace SharpShader
             _sb.Append(Environment.NewLine);
         }
 
-        internal T OpenScope<T>() where T : ScopeInfo, new()
+        internal ScopeInfo OpenScope(ScopeType type)
         {
-            T newScope = new T()
-            {
-                Parent = _currentScope,
-                IndentationDepth = _currentScope.IndentationDepth + 1,
-                StartPosition = _sb.Length,
-            };
+            ScopeInfo newScope = _context.Parent.ScopePool.Get();
+            newScope.Parent = _currentScope;
+            newScope.IndentationDepth = _currentScope.IndentationDepth + 1;
+            newScope.StartPosition = _sb.Length;
+            newScope.Type = type;
+            newScope.Settings = ScopeSettings.Settings[type];
 
             _blocks.Push(_currentScope); // Push old scope
             _currentScope = newScope; // Set new as current
 
-            if ((_currentScope.OpeningSyntax.NewLine & NewLineLocation.Before) == NewLineLocation.Before)
+            if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
                 _sb.Append(Environment.NewLine);
 
-            if (!string.IsNullOrEmpty(_currentScope.OpeningSyntax.Value))
-                _sb.Append(_currentScope.OpeningSyntax.Value);
+            if (!string.IsNullOrEmpty(_currentScope.Settings.OpeningSyntax.Value))
+                _sb.Append(_currentScope.Settings.OpeningSyntax.Value);
 
-            if ((_currentScope.OpeningSyntax.NewLine & NewLineLocation.After) == NewLineLocation.After)
+            if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
                 _sb.Append(Environment.NewLine);
 
             return newScope;
@@ -68,15 +75,16 @@ namespace SharpShader
             if (_blocks.Count == 0)
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
-            if ((_currentScope.ClosingSyntax.NewLine & NewLineLocation.Before) == NewLineLocation.Before)
+            if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
                 _sb.Append(Environment.NewLine);
 
-            if (!string.IsNullOrEmpty(_currentScope.ClosingSyntax.Value))
-                _sb.Append(_currentScope.ClosingSyntax.Value);
+            if (!string.IsNullOrEmpty(_currentScope.Settings.ClosingSyntax.Value))
+                _sb.Append(_currentScope.Settings.ClosingSyntax.Value);
 
-            if ((_currentScope.ClosingSyntax.NewLine & NewLineLocation.After) == NewLineLocation.After)
+            if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
                 _sb.Append(Environment.NewLine);
 
+            _context.Parent.ScopePool.Put(_currentScope);
             _currentScope = _blocks.Pop();
         }
 

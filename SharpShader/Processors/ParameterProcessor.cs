@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ParameterListSyntax syntax, ScopeInfo scope)
         {
-            ParenthesesScope<ParameterSyntax> pScope = sc.Source.OpenScope<ParenthesesScope<ParameterSyntax>>();
+            ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Parentheses);
             pScope.Items = syntax.Parameters; 
         }
     }
@@ -21,10 +21,10 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ParameterSyntax syntax, ScopeInfo scope)
         {
-            if (scope is ParenthesesScope<ParameterSyntax> pScope)
+            if (scope.Type == ScopeType.Parentheses)
             {
-                if (pScope.Items.Last() != syntax)
-                    sc.Source.OpenScope<ParenthesesItemScope>();
+                if (scope.Items.Last() != syntax)
+                    sc.Source.OpenScope(ScopeType.ParenthesesItem);
             }
 
             // TODO pass to language variable translation, since parameters can have attributes

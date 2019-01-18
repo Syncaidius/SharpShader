@@ -15,7 +15,7 @@ namespace SharpShader.Processors
             if (syntax.Parent is UnsafeStatementSyntax)
                 return;
 
-            sc.Source.OpenScope<BlockScope>();
+            sc.Source.OpenScope(ScopeType.Block);
         }
     }
 }

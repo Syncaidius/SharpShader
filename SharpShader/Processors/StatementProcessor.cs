@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ExpressionStatementSyntax syntax, ScopeInfo scope)
         {
-            sc.Source.OpenScope<VariableScope>();
+            sc.Source.OpenScope(ScopeType.Variable);
         }
     }
 }

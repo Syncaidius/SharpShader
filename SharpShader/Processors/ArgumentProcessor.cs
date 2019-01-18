@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ArgumentListSyntax syntax, ScopeInfo scope)
         {
-            ParenthesesScope<ArgumentSyntax> pScope = sc.Source.OpenScope<ParenthesesScope<ArgumentSyntax>>();
+            ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Parentheses);
             pScope.Items = syntax.Arguments;
         }
     }
@@ -21,7 +21,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, BracketedArgumentListSyntax syntax, ScopeInfo scope)
         {
-            sc.Source.OpenScope<IndexerScope>();
+            sc.Source.OpenScope(ScopeType.Indexer);
         }
     }
 
@@ -29,10 +29,10 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ArgumentSyntax syntax, ScopeInfo scope)
         {
-            if(scope is ParenthesesScope<ArgumentSyntax> pScope)
+            if(scope.Type == ScopeType.Parentheses)
             {
-                if (pScope.Items.Last() != syntax)
-                    sc.Source.OpenScope<ParenthesesItemScope>();
+                if (scope.Items.Last() != syntax)
+                    sc.Source.OpenScope(ScopeType.ParenthesesItem);
             }
         }
     }

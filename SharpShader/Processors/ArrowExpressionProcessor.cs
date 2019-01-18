@@ -12,13 +12,13 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ArrowExpressionClauseSyntax syntax, ScopeInfo scope)
         {
-            if(scope is MethodScope mScope)
+            if(scope.Type == ScopeType.Method)
             {
-                sc.Source.OpenScope<BlockScope>();
-                if (mScope.Info.ReturnType != typeof(void))
+                sc.Source.OpenScope(ScopeType.Block);
+                if (scope.Method.ReturnType != typeof(void))
                     sc.Source.Append("return ");
 
-                sc.Source.OpenScope<VariableScope>();
+                sc.Source.OpenScope(ScopeType.Variable);
             }
         }
     }

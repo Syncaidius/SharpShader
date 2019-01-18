@@ -31,8 +31,12 @@ namespace SharpShader
         [NonSerialized]
         int _nextVariable = 0;
 
+        [NonSerialized]
+        internal readonly ObjectPool<ScopeInfo> ScopePool;
+
         internal ConversionContext(ShaderLanguage foundatation, List<string> preprocessorSymbols)
         {
+            ScopePool = new ObjectPool<ScopeInfo>(() => new ScopeInfo());
             Reflection = new ReflectionInfo();
             Language = foundatation;
             Shaders = new List<ShaderContext>();
