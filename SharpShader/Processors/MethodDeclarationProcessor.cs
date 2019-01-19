@@ -21,7 +21,7 @@ namespace SharpShader.Processors
                 ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
                 mScope.Method = info;
 
-                (string returnType, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, syntax.ReturnType.ToString());
+                (string returnType, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.ReturnType.ToString());
                 sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");
 
                 sc.Complete(syntax.ReturnType);

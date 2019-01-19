@@ -60,6 +60,7 @@ namespace SharpShader
             [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
             [ScopeType.Method] = new ScopeSettings(true),
         };
+
     }
 
     [Flags]

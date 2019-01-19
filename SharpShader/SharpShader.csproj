@@ -254,7 +254,6 @@
     <Compile Include="OutputSource.cs" />
     <Compile Include="Processors\ClassProcessor.cs" />
     <Compile Include="Processors\LiteralExpressionProcessor.cs" />
-    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Shader.Geometry.Streams.cs" />
     <Compile Include="Processors\NodeProcessor.cs" />
     <Compile Include="PropertyTranslation.cs" />
@@ -282,7 +281,6 @@
     <Compile Include="Textures\TextureBase.cs" />
     <Compile Include="Textures\Texture2D.cs" />
     <Compile Include="Textures\Texture.cs" />
-    <Compile Include="TranslationHelper.cs" />
     <Compile Include="TranslationRunner.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />

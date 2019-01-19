@@ -28,7 +28,7 @@ namespace SharpShader
                     if (!attName.EndsWith("Attribute"))
                         attName += "Attribute";
 
-                    Type t = ShaderReflection.ResolveType(attName);
+                    Type t = ReflectionHelper.ResolveType(attName);
                     if (t != null)
                     {
                         List<AttributeSyntax> attList = null;

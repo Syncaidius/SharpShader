@@ -14,7 +14,7 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Type.ToString();
-            (string translatedName, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, typeName);
+            (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
 
             ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed);
             tScope.TypeInfo = originalType;

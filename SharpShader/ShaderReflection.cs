@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal static class ShaderReflection
+    internal static class ReflectionHelper
     {
         /// <summary>
         /// The name of the Sharp Shader namespace.
@@ -55,7 +55,7 @@ namespace SharpShader
         static Dictionary<OutputLanguage, LanguageInfo> _intrinsicMethods;
         static HashSet<Type> _registerTypes;
 
-        static ShaderReflection()
+        static ReflectionHelper()
         {
             _intrinsicMethods = new Dictionary<OutputLanguage, LanguageInfo>();
             _registerTypes = new HashSet<Type>();
@@ -95,6 +95,13 @@ namespace SharpShader
                     methodInfo.Methods.Add(mi);
                 }
             }
+        }
+
+        internal static IEnumerable<Type> FindOfType<T>() where T : class
+        {
+            Type pType = typeof(T);
+            Assembly assembly = pType.Assembly;
+            return assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
         }
 
         internal static bool IsIntrinsicFunction(ShaderContext context, string cSharpName)
@@ -171,6 +178,63 @@ namespace SharpShader
                 input = input.Substring(enumName.Length + 1);
 
             return Enum.TryParse<T>(input, out value);
+        }
+
+        internal static (string translation, Type originalType, bool isArray) TranslateType(ShaderContext sc, string typeName)
+        {
+            Type type = ResolveType(typeName);
+            if (type != null)
+            {
+                Type elementType = type.GetElementType();
+                ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
+                if (translation != null)
+                {
+                    return (translation.NativeText, type, type.IsArray);
+                }
+                else // Attempt to find any interfaces on the type which can be translated instead.
+                {
+                    Type[] iTypes;
+                    if (elementType != null)
+                        iTypes = elementType.GetInterfaces();
+                    else
+                        iTypes = type.GetInterfaces();
+
+
+                    foreach (Type implemented in iTypes)
+                    {
+                        translation = sc.Parent.Language.GetKeyword(implemented);
+                        if (translation != null)
+                        {
+                            string replacement = elementType?.Name ?? type.Name;
+
+                            // TODO Does this need optimizing? Benchmark before changing.
+                            for (int i = 0; i < ReflectionHelper.IntrinsicPrefixes.Length; i++)
+                                replacement = replacement.Replace(ReflectionHelper.IntrinsicPrefixes[i], "");
+
+                            if (translation.UniformSizeIsSingular)
+                            {
+                                if (typeof(UniformDimensions).IsAssignableFrom(type))
+                                    replacement = replacement.Substring(0, replacement.Length - 2);
+                            }
+
+                            replacement = translation.NativeText + replacement;
+                            return (replacement, type, type.IsArray);
+                        }
+                    }
+                }
+            }
+
+            // We have no known Type instance to use, so try to figure out if it's an array or not, manually.
+            int openIndex = typeName.IndexOf("[");
+            bool isArray = false;
+
+            if (openIndex > -1 && typeName.EndsWith("]"))
+            {
+                typeName = typeName.Substring(0, openIndex);
+                isArray = true;
+            }
+
+            return (typeName, type, isArray);
         }
     }
 }

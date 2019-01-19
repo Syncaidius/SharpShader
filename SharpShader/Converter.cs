@@ -48,7 +48,7 @@ namespace SharpShader
         public ConversionResult Convert(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {
             AppDomain domain = AppDomain.CreateDomain("SharpShader");
-            foreach(AssemblyName an in ShaderReflection.SupportedAssemblies)
+            foreach(AssemblyName an in ReflectionHelper.SupportedAssemblies)
                 domain.Load(an);
             TranslationArgs tArgs = new TranslationArgs()
             {

@@ -28,7 +28,7 @@ namespace SharpShader.Processors
             }
 
             // TODO pass to language variable translation, since parameters can have attributes
-            (string typeName, Type originalType, bool isArray) = TranslationHelper.TranslateType(sc, syntax.Type.ToString());
+            (string typeName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
             sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
             sc.Complete(syntax.Type);
         }
