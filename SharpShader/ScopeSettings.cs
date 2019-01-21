@@ -47,7 +47,7 @@ namespace SharpShader
 
         internal static readonly Dictionary<ScopeType, ScopeSettings> Settings = new Dictionary<ScopeType, ScopeSettings>()
         {
-            [ScopeType.Root] = new ScopeSettings(true),
+            [ScopeType.Class] = new ScopeSettings(true),
             [ScopeType.Block] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.After),
             [ScopeType.Indexer] = new ScopeSettings("[", NewLineFlags.None, "]", NewLineFlags.None),
             [ScopeType.InitializerMember] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After),
@@ -60,7 +60,6 @@ namespace SharpShader
             [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
             [ScopeType.Method] = new ScopeSettings(true),
         };
-
     }
 
     [Flags]
@@ -75,7 +74,7 @@ namespace SharpShader
 
     internal enum ScopeType
     {
-        Root = 0,
+        Class = 0,
 
         Block = 1,
 

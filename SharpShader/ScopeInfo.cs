@@ -37,6 +37,20 @@ namespace SharpShader
             return varName;
         }
 
+        internal ScopeInfo FindParentOfType(ScopeType type)
+        {
+            ScopeInfo si = Parent;
+            while(si != null)
+            {
+                if (si.Type == type)
+                    return si;
+                else
+                    si = si.Parent;
+            }
+
+            return null;
+        }
+
         public void Clear()
         {
             Parent = null;
@@ -46,6 +60,7 @@ namespace SharpShader
             TypeInfo = null;
             TranslatedTypeName = null;
             TranslatedModifiers = "";
+            Namespace = "";
             IsLocal = false;
             StructType = StructScopeType.None;
             _declarations.Clear();
@@ -62,6 +77,11 @@ namespace SharpShader
         internal MethodInfo Method;
 
         internal ScopeType Type;
+
+        /// <summary>
+        /// The scope's namespace. This is only applicable if the scope is for a class or struct.
+        /// </summary>
+        internal string Namespace = "";
 
         /// <summary>
         /// If the scope is <see cref="ScopeType.Struct"/>, this value will be greater than <see cref="StructScopeType.None"/>.

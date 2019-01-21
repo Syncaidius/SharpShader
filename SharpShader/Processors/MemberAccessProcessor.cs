@@ -34,11 +34,21 @@ namespace SharpShader.Processors
                     break;
 
                 case ThisExpressionSyntax thisSyntax:
-                        // TODO track inheritance chain of current shader.
-                    break;
-
                 case BaseExpressionSyntax baseSyntax:
+                    ScopeInfo pScope = scope.FindParentOfType(ScopeType.Class);
+                    if (pScope.TypeInfo == sc.ShaderType)
+                    {
+                        sc.Complete(syntax.Expression);
 
+                        // Are we translating a shader intrinsic method/function?
+                        if(syntax.Name is IdentifierNameSyntax idSyntax && syntax.Parent is InvocationExpressionSyntax)
+                        {
+                            string translatedIntrinsic = ReflectionHelper.GetIntrinsicTranslation(sc, idSyntax.Identifier.ValueText);
+                            sc.Source.Append(translatedIntrinsic);
+                            sc.Complete(syntax.Name);
+                        }
+                        return;
+                    }
                     break;
             }
 

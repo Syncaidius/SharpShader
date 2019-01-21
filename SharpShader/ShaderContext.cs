@@ -18,6 +18,9 @@ namespace SharpShader
         [NonSerialized]
         internal readonly SyntaxNode RootNode;
 
+        /// <summary>
+        /// The <see cref="Type"/> for the shader's own class.
+        /// </summary>
         [field: NonSerialized]
         internal Type ShaderType { get; }
 

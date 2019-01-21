@@ -23,6 +23,9 @@ namespace SharpShader
         {
             _context = sc;
             _currentScope = sc.Parent.ScopePool.Get();
+            _currentScope.Type = ScopeType.Class;
+            _currentScope.TypeInfo = sc.ShaderType;
+            _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
         }
 
         internal void Append(SyntaxTriviaList triviaList)
@@ -46,14 +49,21 @@ namespace SharpShader
             _sb.Append(Environment.NewLine);
         }
 
-        internal ScopeInfo OpenScope(ScopeType type)
+        internal ScopeInfo OpenScope(ScopeType type, Type tInfo = null)
         {
             ScopeInfo newScope = _context.Parent.ScopePool.Get();
             newScope.Parent = _currentScope;
             newScope.IndentationDepth = _currentScope.IndentationDepth + 1;
             newScope.StartPosition = _sb.Length;
             newScope.Type = type;
+            newScope.TypeInfo = tInfo;
             newScope.Settings = ScopeSettings.Settings[type];
+
+            // Track namespace path
+            if ((type == ScopeType.Class || type == ScopeType.Struct) && tInfo != null)
+                newScope.Namespace = $"{_currentScope.Namespace}+{tInfo.Name}";
+            else
+                newScope.Namespace = _currentScope.Namespace;
 
             _blocks.Push(_currentScope); // Push old scope
             _currentScope = newScope; // Set new as current

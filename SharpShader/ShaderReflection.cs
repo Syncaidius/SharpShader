@@ -16,7 +16,7 @@ namespace SharpShader
         /// </summary>
         internal const string NAMESPACE = "SharpShader";
 
-        static readonly char[] _namespaceDelimiters = { '.' };
+        static readonly char[] _namespaceDelimiters = { '.', ',' };
         internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
         internal static readonly Dictionary<string, Type> _baseTypeAliases = new Dictionary<string, Type>()
         {
@@ -151,7 +151,7 @@ namespace SharpShader
 
             if (!_baseTypeAliases.TryGetValue(typeName, out t))
             {
-                string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
+                    string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length > 0)
                 {
                     for (int i = 0; i < SupportedNamespaces.Length; i++)

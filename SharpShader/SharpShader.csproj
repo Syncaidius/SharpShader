@@ -230,6 +230,7 @@
     <Compile Include="Processors\ObjectCreationProcessor.cs" />
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\ArrayTypeProcessor.cs" />
+    <Compile Include="Processors\ReturnProcessor.cs" />
     <Compile Include="Processors\UnaryPrefixProcessor.cs" />
     <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />

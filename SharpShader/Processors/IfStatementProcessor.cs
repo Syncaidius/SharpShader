@@ -29,4 +29,19 @@ namespace SharpShader.Processors
                 sc.Source.OpenScope(ScopeType.Block);
         }
     }
+
+    /// <summary>
+    /// A processor for inline if statements.
+    /// </summary>
+    internal class CondtionalProcessor : NodeProcessor<ConditionalExpressionSyntax>
+    {
+        protected override void OnTranslate(ShaderContext sc, ConditionalExpressionSyntax syntax, ScopeInfo scope)
+        {
+            TranslationRunner.Translate(sc, syntax.Condition);
+            sc.Source.Append(" ? ");
+            TranslationRunner.Translate(sc, syntax.WhenTrue);
+            sc.Source.Append(" : ");
+            TranslationRunner.Translate(sc, syntax.WhenFalse);
+        }
+    }
 }

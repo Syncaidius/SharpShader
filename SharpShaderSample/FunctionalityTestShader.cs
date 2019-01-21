@@ -8,6 +8,15 @@ namespace SharpShaderSample
     /// </summary>
     public class FunctionalityTestShader : CSharpShader
     {
+        public class NestedTestClass
+        {
+            public void TestMethod() { }
+
+            public float TestMethodFloat() => 42.0f;
+
+            class NestedNester { }
+        }
+
         #region Constants
         public const int LAPS = 5;
         public const float RADIUS = 0.5f;
@@ -123,7 +132,7 @@ namespace SharpShaderSample
             }
         }
 
-        private Vector2 AccessibleThingsShortened(bool access)
+        private Vector2 ConditionalReturnTest(bool access)
         {
             return access ? this.Normalize(new Vector2(5, 5)) : base.Normalize(new Vector2(32.0f, -23.0f));
         }
