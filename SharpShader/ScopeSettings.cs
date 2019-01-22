@@ -31,23 +31,17 @@ namespace SharpShader
 
         internal readonly OpenCloseSyntax ClosingSyntax;
 
-        /// <summary>
-        /// Does the scope accept new declarations to be inserted once it's closed?
-        /// </summary>
-        internal readonly bool IsDeclarative;
+        internal ScopeSettings() : this("", NewLineFlags.None, "", NewLineFlags.None) { }
 
-        internal ScopeSettings(bool declarative) : this("", NewLineFlags.None, "", NewLineFlags.None, declarative) { }
-
-        internal ScopeSettings(string openingString, NewLineFlags openingFlags, string closingString, NewLineFlags closingFlags, bool declarative = false)
+        internal ScopeSettings(string openingString, NewLineFlags openingFlags, string closingString, NewLineFlags closingFlags)
         {
             OpeningSyntax = new OpenCloseSyntax(openingString, openingFlags);
             ClosingSyntax = new OpenCloseSyntax(closingString, closingFlags);
-            IsDeclarative = declarative;
         }
 
         internal static readonly Dictionary<ScopeType, ScopeSettings> Settings = new Dictionary<ScopeType, ScopeSettings>()
         {
-            [ScopeType.Class] = new ScopeSettings(true),
+            [ScopeType.Class] = new ScopeSettings(),
             [ScopeType.Block] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.After),
             [ScopeType.Indexer] = new ScopeSettings("[", NewLineFlags.None, "]", NewLineFlags.None),
             [ScopeType.InitializerMember] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After),
@@ -56,9 +50,10 @@ namespace SharpShader
             [ScopeType.ParenthesesItem] = new ScopeSettings("", NewLineFlags.None, ", ", NewLineFlags.None),
             [ScopeType.Parentheses] = new ScopeSettings("(", NewLineFlags.None, ")", NewLineFlags.None),
             [ScopeType.Struct] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "};", NewLineFlags.After),
-            [ScopeType.Typed] = new ScopeSettings(false),
+            [ScopeType.Typed] = new ScopeSettings(),
             [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
-            [ScopeType.Method] = new ScopeSettings(true),
+            [ScopeType.Method] = new ScopeSettings(),
+            [ScopeType.Property] = new ScopeSettings(),
         };
     }
 
@@ -97,5 +92,7 @@ namespace SharpShader
         Variable = 10,
 
         Method = 11,
+
+        Property = 12,
     }
 }

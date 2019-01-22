@@ -16,7 +16,7 @@ namespace SharpShader.Processors
             string typeName = syntax.Type.ToString();
             (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
 
-            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, originalType);
+            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, false, originalType);
             tScope.TranslatedTypeName = translatedName;
             tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
 

@@ -17,7 +17,7 @@ namespace SharpShader.Processors
                 // TODO does the shader language support classes?
                 //      If not, we need a system to translate the class into another form of usable output source.
                 Type t = sc.Parent.Reflection.Assembly.GetType($"{scope.Namespace}+{syntax.Identifier.ValueText}");
-                ScopeInfo cScope = sc.Source.OpenScope(ScopeType.Class, t);
+                ScopeInfo cScope = sc.Source.OpenScope(ScopeType.Class, false, t);
             }
             else
             {

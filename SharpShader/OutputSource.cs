@@ -1,9 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpShader
 {
@@ -17,6 +15,10 @@ namespace SharpShader
 
         [NonSerialized]
         ScopeInfo _currentScope;
+        [NonSerialized]
+        ScopeInfo _rootScope;
+
+        [NonSerialized]
         ShaderContext _context;
 
         internal OutputSource(ShaderContext sc)
@@ -26,6 +28,8 @@ namespace SharpShader
             _currentScope.Type = ScopeType.Class;
             _currentScope.TypeInfo = sc.ShaderType;
             _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
+            _currentScope.IsDeclarative = true;
+            _rootScope = _currentScope;
         }
 
         internal void Append(SyntaxTriviaList triviaList)
@@ -49,14 +53,14 @@ namespace SharpShader
             _sb.Append(Environment.NewLine);
         }
 
-        internal ScopeInfo OpenScope(ScopeType type, Type tInfo = null)
+        internal ScopeInfo OpenScope(ScopeType type, bool declarative = false, Type tInfo = null)
         {
             ScopeInfo newScope = _context.Parent.ScopePool.Get();
             newScope.Parent = _currentScope;
             newScope.IndentationDepth = _currentScope.IndentationDepth + 1;
-            newScope.StartPosition = _sb.Length;
             newScope.Type = type;
             newScope.TypeInfo = tInfo;
+            newScope.IsDeclarative = declarative;
             newScope.Settings = ScopeSettings.Settings[type];
 
             // Track namespace path
@@ -77,6 +81,7 @@ namespace SharpShader
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
                 _sb.Append(Environment.NewLine);
 
+            newScope.DeclarativeEntryPosition = _sb.Length;
             return newScope;
         }
 
@@ -111,5 +116,7 @@ namespace SharpShader
         public int CurrentBlockDepth => _blocks.Count;
 
         internal ScopeInfo CurrentScope => _currentScope;
+
+        internal ScopeInfo RootScope => _rootScope;
     }
 }

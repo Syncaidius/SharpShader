@@ -10,11 +10,17 @@ namespace SharpShaderSample
     {
         public class NestedTestClass
         {
+            // Constructor
+            public NestedTestClass()
+            {
+
+            }
+
             public void TestMethod() { }
 
             public float TestMethodFloat() => 42.0f;
 
-            class NestedNester { }
+            class AnotherNestedTestClass { }
         }
 
         #region Constants

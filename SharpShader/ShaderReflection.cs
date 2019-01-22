@@ -120,7 +120,7 @@ namespace SharpShader
                     return methodInfo.NativeName;
             }
 
-            return null;
+            return cSharpName;
         }
 
         internal static AttributeSyntax GetAttribute<T>(SyntaxList<AttributeListSyntax> attLists) where T : SharpShaderAttribute

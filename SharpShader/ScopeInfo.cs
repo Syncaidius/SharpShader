@@ -25,7 +25,7 @@ namespace SharpShader
             ScopeInfo si = this;
             while(si != null)
             {
-                if(si.Settings.IsDeclarative)
+                if(si.IsDeclarative)
                 {
                     si._declarations.Add(varName, syntax);
                     break;
@@ -62,6 +62,7 @@ namespace SharpShader
             TranslatedModifiers = "";
             Namespace = "";
             IsLocal = false;
+            IsDeclarative = false;
             StructType = StructScopeType.None;
             _declarations.Clear();
         }
@@ -70,13 +71,21 @@ namespace SharpShader
 
         internal int IndentationDepth;
 
-        internal int StartPosition;
+        /// <summary>
+        /// The location at which any declarations are inserted. This is ignored if <see cref="IsDeclarative"/> is false.
+        /// </summary>
+        internal int DeclarativeEntryPosition;
 
         internal ScopeSettings Settings;
 
         internal MethodInfo Method;
 
         internal ScopeType Type;
+
+        /// <summary>
+        /// Does the scope accept new declarations to be inserted once it's closed?
+        /// </summary>
+        internal bool IsDeclarative;
 
         /// <summary>
         /// The scope's namespace. This is only applicable if the scope is for a class or struct.
@@ -109,6 +118,11 @@ namespace SharpShader
         /// The scope is for a local type or variable.
         /// </summary>
         internal bool IsLocal;
+
+        /// <summary>
+        /// The identifier/name of a scope object.
+        /// </summary>
+        internal string Identifier;
     }
 
     internal enum StructScopeType
@@ -118,5 +132,16 @@ namespace SharpShader
         ConstantBuffer = 1,
 
         Struct = 2,
+    }
+
+    internal enum AcceptedDeclarations
+    {
+        None = 0,
+
+        Types = 1,
+
+        LocalVariables = 2,
+
+        Fields = 3,
     }
 }
