@@ -139,7 +139,7 @@ namespace SharpShader
 
         private void PopulateFieldInfo(Type classType, BindingFlags bFlags)
         {
-            FieldInfo[] fInfo = classType.GetFields(bFlags | BindingFlags.DeclaredOnly);
+            FieldInfo[] fInfo = classType.GetFields(bFlags);
             foreach (FieldInfo fi in fInfo)
             {
                 AllFields.Add(fi.Name, fi);

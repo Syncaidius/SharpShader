@@ -35,7 +35,7 @@ namespace SharpShader.Processors
 
                 case ThisExpressionSyntax thisSyntax:
                 case BaseExpressionSyntax baseSyntax:
-                    ScopeInfo pScope = scope.FindParentOfType(ScopeType.Class);
+                    ScopeInfo pScope = scope.FindOfType(ScopeType.Class);
                     if (pScope.TypeInfo == sc.ShaderType)
                     {
                         sc.Complete(syntax.Expression);

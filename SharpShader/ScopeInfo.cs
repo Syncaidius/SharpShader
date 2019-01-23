@@ -37,7 +37,12 @@ namespace SharpShader
             return varName;
         }
 
-        internal ScopeInfo FindParentOfType(ScopeType type)
+        /// <summary>
+        /// Finds an ancestral scope of the specified type, or itself if it is a match.
+        /// </summary>
+        /// <param name="type">The type of scope to find.</param>
+        /// <returns></returns>
+        internal ScopeInfo FindOfType(ScopeType type)
         {
             ScopeInfo si = Parent;
             while(si != null)

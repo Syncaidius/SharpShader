@@ -13,7 +13,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, PropertyDeclarationSyntax syntax, ScopeInfo scope)
         {
-            ScopeInfo classScope = scope.FindParentOfType(ScopeType.Class);
+            ScopeInfo classScope = scope.FindOfType(ScopeType.Class);
             ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Property);
             pScope.Identifier = syntax.Identifier.ValueText;
 
@@ -41,8 +41,7 @@ namespace SharpShader.Processors
                 }
 
                 ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
-
-                ScopeInfo classScope = scope.FindParentOfType(ScopeType.Class);
+                ScopeInfo classScope = scope.FindOfType(ScopeType.Class);
                 mScope.Method = classScope.TypeInfo.GetMethod($"{syntax.Keyword.ValueText}_{scope.Identifier}");
             }
         }

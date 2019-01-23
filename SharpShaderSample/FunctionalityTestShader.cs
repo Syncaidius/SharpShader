@@ -173,6 +173,19 @@ namespace SharpShaderSample
             return (value.f * 10.9f, value.i * 10.45f);
         }
 
+        public bool PropertyUsageTest(bool useIt)
+        {
+            return useIt && BooleanLambdaProperty && BooleanProperty;
+        }
+
+        public bool PropertyAssignmentTest(bool useIt)
+        {
+            BooleanProperty = false;
+            bool p1 = BooleanLambdaProperty;
+            bool p2 = useIt && BooleanProperty;
+            return p1 && p2;
+        }
+
         public Vector3 HalfCookedLighting
         (
         in Vector3 normal, // normal
@@ -247,12 +260,13 @@ namespace SharpShaderSample
 
         #region Properties
         // Lamda property
-        public bool AmIAShader => true;
+        public bool BooleanLambdaProperty => true;
 
         // Property with lambda getter
-        public bool AreBananasAVegetable
+        public bool BooleanProperty
         {
             get => false;
+            set { }
         }
 
         // Another property with a lambda getter.
