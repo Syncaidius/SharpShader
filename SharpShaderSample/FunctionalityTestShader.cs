@@ -188,12 +188,13 @@ namespace SharpShaderSample
 
         public Vector3 HalfCookedLighting
         (
-        in Vector3 normal, // normal
-        in Vector3 toEye, // direction to eye/camera
+        ref Vector3 normal, // normal
+        ref Vector3 toEye, // direction to eye/camera
         in Vector3 toLight, // direction to light
         in Vector3 cLightCol, // light color
         in Vector3 cDiffuse, // scene color
-        in Vector3 cSpecular // specular color
+        in Vector3 cSpecular, // specular color
+        out Vector3 testOut // A test parameter
         )
         {
             // Sample the textures
@@ -238,6 +239,8 @@ namespace SharpShaderSample
             finalS = Min(finalS, S);
 
             Vector3 Final = cLightCol.RGB * Max(0.0f, NormalDotLight) * (cDiffuse + finalS);
+
+            testOut = Final;
             return Final;
         }
 

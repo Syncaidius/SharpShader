@@ -123,17 +123,15 @@ namespace SharpShader
 
                     EntryPoints.Add(mi.Name, new EntryPoint(mi, epAttribute, epAttribute.EntryType));
                 }
-                else
-                {
-                    MethodBucket bucket;
-                    if (!_methods.TryGetValue(mi.Name, out bucket))
-                    {
-                        bucket = new MethodBucket();
-                        _methods.Add(mi.Name, bucket);
-                    }
 
-                    bucket.Add(mi);
+                MethodBucket bucket;
+                if (!_methods.TryGetValue(mi.Name, out bucket))
+                {
+                    bucket = new MethodBucket();
+                    _methods.Add(mi.Name, bucket);
                 }
+
+                bucket.Add(mi);
             }
         }
 

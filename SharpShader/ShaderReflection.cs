@@ -145,13 +145,22 @@ namespace SharpShader
             return null;
         }
 
-        internal static Type ResolveType(string typeName)
+        internal static Type ResolveType(string typeName, SyntaxTokenList modifiers = default)
         {
             Type t = null;
 
+            foreach(SyntaxToken m in modifiers)
+            {
+                if (m.ValueText == "ref" || m.ValueText == "in" || m.ValueText == "out")
+                {
+                    typeName += "&";
+                    break;
+                }
+            }
+
             if (!_baseTypeAliases.TryGetValue(typeName, out t))
             {
-                    string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length > 0)
                 {
                     for (int i = 0; i < SupportedNamespaces.Length; i++)

@@ -13,6 +13,10 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, MethodDeclarationSyntax syntax, ScopeInfo scope)
         {
+            if(syntax.Identifier.ValueText == "HalfCookedLighting")
+            {
+
+            }
             MethodInfo info = sc.GetMethodInfo(syntax);
             if (info != null)
             {

@@ -41,7 +41,7 @@ namespace SharpShader
                 for (int i = 0; i < entry.Parameters.Length; i++)
                 {
                     ParameterSyntax ps = syntax.ParameterList.Parameters[i];
-                    Type pType = ReflectionHelper.ResolveType(ps.Type.ToString());
+                    Type pType = ReflectionHelper.ResolveType(ps.Type.ToString(), ps.Modifiers);
                     if(pType != entry.Parameters[i].ParameterType || ps.Identifier.ValueText != entry.Parameters[i].Name)
                     {
                         success = false;
