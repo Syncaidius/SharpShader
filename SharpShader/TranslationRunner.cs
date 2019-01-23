@@ -216,29 +216,20 @@ namespace SharpShader
 
             Type t = syntax.GetType();
             IEnumerable<SyntaxNode> children = syntax.ChildNodes();
+            ScopeInfo lastScope = sc.Source.CurrentScope;
 
             if (_processors.TryGetValue(t, out NodeProcessor processor))
-            {
-                ScopeInfo lastScope = sc.Source.CurrentScope;
                 processor.Translate(sc, syntax, sc.Source.CurrentScope);
-
-                bool scopeOpened = lastScope != sc.Source.CurrentScope;
-
-                sc.Complete(syntax);
-
-                foreach (SyntaxNode child in children)
-                    Translate(sc, child, depth + 1);
-
-                while(lastScope != sc.Source.CurrentScope)
-                    sc.Source.CloseScope();
-            }
             else
-            {
                 sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// [[No translator for {t.Name}]] ");
-                sc.Complete(syntax);
-                foreach (SyntaxNode child in children)
-                    Translate(sc, child, depth + 1);
-            }
+
+            sc.Complete(syntax);
+
+            foreach (SyntaxNode child in children)
+                Translate(sc, child, depth + 1);
+
+            while (lastScope != sc.Source.CurrentScope)
+                sc.Source.CloseScope();
         }
 
         private static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
