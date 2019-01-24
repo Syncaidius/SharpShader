@@ -34,5 +34,15 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

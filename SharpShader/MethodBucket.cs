@@ -33,15 +33,18 @@ namespace SharpShader
             });
         }
 
-        internal MethodInfo Find(MethodDeclarationSyntax syntax)
+        internal MethodInfo Find(ShaderContext sc, MethodDeclarationSyntax syntax)
         {
             foreach(MethodEntry entry in _methods)
             {
+                if (entry.Parameters.Length != syntax.ParameterList.Parameters.Count)
+                    continue;
+
                 bool success = true;
                 for (int i = 0; i < entry.Parameters.Length; i++)
                 {
                     ParameterSyntax ps = syntax.ParameterList.Parameters[i];
-                    Type pType = ReflectionHelper.ResolveType(ps.Type.ToString(), ps.Modifiers);
+                    Type pType = ReflectionHelper.ResolveType(sc, ps.Type.ToString(), ps.Modifiers);
                     if(pType != entry.Parameters[i].ParameterType || ps.Identifier.ValueText != entry.Parameters[i].Name)
                     {
                         success = false;

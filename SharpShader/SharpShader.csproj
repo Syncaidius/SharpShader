@@ -186,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalysisInfo.cs" />
-    <Compile Include="AttributeLookup.cs" />
     <Compile Include="Attributes\ConstantBufferAttribute.cs" />
     <Compile Include="Attributes\EntryPointAttribute.cs" />
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
@@ -201,6 +200,7 @@
     <Compile Include="Attributes\HullShaderAttribute.cs" />
     <Compile Include="Attributes\GeometryShaderAttribute.cs" />
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
+    <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Buffers\StructuredBuffer.cs" />
     <Compile Include="ConversionContext.ReflectionInfo.cs" />
     <Compile Include="ConversionFlags.cs" />
@@ -242,15 +242,11 @@
     <Compile Include="Exceptions\ScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
-    <Compile Include="Languages\IEntryPointTranslator.cs" />
     <Compile Include="Languages\GLSL\GlslLanguage.cs" />
     <Compile Include="Languages\HLSL\HlslLanguage.cs" />
-    <Compile Include="Languages\HLSL\VertexEntryPointTranslator.cs" />
-    <Compile Include="Languages\HLSL\PixelEntryPointTranslator.cs" />
     <Compile Include="Languages\ShaderLanguage.cs" />
     <Compile Include="Languages\ShaderLanguage.Modifier.cs" />
     <Compile Include="Languages\ShaderLanguage.Keyword.cs" />
-    <Compile Include="MethodInformation.cs" />
     <Compile Include="Processors\VariableProcessor.cs" />
     <Compile Include="ScopeInfo.cs" />
     <Compile Include="OutputSource.cs" />

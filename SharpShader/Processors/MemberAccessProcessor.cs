@@ -16,7 +16,7 @@ namespace SharpShader.Processors
             switch (syntax.Expression)
             {
                 case IdentifierNameSyntax idSyntax:
-                    Type targetType = ReflectionHelper.ResolveType(idSyntax.Identifier.ValueText);
+                    Type targetType = ReflectionHelper.ResolveType(sc, idSyntax.Identifier.ValueText);
                     if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
                     {
                         FieldInfo fInfo = targetType.GetField(syntax.Name.Identifier.ValueText);

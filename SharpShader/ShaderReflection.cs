@@ -145,7 +145,7 @@ namespace SharpShader
             return null;
         }
 
-        internal static Type ResolveType(string typeName, SyntaxTokenList modifiers = default)
+        internal static Type ResolveType(ShaderContext sc, string typeName, SyntaxTokenList modifiers = default)
         {
             Type t = null;
 
@@ -172,6 +172,12 @@ namespace SharpShader
                 }
             }
 
+            if (t == null)
+            {
+                Type sType = sc.ShaderType;
+                t = sc.Parent.Reflection.Assembly.GetType($"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}+{typeName}");
+            }
+
             return t;
         }
 
@@ -191,7 +197,7 @@ namespace SharpShader
 
         internal static (string translation, Type originalType, bool isArray) TranslateType(ShaderContext sc, string typeName)
         {
-            Type type = ResolveType(typeName);
+            Type type = ResolveType(sc, typeName);
             if (type != null)
             {
                 Type elementType = type.GetElementType();

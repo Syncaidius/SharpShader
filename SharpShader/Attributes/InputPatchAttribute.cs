@@ -18,17 +18,5 @@ namespace SharpShader
         {
             Size = size;
         }
-
-        internal static uint? Parse(AttributeSyntax syntax)
-        {
-            uint? size = null;
-            if (syntax.ArgumentList.Arguments.Count > 0)
-            {
-                if (uint.TryParse(syntax.ArgumentList.Arguments[0].ToString(), out uint s))
-                    size = s;
-            }
-
-            return size;
-        }
     }
 }

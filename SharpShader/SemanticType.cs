@@ -120,15 +120,4 @@ namespace SharpShader
 
         SV_ViewportArrayIndex = 40,
     }
-
-    public enum SemanticFragmentOutputType
-    {
-        None = SemanticType.None,
-
-        SV_Target = SemanticType.SV_Target,
-
-        SV_Depth = SemanticType.SV_Depth,
-
-        SV_Coverage = SemanticType.SV_Coverage,
-    }
 }

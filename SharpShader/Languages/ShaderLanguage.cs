@@ -23,14 +23,12 @@ namespace SharpShader
 
         Dictionary<Type, Keyword> _keywords;
         List<Modifier> _modifiers;
-        Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators;
 
         internal ShaderLanguage(OutputLanguage language)
         {
             Language = language;
             _keywords = new Dictionary<Type, Keyword>();
             _modifiers = new List<Modifier>();
-            _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>();
         }
 
         internal string TranslateModifiers(SyntaxTokenList modifiers)
@@ -50,13 +48,9 @@ namespace SharpShader
 
         internal abstract void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes);
 
-        internal IEntryPointTranslator GetEntryPointTranslator(EntryPointType type)
-        {
-            if (_epTranslators.TryGetValue(type, out IEntryPointTranslator translator))
-                return translator;
-            else
-                return null;
-        }
+        internal abstract void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep);
+
+        internal abstract void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep);
 
         internal abstract string TranslateNumber(ShaderContext context, string number);
 
@@ -76,11 +70,6 @@ namespace SharpShader
                 return null;
         }
 
-        protected void AddEntryPointTranslator<T>(EntryPointType type) where T : class, IEntryPointTranslator, new()
-        {
-            T translator = new T();
-            _epTranslators.Add(type, translator);
-        }
         #endregion
 
         #region Static members

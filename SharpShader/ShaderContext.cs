@@ -28,7 +28,7 @@ namespace SharpShader
         internal readonly ConversionContext Parent;
 
         [NonSerialized]
-        internal readonly Dictionary<string, EntryPoint> EntryPoints;
+        internal readonly Dictionary<MethodInfo, EntryPoint> EntryPoints;
 
         /// <summary>
         /// All fields that are to be treated as standard 'fields' in the output source.
@@ -83,7 +83,7 @@ namespace SharpShader
             _completedNodes = new HashSet<SyntaxNode>();
             Source = new OutputSource(this);
 
-            EntryPoints = new Dictionary<string, EntryPoint>();
+            EntryPoints = new Dictionary<MethodInfo, EntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
             ShaderFields = new Dictionary<string, FieldInfo>();
             AllFields = new Dictionary<string, FieldInfo>();
@@ -121,7 +121,7 @@ namespace SharpShader
                     if (eps.Count() > 1)
                         Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, ConversionMessageType.Warning);
 
-                    EntryPoints.Add(mi.Name, new EntryPoint(mi, epAttribute, epAttribute.EntryType));
+                    EntryPoints.Add(mi, new EntryPoint(epAttribute));
                 }
 
                 MethodBucket bucket;
@@ -193,7 +193,7 @@ namespace SharpShader
         internal MethodInfo GetMethodInfo(MethodDeclarationSyntax syntax)
         {
             if (_methods.TryGetValue(syntax.Identifier.ValueText, out MethodBucket bucket))
-                return bucket.Find(syntax);
+                return bucket.Find(this, syntax);
 
             return null;
         }

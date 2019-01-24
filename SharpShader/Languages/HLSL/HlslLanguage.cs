@@ -21,17 +21,11 @@ namespace SharpShader
             [EntryPointType.VertexShader] = "vs",
         };
 
+        public HlslLanguage(OutputLanguage language) : base(language) { }
+
         internal override bool InstancedConstantBuffers => false;
 
-        internal HlslLanguage(OutputLanguage language) : base(language)
-        {
-            //AddEntryPointTranslator<VertexEntryPointTranslator>(EntryPointType.VertexShader);
-            //AddEntryPointTranslator<GeometryEntryPointTranslator>(EntryPointType.GeometryShader);
-            //AddEntryPointTranslator<DomainEntryPointTranslator>(EntryPointType.DomainShader);
-            //AddEntryPointTranslator<PixelEntryPointTranslator>(EntryPointType.FragmentShader);
-        }
-
-        private void TranslateAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer)
+        private void TranslatePostfixAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer)
         {
             foreach (Attribute a in attributes)
             {
@@ -64,7 +58,7 @@ namespace SharpShader
                         else
                         {
                             sc.Source.Append($" : packoffset(c{packAtt.OffsetRegister})");
-                        }
+                        } 
                         break;
 
                     case SemanticAttribute semAtt:
@@ -84,10 +78,24 @@ namespace SharpShader
         internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
         {
             sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferInfo.Name}");
-            TranslateAttributes(sc, attributes, 'b', true);
+            TranslatePostfixAttributes(sc, attributes, 'b', true);
         }
 
-        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes) { }
+        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
+        {
+            InterpolationAttribute attInterpolation = info.GetCustomAttribute<InterpolationAttribute>();
+            if (attInterpolation != null)
+            {
+                foreach(InterpolationMode m in InterpolationAttribute.ModeValues)
+                {
+                    if (m == InterpolationMode.None)
+                        continue;
+
+                    if((attInterpolation.Flags & m) == m)
+                        sc.Source.Append($" {m.ToString().ToLower()}");
+                }
+            }
+        }
 
         internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
         {
@@ -104,7 +112,60 @@ namespace SharpShader
             else if (sc.UAVs.ContainsKey(info.Name))
                 regName = 'u';
 
-            TranslateAttributes(sc, attributes, regName, inConstantBuffer);
+            TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer);
+        }
+
+        internal override void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        {
+            switch (ep.Attribute)
+            {
+                case GeometryShaderAttribute attGeo:
+
+                    break;
+            }
+            // TODO hull, domain, geometry, pixel shader attributes.
+        }
+
+        internal override void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        {
+            // TODO validate that the input/output semantic types used are correct for each entry point type.
+
+            switch (ep.Attribute)
+            {
+                case VertexShaderAttribute attVertex:
+                    if (attVertex.OutputSemantic != SemanticType.None)
+                    {
+                        sc.Source.Append($" : {attVertex.OutputSemantic.ToString().ToUpper()}");
+                        if (attVertex.SemanticSlot > -1)
+                            sc.Source.Append(attVertex.SemanticSlot.ToString());
+                    }
+                    break;
+
+                case FragmentShaderAttribute attFrag:
+                    if (attFrag.OutputSemantic != SemanticType.None)
+                    {
+                        sc.Source.Append($" : {attFrag.OutputSemantic.ToString().ToUpper()}");
+                        if (attFrag.SemanticSlot > -1)
+                            sc.Source.Append(attFrag.SemanticSlot.ToString());
+                    }
+                    break;
+
+                case GeometryShaderAttribute attGeo:
+
+                    break;
+
+                case HullShaderAttribute attHull:
+
+                    break;
+
+                case DomainShaderAttribute attDomain:
+
+                    break;
+
+                case ComputeShaderAttribute attCompute:
+
+                    break;
+            }
         }
 
         internal override string TranslateNumber(ShaderContext context, string number)

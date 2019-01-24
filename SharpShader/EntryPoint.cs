@@ -13,20 +13,17 @@ namespace SharpShader
     {
         internal EntryPointType EntryType;
 
-        internal MethodInfo Method;
-
         internal EntryPointAttribute Attribute;
 
-        internal EntryPoint(MethodInfo info, EntryPointAttribute attribute, EntryPointType type)
+        internal EntryPoint(EntryPointAttribute attribute)
         {
-            Method = info;
             Attribute = attribute;
-            EntryType = type;
+            EntryType = attribute.EntryType;
         }
 
         public override string ToString()
         {
-            return $"{Method} - {EntryType}";
+            return EntryType.ToString();
         }
     }
 

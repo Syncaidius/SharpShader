@@ -22,15 +22,28 @@ namespace SharpShader.Processors
                 mScope.Method = info;
 
                 (string returnType, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.ReturnType.ToString());
+
+                EntryPoint ep = null;
+                sc.EntryPoints.TryGetValue(info, out ep);
+
+                if (ep != null)
+                    sc.Language.TranslateEntryPointPrefix(sc, info, syntax, ep);
+
                 sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");
+                    
 
                 sc.Complete(syntax.ReturnType);
                 sc.Complete(syntax.ConstraintClauses);
+                sc.Complete(syntax.AttributeLists);
 
                 if(syntax.TypeParameterList != null)
                     sc.CompleteSelfAndChildren(syntax.TypeParameterList);
 
-                TranslationRunner.Translate(sc, syntax.ParameterList, 0); // Translate parameters before method body.
+                // Translate parameters before method body.
+                TranslationRunner.Translate(sc, syntax.ParameterList, 0);
+
+                if(ep != null)
+                    sc.Language.TranslateEntryPointPostfix(sc, info, syntax, ep);
             }
         }
     }

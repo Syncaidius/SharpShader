@@ -46,7 +46,7 @@ namespace SharpShader
             [ScopeType.Indexer] = new ScopeSettings("[", NewLineFlags.None, "]", NewLineFlags.None),
             [ScopeType.InitializerMember] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After),
             [ScopeType.Initializer] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.Before),
-            [ScopeType.LocalVariable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.None),
+            [ScopeType.LocalVariable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
             [ScopeType.ParenthesesItem] = new ScopeSettings("", NewLineFlags.None, ", ", NewLineFlags.None),
             [ScopeType.Parentheses] = new ScopeSettings("(", NewLineFlags.None, ")", NewLineFlags.None),
             [ScopeType.Struct] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "};", NewLineFlags.After),

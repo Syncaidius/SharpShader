@@ -9,6 +9,7 @@ namespace SharpShaderSample
             [Semantic(SemanticType.Position, 0)]
             public Vector4 Position;
 
+            [Interpolation(InterpolationMode.NoPerspective | InterpolationMode.Centroid)]
             [Semantic(SemanticType.Color, 0)]
             public Vector4 Color;
         }
@@ -75,7 +76,7 @@ namespace SharpShaderSample
             };
         }
 
-        [FragmentShader(SemanticFragmentOutputType.SV_Target)]
+        [FragmentShader(SemanticType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {
             return getColor(input.Color, 1) * getOtherColor();

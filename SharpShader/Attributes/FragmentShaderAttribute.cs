@@ -9,12 +9,15 @@ namespace SharpShader
     [AttributeUsage(AttributeTargets.Method)]
     public class FragmentShaderAttribute : EntryPointAttribute
     {
-        public FragmentShaderAttribute(SemanticFragmentOutputType type = SemanticFragmentOutputType.None)
+        public FragmentShaderAttribute(SemanticType type = SemanticType.None, int slotID = -1)
         {
-            Semantic = type;
+            OutputSemantic = type;
+            SemanticSlot = slotID;
         }
 
-        public SemanticFragmentOutputType Semantic { get; }
+        public SemanticType OutputSemantic { get; }
+
+        public int SemanticSlot { get; }
 
         public override EntryPointType EntryType => EntryPointType.FragmentShader;
     }
