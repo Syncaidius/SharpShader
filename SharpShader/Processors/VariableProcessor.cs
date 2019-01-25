@@ -16,7 +16,7 @@ namespace SharpShader.Processors
             string typeName = syntax.Type.ToString();
             (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
 
-            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, false, originalType);
+            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, originalType);
             tScope.TranslatedTypeName = translatedName;
             tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
 
@@ -56,29 +56,26 @@ namespace SharpShader.Processors
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
                 }
 
-                if (scope.TypeInfo != null)
+                // Handle corner-cases for array initializers.
+                if (scope.TypeInfo != null && syntax.Initializer != null)
                 {
                     if (scope.TypeInfo.IsArray)
                     {
-                        if (syntax.Initializer != null)
+                        switch (syntax.Initializer.Value)
                         {
-                            switch (syntax.Initializer.Value)
-                            {
-                                case InitializerExpressionSyntax initSyntax:
-                                    IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
-                                    int arraySize = initChildren.Count();
-                                    sc.Source.Append($"[{arraySize}]");
-                                    break;
+                            case InitializerExpressionSyntax initSyntax:
+                                IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
+                                int arraySize = initChildren.Count();
+                                sc.Source.Append($"[{arraySize}]");
+                                break;
 
-                                case ArrayCreationExpressionSyntax arraySyntax:
-                                    TranslationRunner.Translate(sc, arraySyntax.Type);
-                                    break;
-                            }
+                            case ArrayCreationExpressionSyntax arraySyntax:
+                                TranslationRunner.Translate(sc, arraySyntax.Type);
+                                break;
                         }
                     }
                 }
 
-                // TODO do we need to use a different scope if inside an initializer? (i.e. InitializerMemberScope).
                 if(scope.IsLocal)
                     sc.Source.OpenScope(ScopeType.LocalVariable);
                 else

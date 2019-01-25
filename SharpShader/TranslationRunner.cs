@@ -221,7 +221,7 @@ namespace SharpShader
             if (_processors.TryGetValue(t, out NodeProcessor processor))
                 processor.Translate(sc, syntax, sc.Source.CurrentScope);
             //else
-            //    sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// [[No translator for {t.Name}]] ");
+             //   sc.Source.Append($"{Environment.NewLine}{new string('\t', depth)}// [[No translator for {t.Name}]] ");
 
             sc.Complete(syntax);
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +11,28 @@ namespace SharpShader
 {
     internal class ScopeInfo : IPoolable
     {
-        Dictionary<string, string> _declarations = new Dictionary<string, string>();
-
-        internal string DeclareLocalVariable(ShaderContext sc, string typeName, string initializer = null)
+        /// <summary>
+        /// Finds an insertion point to declare local syntax, such as a local variable. This is generally used for expanding an initializer into full syntax.<para/>
+        /// A callback is provided to output translated syntax at the correct location before returning to the end of the output source code.
+        /// </summary>
+        /// <param name="sc"></param>
+        /// <param name="callback"></param>
+        internal void DeclareLocal(ShaderContext sc, Action callback)
         {
-            string varName = sc.Parent.GetNewVariableName();
-            string syntax = $"{typeName} {varName}";
-            if (string.IsNullOrWhiteSpace(initializer))
-                syntax += ";";
-            else
-                syntax += $" = {initializer};";
-
             // The root scope implements IDeclarativeScope, so eventually we will hit that if no others are avaialble along the way.
             ScopeInfo si = this;
             while(si != null)
             {
-                if(si.IsDeclarative)
+                if(si.InsertionPoint > -1)
                 {
-                    si._declarations.Add(varName, syntax);
-                    break;
+                    sc.Source.SetPosition(si.InsertionPoint);
+                    callback();
+                    sc.Source.SetPositionToEnd();
+                    return;
                 }
 
                 si = si.Parent;
             }
-
-            return varName;
         }
 
         /// <summary>
@@ -67,9 +65,8 @@ namespace SharpShader
             TranslatedModifiers = "";
             Namespace = "";
             IsLocal = false;
-            IsDeclarative = false;
+            InsertionPoint = -1;
             StructType = StructScopeType.None;
-            _declarations.Clear();
         }
 
         internal ScopeInfo Parent;
@@ -79,18 +76,13 @@ namespace SharpShader
         /// <summary>
         /// The location at which any declarations are inserted. This is ignored if <see cref="IsDeclarative"/> is false.
         /// </summary>
-        internal int DeclarativeEntryPosition;
+        internal int InsertionPoint;
 
         internal ScopeSettings Settings;
 
         internal MethodInfo Method;
 
         internal ScopeType Type;
-
-        /// <summary>
-        /// Does the scope accept new declarations to be inserted once it's closed?
-        /// </summary>
-        internal bool IsDeclarative;
 
         /// <summary>
         /// The scope's namespace. This is only applicable if the scope is for a class or struct.

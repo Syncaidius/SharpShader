@@ -14,7 +14,7 @@ namespace SharpShader.Processors
         {
             if (syntax.Parent is ArrayCreationExpressionSyntax arrayCreationSyntax || syntax.Parent is EqualsValueClauseSyntax equalsAssignmentSyntax)
             {
-                ScopeInfo iScope = sc.Source.OpenScope(ScopeType.Initializer);
+                ScopeInfo iScope = sc.Source.OpenScope(ScopeType.ArrayInitializer);
                 iScope.Items = syntax.Expressions;
             }
         }

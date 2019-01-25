@@ -28,6 +28,7 @@ namespace SharpShader
             if (!_pool.TryTake(out result))
                 result = _instantiator();
 
+            result.Clear();
             return result;
         }
 

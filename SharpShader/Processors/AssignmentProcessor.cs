@@ -12,6 +12,12 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, AssignmentExpressionSyntax syntax, ScopeInfo scope)
         {
+            if(scope.Type == ScopeType.ExpandedInitializer)
+            {
+                sc.Source.Append($"{scope.Identifier}.");
+                sc.Source.OpenScope(ScopeType.LocalVariable);
+            }
+
             // TODO check if the assignment uses a valid operator. Does the language support operand assignments (e.g *= += or /=)
             TranslationRunner.Translate(sc, syntax.Left);
             if (sc.IsCompleted(syntax.Right)) // Property translation may have replaced the assignment with a set-method call.

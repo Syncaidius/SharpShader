@@ -12,17 +12,53 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ObjectCreationExpressionSyntax syntax, ScopeInfo scope)
         {
-            if (scope.Type == ScopeType.Initializer)
+            // Are we directly inside an initializer? (i.e. array initializer)
+            if (scope.Type == ScopeType.ArrayInitializer)
             {
                 if (syntax != scope.Items.Last())
-                    sc.Source.OpenScope(ScopeType.InitializerMember);
+                    sc.Source.OpenScope(ScopeType.ArrayElement);
             }
 
             string typeName = syntax.Type.ToString();
-            (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
+            (string translatedType, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
 
             sc.Complete(syntax.Type);
-            sc.Source.Append(translatedName);
+
+            // Handle initializers. These require declaring as a local variable above the current syntax node.
+            if (syntax.Initializer != null)
+            {
+                switch (syntax.Parent)
+                {
+                    case ReturnStatementSyntax returnSyntax:
+                    case AssignmentExpressionSyntax assignSyntax:
+                        string strInit = translatedType;
+                        string varName = sc.Parent.GetNewVariableName("oc_init");
+
+                        scope.DeclareLocal(sc, () =>
+                        {
+                            sc.Source.Append($"{translatedType} {varName} = {translatedType}");
+                            TranslationRunner.Translate(sc, syntax.ArgumentList);
+                            sc.Source.Append(";");
+                            sc.Source.AppendLineBreak();
+
+                            ScopeInfo iScope = sc.Source.OpenScope(ScopeType.ExpandedInitializer);
+                            iScope.Identifier = varName;
+
+                            TranslationRunner.Translate(sc, syntax.Initializer);
+                        });
+
+                        sc.Source.Append(varName);
+                        break;
+
+                    default:
+                        sc.Source.Append(translatedType);
+                        break;
+                }
+            }
+            else
+            {
+                sc.Source.Append(translatedType);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SharpShader.Processors
                 return;
 
             bool declarative = scope.Parent.Type == ScopeType.Method;
-            sc.Source.OpenScope(ScopeType.Block, declarative);
+            sc.Source.OpenScope(ScopeType.Block);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace SharpShader
     internal class OutputSource
     {
         StringBuilder _sb = new StringBuilder();
+        int _pos = 0;
 
         [NonSerialized]
         Stack<ScopeInfo> _blocks = new Stack<ScopeInfo>();
@@ -28,33 +29,56 @@ namespace SharpShader
             _currentScope.Type = ScopeType.Class;
             _currentScope.TypeInfo = sc.ShaderType;
             _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
-            _currentScope.IsDeclarative = true;
             _rootScope = _currentScope;
         }
 
         internal void Append(SyntaxToken token)
         {
-            _sb.Append(token.ValueText);
+            if (_pos < _sb.Length)
+                _sb.Insert(_pos, token.ValueText);
+            else
+                _sb.Append(token.ValueText);
+
+            _pos += token.ValueText.Length;
         }
 
         internal void Append(string src)
         {
-            _sb.Append(src);
+            if (_pos < _sb.Length)
+                _sb.Insert(_pos, src);
+            else
+                _sb.Append(src);
+
+            _pos += src.Length;
         }
 
         internal void AppendLineBreak()
         {
-            _sb.Append(Environment.NewLine);
+            if (_pos < _sb.Length)
+                _sb.Insert(_pos, Environment.NewLine);
+            else
+                _sb.Append(Environment.NewLine);
+
+            _pos += Environment.NewLine.Length;
         }
 
-        internal ScopeInfo OpenScope(ScopeType type, bool declarative = false, Type tInfo = null)
+        internal void SetPosition(int pos)
+        {
+            _pos = pos;
+        }
+
+        internal void SetPositionToEnd()
+        {
+            _pos = _sb.Length;
+        }
+
+        internal ScopeInfo OpenScope(ScopeType type, Type tInfo = null)
         {
             ScopeInfo newScope = _context.Parent.ScopePool.Get();
             newScope.Parent = _currentScope;
             newScope.IndentationDepth = _currentScope.IndentationDepth + 1;
             newScope.Type = type;
             newScope.TypeInfo = tInfo;
-            newScope.IsDeclarative = declarative;
             newScope.Settings = ScopeSettings.Settings[type];
 
             // Track namespace path
@@ -67,15 +91,17 @@ namespace SharpShader
             _currentScope = newScope; // Set new as current
 
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
-                _sb.Append(Environment.NewLine);
+                Append(Environment.NewLine);
 
             if (!string.IsNullOrEmpty(_currentScope.Settings.OpeningSyntax.Value))
-                _sb.Append(_currentScope.Settings.OpeningSyntax.Value);
+                Append(_currentScope.Settings.OpeningSyntax.Value);
 
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
-                _sb.Append(Environment.NewLine);
+                Append(Environment.NewLine);
 
-            newScope.DeclarativeEntryPosition = _sb.Length;
+            if (type == ScopeType.Block && newScope.Parent.Type == ScopeType.Method)
+                newScope.InsertionPoint = _sb.Length;
+
             return newScope;
         }
 
@@ -85,21 +111,16 @@ namespace SharpShader
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
-                _sb.Append(Environment.NewLine);
+                Append(Environment.NewLine);
 
             if (!string.IsNullOrEmpty(_currentScope.Settings.ClosingSyntax.Value))
-                _sb.Append(_currentScope.Settings.ClosingSyntax.Value);
+                Append(_currentScope.Settings.ClosingSyntax.Value);
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
-                _sb.Append(Environment.NewLine);
+                Append(Environment.NewLine);
 
             _context.Parent.ScopePool.Put(_currentScope);
             _currentScope = _blocks.Pop();
-        }
-
-        internal void Insert(string src, int index)
-        {
-            _sb.Insert(index, src);
         }
 
         public override string ToString()

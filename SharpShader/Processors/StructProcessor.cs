@@ -33,7 +33,7 @@ namespace SharpShader.Processors
             }
 
             sc.Source.Append(headerTranslation);
-            ScopeInfo structScope = sc.Source.OpenScope(ScopeType.Struct, false, sType);
+            ScopeInfo structScope = sc.Source.OpenScope(ScopeType.Struct, sType);
             structScope.StructType = scopeType;
 
             sc.CompleteSelfAndChildren(syntax.AttributeLists);
