@@ -91,13 +91,13 @@ namespace SharpShader
             _currentScope = newScope; // Set new as current
 
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
-                Append(Environment.NewLine);
+                AppendLineBreak();
 
             if (!string.IsNullOrEmpty(_currentScope.Settings.OpeningSyntax.Value))
                 Append(_currentScope.Settings.OpeningSyntax.Value);
 
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
-                Append(Environment.NewLine);
+                AppendLineBreak();
 
             if (type == ScopeType.Block && newScope.Parent.Type == ScopeType.Method)
                 newScope.InsertionPoint = _sb.Length;
@@ -111,13 +111,13 @@ namespace SharpShader
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
-                Append(Environment.NewLine);
+                AppendLineBreak();
 
             if (!string.IsNullOrEmpty(_currentScope.Settings.ClosingSyntax.Value))
                 Append(_currentScope.Settings.ClosingSyntax.Value);
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
-                Append(Environment.NewLine);
+                AppendLineBreak();
 
             _context.Parent.ScopePool.Put(_currentScope);
             _currentScope = _blocks.Pop();

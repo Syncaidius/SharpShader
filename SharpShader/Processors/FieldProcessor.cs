@@ -12,8 +12,16 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
         {
-            // Attribute info is retrieved via reflection, so we can completely skip processing of attribute syntax.
-            sc.CompleteSelfAndChildren(syntax.AttributeLists);
+            // Does the language allow instanced constant buffers and does the field use a constant buffer struct type?
+            if (sc.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))
+            {
+                if (!sc.Language.InstancedConstantBuffers)
+                    sc.CompleteSelfAndChildren(syntax);
+            }
+            else
+            {
+                sc.CompleteSelfAndChildren(syntax.AttributeLists);
+            }
         }
     }
 }

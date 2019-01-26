@@ -16,9 +16,12 @@ namespace SharpShader.Processors
             switch (syntax.Expression)
             {
                 case IdentifierNameSyntax idSyntax:
+                    // Is this a static class identifier? 
+                    // Static classes are abstract and sealed at IL level.
                     Type targetType = ReflectionHelper.ResolveType(sc, idSyntax.Identifier.ValueText);
-                    if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) // Static classes are abstract and sealed at IL level.
+                    if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) 
                     {
+                        // Is the member a constant value? If so, we can take it's value directly.
                         FieldInfo fInfo = targetType.GetField(syntax.Name.Identifier.ValueText);
                         if (fInfo != null && (fInfo.Attributes & FieldAttributes.Literal) == FieldAttributes.Literal)
                         {
@@ -28,6 +31,23 @@ namespace SharpShader.Processors
                                 sc.Source.Append(val.ToString());
                                 sc.CompleteChildren(syntax);
                                 return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ScopeInfo cScope = scope.FindOfType(ScopeType.Class);
+                        if(cScope == sc.Source.RootScope)
+                        {
+                            FieldInfo fInfo = cScope.TypeInfo.GetField(idSyntax.Identifier.ValueText);
+                            if(fInfo != null && sc.ConstantBuffers.Values.Contains(fInfo.FieldType))
+                            {
+                                if (!sc.Language.InstancedConstantBuffers)
+                                {
+                                    sc.CompleteSelfAndChildren(syntax.Expression);
+                                    TranslationRunner.Translate(sc, syntax.Name);
+                                    return;
+                                }
                             }
                         }
                     }
