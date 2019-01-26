@@ -19,6 +19,7 @@ namespace SharpShader.Processors
             ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, originalType);
             tScope.TranslatedTypeName = translatedName;
             tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
+            tScope.Items = syntax.Variables;
 
             if (syntax.Parent is FieldDeclarationSyntax fieldSyntax)
                 tScope.TranslatedModifiers = sc.Language.TranslateModifiers(fieldSyntax.Modifiers);
@@ -43,11 +44,13 @@ namespace SharpShader.Processors
                 if(fInfo != null)
                 { 
                     IEnumerable<Attribute> fieldAttributes = fInfo.GetCustomAttributes();
-                    sc.Language.TranslateFieldPrefix(sc, syntax, fInfo, fieldAttributes);
+                    int fieldIndex = scope.Items.IndexOf(syntax);
+
+                    sc.Language.TranslateFieldPrefix(sc, syntax, fInfo, fieldAttributes, fieldIndex);
                     sc.Source.Append($"{scope.TranslatedModifiers} ");
                     sc.Source.Append(scope.TranslatedTypeName);
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
-                    sc.Language.TranslateFieldPostfix(sc, syntax, fInfo, fieldAttributes);
+                    sc.Language.TranslateFieldPostfix(sc, syntax, fInfo, fieldAttributes, fieldIndex);
                 }
                 else
                 {

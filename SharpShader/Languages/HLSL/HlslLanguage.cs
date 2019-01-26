@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,9 @@ namespace SharpShader
 {
     internal class HlslLanguage : ShaderLanguage
     {
+        const int COMPONENTS_PER_REGISTER = 4;
+        const int COMPONENT_BYTE_SIZE = 4; // A register component is the size of a 32-bit floating-point value (i.e. C# float).
+
         static readonly Dictionary<EntryPointType, string> _profileNames = new Dictionary<EntryPointType, string>()
         {
             [EntryPointType.ComputeShader] = "cs",
@@ -25,7 +29,7 @@ namespace SharpShader
 
         internal override bool InstancedConstantBuffers => false;
 
-        private void TranslatePostfixAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer)
+        private void TranslatePostfixAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer, int fieldIndex, int fieldSize)
         {
             foreach (Attribute a in attributes)
             {
@@ -37,12 +41,12 @@ namespace SharpShader
 
                         if (regAtt.ApplicableEntryPoint == EntryPointType.AnyOrNone)
                         {
-                            sc.Source.Append($" : register({registerName}{regAtt.Slot})");
+                            sc.Source.Append($" : register({registerName}{regAtt.Slot + fieldIndex})");
                         }
                         else
                         {
                             string profile = regAtt.Model.ToString().Replace("SM", _profileNames[regAtt.ApplicableEntryPoint]);
-                            sc.Source.Append($" : register({profile}, {registerName}{regAtt.Slot})");
+                            sc.Source.Append($" : register({profile}, {registerName}{regAtt.Slot + fieldIndex})");
                         }
                         break;
 
@@ -50,15 +54,14 @@ namespace SharpShader
                         if (!isConstBuffer)
                             continue;
 
-                        if (packAtt.OffsetComponent != PackOffsetComponent.X)
-                        {
-                            string componentName = packAtt.OffsetComponent.ToString().ToLower();
-                            sc.Source.Append($" : packoffset(c{packAtt.OffsetRegister}.{componentName})");
-                        }
-                        else
-                        {
-                            sc.Source.Append($" : packoffset(c{packAtt.OffsetRegister})");
-                        } 
+                        int totalComponentOffset = (packAtt.OffsetRegister * COMPONENTS_PER_REGISTER) + (int)packAtt.OffsetComponent;
+                        totalComponentOffset += (int)Math.Floor((fieldSize * fieldIndex) / (float)COMPONENT_BYTE_SIZE);
+                        PackOffsetComponent component = (PackOffsetComponent)(totalComponentOffset % COMPONENTS_PER_REGISTER);
+                        int register = (int)Math.Floor(totalComponentOffset / (float)COMPONENTS_PER_REGISTER);
+
+                        string componentName = component.ToString().ToLower();
+                        sc.Source.Append($" : packoffset(c{register}.{componentName})");
+ 
                         break;
 
                     case SemanticAttribute semAtt:
@@ -78,10 +81,10 @@ namespace SharpShader
         internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
         {
             sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferInfo.Name}");
-            TranslatePostfixAttributes(sc, attributes, 'b', true);
+            TranslatePostfixAttributes(sc, attributes, 'b', true, 0, 0);
         }
 
-        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
+        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             InterpolationAttribute attInterpolation = info.GetCustomAttribute<InterpolationAttribute>();
             if (attInterpolation != null)
@@ -97,7 +100,7 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes)
+        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             char? regName = null;
             bool inConstantBuffer = false;
@@ -112,7 +115,8 @@ namespace SharpShader
             else if (sc.UAVs.ContainsKey(info.Name))
                 regName = 'u';
 
-            TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer);
+            int fieldTypeSize = info.FieldType.IsValueType ? Marshal.SizeOf(info.FieldType) : 0;
+            TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer, fieldIndex, fieldTypeSize);
         }
 
         internal override void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)

@@ -36,7 +36,7 @@ namespace SharpShaderSample
             public Matrix4x4 ViewProjection;
 
             [PackOffset(12)]
-            public Matrix4x4 InvViewProjection;
+            public int InvViewProjection, TestProjection, ShadowProjection, DuckProjection, ChickenProjection;
         }
 
         [ConstantBuffer]
