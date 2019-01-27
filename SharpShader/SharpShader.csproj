@@ -259,7 +259,7 @@
     <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderModel.cs" />
-    <Compile Include="ShaderReflection.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />

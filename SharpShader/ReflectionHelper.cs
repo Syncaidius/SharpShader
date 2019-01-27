@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharpShader
@@ -17,7 +18,10 @@ namespace SharpShader
         internal const string NAMESPACE = "SharpShader";
 
         static readonly char[] _namespaceDelimiters = { '.', ',' };
+        static readonly char[] _genericTypeDelimiter = { ',' };
         internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
+        internal static readonly string[] PointerModifiers = { "in", "out", "ref" };
+
         internal static readonly Dictionary<string, Type> _baseTypeAliases = new Dictionary<string, Type>()
         {
             ["long"] = typeof(long),
@@ -151,13 +155,17 @@ namespace SharpShader
 
             foreach(SyntaxToken m in modifiers)
             {
-                if (m.ValueText == "ref" || m.ValueText == "in" || m.ValueText == "out")
+                for (int i = 0; i < PointerModifiers.Length; i++)
                 {
-                    typeName += "&";
-                    break;
+                    if (m.ValueText == PointerModifiers[i])
+                    {
+                        typeName += "&";
+                        goto PostModifierCheck; // Yes, it's a goto! It's also a nested loop ;)
+                    }
                 }
             }
 
+            PostModifierCheck:
             if (!_baseTypeAliases.TryGetValue(typeName, out t))
             {
                 string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
@@ -167,7 +175,7 @@ namespace SharpShader
                     {
                         t = Type.GetType($"{SupportedNamespaces[i]}.{parts[parts.Length - 1]}");
                         if (t != null)
-                            break;
+                            return t;
                     }
                 }
             }
@@ -176,6 +184,32 @@ namespace SharpShader
             {
                 Type sType = sc.ShaderType;
                 t = sc.Parent.Reflection.Assembly.GetType($"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}+{typeName}");
+
+                if (t == null)
+                    t = ResolveGeneric(sc, typeName);
+            }
+
+            return t;
+        }
+
+        private static Type ResolveGeneric(ShaderContext sc, string typeName)
+        {
+            int bIndex = typeName.IndexOf('<');
+            Type t = null;
+            if(bIndex > -1)
+            {
+                // TODO garbage generation from arrays?
+                string[] inners = typeName.Substring(bIndex, typeName.Length - bIndex).Split(_genericTypeDelimiter, StringSplitOptions.None);
+                string outer = typeName.Substring(0, bIndex);
+                Type[] innerTypes = new Type[inners.Length];
+
+                for(int i = 0; i < inners.Length; i++)
+                    innerTypes[i] = ResolveType(sc, inners[i].Substring(1, inners[i].Length - 2));
+
+
+                string outerTypeName = $"{outer}`{inners.Length}";
+                Type outerType = ResolveType(sc, outerTypeName);
+                t = outerType?.MakeGenericType(innerTypes);
             }
 
             return t;

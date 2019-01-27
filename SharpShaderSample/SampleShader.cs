@@ -9,7 +9,6 @@ namespace SharpShaderSample
             [Semantic(SemanticType.Position, 0)]
             public Vector4 Position;
 
-            [Interpolation(InterpolationMode.NoPerspective | InterpolationMode.Centroid)]
             [Semantic(SemanticType.Color, 0)]
             public Vector4 Color;
         }

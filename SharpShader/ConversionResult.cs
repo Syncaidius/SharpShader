@@ -19,13 +19,13 @@ namespace SharpShader
                 ShaderResult shader = new ShaderResult();
                 string strSourceResult = sc.Source.ToString();
 
-                //if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
-                //{
-                //    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
-                //        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
-                //    else
-                //        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
-                //}
+                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
+                {
+                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
+                        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
+                    else
+                        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
+                }
 
                 shader.SourceCode = strSourceResult;
                 Output.Add(sc.Name, shader);
