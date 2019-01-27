@@ -22,7 +22,7 @@ namespace SharpShader
 
         public GeometryInputType InputType { get; }
 
-        uint MaxVertexOutCount { get; }
+        public uint MaxVertexOutCount { get; }
 
         public override EntryPointType EntryType => EntryPointType.GeometryShader;
     }

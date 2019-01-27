@@ -42,6 +42,9 @@
   <Modifier name="const">
     <Requirement csharp="in" />
   </Modifier>
+  <Modifier name="input">
+    <Requirement csharp="ref" />
+  </Modifier>
   
   
   <!-- Intrinsic functions-->

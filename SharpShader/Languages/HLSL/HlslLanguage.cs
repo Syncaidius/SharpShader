@@ -25,6 +25,16 @@ namespace SharpShader
             [EntryPointType.VertexShader] = "vs",
         };
 
+        // Expected input primitive sizes and names. See: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-geometry-shader
+        static Dictionary<GeometryInputType, (int, string)> _primitiveInputs = new Dictionary<GeometryInputType, (int, string)>()
+        {
+            [GeometryInputType.Point] = (1, "point"),
+            [GeometryInputType.Line] = (2, "line"),
+            [GeometryInputType.Triangle] = (3, "triangle"),
+            [GeometryInputType.LineWithAdjacency] = (4, "lineadj"),
+            [GeometryInputType.TriangleWithAdjacency] = (6, "triangleadj")
+        };
+
         public HlslLanguage(OutputLanguage language) : base(language) { }
 
         internal override bool InstancedConstantBuffers => false;
@@ -124,7 +134,9 @@ namespace SharpShader
             switch (ep.Attribute)
             {
                 case GeometryShaderAttribute attGeo:
-
+                    (int inputVertices, string inputType) = _primitiveInputs[attGeo.InputType];
+                    sc.Source.Append($"[maxvertexcount({attGeo.MaxVertexOutCount})]");
+                    sc.Source.AppendLineBreak();
                     break;
             }
             // TODO hull, domain, geometry, pixel shader attributes.
