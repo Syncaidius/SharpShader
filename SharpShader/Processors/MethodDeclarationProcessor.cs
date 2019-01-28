@@ -26,11 +26,8 @@ namespace SharpShader.Processors
                 EntryPoint ep = null;
                 sc.EntryPoints.TryGetValue(info, out ep);
 
-                if (ep != null)
-                    sc.Language.TranslateEntryPointPrefix(sc, info, syntax, ep);
-
-                sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");
-                    
+                ep?.Translator?.TranslatePrefix(sc, info, syntax, ep);
+                sc.Source.Append($"{returnType} {syntax.Identifier.ValueText}");                    
 
                 sc.Complete(syntax.ReturnType);
                 sc.Complete(syntax.ConstraintClauses);
@@ -41,9 +38,7 @@ namespace SharpShader.Processors
 
                 // Translate parameters before method body.
                 TranslationRunner.Translate(sc, syntax.ParameterList, 0);
-
-                if(ep != null)
-                    sc.Language.TranslateEntryPointPostfix(sc, info, syntax, ep);
+                ep?.Translator?.TranslatePostfix(sc, info, syntax, ep);
             }
         }
     }

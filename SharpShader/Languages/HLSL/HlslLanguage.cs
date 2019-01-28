@@ -1,5 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
+using SharpShader.Languages.HLSL.Translators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,19 +27,27 @@ namespace SharpShader
             [EntryPointType.VertexShader] = "vs",
         };
 
-        // Expected input primitive sizes and names. See: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-geometry-shader
-        static Dictionary<GeometryInputType, (int, string)> _primitiveInputs = new Dictionary<GeometryInputType, (int, string)>()
+        static readonly Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>()
         {
-            [GeometryInputType.Point] = (1, "point"),
-            [GeometryInputType.Line] = (2, "line"),
-            [GeometryInputType.Triangle] = (3, "triangle"),
-            [GeometryInputType.LineWithAdjacency] = (4, "lineadj"),
-            [GeometryInputType.TriangleWithAdjacency] = (6, "triangleadj")
+            [EntryPointType.ComputeShader] = new VertexTranslator(),
+            //[EntryPointType.DomainShader] = null,
+            [EntryPointType.FragmentShader] = new PixelTranslator(),
+            [EntryPointType.GeometryShader] = new GeometryTranslator(),
+            //[EntryPointType.HullShader] = null,
+            //[EntryPointType.VertexShader] = null,
         };
 
         public HlslLanguage(OutputLanguage language) : base(language) { }
 
         internal override bool InstancedConstantBuffers => false;
+
+        internal override IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type)
+        {
+            if (_epTranslators.TryGetValue(type, out IEntryPointTranslator translator))
+                return translator;
+            else
+                return null;
+        }
 
         private void TranslatePostfixAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer, int fieldIndex, int fieldSize)
         {
@@ -127,61 +137,6 @@ namespace SharpShader
 
             int fieldTypeSize = info.FieldType.IsValueType ? Marshal.SizeOf(info.FieldType) : 0;
             TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer, fieldIndex, fieldTypeSize);
-        }
-
-        internal override void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
-        {
-            switch (ep.Attribute)
-            {
-                case GeometryShaderAttribute attGeo:
-                    (int inputVertices, string inputType) = _primitiveInputs[attGeo.InputType];
-                    sc.Source.Append($"[maxvertexcount({attGeo.MaxVertexOutCount})]");
-                    sc.Source.AppendLineBreak();
-                    break;
-            }
-            // TODO hull, domain, geometry, pixel shader attributes.
-        }
-
-        internal override void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
-        {
-            // TODO validate that the input/output semantic types used are correct for each entry point type.
-
-            switch (ep.Attribute)
-            {
-                case VertexShaderAttribute attVertex:
-                    if (attVertex.OutputSemantic != SemanticType.None)
-                    {
-                        sc.Source.Append($" : {attVertex.OutputSemantic.ToString().ToUpper()}");
-                        if (attVertex.SemanticSlot > -1)
-                            sc.Source.Append(attVertex.SemanticSlot.ToString());
-                    }
-                    break;
-
-                case FragmentShaderAttribute attFrag:
-                    if (attFrag.OutputSemantic != SemanticType.None)
-                    {
-                        sc.Source.Append($" : {attFrag.OutputSemantic.ToString().ToUpper()}");
-                        if (attFrag.SemanticSlot > -1)
-                            sc.Source.Append(attFrag.SemanticSlot.ToString());
-                    }
-                    break;
-
-                case GeometryShaderAttribute attGeo:
-
-                    break;
-
-                case HullShaderAttribute attHull:
-
-                    break;
-
-                case DomainShaderAttribute attDomain:
-
-                    break;
-
-                case ComputeShaderAttribute attCompute:
-
-                    break;
-            }
         }
 
         internal override string TranslateNumber(ShaderContext context, string number)

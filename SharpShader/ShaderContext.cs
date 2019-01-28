@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,7 +122,8 @@ namespace SharpShader
                     if (eps.Count() > 1)
                         Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, ConversionMessageType.Warning);
 
-                    EntryPoints.Add(mi, new EntryPoint(epAttribute));
+                    IEntryPointTranslator epTranslator = Language.GetEntryPoinTranslator(epAttribute.EntryType);
+                    EntryPoints.Add(mi, new EntryPoint(epTranslator, epAttribute));
                 }
 
                 MethodBucket bucket;
@@ -196,6 +198,14 @@ namespace SharpShader
                 return bucket.Find(this, syntax);
 
             return null;
+        }
+
+        internal (ParameterInfo info, int index) GetParameterInfo(MethodInfo mInfo, string parameterName)
+        {
+            if (_methods.TryGetValue(mInfo.Name, out MethodBucket bucket))
+                return bucket.GetParameterInfo(mInfo, parameterName);
+            else
+                return (null, 0);
         }
 
         internal void AddMessage(string text, SyntaxNode node, ConversionMessageType type = ConversionMessageType.Error)

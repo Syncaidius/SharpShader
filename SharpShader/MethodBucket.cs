@@ -10,42 +10,45 @@ namespace SharpShader
 {
     internal class MethodBucket
     {
-        class MethodEntry
-        {
-            internal ParameterInfo[] Parameters;
-
-            internal MethodInfo Info;
-        }
-
-        List<MethodEntry> _methods;
+        Dictionary<MethodInfo, ParameterInfo[]> _methods;
 
         internal MethodBucket()
         {
-            _methods = new List<MethodEntry>();
+            _methods = new Dictionary<MethodInfo, ParameterInfo[]>();
         }
 
         internal void Add(MethodInfo info)
         {
-            _methods.Add(new MethodEntry()
+            _methods.Add(info, info.GetParameters());
+        }
+
+        internal (ParameterInfo info, int index) GetParameterInfo(MethodInfo method, string parameterName)
+        {
+            if(_methods.TryGetValue(method, out ParameterInfo[] parameters))
             {
-                Info = info,
-                Parameters = info.GetParameters(),
-            });
+                for(int i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].Name == parameterName)
+                        return (parameters[i], i);
+                }
+            }
+
+            return (null, 0);
         }
 
         internal MethodInfo Find(ShaderContext sc, MethodDeclarationSyntax syntax)
         {
-            foreach(MethodEntry entry in _methods)
+            foreach(KeyValuePair<MethodInfo, ParameterInfo[]> p in _methods)
             {
-                if (entry.Parameters.Length != syntax.ParameterList.Parameters.Count)
+                if (p.Value.Length != syntax.ParameterList.Parameters.Count)
                     continue;
 
                 bool success = true;
-                for (int i = 0; i < entry.Parameters.Length; i++)
+                for (int i = 0; i < p.Value.Length; i++)
                 {
                     ParameterSyntax ps = syntax.ParameterList.Parameters[i];
                     Type pType = ReflectionHelper.ResolveType(sc, ps.Type.ToString(), ps.Modifiers);
-                    if(pType != entry.Parameters[i].ParameterType || ps.Identifier.ValueText != entry.Parameters[i].Name)
+                    if(pType != p.Value[i].ParameterType || ps.Identifier.ValueText != p.Value[i].Name)
                     {
                         success = false;
                         break;
@@ -53,7 +56,7 @@ namespace SharpShader
                 }
 
                 if (success)
-                    return entry.Info;
+                    return p.Key;
             }
 
             return null;

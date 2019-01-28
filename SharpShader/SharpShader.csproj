@@ -212,6 +212,10 @@
       <DependentUpon>CSharpShader.tt</DependentUpon>
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Languages\HLSL\Translators\PixelTranslator.cs" />
+    <Compile Include="Languages\HLSL\Translators\VertexTranslator.cs" />
+    <Compile Include="Languages\HLSL\Translators\GeometryTranslator.cs" />
+    <Compile Include="Languages\IEntryPointTranslator.cs" />
     <Compile Include="MethodBucket.cs" />
     <Compile Include="ObjectPool.cs" />
     <Compile Include="Processors\IfStatementProcessor.cs" />

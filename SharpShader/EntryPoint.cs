@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,13 @@ namespace SharpShader
 
         internal EntryPointAttribute Attribute;
 
-        internal EntryPoint(EntryPointAttribute attribute)
+        internal IEntryPointTranslator Translator;
+
+        internal EntryPoint(IEntryPointTranslator translator, EntryPointAttribute attribute)
         {
             Attribute = attribute;
             EntryType = attribute.EntryType;
+            Translator = translator;
         }
 
         public override string ToString()

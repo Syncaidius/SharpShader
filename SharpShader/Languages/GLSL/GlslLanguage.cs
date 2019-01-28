@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,12 +36,7 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        internal override IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type)
         {
             throw new NotImplementedException();
         }

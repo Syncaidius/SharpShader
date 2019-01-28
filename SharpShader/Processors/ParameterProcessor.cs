@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
 
 namespace SharpShader.Processors
 {
@@ -21,15 +23,40 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderContext sc, ParameterSyntax syntax, ScopeInfo scope)
         {
+            ScopeInfo methodScope = scope.FindOfType(ScopeType.Method);
+            MethodInfo methodInfo = null;
+            EntryPoint ep = null;
+
             if (scope.Type == ScopeType.Parentheses)
             {
                 if (scope.Items.Last() != syntax)
                     sc.Source.OpenScope(ScopeType.ParenthesesItem);
             }
 
+            if (methodScope != null)
+            {
+                methodInfo = methodScope.Method;
+                sc.EntryPoints.TryGetValue(methodInfo, out ep);
+            }
+
             // TODO pass to language variable translation, since parameters can have attributes
             (string typeName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
-            sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
+            bool wasAppended = false;
+
+            if (ep != null)
+            {
+                (ParameterInfo pInfo, int pIndex) = sc.GetParameterInfo(methodInfo, syntax.Identifier.ValueText);
+                IEnumerable<Attribute> pAttributes = pInfo.GetCustomAttributes();
+
+                ep.Translator?.TranslateParameterPrefix(sc, syntax, ep, pInfo, pAttributes, pIndex);
+                sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
+                ep.Translator?.TranslateParameterPostfix(sc, syntax, ep, pInfo, pAttributes, pIndex);
+                wasAppended = true;
+            }
+
+            if(!wasAppended)
+                sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
+
             sc.Complete(syntax.Type);
         }
     }

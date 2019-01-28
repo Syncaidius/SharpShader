@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Languages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,10 +49,6 @@ namespace SharpShader
 
         internal abstract void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
 
-        internal abstract void TranslateEntryPointPrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep);
-
-        internal abstract void TranslateEntryPointPostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep);
-
         internal abstract string TranslateNumber(ShaderContext context, string number);
 
         /// <summary>
@@ -69,6 +66,8 @@ namespace SharpShader
             else
                 return null;
         }
+
+        internal abstract IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type);
 
         #endregion
 
@@ -205,7 +204,7 @@ namespace SharpShader
 
             if (modifier.Requirements.Count > 0 && !string.IsNullOrWhiteSpace(modifier.NativeText))
                 foundation._modifiers.Add(modifier);
-        }
+        }        
         #endregion
     }
 }
