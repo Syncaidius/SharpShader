@@ -47,12 +47,11 @@ namespace SharpShader
             [ScopeType.ArrayElement] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After),
             [ScopeType.ArrayInitializer] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.Before),
             [ScopeType.ExpandedInitializer] = new ScopeSettings(),
-            [ScopeType.LocalVariable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
+            [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
             [ScopeType.ParenthesesItem] = new ScopeSettings("", NewLineFlags.None, ", ", NewLineFlags.None),
             [ScopeType.Parentheses] = new ScopeSettings("(", NewLineFlags.None, ")", NewLineFlags.None),
             [ScopeType.Struct] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "};", NewLineFlags.After),
             [ScopeType.Typed] = new ScopeSettings(),
-            [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
             [ScopeType.Method] = new ScopeSettings(),
             [ScopeType.Property] = new ScopeSettings(),
         };
@@ -80,7 +79,7 @@ namespace SharpShader
 
         ArrayInitializer = 4,
 
-        LocalVariable = 5,
+        Variable = 5,
 
         ParenthesesItem = 6,
 
@@ -90,12 +89,10 @@ namespace SharpShader
 
         Typed = 9,
 
-        Variable = 10,
+        Method = 10,
 
-        Method = 11,
+        Property = 11,
 
-        Property = 12,
-
-        ExpandedInitializer = 13,
+        ExpandedInitializer = 12,
     }
 }

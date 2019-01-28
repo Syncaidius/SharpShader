@@ -40,5 +40,10 @@ namespace SharpShader
         {
             throw new NotImplementedException();
         }
+
+        internal override void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

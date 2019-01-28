@@ -218,6 +218,7 @@
     <Compile Include="Languages\IEntryPointTranslator.cs" />
     <Compile Include="MethodBucket.cs" />
     <Compile Include="ObjectPool.cs" />
+    <Compile Include="Processors\LoopProcessor.cs" />
     <Compile Include="Processors\IfStatementProcessor.cs" />
     <Compile Include="Processors\PropertyProcessor.cs" />
     <Compile Include="Processors\StatementProcessor.cs" />
@@ -236,7 +237,7 @@
     <Compile Include="Processors\FieldProcessor.cs" />
     <Compile Include="Processors\ArrayTypeProcessor.cs" />
     <Compile Include="Processors\ReturnProcessor.cs" />
-    <Compile Include="Processors\UnaryPrefixProcessor.cs" />
+    <Compile Include="Processors\UnaryProcessor.cs" />
     <Compile Include="Processors\StructProcessor.cs" />
     <Compile Include="Processors\EqualsValueClauseProcessor.cs" />
     <Compile Include="Processors\IdentifierProcessor.cs" />

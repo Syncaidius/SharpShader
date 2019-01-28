@@ -15,7 +15,7 @@ namespace SharpShader.Processors
             if(scope.Type == ScopeType.ExpandedInitializer)
             {
                 sc.Source.Append($"{scope.Identifier}.");
-                sc.Source.OpenScope(ScopeType.LocalVariable);
+                sc.Source.OpenScope(ScopeType.Variable);
             }
 
             // TODO check if the assignment uses a valid operator. Does the language support operand assignments (e.g *= += or /=)

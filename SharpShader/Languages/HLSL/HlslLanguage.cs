@@ -160,5 +160,11 @@ namespace SharpShader
                 return number.Substring(0, newLength);
             }
         }
+
+        internal override void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax)
+        {
+            // TODO Only unroll if loop iteration count is low enough.
+            sc.Source.Append("[unroll]");
+        }
     }
 }

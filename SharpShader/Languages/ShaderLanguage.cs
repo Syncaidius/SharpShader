@@ -49,7 +49,9 @@ namespace SharpShader
 
         internal abstract void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
 
-        internal abstract string TranslateNumber(ShaderContext context, string number);
+        internal abstract string TranslateNumber(ShaderContext sc, string number);
+
+        internal abstract void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax);
 
         /// <summary>
         /// Returns the translated string for a type, or null if no translation is found.

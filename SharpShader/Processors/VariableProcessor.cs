@@ -79,9 +79,8 @@ namespace SharpShader.Processors
                     }
                 }
 
-                if(scope.IsLocal)
-                    sc.Source.OpenScope(ScopeType.LocalVariable);
-                else
+                bool isForInitializer = (syntax.Parent is VariableDeclarationSyntax varDecSyntax && varDecSyntax.Parent is ForStatementSyntax forSyntax);
+                if(!isForInitializer)
                     sc.Source.OpenScope(ScopeType.Variable);
             }
         }
