@@ -58,6 +58,7 @@ namespace SharpShader.Processors
                 sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
 
             sc.Complete(syntax.Type);
+            sc.Complete(syntax.AttributeLists);
         }
     }
 }

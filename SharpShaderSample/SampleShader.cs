@@ -75,7 +75,7 @@ namespace SharpShaderSample
             };
         }
 
-        [FragmentShader(SemanticType.SV_Target)]
+        [FragmentShader, Semantic(SemanticType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {
             return getColor(input.Color, 1) * getOtherColor();

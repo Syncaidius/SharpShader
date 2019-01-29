@@ -238,14 +238,14 @@ namespace SharpShaderSample
             spriteStream.Append(v);
         }
 
-        [FragmentShader(SemanticType.SV_Target)]
+        [FragmentShader, Semantic(SemanticType.SV_Target)]
         Vector4 PS(PS_IN input)
         {
             Vector4 col = mapDiffuse.Sample(diffuseSampler, input.UV.XYZ);
             return col * input.Color;
         }
 
-        [FragmentShader(SemanticType.SV_Target)]
+        [FragmentShader, Semantic(SemanticType.SV_Target)]
         Vector4 PS_NoTexture(PS_IN input)
         {
             return input.Color;

@@ -68,7 +68,7 @@ namespace SharpShaderSample
             };
         }
 
-        [FragmentShader(SemanticType.SV_Target)]
+        [FragmentShader, Semantic(SemanticType.SV_Target)]
         public Vector4 FragFunc(PixelInput input)
         {
             return mapTexture.Sample(texSampler, input.UV);

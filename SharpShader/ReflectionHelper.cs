@@ -199,13 +199,16 @@ namespace SharpShader
             if(bIndex > -1)
             {
                 // TODO garbage generation from arrays?
-                string[] inners = typeName.Substring(bIndex, typeName.Length - bIndex).Split(_genericTypeDelimiter, StringSplitOptions.None);
+                string typeParams = typeName.Substring(bIndex, typeName.Length - bIndex);
+                string[] inners = typeParams.Substring(1, typeParams.Length - 2).Split(_genericTypeDelimiter, StringSplitOptions.None);
                 string outer = typeName.Substring(0, bIndex);
                 Type[] innerTypes = new Type[inners.Length];
 
-                for(int i = 0; i < inners.Length; i++)
-                    innerTypes[i] = ResolveType(sc, inners[i].Substring(1, inners[i].Length - 2));
-
+                for (int i = 0; i < inners.Length; i++)
+                {
+                    inners[i] = inners[i].Trim();
+                    innerTypes[i] = ResolveType(sc, inners[i]);
+                }
 
                 string outerTypeName = $"{outer}`{inners.Length}";
                 Type outerType = ResolveType(sc, outerTypeName);

@@ -23,11 +23,8 @@ namespace SharpShader.Processors
             sc.Source.Append("; ");
             TranslationRunner.Translate(sc, syntax.Condition);
             sc.Source.Append("; ");
-
             TranslateList(sc, syntax.Incrementors);
-
             sc.Source.Append(")");
-            sc.Source.AppendLineBreak();
         }
 
         private void TranslateList<T>(ShaderContext sc, SeparatedSyntaxList<T> list) where T : SyntaxNode

@@ -21,7 +21,7 @@ namespace SharpShader
     /// <summary>
     /// The partitioning of a hull shader.
     /// </summary>
-    public enum HullPartionining
+    public enum HullPartitioning
     {
         Integer = 0,
 
@@ -30,5 +30,22 @@ namespace SharpShader
         FractionalOdd = 2,
 
         PowerOfTwo = 3,
+    }
+
+    public enum HullOutputTopology
+    {
+        Point = 0,
+
+        Line = 1,
+
+        /// <summary>
+        /// Clockwise triangle.
+        /// </summary>
+        TriangleCW = 2,
+
+        /// <summary>
+        /// Counter-clockwise triangle.
+        /// </summary>
+        TriangleCCW = 3,
     }
 }

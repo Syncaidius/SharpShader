@@ -101,6 +101,11 @@ namespace SharpShaderSample
             new Vector2(.34f, 19.431f),
         };
 
+        readonly static Vector3[] HemilDir = {
+            new Vector3(1.0f, 1.0f, 1.0f),
+            new Vector3(-1.0f, 1.0f, -1.0f)
+        };
+
         [Register(8)]
         StructuredBuffer<Light> LightData;
         #endregion
@@ -322,10 +327,27 @@ namespace SharpShaderSample
             get => 0;
             set { }
         }
-  
+
         #endregion
 
         #region Entry points
+        //[domain("quad")]
+        //[partitioning("integer")]
+        //[outputtopology("triangle_ccw")]
+        //[outputcontrolpoints(4)]
+        //[patchconstantfunc("PointConstantHS")]
+        [HullShader(PatchType.Quad, HullPartitioning.Integer, HullOutputTopology.TriangleCCW, 4, nameof(PointConstantHS))]
+        HS_OUTPUT HS([Semantic(SemanticType.SV_PrimitiveID)] uint PatchID)
+        {
+            HS_OUTPUT Output;
+
+            uint hemiID = (uint)Min(PatchID, Fmod(PatchID, 2)); // use the remainder as the hemiDir ID (or the patchID if it's less than 2).
+
+            Output.LightID = (uint)Floor(0.5f * PatchID);
+            Output.HemiDir = HemilDir[hemiID];
+            return Output;
+        }
+
         [DomainShader(PatchType.Quad)]
         DS_OUTPUT DS(HS_CONSTANT_DATA_OUTPUT input,
             [Semantic(SemanticType.SV_DomainLocation)] Vector2 UV,

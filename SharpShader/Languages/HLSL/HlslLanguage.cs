@@ -29,12 +29,12 @@ namespace SharpShader
 
         static readonly Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>()
         {
-            [EntryPointType.ComputeShader] = new VertexTranslator(),
-            //[EntryPointType.DomainShader] = null,
+            [EntryPointType.VertexShader] = new VertexTranslator(),
             [EntryPointType.FragmentShader] = new PixelTranslator(),
             [EntryPointType.GeometryShader] = new GeometryTranslator(),
-            //[EntryPointType.HullShader] = null,
-            //[EntryPointType.VertexShader] = null,
+            [EntryPointType.HullShader] = new HullTranslator(),
+            [EntryPointType.DomainShader] = new DomainTranslator(),
+            [EntryPointType.ComputeShader] = null,
         };
 
         public HlslLanguage(OutputLanguage language) : base(language) { }
