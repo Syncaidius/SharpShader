@@ -7,10 +7,11 @@ Write all of your cross-platform shaders in a single language. Use C# as an inte
 SharpShader is a source-to-source translator. This means that C# source is taken as input and the source of a chosen shader language is produced as output. The main advantage of this approach is that the bulk of shader optimization can be left to where it's done best, the native shader compilers. It also means that any future optimizations and changes made to native HLSL/GLSL compilers can instantly be leveraged without changing SharpShader's source code.
 
 ## Current Status
- - It is possible to generate basic HLSL shaders from C# source.
- - GLSL shaders are not support in any shape or form, yet
- - Geometry, hull, domain and compute shaders are not properly handled yet
- - Many elements of C# syntax are not supported yet, such as lamda, inheritance and properties.
+ - It is possible to generate most forms of HLSL shader from C# source.
+ - [WIP] Include files are not supported yet
+ - [WIP] GLSL support is almost non-existant
+ - [WIP] Compute shaders are not handled yet.
+ - [WIP] A few elements of C# syntax are not supported yet, such as tuples and indexers.
  - There is currently no way to target a specific shader model (or GLSL version).
  - Lots of unfinished things!
  - A lot of bugs. Probably! 

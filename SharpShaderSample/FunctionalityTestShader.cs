@@ -52,6 +52,23 @@ namespace SharpShaderSample
             public uint LightID;
         };
 
+        struct DownScaleConstants
+        {
+            public Int2 Res; // Resolution of the down scaled image: x - width, y - height
+
+            [PackOffset(0, PackOffsetComponent.Z)]
+            public int Domain; // Total pixel in the downscaled image
+
+            [PackOffset(0, PackOffsetComponent.W)]
+            public int GroupSize; // Number of groups dispached on the first pass
+
+            [PackOffset(1)]
+            public float Adaptation;   // Adaptation factor
+
+            [PackOffset(1, PackOffsetComponent.Y)]
+            public float BloomThreshold; // Bloom threshold percentage
+        }
+
         // Unsafe struct with fixed-size arrays. Syntax is very similar to GLSL and HLSL arrays.
         public unsafe struct HS_CONSTANT_DATA_OUTPUT
         {
@@ -83,6 +100,8 @@ namespace SharpShaderSample
 
         readonly static Vector4 Color = new Vector4(0.5f, 0.2f, 0.1f, 1.0f);
 
+        readonly static Vector4 LUM_FACTOR = new Vector4(0.299f, 0.587f, 0.114f, 0);
+
         readonly static Vector2[] testArray = {
             new Vector2(0,-1),
             new Vector2(0, 0),
@@ -108,6 +127,25 @@ namespace SharpShaderSample
 
         [Register(8)]
         StructuredBuffer<Light> LightData;
+        DownScaleConstants dScale;
+
+        [Register(0)]
+        RWStructuredBuffer<float> AverageLum;
+
+        [Register(1)]
+        //RWTexture2D<Vector4> HDRDownScale;
+
+        [Register(0)]
+        Texture2D HDRTex;
+
+        [Register(0)]
+        StructuredBuffer<float> AverageValues1D;
+
+        [Register(1)]
+        StructuredBuffer<float> PrevAvgLum;
+
+        //[GroupShared] // TODO see: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-variable-syntax
+        float SharedPositions;
         #endregion
 
         #region Methods
@@ -130,7 +168,7 @@ namespace SharpShaderSample
 
             if (access)
             {
-                return this.Normalize(new Vector2(5,5));
+                return this.Normalize(new Vector2(5, 5));
             }
             else if (invertedAccess)
             {
@@ -373,6 +411,112 @@ namespace SharpShaderSample
             Output.PositionXYW = Output.Position.XYW;
 
             return Output;
+        }
+
+        [ComputeShader(1024, 1, 1)]
+        void DownScaleFirstPass(
+            [Semantic(SemanticType.SV_GroupID)] UInt3 groupId,
+            [Semantic(SemanticType.SV_GroupThreadID)] UInt3 groupThreadId,
+            [Semantic(SemanticType.SV_DispatchThreadID)] UInt3 dispatchThreadId)
+        {
+            //UInt2 CurPixel = new UInt2((uint)(dispatchThreadId.X % dScale.Res.X), dispatchThreadId.X / dScale.Res.x);
+
+            //// Skip out of bound pixels
+            //float avgLum = 0.0f;
+            //if (CurPixel.Y < dScale.Res.Y)
+            //{
+            //    Int3 nFullResPos = new Int3(CurPixel * 4, 0);
+            //    Vector4 downScaled = new Vector4();
+
+            //    for (int i = 0; i < 4; i++)
+            //    {
+            //        for (int j = 0; j < 4; j++)
+            //            downScaled += HDRTex.Load(nFullResPos, new Int2(j, i));
+            //    }
+            //    downScaled /= 16.0; // Average
+            //    HDRDownScale[CurPixel.XY] = downScaled; // Store the quarter resolution image
+            //    avgLum = Dot(downScaled, LUM_FACTOR); // Calculate the lumenace value for this pixel
+            //}
+            //SharedPositions[groupThreadId.X] = avgLum; // Store in the group memory for further reduction
+
+            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+
+            //// Down scale from 1024 to 256
+            //if (groupThreadId.X % 4 == 0)
+            //{
+            //    // Calculate the luminance sum for this step
+            //    float stepAvgLum = avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 1 < Domain ? SharedPositions[groupThreadId.X + 1] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 2 < Domain ? SharedPositions[groupThreadId.X + 2] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 3 < Domain ? SharedPositions[groupThreadId.X + 3] : avgLum;
+
+            //    // Store the results
+            //    avgLum = stepAvgLum;
+            //    SharedPositions[groupThreadId.X] = stepAvgLum;
+            //}
+
+            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+
+            //// Downscale from 256 to 64
+            //if (groupThreadId.X % 16 == 0)
+            //{
+            //    // Calculate the luminance sum for this step
+            //    float stepAvgLum = avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 4 < Domain ? SharedPositions[groupThreadId.X + 4] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 8 < Domain ? SharedPositions[groupThreadId.X + 8] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 12 < Domain ? SharedPositions[groupThreadId.X + 12] : avgLum;
+
+            //    // Store the results
+            //    avgLum = stepAvgLum;
+            //    SharedPositions[groupThreadId.X] = stepAvgLum;
+            //}
+
+            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+
+            //// Downscale from 64 to 16
+            //if (groupThreadId.X % 64 == 0)
+            //{
+            //    // Calculate the luminance sum for this step
+            //    float stepAvgLum = avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 16 < Domain ? SharedPositions[groupThreadId.X + 16] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 32 < Domain ? SharedPositions[groupThreadId.X + 32] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 48 < Domain ? SharedPositions[groupThreadId.X + 48] : avgLum;
+
+            //    // Store the results
+            //    avgLum = stepAvgLum;
+            //    SharedPositions[groupThreadId.X] = stepAvgLum;
+            //}
+
+            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+
+            //// Downscale from 16 to 4
+            //if (groupThreadId.X % 256 == 0)
+            //{
+            //    // Calculate the luminance sum for this step
+            //    float stepAvgLum = avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 64 < Domain ? SharedPositions[groupThreadId.X + 64] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 128 < Domain ? SharedPositions[groupThreadId.X + 128] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 192 < Domain ? SharedPositions[groupThreadId.X + 192] : avgLum;
+
+            //    // Store the results
+            //    avgLum = stepAvgLum;
+            //    SharedPositions[groupThreadId.X] = stepAvgLum;
+            //}
+
+            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+
+            //// Downscale from 4 to 1
+            //if (groupThreadId.X == 0)
+            //{
+            //    // Calculate the average lumenance for this thread group
+            //    float fFinalAvgLum = avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 256 < Domain ? SharedPositions[groupThreadId.X + 256] : avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 512 < Domain ? SharedPositions[groupThreadId.X + 512] : avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 768 < Domain ? SharedPositions[groupThreadId.X + 768] : avgLum;
+            //    fFinalAvgLum /= 1024.0f;
+
+            //    AverageLum[groupId.X] = fFinalAvgLum; // Write the final value into the 1D UAV which will be used on the next step
+            //}
         }
         #endregion
     }

@@ -34,7 +34,7 @@ namespace SharpShader
             [EntryPointType.GeometryShader] = new GeometryTranslator(),
             [EntryPointType.HullShader] = new HullTranslator(),
             [EntryPointType.DomainShader] = new DomainTranslator(),
-            [EntryPointType.ComputeShader] = null,
+            [EntryPointType.ComputeShader] = new ComputeTranslator(),
         };
 
         public HlslLanguage(OutputLanguage language) : base(language) { }

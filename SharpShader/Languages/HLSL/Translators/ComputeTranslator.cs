@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Languages.HLSL.Translators
 {
-    internal class VertexTranslator : IEntryPointTranslator
+    internal class ComputeTranslator : IEntryPointTranslator
     {
         public void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex) { }
 
@@ -16,6 +16,11 @@ namespace SharpShader.Languages.HLSL.Translators
 
         public void TranslatePostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep) { }
 
-        public void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep) { }
+        public void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        {
+            ComputeShaderAttribute attCompute = ep.Attribute as ComputeShaderAttribute;
+            sc.Source.Append($"[numthreads({attCompute.ThreadsX}, {attCompute.ThreadsY}, {attCompute.ThreadsZ})]");
+            sc.Source.AppendLineBreak();
+        }
     }
 }

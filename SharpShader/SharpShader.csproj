@@ -214,6 +214,7 @@
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Languages\HLSL\Translators\DomainTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\HlslTranslatorBase.cs" />
+    <Compile Include="Languages\HLSL\Translators\ComputeTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\PixelTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\HullTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\VertexTranslator.cs" />
