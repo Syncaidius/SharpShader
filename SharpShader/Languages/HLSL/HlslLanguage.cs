@@ -29,8 +29,8 @@ namespace SharpShader
 
         static readonly Dictionary<EntryPointType, IEntryPointTranslator> _epTranslators = new Dictionary<EntryPointType, IEntryPointTranslator>()
         {
-            [EntryPointType.VertexShader] = new VertexTranslator(),
-            [EntryPointType.FragmentShader] = new PixelTranslator(),
+            [EntryPointType.VertexShader] = new DefaultEntryPointTranslator(),
+            [EntryPointType.FragmentShader] = new DefaultEntryPointTranslator(),
             [EntryPointType.GeometryShader] = new GeometryTranslator(),
             [EntryPointType.HullShader] = new HullTranslator(),
             [EntryPointType.DomainShader] = new DomainTranslator(),

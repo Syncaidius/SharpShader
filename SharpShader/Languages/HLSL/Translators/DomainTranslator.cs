@@ -8,20 +8,16 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Languages.HLSL.Translators
 {
-    internal class DomainTranslator : IEntryPointTranslator
+    internal class DomainTranslator : DefaultEntryPointTranslator
     {
-        public void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex) { }
-
-        public void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex) { }
-
-        public void TranslatePostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep) { }
-
-        public void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
         {
             DomainShaderAttribute attHull = ep.Attribute as DomainShaderAttribute;
             string patchType = attHull.PatchType.ToString().ToLower();
             sc.Source.Append($"[domain(\"{patchType}\")]");
             sc.Source.AppendLineBreak();
+
+            base.TranslatePrefix(sc, info, syntax, ep);
         }
     }
 }

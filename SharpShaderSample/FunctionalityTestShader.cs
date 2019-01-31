@@ -145,7 +145,8 @@ namespace SharpShaderSample
         StructuredBuffer<float> PrevAvgLum;
 
         //[GroupShared] // TODO see: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-variable-syntax
-        float SharedPositions;
+        //[FixedSize(1024)] // TODO Translate to fixed array. TODO Also support unsafe fixed arrays.
+        float[] SharedPositions;
         #endregion
 
         #region Methods
@@ -425,7 +426,7 @@ namespace SharpShaderSample
             //float avgLum = 0.0f;
             //if (CurPixel.Y < dScale.Res.Y)
             //{
-            //    Int3 nFullResPos = new Int3(CurPixel * 4, 0);
+            //    Int3 nFullResPos = new Int3((Int2)CurPixel * 4, 0); // TODO add explicit casts for vector types.
             //    Vector4 downScaled = new Vector4();
 
             //    for (int i = 0; i < 4; i++)

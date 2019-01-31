@@ -213,11 +213,9 @@
     </Compile>
     <Compile Include="EmbeddedResource.cs" />
     <Compile Include="Languages\HLSL\Translators\DomainTranslator.cs" />
-    <Compile Include="Languages\HLSL\Translators\HlslTranslatorBase.cs" />
+    <Compile Include="Languages\HLSL\Translators\DefaultEntryPointTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\ComputeTranslator.cs" />
-    <Compile Include="Languages\HLSL\Translators\PixelTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\HullTranslator.cs" />
-    <Compile Include="Languages\HLSL\Translators\VertexTranslator.cs" />
     <Compile Include="Languages\HLSL\Translators\GeometryTranslator.cs" />
     <Compile Include="Languages\IEntryPointTranslator.cs" />
     <Compile Include="MethodBucket.cs" />

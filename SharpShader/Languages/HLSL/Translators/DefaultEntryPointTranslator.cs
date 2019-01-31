@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Languages.HLSL.Translators
 {
-    internal abstract class HlslTranslatorBase : IEntryPointTranslator
+    internal class DefaultEntryPointTranslator : IEntryPointTranslator
     {
         private void TranslateSemantic(ShaderContext sc, SemanticAttribute attribute)
         {
@@ -19,13 +19,13 @@ namespace SharpShader.Languages.HLSL.Translators
                 sc.Source.Append(attribute.Slot.ToString());
         }
 
-        public void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public virtual void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             foreach (Attribute a in attributes)
-                TranslateParameterAttributePrefix(sc, a, pInfo);
+                TranslateParameterAttributePrefix(sc, a, pInfo, ep);
         }
 
-        public void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public virtual void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             foreach (Attribute a in attributes)
             {
@@ -36,7 +36,7 @@ namespace SharpShader.Languages.HLSL.Translators
                         break;
 
                     default:
-                        TranslateParameterAttributePostfix(sc, a, pInfo);
+                        TranslateParameterAttributePostfix(sc, a, pInfo, ep);
                         break;
                 }
             }
@@ -49,10 +49,10 @@ namespace SharpShader.Languages.HLSL.Translators
                 TranslateSemantic(sc, attSemantic);
         }
 
-        public abstract void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep);
+        public virtual void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep) { }
 
-        protected abstract void TranslateParameterAttributePrefix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo);
+        protected virtual void TranslateParameterAttributePrefix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo, EntryPoint ep) { }
 
-        protected abstract void TranslateParameterAttributePostfix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo);
+        protected virtual void TranslateParameterAttributePostfix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo, EntryPoint ep) { }
     }
 }

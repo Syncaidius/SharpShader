@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Languages.HLSL.Translators
 {
-    internal class HullTranslator : IEntryPointTranslator
+    internal class HullTranslator : DefaultEntryPointTranslator
     {
         static readonly Dictionary<HullPartitioning, string> _partitionNames = new Dictionary<HullPartitioning, string>()
         {
@@ -26,13 +26,7 @@ namespace SharpShader.Languages.HLSL.Translators
             [HullOutputTopology.TriangleCW] = "triangle_cw",
         };
 
-        public void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex) { }
-
-        public void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, EntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex) { }
-
-        public void TranslatePostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep) { }
-
-        public void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
         {
             HullShaderAttribute attHull = ep.Attribute as HullShaderAttribute;
             string patchType = attHull.PatchType.ToString().ToLower();
