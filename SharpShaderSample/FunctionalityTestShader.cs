@@ -133,7 +133,7 @@ namespace SharpShaderSample
         RWStructuredBuffer<float> AverageLum;
 
         [Register(1)]
-        //RWTexture2D<Vector4> HDRDownScale;
+        RWTexture2D<Vector4> HDRDownScale;
 
         [Register(0)]
         Texture2D HDRTex;
@@ -144,7 +144,7 @@ namespace SharpShaderSample
         [Register(1)]
         StructuredBuffer<float> PrevAvgLum;
 
-        //[GroupShared] // TODO see: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/dx-graphics-hlsl-variable-syntax
+        [ComputeGroupShared]
         //[FixedSize(1024)] // TODO Translate to fixed array. TODO Also support unsafe fixed arrays.
         float[] SharedPositions;
         #endregion
