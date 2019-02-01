@@ -19,7 +19,7 @@ namespace SharpShader
 
         static readonly char[] _namespaceDelimiters = { '.', ',' };
         static readonly char[] _genericTypeDelimiter = { ',' };
-        internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "Int", "Double", "UInt", "Bool" };
+        internal static readonly string[] IntrinsicPrefixes = { "Matrix", "Vector", "UInt", "Double", "Int", "Bool" };
         internal static readonly string[] PointerModifiers = { "in", "out", "ref" };
 
         internal static readonly Dictionary<string, Type> _baseTypeAliases = new Dictionary<string, Type>()
