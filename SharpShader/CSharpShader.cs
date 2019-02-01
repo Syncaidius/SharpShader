@@ -5,6 +5,9 @@ namespace SharpShader
 {
 	public abstract class CSharpShader
 	{
+		// TODO CRITICAL: store intrinsic entries by C# name instead of their native language name, otherwise different functions will be generated with the same C# name, regardless of return/parameter types.
+
+
 		/// <summary>HLSL: Submits an error message to the information queue and terminates the current draw or dispatch call being executed.</summary>
 		[ShaderIntrinsic(OutputLanguage.HLSL, "abort")]
 		protected void Abort() {  }
@@ -538,8 +541,8 @@ namespace SharpShader
 		protected void GroupMemoryBarrier() {  }
 
 		/// <summary>HLSL: Blocks execution of all threads in a group until all group shared accesses have been completed and all threads in the group have reached this call.</summary>
-		[ShaderIntrinsic(OutputLanguage.HLSL, "GroupMemoryBarrierWithSync")]
-		protected void GroupMemoryBarrierWithSync() {  }
+		[ShaderIntrinsic(OutputLanguage.HLSL, "GroupMemoryBarrierWithGroupSync")]
+		protected void GroupMemoryBarrierWithGroupSync() {  }
 
 		/// <summary>HLSL: Performs a guaranteed atomic add of value to the dest resource variable.</summary>
 		[ShaderIntrinsic(OutputLanguage.HLSL, "InterlockedAdd")]

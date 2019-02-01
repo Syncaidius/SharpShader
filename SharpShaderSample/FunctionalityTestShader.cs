@@ -420,7 +420,7 @@ namespace SharpShaderSample
             [Semantic(SemanticType.SV_GroupThreadID)] UInt3 groupThreadId,
             [Semantic(SemanticType.SV_DispatchThreadID)] UInt3 dispatchThreadId)
         {
-            //UInt2 CurPixel = new UInt2((uint)(dispatchThreadId.X % dScale.Res.X), dispatchThreadId.X / dScale.Res.x);
+            //UInt2 CurPixel = new UInt2((uint)(dispatchThreadId.X % dScale.Res.X), (uint)(dispatchThreadId.X / dScale.Res.X));
 
             //// Skip out of bound pixels
             //float avgLum = 0.0f;
@@ -447,9 +447,9 @@ namespace SharpShaderSample
             //{
             //    // Calculate the luminance sum for this step
             //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 1 < Domain ? SharedPositions[groupThreadId.X + 1] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 2 < Domain ? SharedPositions[groupThreadId.X + 2] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 3 < Domain ? SharedPositions[groupThreadId.X + 3] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 1 < dScale.Domain ? SharedPositions[groupThreadId.X + 1] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 2 < dScale.Domain ? SharedPositions[groupThreadId.X + 2] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 3 < dScale.Domain ? SharedPositions[groupThreadId.X + 3] : avgLum;
 
             //    // Store the results
             //    avgLum = stepAvgLum;
@@ -463,9 +463,9 @@ namespace SharpShaderSample
             //{
             //    // Calculate the luminance sum for this step
             //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 4 < Domain ? SharedPositions[groupThreadId.X + 4] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 8 < Domain ? SharedPositions[groupThreadId.X + 8] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 12 < Domain ? SharedPositions[groupThreadId.X + 12] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 4 < dScale.Domain ? SharedPositions[groupThreadId.X + 4] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 8 < dScale.Domain ? SharedPositions[groupThreadId.X + 8] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 12 < dScale.Domain ? SharedPositions[groupThreadId.X + 12] : avgLum;
 
             //    // Store the results
             //    avgLum = stepAvgLum;
@@ -479,9 +479,9 @@ namespace SharpShaderSample
             //{
             //    // Calculate the luminance sum for this step
             //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 16 < Domain ? SharedPositions[groupThreadId.X + 16] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 32 < Domain ? SharedPositions[groupThreadId.X + 32] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 48 < Domain ? SharedPositions[groupThreadId.X + 48] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 16 < dScale.Domain ? SharedPositions[groupThreadId.X + 16] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 32 < dScale.Domain ? SharedPositions[groupThreadId.X + 32] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 48 < dScale.Domain ? SharedPositions[groupThreadId.X + 48] : avgLum;
 
             //    // Store the results
             //    avgLum = stepAvgLum;
@@ -495,9 +495,9 @@ namespace SharpShaderSample
             //{
             //    // Calculate the luminance sum for this step
             //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 64 < Domain ? SharedPositions[groupThreadId.X + 64] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 128 < Domain ? SharedPositions[groupThreadId.X + 128] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 192 < Domain ? SharedPositions[groupThreadId.X + 192] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 64 < dScale.Domain ? SharedPositions[groupThreadId.X + 64] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 128 < dScale.Domain ? SharedPositions[groupThreadId.X + 128] : avgLum;
+            //    stepAvgLum += dispatchThreadId.X + 192 < dScale.Domain ? SharedPositions[groupThreadId.X + 192] : avgLum;
 
             //    // Store the results
             //    avgLum = stepAvgLum;
@@ -511,9 +511,9 @@ namespace SharpShaderSample
             //{
             //    // Calculate the average lumenance for this thread group
             //    float fFinalAvgLum = avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 256 < Domain ? SharedPositions[groupThreadId.X + 256] : avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 512 < Domain ? SharedPositions[groupThreadId.X + 512] : avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 768 < Domain ? SharedPositions[groupThreadId.X + 768] : avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 256 < dScale.Domain ? SharedPositions[groupThreadId.X + 256] : avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 512 < dScale.Domain ? SharedPositions[groupThreadId.X + 512] : avgLum;
+            //    fFinalAvgLum += dispatchThreadId.X + 768 < dScale.Domain ? SharedPositions[groupThreadId.X + 768] : avgLum;
             //    fFinalAvgLum /= 1024.0f;
 
             //    AverageLum[groupId.X] = fFinalAvgLum; // Write the final value into the 1D UAV which will be used on the next step

@@ -784,7 +784,7 @@
     <summary>Blocks execution of all threads in a group until all group shared accesses have been completed.</summary>
   </Intrinsic>
 
-  <Intrinsic name="GroupMemoryBarrierWithSync">
+  <Intrinsic name="GroupMemoryBarrierWithGroupSync">
     <summary>Blocks execution of all threads in a group until all group shared accesses have been completed and all threads in the group have reached this call.</summary>
   </Intrinsic>
 
