@@ -27,7 +27,7 @@ namespace SharpShader
 
             for (int i = 0; i < newLineCount; i++)
             {
-                lines[i] = lines[i].Trim();
+                lines[i] = lines[i].Trim().Replace("  ", " ");
 
 
                 // Remove consecutive empty lines.

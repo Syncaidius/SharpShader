@@ -106,16 +106,24 @@ namespace SharpShader
 
         internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
-            InterpolationAttribute attInterpolation = info.GetCustomAttribute<InterpolationAttribute>();
-            if (attInterpolation != null)
+            foreach(Attribute at in attributes)
             {
-                foreach(InterpolationMode m in InterpolationAttribute.ModeValues)
+                switch (at)
                 {
-                    if (m == InterpolationMode.None)
-                        continue;
+                    case InterpolationAttribute attInterpolation:
+                        foreach (InterpolationMode m in InterpolationAttribute.ModeValues)
+                        {
+                            if (m == InterpolationMode.None)
+                                continue;
 
-                    if((attInterpolation.Flags & m) == m)
-                        sc.Source.Append($" {m.ToString().ToLower()}");
+                            if ((attInterpolation.Flags & m) == m)
+                                sc.Source.Append($" {m.ToString().ToLower()}");
+                        }
+                        break;
+
+                    case ComputeGroupSharedAttribute attGroupShared:
+                        sc.Source.Append($" groupshared ");
+                        break;
                 }
             }
         }
