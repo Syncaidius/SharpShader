@@ -61,6 +61,6 @@ namespace SharpShader
         /// <param name="offset">An offset applied to the texture coordinates before sampling.</param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public T Load(Int3 location, int offset, uint status) { status = 0; return default(T); }
+        public T Load(Int3 location, Int2 offset, uint status) { status = 0; return default(T); }
     }
 }
