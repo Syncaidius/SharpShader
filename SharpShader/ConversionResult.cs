@@ -45,6 +45,5 @@ namespace SharpShader
         {
             return Output.GetEnumerator();
         }
-
     }
 }
