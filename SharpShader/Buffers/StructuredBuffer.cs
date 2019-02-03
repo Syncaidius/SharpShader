@@ -27,7 +27,7 @@ namespace SharpShader
     /// </summary>
     /// <typeparam name="T">The type of data to store in the buffer.</typeparam>
     [RegisteredType]
-    [UnorderedAccessTypeAttribute]
+    [UnorderedAccessType]
     public class RWStructuredBuffer<T> : StructuredBuffer<T> where T : struct 
     {
         /// <summary>

@@ -18,6 +18,7 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-rwtexture2d
     /// </summary>
     [RegisteredType]
+    [UnorderedAccessType]
     public class RWTexture2D<T> : RWTexture2DBase<T>
         where T : struct
     {
@@ -67,6 +68,7 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-rwtexture2darray
     /// </summary>
     [RegisteredType]
+    [UnorderedAccessType]
     public class RWTexture2DArray<T> : RWTexture2DBase<T>
         where T : struct
     {
