@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
+using SharpShader.Result;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

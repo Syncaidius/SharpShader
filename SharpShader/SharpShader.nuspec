@@ -7,7 +7,7 @@
     <owners>James Yarwood</owners>
     <licenseUrl>https://github.com/Syncaidius/SharpShader/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Syncaidius/SharpShader</projectUrl>
-    <iconUrl>https://github.com/Syncaidius/SharpShader/tree/master/RES/logo.png</iconUrl>
+    <iconUrl>logo.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description> Write all of your cross-platform shaders in a single language. Use C# as an intermediate language for writing HLSL and GLSL shaders, saving you valuable development time.</description>
     <releaseNotes>Initial test release.</releaseNotes>

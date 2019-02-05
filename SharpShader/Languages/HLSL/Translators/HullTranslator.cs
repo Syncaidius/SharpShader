@@ -26,7 +26,7 @@ namespace SharpShader.Languages.HLSL.Translators
             [HullOutputTopology.TriangleCW] = "triangle_cw",
         };
 
-        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
         {
             HullShaderAttribute attHull = ep.Attribute as HullShaderAttribute;
             string patchType = attHull.PatchType.ToString().ToLower();

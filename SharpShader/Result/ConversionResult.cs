@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpShader
+namespace SharpShader.Result
 {
     public class ConversionResult : IEnumerable<KeyValuePair<string, ShaderResult>>
     {
@@ -16,7 +16,7 @@ namespace SharpShader
 
             foreach (ShaderContext sc in context.Shaders)
             {
-                ShaderResult shader = new ShaderResult();
+                ShaderResult shader = new ShaderResult(sc);
                 string strSourceResult = sc.Source.ToString();
 
                 if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)

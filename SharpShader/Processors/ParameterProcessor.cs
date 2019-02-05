@@ -25,7 +25,7 @@ namespace SharpShader.Processors
         {
             ScopeInfo methodScope = scope.FindOfType(ScopeType.Method);
             MethodInfo methodInfo = null;
-            EntryPoint ep = null;
+            MappedEntryPoint ep = null;
 
             if (scope.Type == ScopeType.Parentheses)
             {

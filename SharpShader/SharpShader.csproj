@@ -206,7 +206,9 @@
     <Compile Include="ConversionContext.ReflectionInfo.cs" />
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
-    <Compile Include="ConversionResult.cs" />
+    <Compile Include="Result\ConstantBufferInfo.cs" />
+    <Compile Include="Result\ShaderElement.cs" />
+    <Compile Include="Result\ConversionResult.cs" />
     <Compile Include="CSharpShader.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -246,6 +248,8 @@
     <Compile Include="Processors\IdentifierProcessor.cs" />
     <Compile Include="Processors\ArrayRankProcessor.cs" />
     <Compile Include="Processors\PredefinedTypeProcessor.cs" />
+    <Compile Include="Result\ShaderResourceBinding.cs" />
+    <Compile Include="Result\ShaderInputOutput.cs" />
     <Compile Include="ScopeSettings.cs" />
     <Compile Include="Exceptions\ScopeException.cs" />
     <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
@@ -268,7 +272,7 @@
     <Compile Include="ShaderContext.cs" />
     <Compile Include="ShaderModel.cs" />
     <Compile Include="ReflectionHelper.cs" />
-    <Compile Include="EntryPoint.cs" />
+    <Compile Include="MappedEntryPoint.cs" />
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
@@ -276,8 +280,9 @@
     <Compile Include="OutputLanguage.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShaderResult.cs" />
+    <Compile Include="Result\ShaderResult.cs" />
     <Compile Include="FormattingHelper.cs" />
+    <Compile Include="Result\ShaderLayoutElement.cs" />
     <Compile Include="Textures\RWTexture1D.cs" />
     <Compile Include="Textures\RWTexture2D.cs" />
     <Compile Include="Textures\Texture2DArray.cs" />

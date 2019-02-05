@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal class EntryPoint
+    internal class MappedEntryPoint
     {
         internal EntryPointType EntryType;
 
@@ -18,7 +18,7 @@ namespace SharpShader
 
         internal IEntryPointTranslator Translator;
 
-        internal EntryPoint(IEntryPointTranslator translator, EntryPointAttribute attribute)
+        internal MappedEntryPoint(IEntryPointTranslator translator, EntryPointAttribute attribute)
         {
             Attribute = attribute;
             EntryType = attribute.EntryType;

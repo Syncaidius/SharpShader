@@ -10,7 +10,7 @@ namespace SharpShader.Languages.HLSL.Translators
 {
     internal class DomainTranslator : DefaultEntryPointTranslator
     {
-        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, EntryPoint ep)
+        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
         {
             DomainShaderAttribute attHull = ep.Attribute as DomainShaderAttribute;
             string patchType = attHull.PatchType.ToString().ToLower();

@@ -23,7 +23,7 @@ namespace SharpShader.Processors
 
                 (string returnType, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.ReturnType.ToString());
 
-                EntryPoint ep = null;
+                MappedEntryPoint ep = null;
                 sc.EntryPoints.TryGetValue(info, out ep);
 
                 ep?.Translator?.TranslatePrefix(sc, info, syntax, ep);
