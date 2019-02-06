@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal partial class ShaderContext
+    internal partial class ShaderTranslationContext
     {
         internal ShaderLanguage Language => Parent.Language;
 
@@ -26,7 +26,7 @@ namespace SharpShader
         internal Type ShaderType { get; }
 
         [NonSerialized]
-        internal readonly ConversionContext Parent;
+        internal readonly TranslationContext Parent;
 
         [NonSerialized]
         internal readonly Dictionary<MethodInfo, MappedEntryPoint> EntryPoints;
@@ -47,7 +47,7 @@ namespace SharpShader
         internal readonly Dictionary<string, Type> Structures;
 
         [NonSerialized]
-        internal readonly Dictionary<string, Type> ConstantBuffers;
+        internal readonly Dictionary<string, ConstantBufferMap> ConstantBuffers;
 
         [NonSerialized]
         internal readonly Dictionary<string, FieldInfo> Textures;
@@ -74,7 +74,7 @@ namespace SharpShader
 
         internal OutputSource Source { get; }
 
-        internal ShaderContext(ConversionContext parent, ClassDeclarationSyntax syntax, Type shaderType)
+        internal ShaderTranslationContext(TranslationContext parent, ClassDeclarationSyntax syntax, Type shaderType)
         {
             Parent = parent;
             Name = syntax.Identifier.ValueText;
@@ -89,7 +89,7 @@ namespace SharpShader
             ShaderFields = new Dictionary<string, FieldInfo>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
-            ConstantBuffers = new Dictionary<string, Type>();
+            ConstantBuffers = new Dictionary<string, ConstantBufferMap>();
             Textures = new Dictionary<string, FieldInfo>();
             Samplers = new Dictionary<string, FieldInfo>();
             Buffers = new Dictionary<string, FieldInfo>();
@@ -183,7 +183,11 @@ namespace SharpShader
                 if (cbAttribute != null)
                 {
                     RegisterAttribute[] regAttributes = t.GetCustomAttributes<RegisterAttribute>().ToArray();
-                    ConstantBuffers.Add(t.Name, t);
+                    ConstantBufferMap cbm = new ConstantBufferMap()
+                    {
+                        TypeInfo = t,
+                    };
+                    ConstantBuffers.Add(t.Name, cbm);
                 }
                 else
                 {

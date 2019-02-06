@@ -49,7 +49,7 @@ namespace SharpShader
                 return null;
         }
 
-        private void TranslatePostfixAttributes(ShaderContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer, int fieldIndex, int fieldSize)
+        private void TranslatePostfixAttributes(ShaderTranslationContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer, int fieldIndex, int fieldSize)
         {
             foreach (Attribute a in attributes)
             {
@@ -98,13 +98,13 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
         {
             sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferInfo.Name}");
             TranslatePostfixAttributes(sc, attributes, 'b', true, 0, 0);
         }
 
-        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             foreach(Attribute at in attributes)
             {
@@ -128,7 +128,7 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             char? regName = null;
             bool inConstantBuffer = false;
@@ -147,7 +147,7 @@ namespace SharpShader
             TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer, fieldIndex, fieldTypeSize);
         }
 
-        internal override string TranslateNumber(ShaderContext context, string number)
+        internal override string TranslateNumber(ShaderTranslationContext context, string number)
         {
             // NOTE: hexadecimal literals are supported in HLSL, binary literals are not, so we'll need to translate those.
             if (number.StartsWith("0b")) // Binary literal.
@@ -169,7 +169,7 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax)
+        internal override void TranslateForLoopPrefix(ShaderTranslationContext sc, ForStatementSyntax syntax)
         {
             // TODO Only unroll if loop iteration count is low enough.
             sc.Source.Append("[unroll]");

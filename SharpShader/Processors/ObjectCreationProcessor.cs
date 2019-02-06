@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ObjectCreationProcessor : NodeProcessor<ObjectCreationExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ObjectCreationExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ObjectCreationExpressionSyntax syntax, ScopeInfo scope)
         {
             // Are we directly inside an initializer? (i.e. array initializer)
             if (scope.Type == ScopeType.ArrayInitializer)

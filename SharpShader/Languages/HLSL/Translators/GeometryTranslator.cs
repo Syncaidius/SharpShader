@@ -20,7 +20,7 @@ namespace SharpShader.Languages.HLSL.Translators
             [GeometryInputType.TriangleWithAdjacency] = (6, "triangleadj")
         };
 
-        public override void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public override void TranslateParameterPostfix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             GeometryShaderAttribute attGeo = ep.Attribute as GeometryShaderAttribute;
 
@@ -31,7 +31,7 @@ namespace SharpShader.Languages.HLSL.Translators
             }
         }
 
-        public override void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public override void TranslateParameterPrefix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             GeometryShaderAttribute attGeo = ep.Attribute as GeometryShaderAttribute;
 
@@ -52,7 +52,7 @@ namespace SharpShader.Languages.HLSL.Translators
             base.TranslateParameterPrefix(sc, syntax, ep, pInfo, attributes, parameterIndex);
         }
 
-        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
+        public override void TranslatePrefix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
         {
             GeometryShaderAttribute attGeo = ep.Attribute as GeometryShaderAttribute;
 

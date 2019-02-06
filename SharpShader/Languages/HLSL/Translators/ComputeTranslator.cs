@@ -10,7 +10,7 @@ namespace SharpShader.Languages.HLSL.Translators
 {
     internal class ComputeTranslator : DefaultEntryPointTranslator
     {
-        public override void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
+        public override void TranslatePrefix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
         {
             ComputeShaderAttribute attCompute = ep.Attribute as ComputeShaderAttribute;
             sc.Source.Append($"[numthreads({attCompute.ThreadsX}, {attCompute.ThreadsY}, {attCompute.ThreadsZ})]");

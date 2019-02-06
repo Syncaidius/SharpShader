@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class BlockProcessor : NodeProcessor<BlockSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, BlockSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, BlockSyntax syntax, ScopeInfo scope)
         {
             if (syntax.Parent is UnsafeStatementSyntax || scope == sc.Source.RootScope)
                 return;

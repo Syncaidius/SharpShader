@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace SharpShader.Result
 {
-    public class ShaderResult
+    public class ShaderTranslationResult
     {
         /// <summary>
         /// Gets a dictionary containing pairs of included shader names and results.
         /// </summary>
-        public ReadOnlyDictionary<string, ShaderResult> Includes { get; }
+        public ReadOnlyDictionary<string, ShaderTranslationResult> Includes { get; }
 
-        public ReadOnlyDictionary<string, ConstantBufferInfo> ConstantBuffers { get; }
+        public IReadOnlyList<ConstantBufferInfo> ConstantBuffers { get; }
 
         public IReadOnlyList<ShaderInputOutput> Inputs { get; } 
 
@@ -25,17 +25,17 @@ namespace SharpShader.Result
         /// </summary>
         public string SourceCode { get; internal set; }
 
-        Dictionary<string, ShaderResult> _includes;
-        Dictionary<string, ConstantBufferInfo> _constBuffers;
+        Dictionary<string, ShaderTranslationResult> _includes;
+        List<ConstantBufferInfo> _constBuffers;
         List<ShaderInputOutput> _inputs;
 
-        internal ShaderResult(ShaderContext context)
+        internal ShaderTranslationResult(ShaderTranslationContext context)
         {
-            _includes = new Dictionary<string, ShaderResult>();
-            Includes = new ReadOnlyDictionary<string, ShaderResult>(_includes);
+            _includes = new Dictionary<string, ShaderTranslationResult>();
+            Includes = new ReadOnlyDictionary<string, ShaderTranslationResult>(_includes);
 
-            _constBuffers = new Dictionary<string, ConstantBufferInfo>();
-            ConstantBuffers = new ReadOnlyDictionary<string, ConstantBufferInfo>(_constBuffers);
+            _constBuffers = new List<ConstantBufferInfo>();
+            ConstantBuffers = _constBuffers.AsReadOnly();
 
             _inputs = new List<ShaderInputOutput>();
             Inputs = _inputs.AsReadOnly();

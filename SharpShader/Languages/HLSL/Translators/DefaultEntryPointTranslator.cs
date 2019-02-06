@@ -10,7 +10,7 @@ namespace SharpShader.Languages.HLSL.Translators
 {
     internal class DefaultEntryPointTranslator : IEntryPointTranslator
     {
-        private void TranslateSemantic(ShaderContext sc, SemanticAttribute attribute)
+        private void TranslateSemantic(ShaderTranslationContext sc, SemanticAttribute attribute)
         {
             string semanticName = attribute.Semantic.ToString().ToUpper();
             sc.Source.Append($" : {semanticName}");
@@ -19,13 +19,13 @@ namespace SharpShader.Languages.HLSL.Translators
                 sc.Source.Append(attribute.Slot.ToString());
         }
 
-        public virtual void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public virtual void TranslateParameterPrefix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             foreach (Attribute a in attributes)
                 TranslateParameterAttributePrefix(sc, a, pInfo, ep);
         }
 
-        public virtual void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
+        public virtual void TranslateParameterPostfix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex)
         {
             foreach (Attribute a in attributes)
             {
@@ -42,17 +42,17 @@ namespace SharpShader.Languages.HLSL.Translators
             }
         }
 
-        public virtual void TranslatePostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
+        public virtual void TranslatePostfix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep)
         {
             SemanticAttribute attSemantic = info.GetCustomAttribute<SemanticAttribute>();
             if (attSemantic != null)
                 TranslateSemantic(sc, attSemantic);
         }
 
-        public virtual void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep) { }
+        public virtual void TranslatePrefix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep) { }
 
-        protected virtual void TranslateParameterAttributePrefix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo, MappedEntryPoint ep) { }
+        protected virtual void TranslateParameterAttributePrefix(ShaderTranslationContext sc, Attribute attribute, ParameterInfo pInfo, MappedEntryPoint ep) { }
 
-        protected virtual void TranslateParameterAttributePostfix(ShaderContext sc, Attribute attribute, ParameterInfo pInfo, MappedEntryPoint ep) { }
+        protected virtual void TranslateParameterAttributePostfix(ShaderTranslationContext sc, Attribute attribute, ParameterInfo pInfo, MappedEntryPoint ep) { }
     }
 }

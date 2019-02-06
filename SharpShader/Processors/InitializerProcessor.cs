@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class InitializerProcessor : NodeProcessor<InitializerExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, InitializerExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, InitializerExpressionSyntax syntax, ScopeInfo scope)
         {
             if (syntax.Parent is ArrayCreationExpressionSyntax arrayCreationSyntax || syntax.Parent is EqualsValueClauseSyntax equalsAssignmentSyntax)
             {

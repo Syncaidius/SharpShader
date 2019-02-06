@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    public partial class ConversionContext : MarshalByRefObject
+    public partial class TranslationContext : MarshalByRefObject
     {
         [field: NonSerialized]
         internal ShaderLanguage Language { get; }
@@ -21,7 +21,7 @@ namespace SharpShader
         [field: NonSerialized]
         internal CSharpParseOptions ParseOptions { get; private set; }
 
-        internal List<ShaderContext> Shaders { get; }
+        internal List<ShaderTranslationContext> Shaders { get; }
 
         internal List<ConversionMessage> Messages { get; }
 
@@ -34,12 +34,12 @@ namespace SharpShader
         [NonSerialized]
         internal readonly ObjectPool<ScopeInfo> ScopePool;
 
-        internal ConversionContext(ShaderLanguage foundatation, List<string> preprocessorSymbols)
+        internal TranslationContext(ShaderLanguage foundatation, List<string> preprocessorSymbols)
         {
             ScopePool = new ObjectPool<ScopeInfo>(() => new ScopeInfo());
             Reflection = new ReflectionInfo();
             Language = foundatation;
-            Shaders = new List<ShaderContext>();
+            Shaders = new List<ShaderTranslationContext>();
             Messages = new List<ConversionMessage>();
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
         }

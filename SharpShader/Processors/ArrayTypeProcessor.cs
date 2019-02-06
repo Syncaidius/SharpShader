@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ArrayTypeProcessor : NodeProcessor<ArrayTypeSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ArrayTypeSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ArrayTypeSyntax syntax, ScopeInfo scope)
         {
             sc.Complete(syntax.ElementType);
         }

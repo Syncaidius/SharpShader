@@ -20,9 +20,9 @@ namespace SharpShader
         ScopeInfo _rootScope;
 
         [NonSerialized]
-        ShaderContext _context;
+        ShaderTranslationContext _context;
 
-        internal OutputSource(ShaderContext sc)
+        internal OutputSource(ShaderTranslationContext sc)
         {
             _context = sc;
             _currentScope = sc.Parent.ScopePool.Get();

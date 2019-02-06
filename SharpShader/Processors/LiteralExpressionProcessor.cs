@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class LiteralExpressionProcessor : NodeProcessor<LiteralExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, LiteralExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, LiteralExpressionSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append(syntax.Token);
         }

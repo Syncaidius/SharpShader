@@ -10,15 +10,16 @@ namespace SharpShader.Processors
 {
     internal class StructProcessor : NodeProcessor<StructDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, StructDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Identifier.ToString();
             string headerTranslation = "";
             StructScopeType scopeType = StructScopeType.Struct;
             Type sType = null;
 
-            if (sc.ConstantBuffers.TryGetValue(typeName, out sType))
+            if (sc.ConstantBuffers.TryGetValue(typeName, out ConstantBufferMap cMap))
             {
+                sType = cMap.TypeInfo;
                 IEnumerable<Attribute> cBufferAttributes = sType.GetCustomAttributes(false).Cast<Attribute>();
                 sc.Language.TranslateConstBufferHeader(sc, syntax, sType, cBufferAttributes);
                 scopeType = StructScopeType.ConstantBuffer;

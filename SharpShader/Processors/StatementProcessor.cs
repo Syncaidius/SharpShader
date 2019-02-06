@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class StatementProcessor : NodeProcessor<ExpressionStatementSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ExpressionStatementSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ExpressionStatementSyntax syntax, ScopeInfo scope)
         {
             sc.Source.OpenScope(ScopeType.Variable);
         }

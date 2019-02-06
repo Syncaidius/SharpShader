@@ -43,15 +43,15 @@ namespace SharpShader
             return "";
         }
 
-        internal abstract void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes);
+        internal abstract void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes);
 
-        internal abstract void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
+        internal abstract void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
 
-        internal abstract void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
+        internal abstract void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
 
-        internal abstract string TranslateNumber(ShaderContext sc, string number);
+        internal abstract string TranslateNumber(ShaderTranslationContext sc, string number);
 
-        internal abstract void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax);
+        internal abstract void TranslateForLoopPrefix(ShaderTranslationContext sc, ForStatementSyntax syntax);
 
         /// <summary>
         /// Returns the translated string for a type, or null if no translation is found.

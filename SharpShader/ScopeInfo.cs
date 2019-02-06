@@ -17,7 +17,7 @@ namespace SharpShader
         /// </summary>
         /// <param name="sc"></param>
         /// <param name="callback"></param>
-        internal void DeclareLocal(ShaderContext sc, Action callback)
+        internal void DeclareLocal(ShaderTranslationContext sc, Action callback)
         {
             // The root scope implements IDeclarativeScope, so eventually we will hit that if no others are avaialble along the way.
             ScopeInfo si = this;

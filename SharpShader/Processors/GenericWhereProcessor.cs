@@ -9,7 +9,7 @@ namespace SharpShader.Processors
 {
     internal class GenericWhereProcessor : NodeProcessor<TypeParameterConstraintClauseSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, TypeParameterConstraintClauseSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, TypeParameterConstraintClauseSyntax syntax, ScopeInfo scope)
         {
             sc.CompleteSelfAndChildren(syntax);
         }

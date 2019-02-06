@@ -11,7 +11,7 @@ namespace SharpShader.Processors
 {
     internal class PropertyProcessor : NodeProcessor<PropertyDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, PropertyDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, PropertyDeclarationSyntax syntax, ScopeInfo scope)
         {
             ScopeInfo classScope = scope.FindOfType(ScopeType.Class);
             ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Property);
@@ -25,7 +25,7 @@ namespace SharpShader.Processors
 
     internal class AccessorProcessor : NodeProcessor<AccessorDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, AccessorDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, AccessorDeclarationSyntax syntax, ScopeInfo scope)
         {
             if(scope.Type == ScopeType.Property)
             {

@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ForLoopProcessor : NodeProcessor<ForStatementSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ForStatementSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ForStatementSyntax syntax, ScopeInfo scope)
         {
             sc.Language.TranslateForLoopPrefix(sc, syntax);
             sc.Source.AppendLineBreak();
@@ -27,7 +27,7 @@ namespace SharpShader.Processors
             sc.Source.Append(")");
         }
 
-        private void TranslateList<T>(ShaderContext sc, SeparatedSyntaxList<T> list) where T : SyntaxNode
+        private void TranslateList<T>(ShaderTranslationContext sc, SeparatedSyntaxList<T> list) where T : SyntaxNode
         {
             T firstIncrementor = list.FirstOrDefault();
             foreach (T es in list)

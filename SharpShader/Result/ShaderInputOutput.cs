@@ -9,15 +9,15 @@ namespace SharpShader.Result
     public class ShaderInputOutput
     {
         /// <summary>
-        /// The total size of the input or output structure. This is equivilent to the sum of all <see cref="ShaderLayoutElement.SizeOf"/> in <see cref="Elements"/>.
+        /// The total size of the input or output structure. This is equivilent to the sum of all <see cref="ShaderLayoutMember.SizeOf"/> in <see cref="Elements"/>.
         /// </summary>
         public readonly int SizeOf;
 
-        public IReadOnlyList<ShaderLayoutElement> Elements { get; }
+        public IReadOnlyList<ShaderLayoutMember> Elements { get; }
 
-        List<ShaderLayoutElement> _elements;
+        List<ShaderLayoutMember> _elements;
 
-        internal ShaderInputOutput(List<ShaderLayoutElement> elements)
+        internal ShaderInputOutput(List<ShaderLayoutMember> elements)
         {
             _elements = elements;
             Elements = elements.AsReadOnly();

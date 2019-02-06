@@ -11,7 +11,7 @@ namespace SharpShader.Processors
 {
     internal class MemberAccessProcessor : NodeProcessor<MemberAccessExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, MemberAccessExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, MemberAccessExpressionSyntax syntax, ScopeInfo scope)
         {
             switch (syntax.Expression)
             {
@@ -40,7 +40,7 @@ namespace SharpShader.Processors
                         if(cScope == sc.Source.RootScope)
                         {
                             FieldInfo fInfo = cScope.TypeInfo.GetField(idSyntax.Identifier.ValueText);
-                            if(fInfo != null && sc.ConstantBuffers.Values.Contains(fInfo.FieldType))
+                            if(fInfo != null && sc.ConstantBuffers.Values.Any(x => x.TypeInfo == fInfo.FieldType))
                             {
                                 if (!sc.Language.InstancedConstantBuffers)
                                 {

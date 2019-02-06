@@ -108,7 +108,7 @@ namespace SharpShader
             return assembly.GetTypes().Where(t => t.IsSubclassOf(pType) && !t.IsAbstract);
         }
 
-        internal static bool IsIntrinsicFunction(ShaderContext context, string cSharpName)
+        internal static bool IsIntrinsicFunction(ShaderTranslationContext context, string cSharpName)
         {
             if(_intrinsicMethods.TryGetValue(context.Parent.Language.Language, out LanguageInfo info))
                 return info.Intrinsics.ContainsKey(cSharpName);
@@ -116,7 +116,7 @@ namespace SharpShader
                 return false;
         }
 
-        internal static string GetIntrinsicTranslation(ShaderContext context, string cSharpName)
+        internal static string GetIntrinsicTranslation(ShaderTranslationContext context, string cSharpName)
         {
             if (_intrinsicMethods.TryGetValue(context.Parent.Language.Language, out LanguageInfo info))
             {
@@ -149,7 +149,7 @@ namespace SharpShader
             return null;
         }
 
-        internal static Type ResolveType(ShaderContext sc, string typeName, SyntaxTokenList modifiers = default)
+        internal static Type ResolveType(ShaderTranslationContext sc, string typeName, SyntaxTokenList modifiers = default)
         {
             Type t = null;
 
@@ -192,7 +192,7 @@ namespace SharpShader
             return t;
         }
 
-        private static Type ResolveGeneric(ShaderContext sc, string typeName)
+        private static Type ResolveGeneric(ShaderTranslationContext sc, string typeName)
         {
             int bIndex = typeName.IndexOf('<');
             Type t = null;
@@ -232,7 +232,7 @@ namespace SharpShader
             return Enum.TryParse<T>(input, out value);
         }
 
-        internal static (string translation, Type originalType, bool isArray) TranslateType(ShaderContext sc, string typeName)
+        internal static (string translation, Type originalType, bool isArray) TranslateType(ShaderTranslationContext sc, string typeName)
         {
             Type type = ResolveType(sc, typeName);
             if (type != null)

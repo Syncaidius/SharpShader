@@ -14,14 +14,14 @@ namespace SharpShaderSample
         static void Main(string[] args)
         {
             string[] samples = {
-                "FunctionalityTestShader.cs",
+                //"FunctionalityTestShader.cs",
                 //"SampleShader.cs",
-                //"SampleTextureShader.cs",
+                "SampleTextureShader.cs",
                 //"MoltenSpriteShader.cs"
             };
 
             Converter converter = new Converter();
-            ConversionResult output = null;
+            TranslationResult output = null;
             OutputLanguage language = OutputLanguage.HLSL;
 
             // Load all of the sources into a dictionary,
@@ -43,7 +43,7 @@ namespace SharpShaderSample
             {
                 string langExtension = $"{language.ToString().ToLower()}";
 
-                foreach (KeyValuePair<string, ShaderResult> kvp in output)
+                foreach (KeyValuePair<string, ShaderTranslationResult> kvp in output)
                 {
                     using (FileStream fs = new FileStream($"{kvp.Key}.{langExtension}", FileMode.Create, FileAccess.Write))
                     {

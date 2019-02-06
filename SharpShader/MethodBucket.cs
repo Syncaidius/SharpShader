@@ -36,7 +36,7 @@ namespace SharpShader
             return (null, 0);
         }
 
-        internal MethodInfo Find(ShaderContext sc, MethodDeclarationSyntax syntax)
+        internal MethodInfo Find(ShaderTranslationContext sc, MethodDeclarationSyntax syntax)
         {
             foreach(KeyValuePair<MethodInfo, ParameterInfo[]> p in _methods)
             {

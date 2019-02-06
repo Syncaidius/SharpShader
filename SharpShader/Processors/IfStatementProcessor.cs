@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class IfStatementProcessor : NodeProcessor<IfStatementSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, IfStatementSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, IfStatementSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append("if(");
             TranslationRunner.Translate(sc, syntax.Condition);
@@ -22,7 +22,7 @@ namespace SharpShader.Processors
 
     internal class ElseStatementProcessor : NodeProcessor<ElseClauseSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ElseClauseSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ElseClauseSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append("else ");
             if (!(syntax.Statement is BlockSyntax || syntax.Statement is IfStatementSyntax))
@@ -35,7 +35,7 @@ namespace SharpShader.Processors
     /// </summary>
     internal class CondtionalProcessor : NodeProcessor<ConditionalExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ConditionalExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ConditionalExpressionSyntax syntax, ScopeInfo scope)
         {
             TranslationRunner.Translate(sc, syntax.Condition);
             sc.Source.Append(" ? ");

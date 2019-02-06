@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [AttributeUsage(AttributeTargets.Field)]
     public class PackOffsetAttribute : SharpShaderAttribute
     {
         internal PackOffsetComponent OffsetComponent { get; }

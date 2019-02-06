@@ -16,22 +16,22 @@ namespace SharpShader
 
         internal GlslFoundation(OutputLanguage language) : base(language) { }
 
-        internal override string TranslateNumber(ShaderContext context, string number)
+        internal override string TranslateNumber(ShaderTranslationContext context, string number)
         {
             throw new NotImplementedException();
         }
 
-        internal override void TranslateConstBufferHeader(ShaderContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes)
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes)
         {
             throw new NotImplementedException();
         }
 
-        internal override void TranslateFieldPrefix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             throw new NotImplementedException();
         }
 
-        internal override void TranslateFieldPostfix(ShaderContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
         {
             throw new NotImplementedException();
         }
@@ -41,7 +41,7 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override void TranslateForLoopPrefix(ShaderContext sc, ForStatementSyntax syntax)
+        internal override void TranslateForLoopPrefix(ShaderTranslationContext sc, ForStatementSyntax syntax)
         {
             throw new NotImplementedException();
         }

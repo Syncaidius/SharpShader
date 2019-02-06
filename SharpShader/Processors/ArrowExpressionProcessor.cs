@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ArrowExpressionProcessor : NodeProcessor<ArrowExpressionClauseSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ArrowExpressionClauseSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ArrowExpressionClauseSyntax syntax, ScopeInfo scope)
         {
             if(scope.Type == ScopeType.Method)
             {

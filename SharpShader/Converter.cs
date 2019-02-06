@@ -29,7 +29,7 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public ConversionResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
+        public TranslationResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {
             return Convert(new Dictionary<string, string>()
             {
@@ -46,7 +46,7 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public ConversionResult Convert(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
+        public TranslationResult Convert(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
         {
             AppDomain domain = AppDomain.CreateDomain("SharpShader");
             foreach(AssemblyName an in ReflectionHelper.SupportedAssemblies)
@@ -60,8 +60,8 @@ namespace SharpShader
             };
 
             TranslationRunner runner = (TranslationRunner)domain.CreateInstanceAndUnwrap(typeof(TranslationRunner).Assembly.FullName, typeof(TranslationRunner).FullName);
-            ConversionContext context = runner.Run(tArgs);
-            ConversionResult result = new ConversionResult(context, flags);
+            TranslationContext context = runner.Run(tArgs);
+            TranslationResult result = new TranslationResult(context, flags);
             AppDomain.Unload(domain);
 
             return result;

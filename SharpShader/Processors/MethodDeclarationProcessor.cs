@@ -11,7 +11,7 @@ namespace SharpShader.Processors
 {
     internal class MethodDeclarationProcessor : NodeProcessor<MethodDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, MethodDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, MethodDeclarationSyntax syntax, ScopeInfo scope)
         {
             MethodInfo info = sc.GetMethodInfo(syntax);
             if (info != null)

@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ReturnProcessor : NodeProcessor<ReturnStatementSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ReturnStatementSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ReturnStatementSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append("return ");
             sc.Source.OpenScope(ScopeType.Variable);

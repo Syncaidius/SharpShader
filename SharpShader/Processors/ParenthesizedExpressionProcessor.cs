@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ParenthesizedExpressionProcessor : NodeProcessor<ParenthesizedExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ParenthesizedExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ParenthesizedExpressionSyntax syntax, ScopeInfo scope)
         {
             ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Parentheses);
         }

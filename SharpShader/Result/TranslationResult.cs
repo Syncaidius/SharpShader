@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SharpShader.Result
 {
-    public class ConversionResult : IEnumerable<KeyValuePair<string, ShaderResult>>
+    public class TranslationResult : IEnumerable<KeyValuePair<string, ShaderTranslationResult>>
     {
-        internal ConversionResult(ConversionContext context, ConversionFlags flags)
+        internal TranslationResult(TranslationContext context, ConversionFlags flags)
         {
             Messages = new List<ConversionMessage>(context.Messages);
-            Output = new Dictionary<string, ShaderResult>();
+            Output = new Dictionary<string, ShaderTranslationResult>();
 
-            foreach (ShaderContext sc in context.Shaders)
+            foreach (ShaderTranslationContext sc in context.Shaders)
             {
-                ShaderResult shader = new ShaderResult(sc);
+                ShaderTranslationResult shader = new ShaderTranslationResult(sc);
                 string strSourceResult = sc.Source.ToString();
 
                 if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
@@ -32,11 +32,11 @@ namespace SharpShader.Result
             }
         }
 
-        public Dictionary<string, ShaderResult> Output { get; }
+        public Dictionary<string, ShaderTranslationResult> Output { get; }
 
         public List<ConversionMessage> Messages { get; }
 
-        public IEnumerator<KeyValuePair<string, ShaderResult>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, ShaderTranslationResult>> GetEnumerator()
         {
             return Output.GetEnumerator();
         }

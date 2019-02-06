@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class AssignmentProcessor : NodeProcessor<AssignmentExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, AssignmentExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, AssignmentExpressionSyntax syntax, ScopeInfo scope)
         {
             if(scope.Type == ScopeType.ExpandedInitializer)
             {

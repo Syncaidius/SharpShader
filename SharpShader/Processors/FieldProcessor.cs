@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class FieldProcessor : NodeProcessor<FieldDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, FieldDeclarationSyntax syntax, ScopeInfo scope)
         {
             // Does the language allow instanced constant buffers and does the field use a constant buffer struct type?
             if (sc.ConstantBuffers.ContainsKey(syntax.Declaration.Type.ToString()))

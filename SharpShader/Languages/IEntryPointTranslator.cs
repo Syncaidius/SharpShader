@@ -10,12 +10,12 @@ namespace SharpShader.Languages
 {
     internal interface IEntryPointTranslator
     {
-        void TranslatePrefix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep);
+        void TranslatePrefix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep);
 
-        void TranslatePostfix(ShaderContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep);
+        void TranslatePostfix(ShaderTranslationContext sc, MethodInfo info, MethodDeclarationSyntax syntax, MappedEntryPoint ep);
 
-        void TranslateParameterPrefix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex);
+        void TranslateParameterPrefix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex);
 
-        void TranslateParameterPostfix(ShaderContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex);
+        void TranslateParameterPostfix(ShaderTranslationContext sc, ParameterSyntax syntax, MappedEntryPoint ep, ParameterInfo pInfo, IEnumerable<Attribute> attributes, int parameterIndex);
     }
 }

@@ -54,14 +54,14 @@ namespace SharpShader
             }
         }
 
-        internal ConversionContext Run(TranslationArgs args)
+        internal TranslationContext Run(TranslationArgs args)
         {
             List<string> preprocessorSymbols = null;
             if (args.PreprocessorSymbols != null)
                 preprocessorSymbols = new List<string>(args.PreprocessorSymbols);
 
             ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
-            ConversionContext context = new ConversionContext(foundation, preprocessorSymbols);
+            TranslationContext context = new TranslationContext(foundation, preprocessorSymbols);
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
 
@@ -82,7 +82,7 @@ namespace SharpShader
             Map(context, analysis.Trees);
             Message($"Mapping completed. Found {context.Shaders.Count} shader classes.");
 
-            foreach (ShaderContext sc in context.Shaders)
+            foreach (ShaderTranslationContext sc in context.Shaders)
             {
                 Message($"Translating {sc.Name}", ConversionMessageType.Status);
                 Stopwatch timer = new Stopwatch();
@@ -117,7 +117,7 @@ namespace SharpShader
             return context;
         }
 
-        private List<SyntaxTree> GenerateSyntaxTrees(ConversionContext context, Dictionary<string, string> cSharpSources)
+        private List<SyntaxTree> GenerateSyntaxTrees(TranslationContext context, Dictionary<string, string> cSharpSources)
         {
             Message($"Generating trees for {cSharpSources.Count} source(s)");
             List<SyntaxTree> sourceTrees = new List<SyntaxTree>();
@@ -130,7 +130,7 @@ namespace SharpShader
             return sourceTrees;
         }
 
-        private AnalysisInfo Analyze(ConversionContext context, Dictionary<string, string> cSharpSources)
+        private AnalysisInfo Analyze(TranslationContext context, Dictionary<string, string> cSharpSources)
         {
             AnalysisInfo info = new AnalysisInfo();
             info.Trees = GenerateSyntaxTrees(context, cSharpSources);
@@ -172,7 +172,7 @@ namespace SharpShader
             return info;
         }
 
-        private void Map(ConversionContext context, List<SyntaxTree> trees)
+        private void Map(TranslationContext context, List<SyntaxTree> trees)
         {
             foreach(SyntaxTree tree in trees)
             {
@@ -181,7 +181,7 @@ namespace SharpShader
             }
         }
 
-        private void MapShaderNodes(ConversionContext context, SyntaxNode node, string strNamespace)
+        private void MapShaderNodes(TranslationContext context, SyntaxNode node, string strNamespace)
         {
             if (node is ClassDeclarationSyntax classNode)
             {
@@ -189,7 +189,7 @@ namespace SharpShader
                 Type t = context.Reflection.Assembly.GetType(typeName, false, false);
                 if (t != null && context.Reflection.IsShaderType(t))
                 {
-                    context.Shaders.Add(new ShaderContext(context, classNode, t));
+                    context.Shaders.Add(new ShaderTranslationContext(context, classNode, t));
                     Message($"Mapped {t.FullName}");
 
                     // TODO: Remove this return if nested shaders are ever supported.
@@ -209,7 +209,7 @@ namespace SharpShader
                 MapShaderNodes(context, child, strNamespace);
         }
 
-        internal static void Translate(ShaderContext sc, SyntaxNode syntax, int depth = 0)
+        internal static void Translate(ShaderTranslationContext sc, SyntaxNode syntax, int depth = 0)
         {
             if (sc.IsCompleted(syntax))
                 return;

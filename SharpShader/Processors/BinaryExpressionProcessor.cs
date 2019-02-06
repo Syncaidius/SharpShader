@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class BinaryExpressionProcessor : NodeProcessor<BinaryExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, BinaryExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, BinaryExpressionSyntax syntax, ScopeInfo scope)
         {
             TranslationRunner.Translate(sc, syntax.Left);
             sc.Source.Append($" {syntax.OperatorToken} ");

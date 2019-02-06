@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class ArrayRankProcessor : NodeProcessor<ArrayRankSpecifierSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ArrayRankSpecifierSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ArrayRankSpecifierSyntax syntax, ScopeInfo scope)
         {
             sc.Source.OpenScope(ScopeType.Indexer);
         }
@@ -18,7 +18,7 @@ namespace SharpShader.Processors
 
     internal class OmittedArraySizeProcessor : NodeProcessor<OmittedArraySizeExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, OmittedArraySizeExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, OmittedArraySizeExpressionSyntax syntax, ScopeInfo scope)
         {
             ArrayCreationExpressionSyntax arrayCreationSyntax = syntax.FirstAncestorOrSelf<ArrayCreationExpressionSyntax>();
             if (arrayCreationSyntax != null)

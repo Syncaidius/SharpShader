@@ -11,7 +11,7 @@ namespace SharpShader.Processors
 {
     internal class IdentifierProcessor : NodeProcessor<IdentifierNameSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, IdentifierNameSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, IdentifierNameSyntax syntax, ScopeInfo scope)
         {
             if (syntax.Parent is InvocationExpressionSyntax invSyntax)
             {
@@ -47,7 +47,7 @@ namespace SharpShader.Processors
             }
         }
 
-        private void TranslatePropertyAssignment(ShaderContext sc, IdentifierNameSyntax id, AssignmentExpressionSyntax aSyntax)
+        private void TranslatePropertyAssignment(ShaderTranslationContext sc, IdentifierNameSyntax id, AssignmentExpressionSyntax aSyntax)
         {
             sc.Source.Append($"set{id.Identifier.ValueText}(");
             TranslationRunner.Translate(sc, aSyntax.Right);

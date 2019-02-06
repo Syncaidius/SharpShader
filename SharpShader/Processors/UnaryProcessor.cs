@@ -10,7 +10,7 @@ namespace SharpShader.Processors
 {
     internal class UnaryPrefixProcessor : NodeProcessor<PrefixUnaryExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, PrefixUnaryExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, PrefixUnaryExpressionSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append(syntax.OperatorToken);
             TranslationRunner.Translate(sc, syntax.Operand);
@@ -19,7 +19,7 @@ namespace SharpShader.Processors
 
     internal class UnaryPostfixProcessor : NodeProcessor<PostfixUnaryExpressionSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, PostfixUnaryExpressionSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, PostfixUnaryExpressionSyntax syntax, ScopeInfo scope)
         {
             TranslationRunner.Translate(sc, syntax.Operand);
             sc.Source.Append(syntax.OperatorToken);

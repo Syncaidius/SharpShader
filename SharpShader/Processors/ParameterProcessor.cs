@@ -12,7 +12,7 @@ namespace SharpShader.Processors
 {
     internal class ParameterListProcessor : NodeProcessor<ParameterListSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ParameterListSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ParameterListSyntax syntax, ScopeInfo scope)
         {
             ScopeInfo pScope = sc.Source.OpenScope(ScopeType.Parentheses);
             pScope.Items = syntax.Parameters; 
@@ -21,7 +21,7 @@ namespace SharpShader.Processors
 
     internal class ParameterProcessor : NodeProcessor<ParameterSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, ParameterSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, ParameterSyntax syntax, ScopeInfo scope)
         {
             ScopeInfo methodScope = scope.FindOfType(ScopeType.Method);
             MethodInfo methodInfo = null;

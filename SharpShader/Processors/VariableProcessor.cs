@@ -11,7 +11,7 @@ namespace SharpShader.Processors
 {
     internal class VariableProcessor : NodeProcessor<VariableDeclarationSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Type.ToString();
             (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
@@ -30,7 +30,7 @@ namespace SharpShader.Processors
 
     internal class VariableDeclaratorProcessor : NodeProcessor<VariableDeclaratorSyntax>
     {
-        protected override void OnTranslate(ShaderContext sc, VariableDeclaratorSyntax syntax, ScopeInfo scope)
+        protected override void OnTranslate(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, ScopeInfo scope)
         {
             if (scope.Type == ScopeType.Typed)
             {
