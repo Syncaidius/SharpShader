@@ -15,7 +15,7 @@ namespace SharpShader.Processors
         {
             if (syntax.Parent is InvocationExpressionSyntax invSyntax)
             {
-                string translatedIntrinsic = ReflectionHelper.GetIntrinsicTranslation(sc, syntax.Identifier.ValueText);
+                string translatedIntrinsic = ShaderType.GetIntrinsicTranslation(sc, syntax.Identifier.ValueText);
                 sc.Source.Append(translatedIntrinsic);
             }
             else

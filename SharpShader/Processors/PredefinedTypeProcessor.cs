@@ -13,7 +13,7 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderTranslationContext sc, PredefinedTypeSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Keyword.ToString();
-            ShaderType type = ReflectionHelper.TranslateType(sc, typeName);
+            ShaderType type = ShaderType.TranslateType(sc, typeName);
             sc.Source.Append(type.Translation);
         }
     }

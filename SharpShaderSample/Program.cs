@@ -20,7 +20,7 @@ namespace SharpShaderSample
                 //"MoltenSpriteShader.cs"
             };
 
-            Converter converter = new Converter();
+            Translator translator = new Translator();
             TranslationResult output = null;
             OutputLanguage language = OutputLanguage.HLSL;
 
@@ -36,7 +36,7 @@ namespace SharpShaderSample
                 sources.Add(fn, strInput);
             }
 
-            output = converter.Convert(sources, language);
+            output = translator.Translate(sources, language);
 
             // Store the output to file so we can take a look at it ourselves.
             if (output != null)
@@ -56,6 +56,7 @@ namespace SharpShaderSample
             }
 
             Console.ReadKey();
+            translator.Dispose();
         }
     }
 }

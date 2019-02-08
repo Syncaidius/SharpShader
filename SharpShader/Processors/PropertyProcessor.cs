@@ -19,7 +19,7 @@ namespace SharpShader.Processors
 
             sc.Complete(syntax.Type);
 
-            pScope.TypeInfo = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
+            pScope.TypeInfo = ShaderType.TranslateType(sc, syntax.Type.ToString());
         }
     }
 

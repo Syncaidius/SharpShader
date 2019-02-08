@@ -46,7 +46,7 @@ namespace SharpShader
             ShaderLanguage.LoadEmbedded<GlslFoundation>("SharpShader.Languages.GLSL.lang.xml");
 
             // Preprocessors
-            IEnumerable<Type> types = ReflectionHelper.FindOfType<NodeProcessor>();
+            IEnumerable<Type> types = ShaderType.FindOfType<NodeProcessor>();
             foreach (Type t in types)
             {
                 NodeProcessor pp = Activator.CreateInstance(t) as NodeProcessor;

@@ -18,7 +18,7 @@ namespace SharpShader.Processors
                 case IdentifierNameSyntax idSyntax:
                     // Is this a static class identifier? 
                     // Static classes are abstract and sealed at IL level.
-                    Type targetType = ReflectionHelper.ResolveType(sc, idSyntax.Identifier.ValueText);
+                    Type targetType = ShaderType.Resolve(sc, idSyntax.Identifier.ValueText);
                     if (targetType != null && targetType.IsClass && targetType.IsAbstract && targetType.IsSealed) 
                     {
                         // Is the member a constant value? If so, we can take it's value directly.
@@ -63,7 +63,7 @@ namespace SharpShader.Processors
                         // Are we translating a shader intrinsic method/function?
                         if(syntax.Name is IdentifierNameSyntax idSyntax && syntax.Parent is InvocationExpressionSyntax)
                         {
-                            string translatedIntrinsic = ReflectionHelper.GetIntrinsicTranslation(sc, idSyntax.Identifier.ValueText);
+                            string translatedIntrinsic = ShaderType.GetIntrinsicTranslation(sc, idSyntax.Identifier.ValueText);
                             sc.Source.Append(translatedIntrinsic);
                             sc.Complete(syntax.Name);
                         }

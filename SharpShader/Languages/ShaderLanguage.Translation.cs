@@ -8,7 +8,7 @@ namespace SharpShader
 {
     internal abstract partial class ShaderLanguage
     {
-        internal class Keyword
+        internal class Translation
         {
             /// <summary>
             /// If true, uniform, multi-dimensional type names will be translated to single-dimension names. For example, Matrix4x4 will translate into Matrix4, Mat4 or Float4.

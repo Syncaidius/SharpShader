@@ -20,7 +20,7 @@ namespace SharpShader.Processors
             }
 
             string typeName = syntax.Type.ToString();
-            ShaderType type = ReflectionHelper.TranslateType(sc, typeName);
+            ShaderType type = ShaderType.TranslateType(sc, typeName);
 
             sc.Complete(syntax.Type);
 

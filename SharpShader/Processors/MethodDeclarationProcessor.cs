@@ -21,7 +21,7 @@ namespace SharpShader.Processors
                 ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
                 mScope.Method = info;
 
-                ShaderType returnType = ReflectionHelper.TranslateType(sc, syntax.ReturnType.ToString());
+                ShaderType returnType = ShaderType.TranslateType(sc, syntax.ReturnType.ToString());
 
                 MappedEntryPoint ep = null;
                 sc.EntryPoints.TryGetValue(info, out ep);

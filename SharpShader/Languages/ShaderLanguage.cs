@@ -22,14 +22,14 @@ namespace SharpShader
 
         public OutputLanguage Language { get; }
 
-        Dictionary<Type, Keyword> _keywords;
+        Dictionary<Type, Translation> _keywords;
         List<Modifier> _modifiers;
         internal Dictionary<string, ShaderType> TranslatedTypes;
 
         internal ShaderLanguage(OutputLanguage language)
         {
             Language = language;
-            _keywords = new Dictionary<Type, Keyword>();
+            _keywords = new Dictionary<Type, Translation>();
             _modifiers = new List<Modifier>();
             TranslatedTypes = new Dictionary<string, ShaderType>();
         }
@@ -56,16 +56,16 @@ namespace SharpShader
         internal abstract void TranslateForLoopPrefix(ShaderTranslationContext sc, ForStatementSyntax syntax);
 
         /// <summary>
-        /// Returns the translated string for a type, or null if no translation is found.
+        /// Returns a <see cref="Translation"/> instance containing useful information about a type for translation purposes.
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        internal Keyword GetKeyword(Type t)
+        internal Translation GetTranslation(Type t)
         {
             if (t.IsArray)
                 t = t.GetElementType();
 
-            if (_keywords.TryGetValue(t, out Keyword word))
+            if (_keywords.TryGetValue(t, out Translation word))
                 return word;
             else
                 return null;
@@ -163,8 +163,9 @@ namespace SharpShader
                     if (!string.IsNullOrWhiteSpace(generic) && !string.IsNullOrWhiteSpace(nativeName))
                     {
                         Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {foundation.Language} lexicon.");
-                        Type translatedGeneric = translatedType.MakeGenericType(genericType);
-                        foundation._keywords.Add(translatedGeneric, new Keyword()
+                        Type finalType = translatedType.MakeGenericType(genericType);
+
+                        foundation._keywords.Add(finalType, new Translation()
                         {
                             NativeText = nativeName,
                             UniformSizeIsSingular = uniformDimensionSingular,
@@ -179,7 +180,7 @@ namespace SharpShader
 
                 if (!string.IsNullOrWhiteSpace(generic) && !string.IsNullOrWhiteSpace(nativeName))
                 {
-                    foundation._keywords.Add(translatedType, new Keyword()
+                    foundation._keywords.Add(translatedType, new Translation()
                     {
                         NativeText = nativeName,
                         UniformSizeIsSingular = uniformDimensionSingular,

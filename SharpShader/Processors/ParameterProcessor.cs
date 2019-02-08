@@ -40,7 +40,7 @@ namespace SharpShader.Processors
             }
 
             // TODO pass to language variable translation, since parameters can have attributes
-            ShaderType type = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
+            ShaderType type = ShaderType.TranslateType(sc, syntax.Type.ToString());
             bool wasAppended = false;
 
             if (ep != null)
