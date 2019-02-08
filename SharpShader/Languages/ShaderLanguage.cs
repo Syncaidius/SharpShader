@@ -24,12 +24,14 @@ namespace SharpShader
 
         Dictionary<Type, Keyword> _keywords;
         List<Modifier> _modifiers;
+        internal Dictionary<string, ShaderType> TranslatedTypes;
 
         internal ShaderLanguage(OutputLanguage language)
         {
             Language = language;
             _keywords = new Dictionary<Type, Keyword>();
             _modifiers = new List<Modifier>();
+            TranslatedTypes = new Dictionary<string, ShaderType>();
         }
 
         internal string TranslateModifiers(SyntaxTokenList modifiers)
@@ -43,11 +45,11 @@ namespace SharpShader
             return "";
         }
 
-        internal abstract void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes);
+        internal abstract void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ConstantBufferMap cBufferMap, IEnumerable<Attribute> attributes);
 
-        internal abstract void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
+        internal abstract void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap);
 
-        internal abstract void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex);
+        internal abstract void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap);
 
         internal abstract string TranslateNumber(ShaderTranslationContext sc, string number);
 

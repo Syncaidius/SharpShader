@@ -35,7 +35,7 @@ namespace SharpShader
         /// All fields that are to be treated as standard 'fields' in the output source.
         /// </summary>
         [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> ShaderFields;
+        internal readonly Dictionary<string, MappedField> ShaderFields;
 
         /// <summary>
         /// All C#-based fields contained within the shader class.
@@ -86,7 +86,7 @@ namespace SharpShader
 
             EntryPoints = new Dictionary<MethodInfo, MappedEntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
-            ShaderFields = new Dictionary<string, FieldInfo>();
+            ShaderFields = new Dictionary<string, MappedField>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
             ConstantBuffers = new Dictionary<string, ConstantBufferMap>();
@@ -163,10 +163,6 @@ namespace SharpShader
                         else if (typeof(IStructureBuffer).IsAssignableFrom(fi.FieldType))
                             Buffers.Add(fi.Name, fi);
                     }
-                }
-                else
-                {
-                    ShaderFields.Add(fi.Name, fi);
                 }
             }
         }

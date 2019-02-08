@@ -36,16 +36,16 @@ namespace SharpShader.Result
             var bSlots = new Dictionary<ShaderModel, int>(map.BindSlots);
             BindSlots = new ReadOnlyDictionary<ShaderModel, int>(bSlots);
 
-            foreach(MappedVariable mVar in map.Variables)
+            foreach(MappedField mField in map.Fields)
             {
                 ShaderMember e = new ShaderMember()
                 {
-                    Dimensions = new List<int>(mVar.Dimensions).AsReadOnly(),
-                    ElementCount = mVar.ElementCount,
-                    StartOffset = mVar.StartOffset,
-                    ElementStride = mVar.ElementStride,
-                    StructureType = mVar.StructureType,
-                    DataType = mVar.DataType,
+                    Dimensions = new List<int>(mField.Dimensions).AsReadOnly(),
+                    ElementCount = mField.ElementCount,
+                    StartOffset = mField.PackOffsetBytes.Value,
+                    ElementStride = mField.Type.SizeOf,
+                    StructureType = mField.StructureType,
+                    DataType = mField.DataType,
                 };
 
                 variables.Add(e);

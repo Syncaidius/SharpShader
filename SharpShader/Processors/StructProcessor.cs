@@ -21,7 +21,7 @@ namespace SharpShader.Processors
             {
                 sType = cMap.TypeInfo;
                 IEnumerable<Attribute> cBufferAttributes = sType.GetCustomAttributes(false).Cast<Attribute>();
-                sc.Language.TranslateConstBufferHeader(sc, syntax, sType, cBufferAttributes);
+                sc.Language.TranslateConstBufferHeader(sc, syntax, cMap, cBufferAttributes);
                 scopeType = StructScopeType.ConstantBuffer;
             }
             else if (sc.Structures.TryGetValue(typeName, out sType))

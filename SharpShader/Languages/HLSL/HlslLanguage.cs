@@ -49,7 +49,7 @@ namespace SharpShader
                 return null;
         }
 
-        private void TranslatePostfixAttributes(ShaderTranslationContext sc, IEnumerable<Attribute> attributes, char? registerName, bool isConstBuffer, int fieldIndex, int fieldSize)
+        private void TranslatePostfixAttributes(ShaderTranslationContext sc, IEnumerable<Attribute> attributes, char? registerName, int fieldIndex, int fieldSize, ConstantBufferMap cBuffer)
         {
             foreach (Attribute a in attributes)
             {
@@ -71,7 +71,7 @@ namespace SharpShader
                         break;
 
                     case PackOffsetAttribute packAtt:
-                        if (!isConstBuffer)
+                        if (cBuffer == null)
                             continue;
 
                         int totalComponentOffset = (packAtt.OffsetRegister * COMPONENTS_PER_REGISTER) + (int)packAtt.OffsetComponent;
@@ -85,7 +85,7 @@ namespace SharpShader
                         break;
 
                     case SemanticAttribute semAtt:
-                        if (isConstBuffer)
+                        if (cBuffer != null)
                             continue;
 
                         string semanticName = semAtt.Semantic.ToString().ToUpper();
@@ -98,15 +98,15 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type cBufferInfo, IEnumerable<Attribute> attributes)
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ConstantBufferMap cBufferMap, IEnumerable<Attribute> attributes)
         {
-            sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferInfo.Name}");
-            TranslatePostfixAttributes(sc, attributes, 'b', true, 0, 0);
+            sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferMap.TypeInfo.Name}");
+            TranslatePostfixAttributes(sc, attributes, 'b', 0, 0, cBufferMap);
         }
 
-        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
         {
-            foreach(Attribute at in attributes)
+            foreach(Attribute at in field.Attributes)
             {
                 switch (at)
                 {
@@ -128,23 +128,23 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
         {
             char? regName = null;
-            bool inConstantBuffer = false;
 
-            if (info.DeclaringType?.IsValueType == true)
-                inConstantBuffer = sc.ConstantBuffers.ContainsKey(info.DeclaringType.Name);
+            // Constant buffer fields do not have registers assigned to them.
+            if (cBufferMap == null)
+            {
+                if (sc.Samplers.ContainsKey(field.Info.Name))
+                    regName = 's';
+                else if (sc.Textures.ContainsKey(field.Info.Name) || sc.Buffers.ContainsKey(field.Info.Name))
+                    regName = 't';
+                else if (sc.UAVs.ContainsKey(field.Info.Name))
+                    regName = 'u';
+            }
 
-            if (sc.Samplers.ContainsKey(info.Name))
-                regName = 's';
-            else if (sc.Textures.ContainsKey(info.Name) || sc.Buffers.ContainsKey(info.Name))
-                regName = 't';
-            else if (sc.UAVs.ContainsKey(info.Name))
-                regName = 'u';
-
-            int fieldTypeSize = info.FieldType.IsValueType ? Marshal.SizeOf(info.FieldType) : 0;
-            TranslatePostfixAttributes(sc, attributes, regName, inConstantBuffer, fieldIndex, fieldTypeSize);
+            int fieldTypeSize = field.Info.FieldType.IsValueType ? Marshal.SizeOf(field.Info.FieldType) : 0;
+            TranslatePostfixAttributes(sc, field.Attributes, regName, fieldIndex, fieldTypeSize, cBufferMap);
         }
 
         internal override string TranslateNumber(ShaderTranslationContext context, string number)

@@ -40,7 +40,7 @@ namespace SharpShader.Processors
             }
 
             // TODO pass to language variable translation, since parameters can have attributes
-            (string typeName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
+            ShaderType type = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
             bool wasAppended = false;
 
             if (ep != null)
@@ -49,13 +49,13 @@ namespace SharpShader.Processors
                 IEnumerable<Attribute> pAttributes = pInfo.GetCustomAttributes();
 
                 ep.Translator?.TranslateParameterPrefix(sc, syntax, ep, pInfo, pAttributes, pIndex);
-                sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
+                sc.Source.Append($"{type.Translation} {syntax.Identifier.ValueText}");
                 ep.Translator?.TranslateParameterPostfix(sc, syntax, ep, pInfo, pAttributes, pIndex);
                 wasAppended = true;
             }
 
-            if(!wasAppended)
-                sc.Source.Append($"{typeName} {syntax.Identifier.ValueText}");
+            if (!wasAppended)
+                sc.Source.Append($"{type.Translation} {syntax.Identifier.ValueText}");
 
             sc.Complete(syntax.Type);
             sc.Complete(syntax.AttributeLists);

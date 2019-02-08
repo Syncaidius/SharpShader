@@ -14,10 +14,10 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderTranslationContext sc, VariableDeclarationSyntax syntax, ScopeInfo scope)
         {
             string typeName = syntax.Type.ToString();
-            (string translatedName, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
+            ShaderType type = ReflectionHelper.TranslateType(sc, typeName);
 
-            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, originalType);
-            tScope.TranslatedTypeName = translatedName;
+            ScopeInfo tScope = sc.Source.OpenScope(ScopeType.Typed, type);
+            tScope.TypeInfo = type;
             tScope.IsLocal = syntax.Parent is LocalDeclarationStatementSyntax;
             tScope.Items = syntax.Variables;
 
@@ -35,34 +35,46 @@ namespace SharpShader.Processors
             if (scope.Type == ScopeType.Typed)
             {
                 FieldInfo fInfo = null;
+                ConstantBufferMap cBufferMap = null;
                 if (scope.Parent.Type == ScopeType.Struct)
-                    fInfo = scope.Parent.TypeInfo.GetField(syntax.Identifier.ValueText);
+                {
+                    fInfo = scope.Parent.TypeInfo.OriginalType.GetField(syntax.Identifier.ValueText);
+                    sc.ConstantBuffers.TryGetValue(scope.Parent.TypeInfo.OriginalType.Name, out cBufferMap);
+                }
 
                 if (fInfo == null)
                     sc.AllFields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
 
                 if(fInfo != null)
                 { 
-                    IEnumerable<Attribute> fieldAttributes = fInfo.GetCustomAttributes();
                     int fieldIndex = scope.Items.IndexOf(syntax);
 
-                    sc.Language.TranslateFieldPrefix(sc, syntax, fInfo, fieldAttributes, fieldIndex);
+                    MappedField mField = new MappedField()
+                    {
+                        Type = scope.TypeInfo,
+                        Attributes = fInfo.GetCustomAttributes(),
+                        Info = fInfo,
+                    };
+
+                    cBufferMap?.AddField(mField);
+
+                    sc.Language.TranslateFieldPrefix(sc, syntax, mField, fieldIndex, cBufferMap);
                     sc.Source.Append($"{scope.TranslatedModifiers} ");
-                    sc.Source.Append(scope.TranslatedTypeName);
+                    sc.Source.Append(scope.TypeInfo.Translation);
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
-                    sc.Language.TranslateFieldPostfix(sc, syntax, fInfo, fieldAttributes, fieldIndex);
+                    sc.Language.TranslateFieldPostfix(sc, syntax, mField, fieldIndex, cBufferMap);
                 }
                 else
                 {
                     sc.Source.Append($"{scope.TranslatedModifiers} ");
-                    sc.Source.Append(scope.TranslatedTypeName);
+                    sc.Source.Append(scope.TypeInfo.Translation);
                     sc.Source.Append($" {syntax.Identifier.ValueText}");
                 }
 
                 // Handle corner-cases for array initializers.
                 if (scope.TypeInfo != null && syntax.Initializer != null)
                 {
-                    if (scope.TypeInfo.IsArray)
+                    if (scope.TypeInfo.OriginalType.IsArray)
                     {
                         switch (syntax.Initializer.Value)
                         {
@@ -70,6 +82,8 @@ namespace SharpShader.Processors
                                 IEnumerable<SyntaxNode> initChildren = initSyntax.ChildNodes();
                                 int arraySize = initChildren.Count();
                                 sc.Source.Append($"[{arraySize}]");
+
+                                // TODO multi-dimensional array support (e.g. [4][2]).
                                 break;
 
                             case ArrayCreationExpressionSyntax arraySyntax:

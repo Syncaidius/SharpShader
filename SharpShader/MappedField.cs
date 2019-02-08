@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MappedVariable
+    internal class MappedField
     {
         internal List<int> Dimensions = new List<int>();
 
@@ -15,12 +15,14 @@ namespace SharpShader
 
         internal ShaderStructureType StructureType = ShaderStructureType.Unknown;
 
+        internal ShaderType Type;
+
         internal int ElementCount;
 
-        internal int ElementStride;
-
-        internal int StartOffset;
+        internal int? PackOffsetBytes;
 
         internal FieldInfo Info;
+
+        internal IEnumerable<Attribute> Attributes;
     }
 }

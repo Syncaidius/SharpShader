@@ -19,7 +19,7 @@ namespace SharpShader.Processors
 
             sc.Complete(syntax.Type);
 
-            (pScope.TranslatedTypeName, pScope.TypeInfo, _) = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
+            pScope.TypeInfo = ReflectionHelper.TranslateType(sc, syntax.Type.ToString());
         }
     }
 
@@ -32,17 +32,17 @@ namespace SharpShader.Processors
                 switch (syntax.Keyword.ValueText)
                 {
                     case "get":
-                        sc.Source.Append($"{scope.TranslatedTypeName} get{scope.Identifier}()");
+                        sc.Source.Append($"{scope.TypeInfo.Translation} get{scope.Identifier}()");
                         break;
 
                     case "set":
-                        sc.Source.Append($"void set{scope.Identifier}({scope.TranslatedTypeName} value)");
+                        sc.Source.Append($"void set{scope.Identifier}({scope.TypeInfo.Translation} value)");
                         break;
                 }
 
                 ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
                 ScopeInfo classScope = scope.FindOfType(ScopeType.Class);
-                mScope.Method = classScope.TypeInfo.GetMethod($"{syntax.Keyword.ValueText}_{scope.Identifier}");
+                mScope.Method = classScope.TypeInfo.OriginalType.GetMethod($"{syntax.Keyword.ValueText}_{scope.Identifier}");
             }
         }
     }

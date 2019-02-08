@@ -20,7 +20,7 @@ namespace SharpShader.Processors
             }
 
             string typeName = syntax.Type.ToString();
-            (string translatedType, Type originalType, bool isArray) = ReflectionHelper.TranslateType(sc, typeName);
+            ShaderType type = ReflectionHelper.TranslateType(sc, typeName);
 
             sc.Complete(syntax.Type);
 
@@ -31,12 +31,12 @@ namespace SharpShader.Processors
                 {
                     case ReturnStatementSyntax returnSyntax:
                     case AssignmentExpressionSyntax assignSyntax:
-                        string strInit = translatedType;
+                        string strInit = type.Translation;
                         string varName = sc.Parent.GetNewVariableName("oc_init");
 
                         scope.DeclareLocal(sc, () =>
                         {
-                            sc.Source.Append($"{translatedType} {varName} = {translatedType}");
+                            sc.Source.Append($"{type.Translation} {varName} = {type.Translation}");
                             TranslationRunner.Translate(sc, syntax.ArgumentList);
                             sc.Source.Append(";");
                             sc.Source.AppendLineBreak();
@@ -51,13 +51,13 @@ namespace SharpShader.Processors
                         break;
 
                     default:
-                        sc.Source.Append(translatedType);
+                        sc.Source.Append(type.Translation);
                         break;
                 }
             }
             else
             {
-                sc.Source.Append(translatedType);
+                sc.Source.Append(type.Translation);
             }
         }
     }

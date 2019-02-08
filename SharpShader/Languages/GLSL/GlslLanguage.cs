@@ -21,27 +21,27 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, Type info, IEnumerable<Attribute> attributes)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, FieldInfo info, IEnumerable<Attribute> attributes, int fieldIndex)
-        {
-            throw new NotImplementedException();
-        }
-
         internal override IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type)
         {
             throw new NotImplementedException();
         }
 
         internal override void TranslateForLoopPrefix(ShaderTranslationContext sc, ForStatementSyntax syntax)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ConstantBufferMap cBufferMap, IEnumerable<Attribute> attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
         {
             throw new NotImplementedException();
         }

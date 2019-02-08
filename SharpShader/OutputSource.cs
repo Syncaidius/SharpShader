@@ -27,7 +27,7 @@ namespace SharpShader
             _context = sc;
             _currentScope = sc.Parent.ScopePool.Get();
             _currentScope.Type = ScopeType.Class;
-            _currentScope.TypeInfo = sc.ShaderType;
+            _currentScope.TypeInfo = new ShaderType(sc.ShaderType.Name, sc.ShaderType);
             _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
             _rootScope = _currentScope;
         }
@@ -72,7 +72,12 @@ namespace SharpShader
             _pos = _sb.Length;
         }
 
-        internal ScopeInfo OpenScope(ScopeType type, Type tInfo = null)
+        internal ScopeInfo OpenScope(ScopeType type, Type tInfo)
+        {
+            return OpenScope(type, new ShaderType(tInfo.Name, tInfo));
+        }
+
+        internal ScopeInfo OpenScope(ScopeType type, ShaderType tInfo = null)
         {
             ScopeInfo newScope = _context.Parent.ScopePool.Get();
             newScope.Parent = _currentScope;
@@ -83,7 +88,7 @@ namespace SharpShader
 
             // Track namespace path
             if ((type == ScopeType.Class || type == ScopeType.Struct) && tInfo != null)
-                newScope.Namespace = $"{_currentScope.Namespace}+{tInfo.Name}";
+                newScope.Namespace = $"{_currentScope.Namespace}+{tInfo.OriginalType.Name}";
             else
                 newScope.Namespace = _currentScope.Namespace;
 

@@ -232,61 +232,83 @@ namespace SharpShader
             return Enum.TryParse<T>(input, out value);
         }
 
-        internal static (string translation, Type originalType, bool isArray) TranslateType(ShaderTranslationContext sc, string typeName)
+        internal static ShaderType TranslateType(ShaderTranslationContext sc, string typeName)
         {
-            Type type = ResolveType(sc, typeName);
-            if (type != null)
+            ShaderType type = null;
+            if (sc.Language.TranslatedTypes.TryGetValue(typeName, out type))
             {
-                Type elementType = type.GetElementType();
-                ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(type);
-                if (translation != null)
+                return type;
+            }
+            else
+            {
+                Type originalType = ResolveType(sc, typeName);
+                if (originalType != null)
                 {
-                    return (translation.NativeText, type, type.IsArray);
-                }
-                else // Attempt to find any interfaces on the type which can be translated instead.
-                {
-                    Type[] iTypes;
-                    if (elementType != null)
-                        iTypes = elementType.GetInterfaces();
-                    else
-                        iTypes = type.GetInterfaces();
-
-
-                    foreach (Type implemented in iTypes)
+                    ShaderLanguage.Keyword translation = sc.Parent.Language.GetKeyword(originalType);
+                    if (translation != null)
                     {
-                        translation = sc.Parent.Language.GetKeyword(implemented);
-                        if (translation != null)
+                        type = new ShaderType(translation.NativeText, originalType);
+                        sc.Language.TranslatedTypes.Add(typeName, type);
+                        return type;
+                    }
+                    else // Attempt to find any interfaces on the type which can be translated instead.
+                    {
+                        Type elementType = originalType.GetElementType();
+                        Type[] iTypes;
+                        if (elementType != null)
+                            iTypes = elementType.GetInterfaces();
+                        else
+                            iTypes = originalType.GetInterfaces();
+
+                        foreach (Type implemented in iTypes)
                         {
-                            string replacement = elementType?.Name ?? type.Name;
-
-                            // TODO Does this need optimizing? Benchmark before changing.
-                            for (int i = 0; i < ReflectionHelper.IntrinsicPrefixes.Length; i++)
-                                replacement = replacement.Replace(ReflectionHelper.IntrinsicPrefixes[i], "");
-
-                            if (translation.UniformSizeIsSingular)
+                            translation = sc.Parent.Language.GetKeyword(implemented);
+                            if (translation != null)
                             {
-                                if (typeof(UniformDimensions).IsAssignableFrom(type))
-                                    replacement = replacement.Substring(0, replacement.Length - 2);
-                            }
+                                string replacement = elementType?.Name ?? originalType.Name;
 
-                            replacement = translation.NativeText + replacement;
-                            return (replacement, type, type.IsArray);
+                                // TODO Does this need optimizing? Benchmark before changing.
+                                for (int i = 0; i < IntrinsicPrefixes.Length; i++)
+                                    replacement = replacement.Replace(IntrinsicPrefixes[i], "");
+
+                                if (translation.UniformSizeIsSingular)
+                                {
+                                    if (typeof(UniformDimensions).IsAssignableFrom(originalType))
+                                        replacement = replacement.Substring(0, replacement.Length - 2);
+                                }
+
+                                replacement = translation.NativeText + replacement;
+                                type = new ShaderType(replacement, originalType);
+                                sc.Language.TranslatedTypes.Add(typeName, type);
+                                return type;
+                            }
                         }
+
+                        // Create a placeholder type instead.
+                        type = new ShaderType(typeName, originalType);
+                        sc.Language.TranslatedTypes.Add(typeName, type);
+                        return type;
                     }
                 }
+
+                // We have no known Type instance to use, so try to figure out if it's an array or not, manually.
+                int openIndex = typeName.IndexOf("[");
+                if (openIndex > -1 && typeName.EndsWith("]"))
+                {
+                    typeName = typeName.Substring(0, openIndex);
+                    int endLen = typeName.Length - openIndex;
+                    string reflectiveName = $"System.Object{typeName.Substring(openIndex, endLen)}";
+                    type = new ShaderType(typeName, Type.GetType(reflectiveName));
+                }
+                else
+                {
+                    type = new ShaderType(typeName, typeof(object));
+                }
+
+                // Create a placeholder type using object base class instead.
+                sc.Language.TranslatedTypes.Add(typeName, type);
+                return type;
             }
-
-            // We have no known Type instance to use, so try to figure out if it's an array or not, manually.
-            int openIndex = typeName.IndexOf("[");
-            bool isArray = false;
-
-            if (openIndex > -1 && typeName.EndsWith("]"))
-            {
-                typeName = typeName.Substring(0, openIndex);
-                isArray = true;
-            }
-
-            return (typeName, type, isArray);
         }
     }
 }

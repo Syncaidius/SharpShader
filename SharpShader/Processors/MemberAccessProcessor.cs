@@ -39,7 +39,7 @@ namespace SharpShader.Processors
                         ScopeInfo cScope = scope.FindOfType(ScopeType.Class);
                         if(cScope == sc.Source.RootScope)
                         {
-                            FieldInfo fInfo = cScope.TypeInfo.GetField(idSyntax.Identifier.ValueText);
+                            FieldInfo fInfo = cScope.TypeInfo.OriginalType.GetField(idSyntax.Identifier.ValueText);
                             if(fInfo != null && sc.ConstantBuffers.Values.Any(x => x.TypeInfo == fInfo.FieldType))
                             {
                                 if (!sc.Language.InstancedConstantBuffers)
@@ -56,7 +56,7 @@ namespace SharpShader.Processors
                 case ThisExpressionSyntax thisSyntax:
                 case BaseExpressionSyntax baseSyntax:
                     ScopeInfo pScope = scope.FindOfType(ScopeType.Class);
-                    if (pScope.TypeInfo == sc.ShaderType)
+                    if (pScope.TypeInfo.OriginalType == sc.ShaderType)
                     {
                         sc.Complete(syntax.Expression);
 

@@ -21,7 +21,7 @@ namespace SharpShader.Processors
             else
             {
                 ScopeInfo cScope = scope.FindOfType(ScopeType.Class);
-                PropertyInfo pInfo = cScope?.TypeInfo.GetProperty(syntax.Identifier.ValueText);
+                PropertyInfo pInfo = cScope?.TypeInfo.OriginalType.GetProperty(syntax.Identifier.ValueText);
                 if (pInfo != null)
                 {
                     if (syntax.Parent is AssignmentExpressionSyntax aSyntax)

@@ -61,7 +61,6 @@ namespace SharpShader
             Method = null;
             Items = default;
             TypeInfo = null;
-            TranslatedTypeName = null;
             TranslatedModifiers = "";
             Namespace = "";
             IsLocal = false;
@@ -99,12 +98,7 @@ namespace SharpShader
         /// <summary>
         /// The type info to provide scope information. e.g. Struct or variable type info.
         /// </summary>
-        internal Type TypeInfo;
-
-        /// <summary>
-        /// The translated version of the original type.
-        /// </summary>
-        internal string TranslatedTypeName;
+        internal ShaderType TypeInfo;
 
         /// <summary>
         /// The translated version of the original modifiers, if any.

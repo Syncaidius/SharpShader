@@ -207,7 +207,7 @@
     <Compile Include="ConversionContext.ReflectionInfo.cs" />
     <Compile Include="ConversionFlags.cs" />
     <Compile Include="ConversionMessage.cs" />
-    <Compile Include="MappedVariable.cs" />
+    <Compile Include="MappedField.cs" />
     <Compile Include="Result\ConstantBufferInfo.cs" />
     <Compile Include="Result\ShaderMember.cs" />
     <Compile Include="Result\TranslationResult.cs" />
@@ -279,6 +279,7 @@
     <Compile Include="Attributes\FragmentShaderAttribute.cs" />
     <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
     <Compile Include="Attributes\VertexShaderAttribute.cs" />
+    <Compile Include="ShaderType.cs" />
     <Compile Include="TranslationContext.cs" />
     <Compile Include="OutputLanguage.cs" />
     <Compile Include="Converter.cs" />
