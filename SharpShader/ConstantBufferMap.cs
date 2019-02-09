@@ -27,17 +27,17 @@ namespace SharpShader
 
         internal void AddField(MappedField field)
         {
-            int totalSize = field.Type.SizeOf * field.ElementCount;
+            int size = field.GetTotalSizeOf();
 
             if (field.PackOffsetBytes.HasValue)
             {
-                int minSize = field.PackOffsetBytes.Value + totalSize;
+                int minSize = field.PackOffsetBytes.Value + size;
                 SizeOf = Math.Max(minSize, SizeOf);
             }
             else
             {
                 field.PackOffsetBytes = SizeOf;
-                SizeOf += totalSize;
+                SizeOf += size;
             }
 
             Fields.Add(field);

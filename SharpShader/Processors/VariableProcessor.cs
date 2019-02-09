@@ -35,7 +35,9 @@ namespace SharpShader.Processors
             if (scope.Type == ScopeType.Typed)
             {
                 FieldInfo fInfo = null;
+                MappedField mField = null;
                 ConstantBufferMap cBufferMap = null;
+
                 if (scope.Parent.Type == ScopeType.Struct)
                 {
                     fInfo = scope.Parent.TypeInfo.OriginalType.GetField(syntax.Identifier.ValueText);
@@ -45,11 +47,11 @@ namespace SharpShader.Processors
                 if (fInfo == null)
                     sc.AllFields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
 
-                if(fInfo != null)
+                
+                if (fInfo != null)
                 { 
                     int fieldIndex = scope.Items.IndexOf(syntax);
-
-                    MappedField mField = new MappedField()
+                    mField = new MappedField()
                     {
                         Type = scope.TypeInfo,
                         Attributes = fInfo.GetCustomAttributes(),
@@ -74,7 +76,7 @@ namespace SharpShader.Processors
                 // Handle corner-cases for array initializers.
                 if (scope.TypeInfo != null && syntax.Initializer != null)
                 {
-                    if (scope.TypeInfo.OriginalType.IsArray)
+                    if (scope.TypeInfo.WasArrayType)
                     {
                         switch (syntax.Initializer.Value)
                         {
@@ -83,7 +85,14 @@ namespace SharpShader.Processors
                                 int arraySize = initChildren.Count();
                                 sc.Source.Append($"[{arraySize}]");
 
+                                if(mField != null)
+                                {
+                                    mField.ArrayDimensions.Add(arraySize);
+                                }
+
                                 // TODO multi-dimensional array support (e.g. [4][2]).
+                                //     - For multi-dimensional arrays, we can simply take the dimensions directly.
+                                //     - For jagged arrays, we need to find the largest sub-array and use that as the size for it's respective dimension.
                                 break;
 
                             case ArrayCreationExpressionSyntax arraySyntax:

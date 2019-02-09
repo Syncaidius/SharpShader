@@ -15,7 +15,8 @@ namespace SharpShader
     /// Provides type information for a shader language-specific type.
     /// </summary>
     internal class ShaderType
-    {        
+    {
+        #region Instance Members
         /// <summary>
         /// Gets the translated name of the current <see cref="ShaderType"/>
         /// </summary>
@@ -30,13 +31,16 @@ namespace SharpShader
         internal int ElementSizeOf { get; }
 
         /// <summary>
-        /// Gets the dimensions of the type. <para/>
+        /// Gets the dimensions of the type.<para/>
         /// For vectors, this contains only the number of components.<para/>
         /// For matrices, this contains the number of rows followed by the number of columns.<para/>
         /// For arrays, this contains the length of each dimension in the order they were originally declared.
         /// </summary>
         internal List<int> Dimensions { get; }
 
+        /// <summary>
+        /// Gets whether or not the original type was an array type.
+        /// </summary>
         public bool WasArrayType => OriginalType.IsArray;
 
         public bool IsRegisteredType { get; }
@@ -83,6 +87,17 @@ namespace SharpShader
             }
         }
 
+        internal int GetTotalElements()
+        {
+            int elements = 1;
+            for (int i = 0; i < Dimensions.Count; i++)
+                elements *= Dimensions[i];
+
+            return elements;
+        }
+        #endregion
+
+        #region Static Members
         /// <summary>
         /// The name of the Sharp Shader namespace.
         /// </summary>
@@ -351,5 +366,6 @@ namespace SharpShader
                 return type;
             }
         }
+        #endregion
     }
 }

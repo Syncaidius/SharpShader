@@ -40,8 +40,8 @@ namespace SharpShader.Result
             {
                 ShaderMember e = new ShaderMember()
                 {
-                    Dimensions = new List<int>(mField.Dimensions).AsReadOnly(),
-                    ElementCount = mField.ElementCount,
+                    Dimensions = new List<int>(mField.ArrayDimensions).AsReadOnly(),
+                    ElementCount = mField.GetTotalElements(),
                     StartOffset = mField.PackOffsetBytes.Value,
                     ElementStride = mField.Type.SizeOf,
                     StructureType = mField.StructureType,
