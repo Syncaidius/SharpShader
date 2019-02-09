@@ -6,6 +6,21 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct UInt4 : IVector<uint>
 	{
+		/// <summary>
+		///	The number of elements (components) in a <see cref="UInt4"/>.
+		/// </summary>
+		public const int ELEMENT_COUNT = 4;
+		
+		/// <summary>
+		///	The size of a <see cref="UInt4"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(uint);
+
+		/// <summary>
+		///	The size of a single element (component) within a <see cref="UInt4"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = ELEMENT_COUNT * ELEMENT_SIZE;
+
         /// <summary>
         /// The X component.
         /// </summary>

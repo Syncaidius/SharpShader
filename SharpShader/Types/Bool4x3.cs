@@ -9,6 +9,26 @@ namespace SharpShader
 	public struct Bool4x3 : IMatrix<bool>
 	{
 		/// <summary>
+		///	The number of rows in a <see cref="Bool4x3"/>.
+		/// </summary>
+		public const int ROW_COUNT = 4;
+
+		/// <summary>
+		///	The number of columns in a <see cref="Bool4x3"/>.
+		/// </summary>
+		public const int COLUMN_COUNT = 3;
+
+		/// <summary>
+		///	The size of a <see cref="Bool4x3"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(bool);
+
+		/// <summary>
+		///	The size of a single element within a <see cref="Bool4x3"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
 		///	The value at row 1, column 1 of the matrix.
 		/// </summary>
 		public bool M11;

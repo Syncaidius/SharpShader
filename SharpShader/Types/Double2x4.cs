@@ -9,6 +9,26 @@ namespace SharpShader
 	public struct Double2x4 : IMatrix<double>
 	{
 		/// <summary>
+		///	The number of rows in a <see cref="Double2x4"/>.
+		/// </summary>
+		public const int ROW_COUNT = 2;
+
+		/// <summary>
+		///	The number of columns in a <see cref="Double2x4"/>.
+		/// </summary>
+		public const int COLUMN_COUNT = 4;
+
+		/// <summary>
+		///	The size of a <see cref="Double2x4"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(double);
+
+		/// <summary>
+		///	The size of a single element within a <see cref="Double2x4"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
 		///	The value at row 1, column 1 of the matrix.
 		/// </summary>
 		public double M11;

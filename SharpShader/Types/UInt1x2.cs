@@ -9,6 +9,26 @@ namespace SharpShader
 	public struct UInt1x2 : IMatrix<uint>
 	{
 		/// <summary>
+		///	The number of rows in a <see cref="UInt1x2"/>.
+		/// </summary>
+		public const int ROW_COUNT = 1;
+
+		/// <summary>
+		///	The number of columns in a <see cref="UInt1x2"/>.
+		/// </summary>
+		public const int COLUMN_COUNT = 2;
+
+		/// <summary>
+		///	The size of a <see cref="UInt1x2"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(uint);
+
+		/// <summary>
+		///	The size of a single element within a <see cref="UInt1x2"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
 		///	The value at row 1, column 1 of the matrix.
 		/// </summary>
 		public uint M11;

@@ -6,6 +6,21 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Int2 : IVector<int>, IIntrinsicValue<int>
 	{
+		/// <summary>
+		///	The number of elements (components) in a <see cref="Int2"/>.
+		/// </summary>
+		public const int ELEMENT_COUNT = 2;
+		
+		/// <summary>
+		///	The size of a <see cref="Int2"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(int);
+
+		/// <summary>
+		///	The size of a single element (component) within a <see cref="Int2"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = ELEMENT_COUNT * ELEMENT_SIZE;
+
         /// <summary>
         /// The X component.
         /// </summary>

@@ -6,6 +6,21 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Double3 : IVector<double>
 	{
+		/// <summary>
+		///	The number of elements (components) in a <see cref="Double3"/>.
+		/// </summary>
+		public const int ELEMENT_COUNT = 3;
+		
+		/// <summary>
+		///	The size of a <see cref="Double3"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(double);
+
+		/// <summary>
+		///	The size of a single element (component) within a <see cref="Double3"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = ELEMENT_COUNT * ELEMENT_SIZE;
+
         /// <summary>
         /// The X component.
         /// </summary>

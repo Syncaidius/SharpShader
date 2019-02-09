@@ -9,6 +9,26 @@ namespace SharpShader
 	public struct Int4x4 : IMatrix<int>, IIntrinsicValue<int>, UniformDimensions
 	{
 		/// <summary>
+		///	The number of rows in a <see cref="Int4x4"/>.
+		/// </summary>
+		public const int ROW_COUNT = 4;
+
+		/// <summary>
+		///	The number of columns in a <see cref="Int4x4"/>.
+		/// </summary>
+		public const int COLUMN_COUNT = 4;
+
+		/// <summary>
+		///	The size of a <see cref="Int4x4"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(int);
+
+		/// <summary>
+		///	The size of a single element within a <see cref="Int4x4"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
 		///	The value at row 1, column 1 of the matrix.
 		/// </summary>
 		public int M11;

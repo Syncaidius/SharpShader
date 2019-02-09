@@ -36,6 +36,26 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct <#=name#> : IMatrix<<#=matTypes[t]#>><#=(intrinsic + uniformDimensions)#>
 	{
+		/// <summary>
+		///	The number of rows in a <see cref="<#=name#>"/>.
+		/// </summary>
+		public const int ROW_COUNT = <#=rowCount#>;
+
+		/// <summary>
+		///	The number of columns in a <see cref="<#=name#>"/>.
+		/// </summary>
+		public const int COLUMN_COUNT = <#=colCount#>;
+
+		/// <summary>
+		///	The size of a <see cref="<#=name#>"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(<#=matTypes[t]#>);
+
+		/// <summary>
+		///	The size of a single element within a <see cref="<#=name#>"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
 <#	
 	for(int y = 1; y <= rowCount; y++)
 	{

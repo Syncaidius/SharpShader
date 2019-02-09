@@ -6,6 +6,21 @@ namespace SharpShader
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Bool2 : IVector<bool>
 	{
+		/// <summary>
+		///	The number of elements (components) in a <see cref="Bool2"/>.
+		/// </summary>
+		public const int ELEMENT_COUNT = 2;
+		
+		/// <summary>
+		///	The size of a <see cref="Bool2"/>, in bytes.
+		/// </summary>
+		public const int ELEMENT_SIZE = sizeof(bool);
+
+		/// <summary>
+		///	The size of a single element (component) within a <see cref="Bool2"/>, in bytes.
+		/// </summary>
+		public const int SIZE_OF = ELEMENT_COUNT * ELEMENT_SIZE;
+
         /// <summary>
         /// The X component.
         /// </summary>

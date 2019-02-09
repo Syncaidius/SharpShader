@@ -15,7 +15,7 @@ namespace SharpShader
     /// Provides type information for a shader language-specific type.
     /// </summary>
     internal class ShaderType
-    {
+    {        
         /// <summary>
         /// Gets the translated name of the current <see cref="ShaderType"/>
         /// </summary>
@@ -23,11 +23,21 @@ namespace SharpShader
 
         internal Type OriginalType { get; }
 
+        internal Type ElementType { get; }
+
         internal int SizeOf { get; }
 
-        internal int TypeID { get; }
+        internal int ElementSizeOf { get; }
 
-        static int _nextTypeID;
+        /// <summary>
+        /// Gets the dimensions of the type. <para/>
+        /// For vectors, this contains only the number of components.<para/>
+        /// For matrices, this contains the number of rows followed by the number of columns.<para/>
+        /// For arrays, this contains the length of each dimension in the order they were originally declared.
+        /// </summary>
+        internal List<int> Dimensions { get; }
+
+        public bool WasArrayType => OriginalType.IsArray;
 
         public bool IsRegisteredType { get; }
 
@@ -35,8 +45,6 @@ namespace SharpShader
 
         internal ShaderType(string translation, Type originalType)
         {
-            TypeID = Interlocked.Increment(ref _nextTypeID);
-
             object[] attributes = originalType.GetCustomAttributes(typeof(RegisteredTypeAttribute), false);
             IsRegisteredType = attributes.Length > 0;
 
@@ -45,6 +53,34 @@ namespace SharpShader
 
             OriginalType = originalType;
             Translation = translation;
+            Dimensions = new List<int>();
+            ElementType = originalType.IsArray ? originalType.GetElementType() : originalType;
+
+            if (ElementType.IsValueType)
+            {
+                if (typeof(IVector).IsAssignableFrom(ElementType))
+                {
+                    int elementCount = (int)ElementType.GetField("ELEMENT_COUNT").GetValue(null);
+                    ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
+                    SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null); ;
+                    Dimensions.Add(elementCount);
+                }
+                else if (typeof(IMatrix).IsAssignableFrom(ElementType))
+                {
+                    int rowCount = (int)ElementType.GetField("ROW_COUNT").GetValue(null);
+                    int colCount = (int)ElementType.GetField("COLUMN_COUNT").GetValue(null);
+                    Dimensions.Add(rowCount);
+                    Dimensions.Add(colCount);
+                    ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
+                    SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
+                }
+                else
+                {
+                    ElementSizeOf = Marshal.SizeOf(ElementType);
+                    SizeOf = ElementSizeOf;
+                    Dimensions.Add(1);
+                }
+            }
         }
 
         /// <summary>
