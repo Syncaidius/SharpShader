@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -27,6 +28,11 @@ namespace SharpShader
 		///	The size of a single element within a <see cref="Int1x2"/>, in bytes.
 		/// </summary>
 		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
+		///	Gets the <see cref="Type"/> of each element in a <see cref="Int1x2"/>.
+		/// </summary>
+		public static readonly Type ElementType = typeof(int);
 
 		/// <summary>
 		///	The value at row 1, column 1 of the matrix.

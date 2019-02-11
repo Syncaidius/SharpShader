@@ -17,7 +17,5 @@ namespace SharpShader
         MatrixRowMajor = 3,
 
         MatrixColumnMajor = 4,
-
-        Array = 5,
     }
 }

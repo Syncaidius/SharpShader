@@ -21,6 +21,11 @@ namespace SharpShader
 		/// </summary>
 		public const int SIZE_OF = ELEMENT_COUNT * ELEMENT_SIZE;
 
+		/// <summary>
+		///	Gets the <see cref="Type"/> of each element in a <see cref="UInt3"/>.
+		/// </summary>
+		public static readonly Type ElementType = typeof(uint);
+
         /// <summary>
         /// The X component.
         /// </summary>

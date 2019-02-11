@@ -45,7 +45,7 @@ namespace SharpShader.Result
                     StartOffset = mField.PackOffsetBytes.Value,
                     ElementStride = mField.Type.SizeOf,
                     StructureType = mField.StructureType,
-                    DataType = mField.DataType,
+                    DataType = mField.Type.DataType,
                 };
 
                 variables.Add(e);

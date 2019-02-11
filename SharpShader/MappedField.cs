@@ -11,8 +11,6 @@ namespace SharpShader
     {
         internal List<int> ArrayDimensions = new List<int>();
 
-        internal ShaderDataType DataType = ShaderDataType.Boolean;
-
         internal ShaderStructureType StructureType = ShaderStructureType.Unknown;
 
         internal ShaderType Type;

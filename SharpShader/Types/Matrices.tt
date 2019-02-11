@@ -26,6 +26,7 @@
 				string intrinsic = (isIntrinsic[t] ? $", IIntrinsicValue<{matTypes[t]}>" : "");
 				string uniformDimensions = (colCount == rowCount ? $", UniformDimensions" : "");
 #>
+using System;
 using System.Runtime.InteropServices;
 
 namespace SharpShader
@@ -55,6 +56,11 @@ namespace SharpShader
 		///	The size of a single element within a <see cref="<#=name#>"/>, in bytes.
 		/// </summary>
 		public const int SIZE_OF = (ROW_COUNT * COLUMN_COUNT) * ELEMENT_SIZE;
+
+		/// <summary>
+		///	Gets the <see cref="Type"/> of each element in a <see cref="<#=name#>"/>.
+		/// </summary>
+		public static readonly Type ElementType = typeof(<#=matTypes[t]#>);
 
 <#	
 	for(int y = 1; y <= rowCount; y++)
