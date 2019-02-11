@@ -317,7 +317,7 @@ namespace SharpShader
 
         internal int ElementSizeOf { get; }
 
-        internal ShaderDataType DataType { get; }
+        internal ShaderDataType DataType => _dataType;
 
         /// <summary>
         /// Gets the dimensions of the type.<para/>
@@ -336,6 +336,8 @@ namespace SharpShader
 
         public bool IsUnorderedAccessType { get; }
 
+        ShaderDataType _dataType;
+
         internal ShaderType(string translation, Type originalType)
         {
             object[] attributes = originalType.GetCustomAttributes(typeof(RegisteredTypeAttribute), false);
@@ -345,7 +347,6 @@ namespace SharpShader
             IsUnorderedAccessType = attributes.Length > 0;
 
             OriginalType = originalType;
-            DataType = ShaderDataType.Unknown;
             Translation = translation;
             Dimensions = new List<int>();
             ElementType = originalType.IsArray ? originalType.GetElementType() : originalType;
@@ -359,9 +360,7 @@ namespace SharpShader
                     SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
                     Type eType = (Type)ElementType.GetField("ElementType").GetValue(null);
 
-                    ShaderDataType dt = ShaderDataType.Unknown;
-                    _dataTypes.TryGetValue(eType, out dt);
-
+                    _dataTypes.TryGetValue(eType, out _dataType);
                     Dimensions.Add(elementCount);
                 }
                 else if (typeof(IMatrix).IsAssignableFrom(ElementType))
@@ -372,9 +371,7 @@ namespace SharpShader
                     SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
                     Type eType = (Type)ElementType.GetField("ElementType").GetValue(null);
 
-                    ShaderDataType dt = ShaderDataType.Unknown;
-                    _dataTypes.TryGetValue(eType, out dt);
-
+                    _dataTypes.TryGetValue(eType, out _dataType);
                     Dimensions.Add(rowCount);
                     Dimensions.Add(colCount);
                 }
@@ -382,6 +379,7 @@ namespace SharpShader
                 {
                     ElementSizeOf = Marshal.SizeOf(ElementType);
                     SizeOf = ElementSizeOf;
+                    _dataTypes.TryGetValue(ElementType, out _dataType);
                     Dimensions.Add(1);
                 }
             }
