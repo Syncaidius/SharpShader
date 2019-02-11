@@ -22,11 +22,6 @@ namespace SharpShader
 
         public OutputLanguage Language { get; }
 
-        /// <summary>
-        /// Gets whether or not the shader language has column-major matrices by default. If false, they will be considered as row-major.
-        /// </summary>
-        public abstract bool HasColumnMajorMatrices { get; }
-
         Dictionary<Type, Translation> _keywords;
         List<Modifier> _modifiers;
         internal Dictionary<string, ShaderType> TranslatedTypes;

@@ -41,8 +41,6 @@ namespace SharpShader
 
         internal override bool InstancedConstantBuffers => false;
 
-        public override bool HasColumnMajorMatrices => true;
-
         internal override IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type)
         {
             if (_epTranslators.TryGetValue(type, out IEntryPointTranslator translator))
@@ -108,6 +106,11 @@ namespace SharpShader
 
         internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
         {
+            if (field.StructureType == ShaderStructureType.MatrixRowMajor)
+                sc.Source.Append("row_major ");
+            if (field.StructureType == ShaderStructureType.MatrixColumnMajor)
+                sc.Source.Append("column_Major ");
+
             foreach(Attribute at in field.Attributes)
             {
                 switch (at)

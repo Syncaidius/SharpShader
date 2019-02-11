@@ -18,6 +18,11 @@ namespace SharpShader
 
         MatrixColumnMajor = 4,
 
-        Class = 5,
+        /// <summary>
+        /// Uses the default matrix major layout. Both HLSL and GLSL uses column-major by default, but that can be inverted via '#pragmapack_matrix row_major' in HLSL.
+        /// </summary>
+        MatrixDefaultMajor = 5,
+
+        Class = 6,
     }
 }

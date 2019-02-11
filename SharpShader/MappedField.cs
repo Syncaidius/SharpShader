@@ -22,7 +22,7 @@ namespace SharpShader
                 else if (Attributes.Any(x => x is ColumnMajorAttribute))
                     StructureType = ShaderStructureType.MatrixColumnMajor;
                 else
-                    StructureType = type.Language.HasColumnMajorMatrices ? ShaderStructureType.MatrixColumnMajor : ShaderStructureType.MatrixRowMajor;
+                    StructureType = ShaderStructureType.MatrixDefaultMajor;
                     
             }
             else if (type.IsVector)
