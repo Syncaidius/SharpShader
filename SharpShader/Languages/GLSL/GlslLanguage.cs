@@ -14,6 +14,8 @@ namespace SharpShader
     {
         internal override bool InstancedConstantBuffers => true;
 
+        public override bool HasColumnMajorMatrices => true;
+
         internal GlslFoundation(OutputLanguage language) : base(language) { }
 
         internal override string TranslateNumber(ShaderTranslationContext context, string number)

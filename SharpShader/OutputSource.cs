@@ -20,14 +20,14 @@ namespace SharpShader
         ScopeInfo _rootScope;
 
         [NonSerialized]
-        ShaderTranslationContext _context;
+        ShaderLanguage _language;
 
         internal void Initialize(ShaderTranslationContext sc)
         {
-            _context = sc;
+            _language = sc.Language;
             _currentScope = Pooling.Scopes.Get();
             _currentScope.Type = ScopeType.Class;
-            _currentScope.TypeInfo = new ShaderType(sc.ShaderType.Name, sc.ShaderType);
+            _currentScope.TypeInfo = new ShaderType(_language, sc.ShaderType.Name, sc.ShaderType);
             _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
             _rootScope = _currentScope;
         }
@@ -35,7 +35,7 @@ namespace SharpShader
         internal void Clear()
         {
             _sb.Clear();
-            _pos = 0;
+
             foreach (ScopeInfo si in _scopes)
                 Pooling.Scopes.Put(si);
 
@@ -43,6 +43,8 @@ namespace SharpShader
 
             _rootScope = null;
             _currentScope = null;
+            _language = null;
+            _pos = 0;
         }
 
         internal void Append(SyntaxToken token)
@@ -87,7 +89,7 @@ namespace SharpShader
 
         internal ScopeInfo OpenScope(ScopeType type, Type tInfo)
         {
-            return OpenScope(type, new ShaderType(tInfo.Name, tInfo));
+            return OpenScope(type, new ShaderType(_language, tInfo.Name, tInfo));
         }
 
         internal ScopeInfo OpenScope(ScopeType type, ShaderType tInfo = null)

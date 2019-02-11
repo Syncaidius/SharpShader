@@ -238,7 +238,7 @@ namespace SharpShader
                     ShaderLanguage.Translation translation = sc.Parent.Language.GetTranslation(originalType);
                     if (translation != null)
                     {
-                        type = new ShaderType(translation.NativeText, originalType);
+                        type = new ShaderType(sc.Language, translation.NativeText, originalType);
                         sc.Language.TranslatedTypes.Add(typeName, type);
                         return type;
                     }
@@ -269,14 +269,14 @@ namespace SharpShader
                                 }
 
                                 replacement = translation.NativeText + replacement;
-                                type = new ShaderType(replacement, originalType);
+                                type = new ShaderType(sc.Language, replacement, originalType);
                                 sc.Language.TranslatedTypes.Add(typeName, type);
                                 return type;
                             }
                         }
 
                         // Create a placeholder type instead.
-                        type = new ShaderType(typeName, originalType);
+                        type = new ShaderType(sc.Language, typeName, originalType);
                         sc.Language.TranslatedTypes.Add(typeName, type);
                         return type;
                     }
@@ -289,11 +289,11 @@ namespace SharpShader
                     typeName = typeName.Substring(0, openIndex);
                     int endLen = typeName.Length - openIndex;
                     string reflectiveName = $"System.Object{typeName.Substring(openIndex, endLen)}";
-                    type = new ShaderType(typeName, Type.GetType(reflectiveName));
+                    type = new ShaderType(sc.Language, typeName, Type.GetType(reflectiveName));
                 }
                 else
                 {
-                    type = new ShaderType(typeName, typeof(object));
+                    type = new ShaderType(sc.Language, typeName, typeof(object));
                 }
 
                 // Create a placeholder type using object base class instead.
@@ -367,6 +367,11 @@ namespace SharpShader
         /// </summary>
         public bool IsMatrix { get; }
 
+        /// <summary>
+        /// Gets the shader language of which the current <see cref="ShaderType"/> belongs to.
+        /// </summary>
+        public ShaderLanguage Language { get; }
+
         ShaderDataType _dataType;
 
         /// <summary>
@@ -374,7 +379,8 @@ namespace SharpShader
         /// </summary>
         /// <param name="translation">The language-specific translation of the original type.</param>
         /// <param name="originalType">The original type.</param>
-        internal ShaderType(string translation, Type originalType)
+        /// <param name="lang">The shader language which the type belongs to.</param>
+        internal ShaderType(ShaderLanguage lang, string translation, Type originalType)
         {
             object[] attributes = originalType.GetCustomAttributes(typeof(RegisteredTypeAttribute), false);
             IsRegisteredType = attributes.Length > 0;
@@ -382,6 +388,7 @@ namespace SharpShader
             attributes = originalType.GetCustomAttributes(typeof(UnorderedAccessTypeAttribute), false);
             IsUnorderedAccessType = attributes.Length > 0;
 
+            Language = lang;
             OriginalType = originalType;
             Translation = translation;
             Dimensions = new List<int>();

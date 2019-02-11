@@ -41,6 +41,8 @@ namespace SharpShader
 
         internal override bool InstancedConstantBuffers => false;
 
+        public override bool HasColumnMajorMatrices => true;
+
         internal override IEntryPointTranslator GetEntryPoinTranslator(EntryPointType type)
         {
             if (_epTranslators.TryGetValue(type, out IEntryPointTranslator translator))
