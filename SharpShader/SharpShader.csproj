@@ -206,10 +206,11 @@
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
     <Compile Include="Buffers\StructuredBuffer.cs" />
     <Compile Include="ConstantBufferMap.cs" />
-    <Compile Include="ConversionContext.ReflectionInfo.cs" />
+    <Compile Include="TranslationContext.ReflectionInfo.cs" />
     <Compile Include="ConversionFlags.cs" />
-    <Compile Include="ConversionMessage.cs" />
+    <Compile Include="TranslationMessage.cs" />
     <Compile Include="MappedField.cs" />
+    <Compile Include="Pooling.cs" />
     <Compile Include="Result\ConstantBufferInfo.cs" />
     <Compile Include="Result\ShaderMember.cs" />
     <Compile Include="Result\TranslationResult.cs" />

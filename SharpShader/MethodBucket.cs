@@ -8,14 +8,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MethodBucket
+    internal class MethodBucket : IPoolable
     {
-        Dictionary<MethodInfo, ParameterInfo[]> _methods;
-
-        internal MethodBucket()
-        {
-            _methods = new Dictionary<MethodInfo, ParameterInfo[]>();
-        }
+        Dictionary<MethodInfo, ParameterInfo[]> _methods = new Dictionary<MethodInfo, ParameterInfo[]>();
 
         internal void Add(MethodInfo info)
         {
@@ -60,6 +55,11 @@ namespace SharpShader
             }
 
             return null;
+        }
+
+        public void Clear()
+        {
+            _methods.Clear();
         }
     }
 }

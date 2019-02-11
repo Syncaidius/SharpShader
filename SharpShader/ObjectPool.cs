@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ObjectPool<T> where T : IPoolable
+    internal class ObjectPool<T> where T : IPoolable, new()
     {
-        Func<T> _instantiator;
         ConcurrentBag<T> _pool;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="instantiationCallback">The callback to invoke when a new instance of <typeparamref name="T"/> is required.</param>
-        internal ObjectPool(Func<T> instantiationCallback)
+        internal ObjectPool()
         {
-            _instantiator = instantiationCallback;
             _pool = new ConcurrentBag<T>();
         }
 
@@ -26,9 +24,8 @@ namespace SharpShader
         {
             T result;
             if (!_pool.TryTake(out result))
-                result = _instantiator();
+                result = new T();
 
-            result.Clear();
             return result;
         }
 

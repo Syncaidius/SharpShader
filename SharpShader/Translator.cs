@@ -88,6 +88,7 @@ namespace SharpShader
             TranslationContext context = runner.Run(tArgs);
             TranslationResult result = new TranslationResult(context, flags);
 
+            context.Recycle();
             return result;
         }
 

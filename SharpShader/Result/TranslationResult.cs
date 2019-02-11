@@ -11,7 +11,7 @@ namespace SharpShader.Result
     {
         internal TranslationResult(TranslationContext context, ConversionFlags flags)
         {
-            Messages = new List<ConversionMessage>(context.Messages);
+            Messages = new List<TranslationMessage>(context.Messages);
             Output = new Dictionary<string, ShaderTranslationResult>();
 
             foreach (ShaderTranslationContext sc in context.Shaders)
@@ -34,7 +34,7 @@ namespace SharpShader.Result
 
         public Dictionary<string, ShaderTranslationResult> Output { get; }
 
-        public List<ConversionMessage> Messages { get; }
+        public List<TranslationMessage> Messages { get; }
 
         public IEnumerator<KeyValuePair<string, ShaderTranslationResult>> GetEnumerator()
         {

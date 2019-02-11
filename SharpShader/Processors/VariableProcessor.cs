@@ -51,8 +51,8 @@ namespace SharpShader.Processors
                 if (fInfo != null)
                 { 
                     int fieldIndex = scope.Items.IndexOf(syntax);
-                    mField = MappedField.Get(scope.TypeInfo, fInfo);
-
+                    mField = Pooling.MappedFields.Get();
+                    mField.Initialize(scope.TypeInfo, fInfo);
                     cBufferMap?.AddField(mField);
 
                     sc.Language.TranslateFieldPrefix(sc, syntax, mField, fieldIndex, cBufferMap);

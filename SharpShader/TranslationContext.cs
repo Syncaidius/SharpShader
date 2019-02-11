@@ -13,34 +13,27 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    public partial class TranslationContext : MarshalByRefObject
+    internal partial class TranslationContext : MarshalByRefObject, IPoolable
     {
         [field: NonSerialized]
-        internal ShaderLanguage Language { get; }
+        internal ShaderLanguage Language { get; private set; }
 
         [field: NonSerialized]
         internal CSharpParseOptions ParseOptions { get; private set; }
 
-        internal List<ShaderTranslationContext> Shaders { get; }
+        internal List<ShaderTranslationContext> Shaders { get; } = new List<ShaderTranslationContext>();
 
-        internal List<ConversionMessage> Messages { get; }
+        internal List<TranslationMessage> Messages { get; } = new List<TranslationMessage>();
 
-        [NonSerialized]
-        internal readonly ReflectionInfo Reflection;
+        [field: NonSerialized]
+        internal ReflectionInfo Reflection { get; } = new ReflectionInfo();
 
         [NonSerialized]
         int _nextVariable = 0;
 
-        [NonSerialized]
-        internal readonly ObjectPool<ScopeInfo> ScopePool;
-
-        internal TranslationContext(ShaderLanguage foundatation, List<string> preprocessorSymbols)
+        internal void Initialize(ShaderLanguage language, List<string> preprocessorSymbols)
         {
-            ScopePool = new ObjectPool<ScopeInfo>(() => new ScopeInfo());
-            Reflection = new ReflectionInfo();
-            Language = foundatation;
-            Shaders = new List<ShaderTranslationContext>();
-            Messages = new List<ConversionMessage>();
+            Language = language;
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
         }
 
@@ -59,7 +52,7 @@ namespace SharpShader
 
         internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
         {
-            Messages.Add(new ConversionMessage()
+            Messages.Add(new TranslationMessage()
             {
                 Text = text,
                 LineNumber = lineNumber,
@@ -71,6 +64,25 @@ namespace SharpShader
         internal string GetNewVariableName(string prefix = null)
         {
             return $"{($"{prefix}_" ?? "val_")}SS_{_nextVariable++}";
+        }
+
+        void IPoolable.Clear()
+        {
+            foreach (ShaderTranslationContext sc in Shaders)
+                Pooling.ShaderContexts.Put(sc);
+
+            Shaders.Clear();
+            Messages.Clear();
+            ParseOptions = null;
+            Language = null;
+        }
+
+        /// <summary>
+        /// Recycles the current <see cref="TranslationContext"/>, pooling it for reuse later. This also recycles any other poolable resources the context was using.
+        /// </summary>
+        internal void Recycle()
+        {
+            Pooling.Contexts.Put(this);
         }
     }
 }

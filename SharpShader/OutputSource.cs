@@ -12,7 +12,7 @@ namespace SharpShader
         int _pos = 0;
 
         [NonSerialized]
-        Stack<ScopeInfo> _blocks = new Stack<ScopeInfo>();
+        Stack<ScopeInfo> _scopes = new Stack<ScopeInfo>();
 
         [NonSerialized]
         ScopeInfo _currentScope;
@@ -22,14 +22,27 @@ namespace SharpShader
         [NonSerialized]
         ShaderTranslationContext _context;
 
-        internal OutputSource(ShaderTranslationContext sc)
+        internal void Initialize(ShaderTranslationContext sc)
         {
             _context = sc;
-            _currentScope = sc.Parent.ScopePool.Get();
+            _currentScope = Pooling.Scopes.Get();
             _currentScope.Type = ScopeType.Class;
             _currentScope.TypeInfo = new ShaderType(sc.ShaderType.Name, sc.ShaderType);
             _currentScope.Namespace = $"{sc.ShaderType.Namespace}.{sc.ShaderType.Name}";
             _rootScope = _currentScope;
+        }
+
+        internal void Clear()
+        {
+            _sb.Clear();
+            _pos = 0;
+            foreach (ScopeInfo si in _scopes)
+                Pooling.Scopes.Put(si);
+
+            Pooling.Scopes.Put(_currentScope);
+
+            _rootScope = null;
+            _currentScope = null;
         }
 
         internal void Append(SyntaxToken token)
@@ -79,7 +92,7 @@ namespace SharpShader
 
         internal ScopeInfo OpenScope(ScopeType type, ShaderType tInfo = null)
         {
-            ScopeInfo newScope = _context.Parent.ScopePool.Get();
+            ScopeInfo newScope = Pooling.Scopes.Get();
             newScope.Parent = _currentScope;
             newScope.IndentationDepth = _currentScope.IndentationDepth + 1;
             newScope.Type = type;
@@ -92,7 +105,7 @@ namespace SharpShader
             else
                 newScope.Namespace = _currentScope.Namespace;
 
-            _blocks.Push(_currentScope); // Push old scope
+            _scopes.Push(_currentScope); // Push old scope
             _currentScope = newScope; // Set new as current
 
             if ((_currentScope.Settings.OpeningSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
@@ -112,7 +125,7 @@ namespace SharpShader
 
         internal void CloseScope()
         {
-            if (_blocks.Count == 0)
+            if (_scopes.Count == 0)
                 throw new ScopeException("Cannot close block. No blocks left to close.");
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.Before) == NewLineFlags.Before)
@@ -124,8 +137,8 @@ namespace SharpShader
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
                 AppendLineBreak();
 
-            _context.Parent.ScopePool.Put(_currentScope);
-            _currentScope = _blocks.Pop();
+            Pooling.Scopes.Put(_currentScope);
+            _currentScope = _scopes.Pop();
         }
 
         public override string ToString()
@@ -133,7 +146,7 @@ namespace SharpShader
             return _sb.ToString();
         }
 
-        public int CurrentBlockDepth => _blocks.Count;
+        public int CurrentBlockDepth => _scopes.Count;
 
         internal ScopeInfo CurrentScope => _currentScope;
 

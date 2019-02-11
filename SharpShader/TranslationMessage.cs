@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    public class ConversionMessage
+    public struct TranslationMessage
     {
         /// <summary>
         /// The error message.

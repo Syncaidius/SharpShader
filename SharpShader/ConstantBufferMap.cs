@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class ConstantBufferMap
+    internal class ConstantBufferMap : IPoolable
     {
         /// <summary>
         /// A list of mapped variables contained within the constant buffer.
@@ -41,6 +41,15 @@ namespace SharpShader
             }
 
             Fields.Add(field);
+        }
+
+        void IPoolable.Clear()
+        {
+            foreach (MappedField mField in Fields)
+                Pooling.MappedFields.Put(mField);
+
+            Fields.Clear();
+            BindSlots.Clear();
         }
     }
 }

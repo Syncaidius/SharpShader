@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public partial class TranslationContext : MarshalByRefObject
+    internal partial class TranslationContext : MarshalByRefObject
     {
         internal class ReflectionInfo
         {

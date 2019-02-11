@@ -12,21 +12,21 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal partial class ShaderTranslationContext
+    internal partial class ShaderTranslationContext : IPoolable
     {
         internal ShaderLanguage Language => Parent.Language;
 
-        [NonSerialized]
-        internal readonly SyntaxNode RootNode;
+        [field: NonSerialized]
+        internal SyntaxNode RootNode { get; private set; }
 
         /// <summary>
         /// The <see cref="Type"/> for the shader's own class.
         /// </summary>
         [field: NonSerialized]
-        internal Type ShaderType { get; }
+        internal Type ShaderType { get; private set; }
 
-        [NonSerialized]
-        internal readonly TranslationContext Parent;
+        [field: NonSerialized]
+        internal TranslationContext Parent { get; private set; }
 
         [NonSerialized]
         internal readonly Dictionary<MethodInfo, MappedEntryPoint> EntryPoints;
@@ -70,19 +70,14 @@ namespace SharpShader
         [NonSerialized]
         readonly Dictionary<string, MethodBucket> _methods;
 
-        internal string Name { get; }
+        internal string Name { get; private set; }
 
         internal OutputSource Source { get; }
 
-        internal ShaderTranslationContext(TranslationContext parent, ClassDeclarationSyntax syntax, Type shaderType)
+        public ShaderTranslationContext()
         {
-            Parent = parent;
-            Name = syntax.Identifier.ValueText;
-            ShaderType = shaderType;
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
-            RootNode = tree.GetRoot();
             _completedNodes = new HashSet<SyntaxNode>();
-            Source = new OutputSource(this);
+            Source = new OutputSource();
 
             EntryPoints = new Dictionary<MethodInfo, MappedEntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
@@ -94,6 +89,16 @@ namespace SharpShader
             Samplers = new Dictionary<string, FieldInfo>();
             Buffers = new Dictionary<string, FieldInfo>();
             UAVs = new Dictionary<string, FieldInfo>();
+        }
+
+        internal void Initialize(TranslationContext parent, ClassDeclarationSyntax syntax, Type shaderType)
+        {
+            Parent = parent;
+            Name = syntax.Identifier.ValueText;
+            ShaderType = shaderType;
+            SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
+            RootNode = tree.GetRoot();
+            Source.Initialize(this);
 
             BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
@@ -108,6 +113,33 @@ namespace SharpShader
 
                 sType = sType.BaseType;
             }
+        }
+
+        void IPoolable.Clear()
+        {
+            Source.Clear();
+            Parent = null;
+            Name = null;
+            ShaderType = null;
+            RootNode = null;
+
+            foreach (KeyValuePair<string, MethodBucket> p in _methods)
+                Pooling.MethodBuckets.Put(p.Value);
+
+            foreach (KeyValuePair<string, ConstantBufferMap> p in ConstantBuffers)
+                Pooling.CBufferMaps.Put(p.Value);
+
+            _methods.Clear();
+            _completedNodes.Clear();
+            EntryPoints.Clear();
+            ShaderFields.Clear();
+            AllFields.Clear();
+            Structures.Clear();
+            ConstantBuffers.Clear();
+            Textures.Clear();
+            Samplers.Clear();
+            Buffers.Clear();
+            UAVs.Clear();
         }
 
         private void PopulateMethodInfo(Type classType, BindingFlags bFlags)
@@ -129,7 +161,7 @@ namespace SharpShader
                 MethodBucket bucket;
                 if (!_methods.TryGetValue(mi.Name, out bucket))
                 {
-                    bucket = new MethodBucket();
+                    bucket = Pooling.MethodBuckets.Get();
                     _methods.Add(mi.Name, bucket);
                 }
 

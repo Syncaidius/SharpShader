@@ -9,38 +9,32 @@ namespace SharpShader
 {
     internal class MappedField : IPoolable
     {
-        #region Static Members
-        static ObjectPool<MappedField> _fieldPool = new ObjectPool<MappedField>(() => new MappedField());
-
-        internal static MappedField Get(ShaderType type, FieldInfo info)
+        internal void Initialize(ShaderType type, FieldInfo info)
         {
-            MappedField m = _fieldPool.Get();
-            m.Type = type;
-            m.Attributes = info.GetCustomAttributes();
+            Type = type;
+            Attributes = info.GetCustomAttributes();
+            Info = info;
 
             if (type.IsMatrix)
             {
-                if (m.Attributes.Any(x => x is RowMajorAttribute))
-                    m.StructureType = ShaderStructureType.MatrixRowMajor;
-                else if (m.Attributes.Any(x => x is ColumnMajorAttribute))
-                    m.StructureType = ShaderStructureType.MatrixColumnMajor;
+                if (Attributes.Any(x => x is RowMajorAttribute))
+                    StructureType = ShaderStructureType.MatrixRowMajor;
+                else if (Attributes.Any(x => x is ColumnMajorAttribute))
+                    StructureType = ShaderStructureType.MatrixColumnMajor;
             }
             else if (type.IsVector)
             {
-                m.StructureType = ShaderStructureType.Vector;
+                StructureType = ShaderStructureType.Vector;
             }
             else if (type.Dimensions.Count == 1 && type.Dimensions[0] == 1)
             {
-                m.StructureType = ShaderStructureType.Scalar;
+                StructureType = ShaderStructureType.Scalar;
             }
             else if (!type.OriginalType.IsValueType)
             {
-                m.StructureType = ShaderStructureType.Class;
+                StructureType = ShaderStructureType.Class;
             }
-
-            return m;
         }
-        #endregion
 
         internal List<int> ArrayDimensions { get; } = new List<int>();
 

@@ -60,10 +60,12 @@ namespace SharpShader
             if (args.PreprocessorSymbols != null)
                 preprocessorSymbols = new List<string>(args.PreprocessorSymbols);
 
-            ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
-            TranslationContext context = new TranslationContext(foundation, preprocessorSymbols);
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
+
+            ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
+            TranslationContext context = Pooling.Contexts.Get();
+            context.Initialize(foundation, preprocessorSymbols);
 
             Message("Analyzing", ConversionMessageType.Status);
             AnalysisInfo analysis = Analyze(context, args.CSharpSources);
@@ -71,7 +73,7 @@ namespace SharpShader
 
             if (analysis.HasError)
             {
-                foreach (ConversionMessage msg in context.Messages)
+                foreach (TranslationMessage msg in context.Messages)
                     Message(msg.Text, msg.MessageType);
 
                 Message($"Cannot proceed until errors are fixed. Aborting.");
@@ -97,22 +99,13 @@ namespace SharpShader
             }
 
             mainTimer.Stop();
-            foreach (ConversionMessage msg in context.Messages)
+            foreach (TranslationMessage msg in context.Messages)
                     Message(msg.Text, msg.MessageType);
 
                 int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
             int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
             Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
             Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
-
-            /* NOTES:
-             *  -- Method declarations and calls can use reflection info attached during mapping to aid translation.
-             *  -- Resolving types will now be MUCH easier
-             *  -- Detecting whether a SharpShader type implements certain interfaces will be a lot easier.
-             *  -- Parsing attributes can be done directly using reflection, by retrieving the target member's Attribute reflection data.
-             *  -- Detailed info about an attributes arguments will be useful in speeding-up attribute parsing.
-             *  -- Mapping the fields of a shader will simple, via reflection
-             */
 
             return context;
         }
@@ -189,7 +182,9 @@ namespace SharpShader
                 Type t = context.Reflection.Assembly.GetType(typeName, false, false);
                 if (t != null && context.Reflection.IsShaderType(t))
                 {
-                    context.Shaders.Add(new ShaderTranslationContext(context, classNode, t));
+                    ShaderTranslationContext sc = Pooling.ShaderContexts.Get();
+                    sc.Initialize(context, classNode, t);
+                    context.Shaders.Add(sc);
                     Message($"Mapped {t.FullName}");
 
                     // TODO: Remove this return if nested shaders are ever supported.
