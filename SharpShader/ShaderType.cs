@@ -309,14 +309,29 @@ namespace SharpShader
         /// </summary>
         internal string Translation { get; }
 
+        /// <summary>
+        /// Gets the original <see cref="Type"/> from which the current <see cref="ShaderType"/> was translated.
+        /// </summary>
         internal Type OriginalType { get; }
 
+        /// <summary>
+        /// Gets the C# type of the underlying elements or components of the current <see cref="ShaderType"/>.
+        /// </summary>
         internal Type ElementType { get; }
 
+        /// <summary>
+        /// Gets the total size of the current <see cref="ShaderType"/>, in bytes.
+        /// </summary>
         internal int SizeOf { get; }
 
+        /// <summary>
+        /// Gets the size of an underlying component or element of the current <see cref="ShaderType"/>, in bytes.
+        /// </summary>
         internal int ElementSizeOf { get; }
 
+        /// <summary>
+        /// Gets the underlying data type of the current <see cref="ShaderType"/>. 
+        /// </summary>
         internal ShaderDataType DataType => _dataType;
 
         /// <summary>
@@ -332,12 +347,23 @@ namespace SharpShader
         /// </summary>
         public bool WasArrayType => OriginalType.IsArray;
 
+        /// <summary>
+        /// Gets whether or not the current type can be used with shader registers, such as those in HLSL syntax.
+        /// </summary>
         public bool IsRegisteredType { get; }
 
+        /// <summary>
+        /// Gets whether or not the current type is an unordered-access type.
+        /// </summary>
         public bool IsUnorderedAccessType { get; }
 
         ShaderDataType _dataType;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ShaderType"/>.
+        /// </summary>
+        /// <param name="translation">The language-specific translation of the original type.</param>
+        /// <param name="originalType">The original type.</param>
         internal ShaderType(string translation, Type originalType)
         {
             object[] attributes = originalType.GetCustomAttributes(typeof(RegisteredTypeAttribute), false);
