@@ -357,6 +357,16 @@ namespace SharpShader
         /// </summary>
         public bool IsUnorderedAccessType { get; }
 
+        /// <summary>
+        /// Gets whether or not the current <see cref="ShaderType"/> represents a vector.
+        /// </summary>
+        public bool IsVector { get; }
+
+        /// <summary>
+        /// Gets whether or not the current <see cref="ShaderType"/> represents a matrix.
+        /// </summary>
+        public bool IsMatrix { get; }
+
         ShaderDataType _dataType;
 
         /// <summary>
@@ -381,6 +391,7 @@ namespace SharpShader
             {
                 if (typeof(IVector).IsAssignableFrom(ElementType))
                 {
+                    IsVector = true;
                     int elementCount = (int)ElementType.GetField("ELEMENT_COUNT").GetValue(null);
                     ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
                     SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
@@ -391,6 +402,7 @@ namespace SharpShader
                 }
                 else if (typeof(IMatrix).IsAssignableFrom(ElementType))
                 {
+                    IsMatrix = true;
                     int rowCount = (int)ElementType.GetField("ROW_COUNT").GetValue(null);
                     int colCount = (int)ElementType.GetField("COLUMN_COUNT").GetValue(null);
                     ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);

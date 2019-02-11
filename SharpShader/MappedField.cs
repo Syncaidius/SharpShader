@@ -7,19 +7,62 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class MappedField
+    internal class MappedField : IPoolable
     {
-        internal List<int> ArrayDimensions = new List<int>();
+        #region Static Members
+        static ObjectPool<MappedField> _fieldPool = new ObjectPool<MappedField>(() => new MappedField());
 
-        internal ShaderStructureType StructureType = ShaderStructureType.Unknown;
+        internal static MappedField Get(ShaderType type, FieldInfo info)
+        {
+            MappedField m = _fieldPool.Get();
+            m.Type = type;
+            m.Attributes = info.GetCustomAttributes();
 
-        internal ShaderType Type;
+            if (type.IsMatrix)
+            {
+                if (m.Attributes.Any(x => x is RowMajorAttribute))
+                    m.StructureType = ShaderStructureType.MatrixRowMajor;
+                else if (m.Attributes.Any(x => x is ColumnMajorAttribute))
+                    m.StructureType = ShaderStructureType.MatrixColumnMajor;
+            }
+            else if (type.IsVector)
+            {
+                m.StructureType = ShaderStructureType.Vector;
+            }
+            else if (type.Dimensions.Count == 1 && type.Dimensions[0] == 1)
+            {
+                m.StructureType = ShaderStructureType.Scalar;
+            }
+            else if (!type.OriginalType.IsValueType)
+            {
+                m.StructureType = ShaderStructureType.Class;
+            }
+
+            return m;
+        }
+        #endregion
+
+        internal List<int> ArrayDimensions { get; } = new List<int>();
+
+        internal ShaderStructureType StructureType { get; private set; }
+
+        internal ShaderType Type { get; private set; }
 
         internal int? PackOffsetBytes;
 
-        internal FieldInfo Info;
+        internal FieldInfo Info { get; private set; }
 
-        internal IEnumerable<Attribute> Attributes;
+        internal IEnumerable<Attribute> Attributes { get; private set; }
+
+        public void Clear()
+        {
+            ArrayDimensions.Clear();
+            StructureType = ShaderStructureType.Unknown;
+            Type = null;
+            Info = null;
+            PackOffsetBytes = null;
+            Attributes = null;
+        }
 
         /// <summary>
         /// Gets the total size of the field, in bytes. <para/>

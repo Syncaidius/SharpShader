@@ -51,12 +51,7 @@ namespace SharpShader.Processors
                 if (fInfo != null)
                 { 
                     int fieldIndex = scope.Items.IndexOf(syntax);
-                    mField = new MappedField()
-                    {
-                        Type = scope.TypeInfo,
-                        Attributes = fInfo.GetCustomAttributes(),
-                        Info = fInfo,
-                    };
+                    mField = MappedField.Get(scope.TypeInfo, fInfo);
 
                     cBufferMap?.AddField(mField);
 

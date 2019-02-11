@@ -191,6 +191,8 @@
     <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
     <Compile Include="Attributes\InputPatchAttribute.cs" />
     <Compile Include="Attributes\OutputPatchAttribute.cs" />
+    <Compile Include="Attributes\ColumnMajorAttribute.cs" />
+    <Compile Include="Attributes\RowMajorAttribute.cs" />
     <Compile Include="Attributes\UnorderedAccessTypeAttribute.cs" />
     <Compile Include="Attributes\RegisterAttribute.cs" />
     <Compile Include="Attributes\SemanticAttribute.cs" />
