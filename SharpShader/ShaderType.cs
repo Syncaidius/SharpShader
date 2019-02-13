@@ -239,7 +239,7 @@ namespace SharpShader
                     if (translation != null)
                     {
                         type = new ShaderType(sc.Language, translation.NativeText, originalType);
-                        sc.Language.TranslatedTypes.Add(typeName, type);
+                        sc.Language.TranslatedTypes.TryAdd(typeName, type);
                         return type;
                     }
                     else // Attempt to find any interfaces on the type which can be translated instead.
@@ -270,14 +270,14 @@ namespace SharpShader
 
                                 replacement = translation.NativeText + replacement;
                                 type = new ShaderType(sc.Language, replacement, originalType);
-                                sc.Language.TranslatedTypes.Add(typeName, type);
+                                sc.Language.TranslatedTypes.TryAdd(typeName, type);
                                 return type;
                             }
                         }
 
                         // Create a placeholder type instead.
                         type = new ShaderType(sc.Language, typeName, originalType);
-                        sc.Language.TranslatedTypes.Add(typeName, type);
+                        sc.Language.TranslatedTypes.TryAdd(typeName, type);
                         return type;
                     }
                 }
@@ -297,7 +297,7 @@ namespace SharpShader
                 }
 
                 // Create a placeholder type using object base class instead.
-                sc.Language.TranslatedTypes.Add(typeName, type);
+                sc.Language.TranslatedTypes.TryAdd(typeName, type);
                 return type;
             }
         }

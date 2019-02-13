@@ -51,7 +51,7 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public TranslationResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
+        public TranslationResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, TranslationFlags flags = TranslationFlags.None, List<string> preprocessorSymbols = null)
         {
             return Translate(new Dictionary<string, string>()
             {
@@ -68,7 +68,10 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public TranslationResult Translate(Dictionary<string, string> cSharpSources, OutputLanguage outputLanguage, ConversionFlags flags = ConversionFlags.None, List<string> preprocessorSymbols = null)
+        public TranslationResult Translate(Dictionary<string, string> cSharpSources, 
+            OutputLanguage outputLanguage, 
+            TranslationFlags flags = TranslationFlags.None, 
+            List<string> preprocessorSymbols = null)
         {
             if (_disposed)
                 throw new ObjectDisposedException("Translator instance has been disposed.");
@@ -80,7 +83,7 @@ namespace SharpShader
                 CSharpSources = new Dictionary<string, string>(cSharpSources),
                 Flags = flags,
                 Language = outputLanguage,
-                PreprocessorSymbols = preprocessorSymbols,
+                PreprocessorSymbols = preprocessorSymbols ?? new List<string>(),
             };
 
             Type t = typeof(TranslationRunner);
@@ -124,7 +127,6 @@ namespace SharpShader
         /// Gets whether or not the current <see cref="Translator"/> instance has been disposed.
         /// </summary>
         public bool IsDisposed => _disposed;
-
         #endregion
     }
 }

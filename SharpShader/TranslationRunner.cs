@@ -20,7 +20,7 @@ namespace SharpShader
         /// </summary>
         public Dictionary<string, string> CSharpSources;
 
-        public List<string> PreprocessorSymbols = new List<string>();
+        public List<string> PreprocessorSymbols;
 
         /// <summary>
         /// The output language.
@@ -30,7 +30,7 @@ namespace SharpShader
         /// <summary>
         /// The flags to apply to the conversion.
         /// </summary>
-        public ConversionFlags Flags;
+        public TranslationFlags Flags;
     }
 
     internal class TranslationRunner : MarshalByRefObject
@@ -67,7 +67,7 @@ namespace SharpShader
             TranslationContext context = Pooling.Contexts.Get();
             context.Initialize(foundation, preprocessorSymbols);
 
-            Message("Analyzing", ConversionMessageType.Status);
+            Message("Analyzing", TranslationMessageType.Status);
             AnalysisInfo analysis = Analyze(context, args.CSharpSources);
             Message($"Analysis completed");
 
@@ -80,15 +80,18 @@ namespace SharpShader
                 return context;
             }
 
-            Message($"Mapping shader classes", ConversionMessageType.Status);
+            Message($"Mapping shader classes", TranslationMessageType.Status);
             Map(context, analysis.Trees);
             Message($"Mapping completed. Found {context.Shaders.Count} shader classes.");
 
             foreach (ShaderTranslationContext sc in context.Shaders)
             {
-                Message($"Translating {sc.Name}", ConversionMessageType.Status);
+                //================
+                // TODO Replace code below with worker queue
+                //================
+
+                Message($"Translating {sc.Name}", TranslationMessageType.Status);
                 Stopwatch timer = new Stopwatch();
-                timer.Reset();
                 timer.Start();
 
                 Message("Translating to {context.Language.Language}");
@@ -102,8 +105,8 @@ namespace SharpShader
             foreach (TranslationMessage msg in context.Messages)
                     Message(msg.Text, msg.MessageType);
 
-                int errors = context.Messages.Count(t => t.MessageType == ConversionMessageType.Error);
-            int warnings = context.Messages.Count(t => t.MessageType == ConversionMessageType.Warning);
+                int errors = context.Messages.Count(t => t.MessageType == TranslationMessageType.Error);
+            int warnings = context.Messages.Count(t => t.MessageType == TranslationMessageType.Warning);
             Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
             Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
 
@@ -153,7 +156,7 @@ namespace SharpShader
                             break;
 
                         case DiagnosticSeverity.Warning:
-                            context.AddMessage(d.GetMessage(), d.Location, ConversionMessageType.Warning);
+                            context.AddMessage(d.GetMessage(), d.Location, TranslationMessageType.Warning);
                             break;
                     }
                 }
@@ -227,7 +230,7 @@ namespace SharpShader
                 sc.Source.CloseScope();
         }
 
-        private static void Message(string msg, ConversionMessageType type = ConversionMessageType.Message)
+        internal static void Message(string msg, TranslationMessageType type = TranslationMessageType.Message)
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.Write("[SharpShader] [");

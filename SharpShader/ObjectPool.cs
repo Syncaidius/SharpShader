@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    /// <summary>
+    /// A thread-safe object pool which allows existing instances of a type to be recycled for later reuse.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     internal class ObjectPool<T> where T : IPoolable, new()
     {
         ConcurrentBag<T> _pool;

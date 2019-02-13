@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SharpShader.Languages;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,14 +25,14 @@ namespace SharpShader
 
         Dictionary<Type, Translation> _keywords;
         List<Modifier> _modifiers;
-        internal Dictionary<string, ShaderType> TranslatedTypes;
+        internal ConcurrentDictionary<string, ShaderType> TranslatedTypes;
 
         internal ShaderLanguage(OutputLanguage language)
         {
             Language = language;
             _keywords = new Dictionary<Type, Translation>();
             _modifiers = new List<Modifier>();
-            TranslatedTypes = new Dictionary<string, ShaderType>();
+            TranslatedTypes = new ConcurrentDictionary<string, ShaderType>();
         }
 
         internal string TranslateModifiers(SyntaxTokenList modifiers)

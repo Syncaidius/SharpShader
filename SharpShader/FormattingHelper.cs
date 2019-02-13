@@ -18,7 +18,7 @@ namespace SharpShader
         /// <param name="target"></param>
         /// <param name="minIndent">The minimum level of indentation.</param>
         /// <returns></returns>
-        internal static void CorrectIndents(ref string target, ConversionFlags flags)
+        internal static void CorrectIndents(ref string target, TranslationFlags flags)
         {
             string[] lines = target.Trim().Split(_delimiters, StringSplitOptions.None);
             int indent = 0;
@@ -55,7 +55,7 @@ namespace SharpShader
                 lines[i] = new string('\t', indent) + lines[i];
                 if (lines[i].StartsWith("//"))
                 {
-                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
+                    if ((flags & TranslationFlags.StripComments) == TranslationFlags.StripComments)
                         lines[i] = "";
                 }
 
@@ -68,7 +68,7 @@ namespace SharpShader
             target = string.Join(Environment.NewLine, lines, 0, newLineCount);
         }
 
-        internal static void RemoveWhitespace(ref string target, ConversionFlags flags)
+        internal static void RemoveWhitespace(ref string target, TranslationFlags flags)
         {
             string[] lines = target.Trim().Split(_delimiters, StringSplitOptions.None);
             for (int i = 0; i < lines.Length; i++)
@@ -77,7 +77,7 @@ namespace SharpShader
                 lines[i] = lines[i].Trim();
                 if (lines[i].StartsWith("//"))
                 {
-                    if ((flags & ConversionFlags.StripComments) == ConversionFlags.StripComments)
+                    if ((flags & TranslationFlags.StripComments) == TranslationFlags.StripComments)
                         lines[i] = "";
                     else
                         lines[i] = $"/* {lines[i]} */";

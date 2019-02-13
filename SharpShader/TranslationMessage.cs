@@ -24,10 +24,10 @@ namespace SharpShader
         /// </summary>
         public int LinePosition { get; internal set; }
 
-        public ConversionMessageType MessageType { get; internal set; }
+        public TranslationMessageType MessageType { get; internal set; }
     }
 
-    public enum ConversionMessageType
+    public enum TranslationMessageType
     {
         Message = 0,
 

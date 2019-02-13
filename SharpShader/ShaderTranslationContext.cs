@@ -61,6 +61,9 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, FieldInfo> UAVs;
 
+        [field: NonSerialized]
+        internal TranslationWorker AssignedWorker { get; set; }
+
         /// <summary>
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
         /// </summary>
@@ -152,7 +155,7 @@ namespace SharpShader
                 if (epAttribute != null)
                 {
                     if (eps.Count() > 1)
-                        Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, ConversionMessageType.Warning);
+                        Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, TranslationMessageType.Warning);
 
                     IEntryPointTranslator epTranslator = Language.GetEntryPoinTranslator(epAttribute.EntryType);
                     EntryPoints.Add(mi, new MappedEntryPoint(epTranslator, epAttribute));
@@ -240,14 +243,14 @@ namespace SharpShader
                 return (null, 0);
         }
 
-        internal void AddMessage(string text, SyntaxNode node, ConversionMessageType type = ConversionMessageType.Error)
+        internal void AddMessage(string text, SyntaxNode node, TranslationMessageType type = TranslationMessageType.Error)
         {
             Location loc = node.GetLocation();
             FileLinePositionSpan span = loc.GetLineSpan();
             AddMessage(text, span.StartLinePosition.Line, span.StartLinePosition.Character, type);
         }
 
-        internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
+        internal void AddMessage(string text, int lineNumber, int linePos, TranslationMessageType type = TranslationMessageType.Error)
         {
             Parent.AddMessage($"{Name}: {text}", lineNumber, linePos, type);
         }

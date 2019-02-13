@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Flags]
-    public enum ConversionFlags
+    public enum TranslationFlags
     {
         None = 0,
 

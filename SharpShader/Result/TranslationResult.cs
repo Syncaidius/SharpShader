@@ -9,7 +9,7 @@ namespace SharpShader.Result
 {
     public class TranslationResult : IEnumerable<KeyValuePair<string, ShaderTranslationResult>>
     {
-        internal TranslationResult(TranslationContext context, ConversionFlags flags)
+        internal TranslationResult(TranslationContext context, TranslationFlags flags)
         {
             Messages = new List<TranslationMessage>(context.Messages);
             Output = new Dictionary<string, ShaderTranslationResult>();
@@ -19,9 +19,9 @@ namespace SharpShader.Result
                 ShaderTranslationResult shader = new ShaderTranslationResult(sc);
                 string strSourceResult = sc.Source.ToString();
 
-                if ((flags & ConversionFlags.SkipFormatting) != ConversionFlags.SkipFormatting)
+                if ((flags & TranslationFlags.SkipFormatting) != TranslationFlags.SkipFormatting)
                 {
-                    if ((flags & ConversionFlags.RemoveWhitespace) == ConversionFlags.RemoveWhitespace)
+                    if ((flags & TranslationFlags.RemoveWhitespace) == TranslationFlags.RemoveWhitespace)
                         FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
                     else
                         FormattingHelper.CorrectIndents(ref strSourceResult, flags);

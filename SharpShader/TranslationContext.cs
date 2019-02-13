@@ -31,26 +31,35 @@ namespace SharpShader
         [NonSerialized]
         int _nextVariable = 0;
 
+        /* TODO MULTITHREADING:
+         *  - Track which shaders need to be translated
+         *  - Track which shaders have been finished
+         *  - A mechanic for suspending a worker until a required shader dependency is done being translated
+         *  - A mechanic for tracking which threads are 
+         * 
+         * 
+         */
+
         internal void Initialize(ShaderLanguage language, List<string> preprocessorSymbols)
         {
             Language = language;
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
         }
 
-        internal void AddMessage(string text, SyntaxNode syntax, ConversionMessageType type = ConversionMessageType.Error)
+        internal void AddMessage(string text, SyntaxNode syntax, TranslationMessageType type = TranslationMessageType.Error)
         {
             Location loc = syntax.GetLocation();
             FileLinePositionSpan linePos = loc.GetLineSpan();
             AddMessage(text, linePos.StartLinePosition.Line, linePos.StartLinePosition.Character, type);
         }
 
-        internal void AddMessage(string text, Location location, ConversionMessageType type = ConversionMessageType.Error)
+        internal void AddMessage(string text, Location location, TranslationMessageType type = TranslationMessageType.Error)
         {
             FileLinePositionSpan linePos = location.GetLineSpan();
             AddMessage(text, linePos.StartLinePosition.Line, linePos.StartLinePosition.Character, type);
         }
 
-        internal void AddMessage(string text, int lineNumber, int linePos, ConversionMessageType type = ConversionMessageType.Error)
+        internal void AddMessage(string text, int lineNumber, int linePos, TranslationMessageType type = TranslationMessageType.Error)
         {
             Messages.Add(new TranslationMessage()
             {
