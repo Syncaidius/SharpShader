@@ -208,7 +208,7 @@
     <Compile Include="ConstantBufferMap.cs" />
     <Compile Include="Interlocker.cs" />
     <Compile Include="ThreadSafeList.cs" />
-    <Compile Include="TranslationManager.cs" />
+    <Compile Include="TranslationArgs.cs" />
     <Compile Include="TranslationContext.ReflectionInfo.cs" />
     <Compile Include="TranslationFlags.cs" />
     <Compile Include="TranslationMessage.cs" />

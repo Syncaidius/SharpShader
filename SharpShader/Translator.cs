@@ -31,6 +31,7 @@ namespace SharpShader
         AppDomain _domain;
         string _domainName;
         bool _disposed;
+        TranslationRunner _runner;
 
         /// <summary>
         /// Creates a new instance of <see cref="Translator"/>..
@@ -68,16 +69,14 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public TranslationResult Translate(Dictionary<string, string> cSharpSources, 
-            OutputLanguage outputLanguage, 
-            TranslationFlags flags = TranslationFlags.None, 
+        public TranslationResult Translate(Dictionary<string, string> cSharpSources,
+            OutputLanguage outputLanguage,
+            TranslationFlags flags = TranslationFlags.None,
             List<string> preprocessorSymbols = null)
         {
             if (_disposed)
                 throw new ObjectDisposedException("Translator instance has been disposed.");
 
-            foreach(AssemblyName an in ShaderType.SupportedAssemblies)
-                _domain.Load(an);
             TranslationArgs tArgs = new TranslationArgs()
             {
                 CSharpSources = new Dictionary<string, string>(cSharpSources),
@@ -86,9 +85,7 @@ namespace SharpShader
                 PreprocessorSymbols = preprocessorSymbols ?? new List<string>(),
             };
 
-            Type t = typeof(TranslationRunner);
-            TranslationRunner runner = (TranslationRunner)_domain.CreateInstanceAndUnwrap(t.Assembly.FullName, t.FullName);
-            TranslationContext context = runner.Run(tArgs);
+            TranslationContext context = _runner.Run(tArgs);
             TranslationResult result = new TranslationResult(context, flags);
 
             context.Recycle();
@@ -104,6 +101,7 @@ namespace SharpShader
                 return;
 
             _disposed = true;
+            _runner.Dispose();
             AppDomain.Unload(_domain);
             _domain = null;
         }
@@ -112,6 +110,12 @@ namespace SharpShader
         {
             int id = Interlocked.Increment(ref _nextDomainID);
             _domain = AppDomain.CreateDomain($"{_domainName}_{id}");
+
+            foreach (AssemblyName an in ShaderType.SupportedAssemblies)
+                _domain.Load(an);
+
+            Type t = typeof(TranslationRunner);
+            _runner = (TranslationRunner)_domain.CreateInstanceAndUnwrap(t.Assembly.FullName, t.FullName);
         }
 
         /// <summary>

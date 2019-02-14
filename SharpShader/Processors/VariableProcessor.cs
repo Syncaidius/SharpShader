@@ -91,7 +91,7 @@ namespace SharpShader.Processors
                                 break;
 
                             case ArrayCreationExpressionSyntax arraySyntax:
-                                TranslationRunner.Translate(sc, arraySyntax.Type);
+                                sc.Runner.Translate(sc, arraySyntax.Type);
                                 break;
                         }
                     }

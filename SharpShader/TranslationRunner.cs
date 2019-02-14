@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,32 +14,13 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    internal class TranslationArgs : MarshalByRefObject
+    internal class TranslationRunner : MarshalByRefObject, IDisposable
     {
-        /// <summary>
-        /// C# source strings, indexed by friendly name or file name.
-        /// </summary>
-        public Dictionary<string, string> CSharpSources;
+        static readonly ConsoleColor[] _messageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green };
 
-        public List<string> PreprocessorSymbols;
+        Dictionary<Type, NodeProcessor> _processors;
 
-        /// <summary>
-        /// The output language.
-        /// </summary>
-        public OutputLanguage Language;
-
-        /// <summary>
-        /// The flags to apply to the conversion.
-        /// </summary>
-        public TranslationFlags Flags;
-    }
-
-    internal class TranslationRunner : MarshalByRefObject
-    {
-        static Dictionary<Type, NodeProcessor> _processors;
-        static readonly ConsoleColor[] MessageColors = { ConsoleColor.White, ConsoleColor.Red, ConsoleColor.Yellow, ConsoleColor.Green };
-
-        static TranslationRunner()
+        public TranslationRunner()
         {
             _processors = new Dictionary<Type, NodeProcessor>();
 
@@ -65,7 +47,7 @@ namespace SharpShader
 
             ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
             TranslationContext context = Pooling.Contexts.Get();
-            context.Initialize(foundation, preprocessorSymbols);
+            context.Initialize(this, foundation, preprocessorSymbols);
 
             Message("Analyzing", TranslationMessageType.Status);
             AnalysisInfo analysis = Analyze(context, args.CSharpSources);
@@ -77,40 +59,42 @@ namespace SharpShader
                     Message(msg.Text, msg.MessageType);
 
                 Message($"Cannot proceed until errors are fixed. Aborting.");
-                return context;
             }
-
-            Message($"Mapping shader classes", TranslationMessageType.Status);
-            Map(context, analysis.Trees);
-            Message($"Mapping completed. Found {context.Shaders.Count} shader classes.");
-
-            foreach (ShaderTranslationContext sc in context.Shaders)
+            else
             {
-                //================
-                // TODO Replace code below with worker queue
-                //================
+                Message($"Mapping shader classes", TranslationMessageType.Status);
+                Map(context, analysis.Trees);
+                Message($"Mapping completed. Found {context.Shaders.Count} shader classes.");
 
-                Message($"Translating {sc.Name}", TranslationMessageType.Status);
-                Stopwatch timer = new Stopwatch();
-                timer.Start();
+                foreach (ShaderTranslationContext sc in context.Shaders)
+                {
+                    Message($"Translating {sc.Name}", TranslationMessageType.Status);
+                    Stopwatch timer = new Stopwatch();
+                    timer.Start();
 
-                Message("Translating to {context.Language.Language}");
-                Translate(sc, sc.RootNode);
+                    Message("Translating to {context.Language.Language}");
+                    Translate(sc, sc.RootNode);
 
-                timer.Stop();
-                Message($"  Finished '{sc.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
-            }
+                    timer.Stop();
+                    Message($"  Finished '{sc.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");
+                }
 
-            mainTimer.Stop();
-            foreach (TranslationMessage msg in context.Messages)
+                mainTimer.Stop();
+                foreach (TranslationMessage msg in context.Messages)
                     Message(msg.Text, msg.MessageType);
 
                 int errors = context.Messages.Count(t => t.MessageType == TranslationMessageType.Error);
-            int warnings = context.Messages.Count(t => t.MessageType == TranslationMessageType.Warning);
-            Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
-            Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
+                int warnings = context.Messages.Count(t => t.MessageType == TranslationMessageType.Warning);
+                Message($"Finished conversion of { args.CSharpSources.Count} source(s) with {errors} errors and {warnings} warnings. ");
+                Message($"Took {mainTimer.Elapsed.TotalMilliseconds:N2} milliseconds");
+            }
 
             return context;
+        }
+
+        public void Dispose()
+        {
+
         }
 
         private List<SyntaxTree> GenerateSyntaxTrees(TranslationContext context, Dictionary<string, string> cSharpSources)
@@ -207,7 +191,7 @@ namespace SharpShader
                 MapShaderNodes(context, child, strNamespace);
         }
 
-        internal static void Translate(ShaderTranslationContext sc, SyntaxNode syntax, int depth = 0)
+        internal void Translate(ShaderTranslationContext sc, SyntaxNode syntax, int depth = 0)
         {
             if (sc.IsCompleted(syntax))
                 return;
@@ -230,11 +214,11 @@ namespace SharpShader
                 sc.Source.CloseScope();
         }
 
-        internal static void Message(string msg, TranslationMessageType type = TranslationMessageType.Message)
+        internal void Message(string msg, TranslationMessageType type = TranslationMessageType.Message)
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.Write("[SharpShader] [");
-            Console.ForegroundColor = MessageColors[(int)type];
+            Console.ForegroundColor = _messageColors[(int)type];
             Console.Write(type);
             Console.ForegroundColor = prevColor;
             Console.WriteLine($"] {msg}");

@@ -45,7 +45,7 @@ namespace SharpShader.Processors
                                 if (!sc.Language.InstancedConstantBuffers)
                                 {
                                     sc.CompleteSelfAndChildren(syntax.Expression);
-                                    TranslationRunner.Translate(sc, syntax.Name);
+                                    sc.Runner.Translate(sc, syntax.Name);
                                     return;
                                 }
                             }
@@ -72,9 +72,9 @@ namespace SharpShader.Processors
                     break;
             }
 
-            TranslationRunner.Translate(sc, syntax.Expression);
+            sc.Runner.Translate(sc, syntax.Expression);
             sc.Source.Append(syntax.OperatorToken);
-            TranslationRunner.Translate(sc, syntax.Name);
+            sc.Runner.Translate(sc, syntax.Name);
         }
     }
 }

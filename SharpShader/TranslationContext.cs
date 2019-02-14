@@ -2,12 +2,14 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpShader
@@ -21,27 +23,22 @@ namespace SharpShader
         [field: NonSerialized]
         internal CSharpParseOptions ParseOptions { get; private set; }
 
-        internal List<ShaderTranslationContext> Shaders { get; } = new List<ShaderTranslationContext>();
-
         internal List<TranslationMessage> Messages { get; } = new List<TranslationMessage>();
 
         [field: NonSerialized]
         internal ReflectionInfo Reflection { get; } = new ReflectionInfo();
 
+        [field: NonSerialized]
+        internal TranslationRunner Runner { get; private set; }
+
+        internal List<ShaderTranslationContext> Shaders { get; } = new List<ShaderTranslationContext>();
+
         [NonSerialized]
         int _nextVariable = 0;
 
-        /* TODO MULTITHREADING:
-         *  - Track which shaders need to be translated
-         *  - Track which shaders have been finished
-         *  - A mechanic for suspending a worker until a required shader dependency is done being translated
-         *  - A mechanic for tracking which threads are 
-         * 
-         * 
-         */
-
-        internal void Initialize(ShaderLanguage language, List<string> preprocessorSymbols)
+        internal void Initialize(TranslationRunner runner, ShaderLanguage language, List<string> preprocessorSymbols)
         {
+            Runner = runner;
             Language = language;
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
         }
@@ -84,6 +81,8 @@ namespace SharpShader
             Messages.Clear();
             ParseOptions = null;
             Language = null;
+            Runner = null;
+            _nextVariable = 0;
         }
 
         /// <summary>

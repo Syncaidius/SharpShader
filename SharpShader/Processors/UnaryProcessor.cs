@@ -13,7 +13,7 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderTranslationContext sc, PrefixUnaryExpressionSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append(syntax.OperatorToken);
-            TranslationRunner.Translate(sc, syntax.Operand);
+            sc.Runner.Translate(sc, syntax.Operand);
         }
     }
 
@@ -21,7 +21,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderTranslationContext sc, PostfixUnaryExpressionSyntax syntax, ScopeInfo scope)
         {
-            TranslationRunner.Translate(sc, syntax.Operand);
+            sc.Runner.Translate(sc, syntax.Operand);
             sc.Source.Append(syntax.OperatorToken);
         }
     }

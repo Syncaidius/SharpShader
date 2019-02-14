@@ -27,17 +27,17 @@ namespace SharpShader.Processors
                 sc.EntryPoints.TryGetValue(info, out ep);
 
                 ep?.Translator?.TranslatePrefix(sc, info, syntax, ep);
-                sc.Source.Append($"{returnType.Translation} {syntax.Identifier.ValueText}");                    
+                sc.Source.Append($"{returnType.Translation} {syntax.Identifier.ValueText}");
 
                 sc.Complete(syntax.ReturnType);
                 sc.Complete(syntax.ConstraintClauses);
                 sc.Complete(syntax.AttributeLists);
 
-                if(syntax.TypeParameterList != null)
+                if (syntax.TypeParameterList != null)
                     sc.CompleteSelfAndChildren(syntax.TypeParameterList);
 
                 // Translate parameters before method body.
-                TranslationRunner.Translate(sc, syntax.ParameterList, 0);
+                sc.Runner.Translate(sc, syntax.ParameterList, 0);
                 ep?.Translator?.TranslatePostfix(sc, info, syntax, ep);
             }
         }

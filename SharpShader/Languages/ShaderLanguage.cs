@@ -23,9 +23,10 @@ namespace SharpShader
 
         public OutputLanguage Language { get; }
 
+        internal ConcurrentDictionary<string, ShaderType> TranslatedTypes { get; }
+
         Dictionary<Type, Translation> _keywords;
         List<Modifier> _modifiers;
-        internal ConcurrentDictionary<string, ShaderType> TranslatedTypes;
 
         internal ShaderLanguage(OutputLanguage language)
         {

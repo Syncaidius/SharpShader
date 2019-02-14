@@ -17,11 +17,11 @@ namespace SharpShader.Processors
             sc.Source.Append("for(");
 
             if (syntax.Declaration != null)
-                TranslationRunner.Translate(sc, syntax.Declaration);
+                sc.Runner.Translate(sc, syntax.Declaration);
 
             TranslateList(sc, syntax.Initializers);
             sc.Source.Append("; ");
-            TranslationRunner.Translate(sc, syntax.Condition);
+            sc.Runner.Translate(sc, syntax.Condition);
             sc.Source.Append("; ");
             TranslateList(sc, syntax.Incrementors);
             sc.Source.Append(")");
@@ -36,7 +36,7 @@ namespace SharpShader.Processors
                 if (es != firstIncrementor)
                     sc.Source.Append(", ");
 
-                TranslationRunner.Translate(sc, es);
+                sc.Runner.Translate(sc, es);
             }
         }
     }

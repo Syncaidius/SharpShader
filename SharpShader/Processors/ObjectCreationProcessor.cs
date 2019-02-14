@@ -37,14 +37,14 @@ namespace SharpShader.Processors
                         scope.DeclareLocal(sc, () =>
                         {
                             sc.Source.Append($"{type.Translation} {varName} = {type.Translation}");
-                            TranslationRunner.Translate(sc, syntax.ArgumentList);
+                            sc.Runner.Translate(sc, syntax.ArgumentList);
                             sc.Source.Append(";");
                             sc.Source.AppendLineBreak();
 
                             ScopeInfo iScope = sc.Source.OpenScope(ScopeType.ExpandedInitializer);
                             iScope.Identifier = varName;
 
-                            TranslationRunner.Translate(sc, syntax.Initializer);
+                            sc.Runner.Translate(sc, syntax.Initializer);
                         });
 
                         sc.Source.Append(varName);

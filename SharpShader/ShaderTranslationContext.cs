@@ -16,6 +16,8 @@ namespace SharpShader
     {
         internal ShaderLanguage Language => Parent.Language;
 
+        internal TranslationRunner Runner => Parent.Runner;
+
         [field: NonSerialized]
         internal SyntaxNode RootNode { get; private set; }
 
@@ -60,9 +62,6 @@ namespace SharpShader
 
         [NonSerialized]
         internal readonly Dictionary<string, FieldInfo> UAVs;
-
-        [field: NonSerialized]
-        internal TranslationWorker AssignedWorker { get; set; }
 
         /// <summary>
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.

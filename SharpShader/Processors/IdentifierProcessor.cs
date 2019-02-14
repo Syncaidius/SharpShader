@@ -50,7 +50,7 @@ namespace SharpShader.Processors
         private void TranslatePropertyAssignment(ShaderTranslationContext sc, IdentifierNameSyntax id, AssignmentExpressionSyntax aSyntax)
         {
             sc.Source.Append($"set{id.Identifier.ValueText}(");
-            TranslationRunner.Translate(sc, aSyntax.Right);
+            sc.Runner.Translate(sc, aSyntax.Right);
             sc.Source.Append(")");
         }
     }

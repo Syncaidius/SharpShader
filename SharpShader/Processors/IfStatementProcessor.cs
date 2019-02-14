@@ -13,7 +13,7 @@ namespace SharpShader.Processors
         protected override void OnTranslate(ShaderTranslationContext sc, IfStatementSyntax syntax, ScopeInfo scope)
         {
             sc.Source.Append("if(");
-            TranslationRunner.Translate(sc, syntax.Condition);
+            sc.Runner.Translate(sc, syntax.Condition);
             sc.Source.Append(")");
             if (!(syntax.Statement is BlockSyntax))
                 sc.Source.OpenScope(ScopeType.Block);
@@ -37,11 +37,11 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderTranslationContext sc, ConditionalExpressionSyntax syntax, ScopeInfo scope)
         {
-            TranslationRunner.Translate(sc, syntax.Condition);
+            sc.Runner.Translate(sc, syntax.Condition);
             sc.Source.Append(" ? ");
-            TranslationRunner.Translate(sc, syntax.WhenTrue);
+            sc.Runner.Translate(sc, syntax.WhenTrue);
             sc.Source.Append(" : ");
-            TranslationRunner.Translate(sc, syntax.WhenFalse);
+            sc.Runner.Translate(sc, syntax.WhenFalse);
         }
     }
 }

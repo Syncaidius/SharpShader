@@ -12,9 +12,9 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderTranslationContext sc, BinaryExpressionSyntax syntax, ScopeInfo scope)
         {
-            TranslationRunner.Translate(sc, syntax.Left);
+            sc.Runner.Translate(sc, syntax.Left);
             sc.Source.Append($" {syntax.OperatorToken} ");
-            TranslationRunner.Translate(sc, syntax.Right);
+            sc.Runner.Translate(sc, syntax.Right);
         }
     }
 }
