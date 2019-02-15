@@ -39,10 +39,5 @@ namespace SharpShader.Result
         /// Gets the number of values expected by the current <see cref="ShaderMember"/>. This may be for example, the length of an array, or the number of components in a vector.
         /// </summary>
         public int ElementCount { get; internal set; }
-
-        /// <summary>
-        /// Gets the structure of the element. e.g. A scalar, vector, matrix or array.
-        /// </summary>
-        public ShaderStructureType StructureType { get; internal set; }
     }
 }

@@ -38,5 +38,10 @@ namespace SharpShader.Result
         /// Gets the primitive data type of the current <see cref="ShaderMember"/>.
         /// </summary>
         public ShaderDataType DataType { get; internal set; }
+
+        /// <summary>
+        /// Gets the structure of the element. e.g. A scalar, vector, matrix, etc.
+        /// </summary>
+        public ShaderStructureType StructureType { get; internal set; }
     }
 }

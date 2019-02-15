@@ -48,14 +48,14 @@ namespace SharpShader.Result
                     ArrayDimensions = new List<int>(mField.ArrayDimensions).AsReadOnly(),
                     ElementCount = mField.GetTotalArrayElements(),
                     StartOffset = mField.PackOffsetBytes.Value,
-                    StructureType = mField.StructureType,
                     ElementInfo = new ShaderElementInfo()
                     {
                         DataType = mField.Type.DataType,
                         Dimensions = elementDimensions.AsReadOnly(),
                         SizeOf = mField.Type.SizeOf,
                         SubElementCount = mField.Type.SubElementCount,
-                        SubElementSizeOf = mField.Type.SubElementSizeOf,                        
+                        SubElementSizeOf = mField.Type.SubElementSizeOf,
+                        StructureType = mField.StructureType,
                     },
                     SizeOf = mField.GetTotalSizeOf(),
                     Name = mField.Name,
