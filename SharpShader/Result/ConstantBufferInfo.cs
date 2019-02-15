@@ -20,9 +20,9 @@ namespace SharpShader.Result
         public int SizeOf { get; }
 
         /// <summary>
-        /// Gets the model-specific bind slots for the constant buffer.
+        /// Gets the model-specific bind points (slots) for the constant buffer.
         /// </summary>
-        public ReadOnlyDictionary<ShaderModel, int> BindSlots { get; }
+        public IReadOnlyList<BindPointInfo> BindPoints { get; }
 
         /// <summary>
         /// Gets a list containing all of the variables held in the constant buffer.
@@ -36,8 +36,8 @@ namespace SharpShader.Result
             List<ShaderMember> variables = new List<ShaderMember>();
             Variables = variables.AsReadOnly();
 
-            var bSlots = new Dictionary<ShaderModel, int>(map.BindSlots);
-            BindSlots = new ReadOnlyDictionary<ShaderModel, int>(bSlots);
+            var bSlots = new List<BindPointInfo>(map.BindSlots);
+            BindPoints = bSlots.AsReadOnly();
 
             foreach(MappedField mField in map.Fields)
             {

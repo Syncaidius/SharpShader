@@ -59,14 +59,17 @@ namespace SharpShader
                         if (registerName == null)
                             continue;
 
+                        int slotID = (int)(regAtt.Slot + fieldIndex);
+                        cBuffer?.BindSlots.Add(new BindPointInfo(regAtt.Model, regAtt.ApplicableEntryPoint, slotID));
+
                         if (regAtt.ApplicableEntryPoint == EntryPointType.AnyOrNone)
                         {
-                            sc.Source.Append($" : register({registerName}{regAtt.Slot + fieldIndex})");
+                            sc.Source.Append($" : register({registerName}{slotID})");
                         }
                         else
                         {
                             string profile = regAtt.Model.ToString().Replace("SM", _profileNames[regAtt.ApplicableEntryPoint]);
-                            sc.Source.Append($" : register({profile}, {registerName}{regAtt.Slot + fieldIndex})");
+                            sc.Source.Append($" : register({profile}, {registerName}{slotID})");
                         }
                         break;
 

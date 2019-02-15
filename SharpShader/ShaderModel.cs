@@ -8,14 +8,16 @@ namespace SharpShader
 {
     public enum ShaderModel
     {
-        SM_4_0,
+        Default = 0,
 
-        SM_4_1,
+        SM_4_0 = 1,
 
-        SM_5_0,
+        SM_4_1 = 2,
 
-        SM_5_1,
+        SM_5_0 = 3,
 
-        SM_6_0,
+        SM_5_1 = 4,
+
+        SM_6_0 = 5,
     }
 }

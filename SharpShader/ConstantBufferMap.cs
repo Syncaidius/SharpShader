@@ -17,7 +17,7 @@ namespace SharpShader
         /// <summary>
         /// Bind spots organised by shader model.
         /// </summary>
-        internal readonly Dictionary<ShaderModel, int> BindSlots = new Dictionary<ShaderModel, int>();
+        internal readonly HashSet<BindPointInfo> BindSlots = new HashSet<BindPointInfo>();
 
         /// <summary>
         /// The type of the constant buffer.

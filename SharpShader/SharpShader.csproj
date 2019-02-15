@@ -204,6 +204,7 @@
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Result\BindPointInfo.cs" />
     <Compile Include="Buffers\StructuredBuffer.cs" />
     <Compile Include="ConstantBufferMap.cs" />
     <Compile Include="Interlocker.cs" />
