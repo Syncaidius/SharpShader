@@ -36,7 +36,7 @@ namespace SharpShader.Result
             _constBuffers = new List<ConstantBufferInfo>();
             ConstantBuffers = _constBuffers.AsReadOnly();
 
-            foreach (KeyValuePair<string, ConstantBufferMap> p in context.ConstantBuffers)
+            foreach (KeyValuePair<string, MappedConstantBuffer> p in context.ConstantBuffers)
                 _constBuffers.Add(new ConstantBufferInfo(p.Key, p.Value));
 
             /* TODO:

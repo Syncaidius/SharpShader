@@ -31,17 +31,17 @@ namespace SharpShader
             throw new NotImplementedException();
         }
 
-        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ConstantBufferMap cBufferMap, IEnumerable<Attribute> attributes)
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, MappedConstantBuffer cBufferMap, IEnumerable<Attribute> attributes)
         {
             throw new NotImplementedException();
         }
 
-        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
             throw new NotImplementedException();
         }
 
-        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
             throw new NotImplementedException();
         }

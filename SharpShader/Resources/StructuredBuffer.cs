@@ -12,7 +12,7 @@ namespace SharpShader
     /// </summary>
     /// <typeparam name="T">The type of data to store in the buffer.</typeparam>
     [RegisteredType]
-    public class StructuredBuffer<T> : IStructureBuffer where T : struct
+    public class StructuredBuffer<T> : ShaderResource, IStructureBuffer where T : struct
     {
         /// <summary>
         /// Gets the value at the specified index.

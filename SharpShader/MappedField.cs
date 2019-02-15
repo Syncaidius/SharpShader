@@ -10,7 +10,25 @@ namespace SharpShader
     [Serializable]
     internal class MappedField : IPoolable
     {
-        internal void Initialize(ShaderType type, FieldInfo info)
+        internal List<int> ArrayDimensions { get; } = new List<int>();
+
+        internal ShaderStructureType StructureType { get; private set; }
+
+        internal ShaderResourceType ResourceType { get; private set; }
+
+        internal ShaderType Type { get; private set; }
+
+        internal string Name { get; private set; }
+
+        internal int? PackOffsetBytes;
+
+        [field: NonSerialized]
+        internal FieldInfo Info { get; private set; }
+
+        [field: NonSerialized]
+        internal IEnumerable<Attribute> Attributes { get; private set; }
+
+        internal virtual void Initialize(ShaderType type, FieldInfo info)
         {
             Type = type;
             Attributes = info.GetCustomAttributes();
@@ -25,7 +43,7 @@ namespace SharpShader
                     StructureType = ShaderStructureType.MatrixColumnMajor;
                 else
                     StructureType = ShaderStructureType.MatrixDefaultMajor;
-                    
+
             }
             else if (type.IsVector)
             {
@@ -35,32 +53,24 @@ namespace SharpShader
             {
                 StructureType = ShaderStructureType.Scalar;
             }
+            else if (type.OriginalType.IsValueType)
+            {
+                ConstantBufferAttribute attConstBuffer = type.OriginalType.GetCustomAttribute<ConstantBufferAttribute>();
+                if (attConstBuffer != null)
+                    ResourceType = ShaderResourceType.ConstantBuffer;
+            }
             else if (!type.OriginalType.IsValueType)
             {
+                // TODO Improve this
                 StructureType = ShaderStructureType.Class;
+                if (typeof(ShaderResource).IsAssignableFrom(type.OriginalType))
+                    ResourceType = ShaderResource.GetResourceType(type.OriginalType);
             }
         }
 
-        internal List<int> ArrayDimensions { get; } = new List<int>();
-
-        internal ShaderStructureType StructureType { get; private set; }
-
-        internal ShaderType Type { get; private set; }
-
-        internal string Name { get; private set; }
-
-        internal int? PackOffsetBytes;
-
-        [field: NonSerialized]
-        internal FieldInfo Info { get; private set; }
-
-        [field: NonSerialized]
-        internal IEnumerable<Attribute> Attributes { get; private set; }
-
-        public void Clear()
+        public virtual void Clear()
         {
             ArrayDimensions.Clear();
-            StructureType = ShaderStructureType.Unknown;
             Type = null;
             Info = null;
             PackOffsetBytes = null;

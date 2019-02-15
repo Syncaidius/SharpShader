@@ -17,7 +17,7 @@ namespace SharpShader.Processors
             StructScopeType scopeType = StructScopeType.Struct;
             Type sType = null;
 
-            if (sc.ConstantBuffers.TryGetValue(typeName, out ConstantBufferMap cMap))
+            if (sc.ConstantBuffers.TryGetValue(typeName, out MappedConstantBuffer cMap))
             {
                 sType = cMap.TypeInfo;
                 IEnumerable<Attribute> cBufferAttributes = sType.GetCustomAttributes(false).Cast<Attribute>();

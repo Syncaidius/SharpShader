@@ -49,7 +49,7 @@ namespace SharpShader
                 return null;
         }
 
-        private void TranslatePostfixAttributes(ShaderTranslationContext sc, IEnumerable<Attribute> attributes, char? registerName, int fieldIndex, int fieldSize, ConstantBufferMap cBuffer)
+        private void TranslatePostfixAttributes(ShaderTranslationContext sc, IEnumerable<Attribute> attributes, char? registerName, int fieldIndex, int fieldSize, MappedConstantBuffer cBuffer)
         {
             foreach (Attribute a in attributes)
             {
@@ -101,13 +101,13 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, ConstantBufferMap cBufferMap, IEnumerable<Attribute> attributes)
+        internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, MappedConstantBuffer cBufferMap, IEnumerable<Attribute> attributes)
         {
             sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferMap.TypeInfo.Name}");
             TranslatePostfixAttributes(sc, attributes, 'b', 0, 0, cBufferMap);
         }
 
-        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
+        internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
             if (field.StructureType == ShaderStructureType.MatrixRowMajor)
                 sc.Source.Append("row_major ");
@@ -136,7 +136,7 @@ namespace SharpShader
             }
         }
 
-        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, ConstantBufferMap cBufferMap)
+        internal override void TranslateFieldPostfix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
             char? regName = null;
 

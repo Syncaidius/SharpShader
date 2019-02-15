@@ -48,7 +48,7 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, Type> Structures;
 
-        internal readonly Dictionary<string, ConstantBufferMap> ConstantBuffers;
+        internal readonly Dictionary<string, MappedConstantBuffer> ConstantBuffers;
 
         [NonSerialized]
         internal readonly Dictionary<string, FieldInfo> Textures;
@@ -85,7 +85,7 @@ namespace SharpShader
             ShaderFields = new Dictionary<string, MappedField>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
-            ConstantBuffers = new Dictionary<string, ConstantBufferMap>();
+            ConstantBuffers = new Dictionary<string, MappedConstantBuffer>();
             Textures = new Dictionary<string, FieldInfo>();
             Samplers = new Dictionary<string, FieldInfo>();
             Buffers = new Dictionary<string, FieldInfo>();
@@ -127,8 +127,8 @@ namespace SharpShader
             foreach (KeyValuePair<string, MethodBucket> p in _methods)
                 Pooling.MethodBuckets.Put(p.Value);
 
-            foreach (KeyValuePair<string, ConstantBufferMap> p in ConstantBuffers)
-                Pooling.CBufferMaps.Put(p.Value);
+            foreach (KeyValuePair<string, MappedConstantBuffer> p in ConstantBuffers)
+                Pooling.MappedConstBuffers.Put(p.Value);
 
             _methods.Clear();
             _completedNodes.Clear();
@@ -212,7 +212,7 @@ namespace SharpShader
                 if (cbAttribute != null)
                 {
                     RegisterAttribute[] regAttributes = t.GetCustomAttributes<RegisterAttribute>().ToArray();
-                    ConstantBufferMap cbm = new ConstantBufferMap()
+                    MappedConstantBuffer cbm = new MappedConstantBuffer()
                     {
                         TypeInfo = t,
                     };

@@ -16,7 +16,7 @@ namespace SharpShader
 
         internal static ObjectPool<MappedField> MappedFields = new ObjectPool<MappedField>();
 
-        internal static ObjectPool<ConstantBufferMap> CBufferMaps = new ObjectPool<ConstantBufferMap>();
+        internal static ObjectPool<MappedConstantBuffer> MappedConstBuffers = new ObjectPool<MappedConstantBuffer>();
 
         internal static ObjectPool<MethodBucket> MethodBuckets = new ObjectPool<MethodBucket>();
     }

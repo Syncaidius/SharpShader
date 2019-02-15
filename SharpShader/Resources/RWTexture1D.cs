@@ -12,7 +12,7 @@ namespace SharpShader
     /// </summary>
     [RegisteredType]
     [UnorderedAccessType]
-    public abstract class RWTexture1DBase<T> { }
+    public abstract class RWTexture1DBase<T> : ShaderResource{ }
 
     /// <summary>
     /// A read/write (RW) Texture2D object.

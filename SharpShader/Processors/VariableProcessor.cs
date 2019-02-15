@@ -36,7 +36,7 @@ namespace SharpShader.Processors
             {
                 FieldInfo fInfo = null;
                 MappedField mField = null;
-                ConstantBufferMap cBufferMap = null;
+                MappedConstantBuffer cBufferMap = null;
 
                 if (scope.Parent.Type == ScopeType.Struct)
                 {

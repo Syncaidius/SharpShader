@@ -11,7 +11,7 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-rwtexture2d
     /// </summary>
     [RegisteredType]
-    public abstract class RWTexture2DBase<T> { }
+    public abstract class RWTexture2DBase<T> : ShaderResource { }
 
     /// <summary>
     /// A read/write (RW) Texture2D object.

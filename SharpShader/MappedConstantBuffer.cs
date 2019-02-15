@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal class ConstantBufferMap : IPoolable
+    internal class MappedConstantBuffer : IPoolable
     {
         /// <summary>
         /// A list of mapped variables contained within the constant buffer.

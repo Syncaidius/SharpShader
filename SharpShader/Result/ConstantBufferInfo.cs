@@ -19,7 +19,7 @@ namespace SharpShader.Result
         /// </summary>
         public IReadOnlyList<ShaderMember> Variables { get; }
 
-        internal ConstantBufferInfo(string name, ConstantBufferMap map) :
+        internal ConstantBufferInfo(string name, MappedConstantBuffer map) :
             base(name, ShaderResourceType.ConstantBuffer, map.BindSlots)
         {
             List<ShaderMember> variables = new List<ShaderMember>();
