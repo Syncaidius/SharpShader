@@ -209,6 +209,7 @@
     <Compile Include="ConstantBufferMap.cs" />
     <Compile Include="Interlocker.cs" />
     <Compile Include="Result\ShaderElementInfo.cs" />
+    <Compile Include="Result\ShaderResourceInfo.cs" />
     <Compile Include="ThreadSafeList.cs" />
     <Compile Include="TranslationArgs.cs" />
     <Compile Include="TranslationContext.ReflectionInfo.cs" />

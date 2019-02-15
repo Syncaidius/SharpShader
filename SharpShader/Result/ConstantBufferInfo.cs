@@ -7,37 +7,23 @@ using System.Threading.Tasks;
 
 namespace SharpShader.Result
 {
-    public class ConstantBufferInfo
+    public class ConstantBufferInfo : ShaderResourceInfo
     {
-        /// <summary>
-        /// Gets the name of the constant buffer.
-        /// </summary>
-        public string Name { get; }
-
         /// <summary>
         /// Gets the total size of the constant buffer, in bytes.
         /// </summary>
         public int SizeOf { get; }
 
         /// <summary>
-        /// Gets the model-specific bind points (slots) for the constant buffer.
-        /// </summary>
-        public IReadOnlyList<BindPointInfo> BindPoints { get; }
-
-        /// <summary>
         /// Gets a list containing all of the variables held in the constant buffer.
         /// </summary>
         public IReadOnlyList<ShaderMember> Variables { get; }
 
-        internal ConstantBufferInfo(string name, ConstantBufferMap map)
+        internal ConstantBufferInfo(string name, ConstantBufferMap map) :
+            base(name, ShaderResourceType.ConstantBuffer, map.BindSlots)
         {
-            Name = name;
-
             List<ShaderMember> variables = new List<ShaderMember>();
             Variables = variables.AsReadOnly();
-
-            var bSlots = new List<BindPointInfo>(map.BindSlots);
-            BindPoints = bSlots.AsReadOnly();
 
             foreach(MappedField mField in map.Fields)
             {

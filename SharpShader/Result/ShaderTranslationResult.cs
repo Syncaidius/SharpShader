@@ -10,7 +10,7 @@ namespace SharpShader.Result
     public class ShaderTranslationResult
     {
         /// <summary>
-        /// Gets a dictionary containing pairs of included shader names and results.
+        /// Gets a dictionary containing included shader files, with their name as a key.
         /// </summary>
         public ReadOnlyDictionary<string, ShaderTranslationResult> Includes { get; }
 
@@ -18,12 +18,6 @@ namespace SharpShader.Result
         /// Gets a list of <see cref="ConstantBufferInfo"/>, which contain the details of each constant buffer found in the shader.
         /// </summary>
         public IReadOnlyList<ConstantBufferInfo> ConstantBuffers { get; }
-
-        // TODO move this into an EntryPointInfo instance.
-        public IReadOnlyList<ShaderInputOutput> Inputs { get; }
-
-        // TODO move this into an EntryPointInfo instance.
-        public ShaderInputOutput Output { get; }
 
         /// <summary>
         /// The translated shader-language source code.
@@ -41,9 +35,6 @@ namespace SharpShader.Result
 
             _constBuffers = new List<ConstantBufferInfo>();
             ConstantBuffers = _constBuffers.AsReadOnly();
-
-            _inputs = new List<ShaderInputOutput>();
-            Inputs = _inputs.AsReadOnly();
 
             foreach (KeyValuePair<string, ConstantBufferMap> p in context.ConstantBuffers)
                 _constBuffers.Add(new ConstantBufferInfo(p.Key, p.Value));
