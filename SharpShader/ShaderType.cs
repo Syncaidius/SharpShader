@@ -14,6 +14,7 @@ namespace SharpShader
     /// <summary>
     /// Provides type information for a shader language-specific type.
     /// </summary>
+    [Serializable]
     internal class ShaderType
     {
         #region Static Members
@@ -312,11 +313,13 @@ namespace SharpShader
         /// <summary>
         /// Gets the original <see cref="Type"/> from which the current <see cref="ShaderType"/> was translated.
         /// </summary>
+        [field: NonSerialized]
         internal Type OriginalType { get; }
 
         /// <summary>
         /// Gets the C# type of the underlying elements or components of the current <see cref="ShaderType"/>.
         /// </summary>
+        [field: NonSerialized]
         internal Type ElementType { get; }
 
         /// <summary>
@@ -327,7 +330,12 @@ namespace SharpShader
         /// <summary>
         /// Gets the size of an underlying component or element of the current <see cref="ShaderType"/>, in bytes.
         /// </summary>
-        internal int ElementSizeOf { get; }
+        internal int SubElementSizeOf { get; }
+
+        /// <summary>
+        /// Gets the total number of elements which make up the current <see cref="ShaderType"/>.
+        /// </summary>
+        internal int SubElementCount { get; }
 
         /// <summary>
         /// Gets the underlying data type of the current <see cref="ShaderType"/>. 
@@ -335,17 +343,17 @@ namespace SharpShader
         internal ShaderDataType DataType => _dataType;
 
         /// <summary>
-        /// Gets the dimensions of the type.<para/>
+        /// Gets a read-only list containing the dimensions of the type.<para/>
         /// For vectors, this contains only the number of components.<para/>
         /// For matrices, this contains the number of rows followed by the number of columns.<para/>
         /// For arrays, this contains the length of each dimension in the order they were originally declared.
         /// </summary>
-        internal List<int> Dimensions { get; }
+        internal IReadOnlyList<int> Dimensions { get; }
 
         /// <summary>
         /// Gets whether or not the original type was an array type.
         /// </summary>
-        public bool WasArrayType => OriginalType.IsArray;
+        public bool WasArrayType { get; }
 
         /// <summary>
         /// Gets whether or not the current type can be used with shader registers, such as those in HLSL syntax.
@@ -370,9 +378,11 @@ namespace SharpShader
         /// <summary>
         /// Gets the shader language of which the current <see cref="ShaderType"/> belongs to.
         /// </summary>
+        [field: NonSerialized]
         public ShaderLanguage Language { get; }
 
         ShaderDataType _dataType;
+        List<int> _dimensions;
 
         /// <summary>
         /// Creates a new instance of <see cref="ShaderType"/>.
@@ -388,11 +398,13 @@ namespace SharpShader
             attributes = originalType.GetCustomAttributes(typeof(UnorderedAccessTypeAttribute), false);
             IsUnorderedAccessType = attributes.Length > 0;
 
+            _dimensions = new List<int>();
+            Dimensions = _dimensions.AsReadOnly();
             Language = lang;
             OriginalType = originalType;
             Translation = translation;
-            Dimensions = new List<int>();
             ElementType = originalType.IsArray ? originalType.GetElementType() : originalType;
+            WasArrayType = originalType.IsArray;
 
             if (ElementType.IsValueType)
             {
@@ -400,37 +412,39 @@ namespace SharpShader
                 {
                     IsVector = true;
                     int elementCount = (int)ElementType.GetField("ELEMENT_COUNT").GetValue(null);
-                    ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
+                    SubElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
                     SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
                     Type eType = (Type)ElementType.GetField("ElementType").GetValue(null);
 
                     _dataTypes.TryGetValue(eType, out _dataType);
-                    Dimensions.Add(elementCount);
+                    _dimensions.Add(elementCount);
                 }
                 else if (typeof(IMatrix).IsAssignableFrom(ElementType))
                 {
                     IsMatrix = true;
                     int rowCount = (int)ElementType.GetField("ROW_COUNT").GetValue(null);
                     int colCount = (int)ElementType.GetField("COLUMN_COUNT").GetValue(null);
-                    ElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
+                    SubElementSizeOf = (int)ElementType.GetField("ELEMENT_SIZE").GetValue(null);
                     SizeOf = (int)ElementType.GetField("SIZE_OF").GetValue(null);
                     Type eType = (Type)ElementType.GetField("ElementType").GetValue(null);
 
                     _dataTypes.TryGetValue(eType, out _dataType);
-                    Dimensions.Add(rowCount);
-                    Dimensions.Add(colCount);
+                    _dimensions.Add(rowCount);
+                    _dimensions.Add(colCount);
                 }
                 else
                 {
-                    ElementSizeOf = Marshal.SizeOf(ElementType);
-                    SizeOf = ElementSizeOf;
+                    SubElementSizeOf = Marshal.SizeOf(ElementType);
+                    SizeOf = SubElementSizeOf;
                     _dataTypes.TryGetValue(ElementType, out _dataType);
-                    Dimensions.Add(1);
+                    _dimensions.Add(1);
                 }
             }
+
+            SubElementCount = GetTotalElements();
         }
 
-        internal int GetTotalElements()
+        private int GetTotalElements()
         {
             int elements = 1;
             for (int i = 0; i < Dimensions.Count; i++)

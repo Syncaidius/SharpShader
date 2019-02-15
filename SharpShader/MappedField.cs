@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [Serializable]
     internal class MappedField : IPoolable
     {
         internal void Initialize(ShaderType type, FieldInfo info)
@@ -14,6 +15,7 @@ namespace SharpShader
             Type = type;
             Attributes = info.GetCustomAttributes();
             Info = info;
+            Name = info.Name;
 
             if (type.IsMatrix)
             {
@@ -45,10 +47,14 @@ namespace SharpShader
 
         internal ShaderType Type { get; private set; }
 
+        internal string Name { get; private set; }
+
         internal int? PackOffsetBytes;
 
+        [field: NonSerialized]
         internal FieldInfo Info { get; private set; }
 
+        [field: NonSerialized]
         internal IEnumerable<Attribute> Attributes { get; private set; }
 
         public void Clear()
@@ -59,6 +65,7 @@ namespace SharpShader
             Info = null;
             PackOffsetBytes = null;
             Attributes = null;
+            Name = null;
         }
 
         /// <summary>
@@ -78,13 +85,13 @@ namespace SharpShader
         /// Gets the total number of elements expected by the field. This is the total number of array elements multiplied by the total number of type elements.
         /// </summary>
         /// <returns></returns>
-        internal int GetTotalElements()
+        internal int GetTotalArrayElements()
         {
             int elements = 1;
             for (int i = 0; i < ArrayDimensions.Count; i++)
                 elements *= ArrayDimensions[i];
 
-            return elements * Type.GetTotalElements();
+            return elements;
         }
     }
 }

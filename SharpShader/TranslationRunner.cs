@@ -20,7 +20,7 @@ namespace SharpShader
 
         Dictionary<Type, NodeProcessor> _processors;
 
-        public TranslationRunner()
+        internal TranslationRunner()
         {
             _processors = new Dictionary<Type, NodeProcessor>();
 

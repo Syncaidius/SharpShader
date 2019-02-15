@@ -8,15 +8,17 @@ namespace SharpShader.Result
 {
     public class ShaderMember
     {
-        int _stride;
-        int _elementCount;
-
         internal ShaderMember() { }
 
         /// <summary>
-        /// Gets the total size of the member, in bytes. This is equal to <see cref="ElementStride"/> multiplied by <see cref="ElementCount"/>
+        /// Gets information about an individual element within the current <see cref="ShaderMember"/>.
         /// </summary>
-        public int SizeOf { get; private set; }
+        public ShaderElementInfo ElementInfo { get; internal set; }
+
+        /// <summary>
+        /// Gets the total size of the member, in bytes.
+        /// </summary>
+        public int SizeOf { get; internal set; }
 
         /// <summary>
         /// Gets the identifier or name of the element.
@@ -24,46 +26,19 @@ namespace SharpShader.Result
         public string Name { get; internal set; }
 
         /// <summary>
-        /// Gets the stride of the member's element(s), in bytes.
-        /// </summary>
-        public int ElementStride
-        {
-            get => _stride;
-            internal set
-            {
-                _stride = value;
-                SizeOf = _elementCount * _stride;
-            }
-        }
-
-        /// <summary>
         /// Gets the offset of the expected value, from the start of it's parent type (e.g. struct, buffer, etc), in bytes.
         /// </summary>
         public int StartOffset { get; internal set; }
 
         /// <summary>
-        /// Gets the size of each dimension in the type. If the type was not a vector, matrix or array, <see cref="Dimensions"/> list will be empty. <para/>
-        /// The list is ordered by dimension ID.
+        /// Gets the array size of the current <see cref="ShaderMember"/>. If the member is not an array, this list will be empty.
         /// </summary>
-        public IReadOnlyList<int> Dimensions { get; internal set; }
+        public IReadOnlyList<int> ArrayDimensions { get; internal set; }
 
         /// <summary>
         /// Gets the number of values expected by the current <see cref="ShaderMember"/>. This may be for example, the length of an array, or the number of components in a vector.
         /// </summary>
-        public int ElementCount
-        {
-            get => _elementCount;
-            internal set
-            {
-                _elementCount = value;
-                SizeOf = _elementCount * _stride;
-            }
-        }
-
-        /// <summary>
-        /// Gets the primitive data type of the current <see cref="ShaderMember"/>.
-        /// </summary>
-        public ShaderDataType DataType { get; internal set; }
+        public int ElementCount { get; internal set; }
 
         /// <summary>
         /// Gets the structure of the element. e.g. A scalar, vector, matrix or array.

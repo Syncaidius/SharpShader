@@ -10,21 +10,24 @@ namespace SharpShader.Result
     public class ConstantBufferInfo
     {
         /// <summary>
-        /// The name of the constant buffer.
+        /// Gets the name of the constant buffer.
         /// </summary>
-        public readonly string Name;
+        public string Name { get; }
 
         /// <summary>
-        /// The total size of the constant buffer, in bytes.
+        /// Gets the total size of the constant buffer, in bytes.
         /// </summary>
-        public readonly int SizeOf;
+        public int SizeOf { get; }
 
         /// <summary>
-        /// model-specific bind slots for the constant buffer.
+        /// Gets the model-specific bind slots for the constant buffer.
         /// </summary>
-        public readonly ReadOnlyDictionary<ShaderModel, int> BindSlots;
+        public ReadOnlyDictionary<ShaderModel, int> BindSlots { get; }
 
-        public readonly IReadOnlyList<ShaderMember> Variables;
+        /// <summary>
+        /// Gets a list containing all of the variables held in the constant buffer.
+        /// </summary>
+        public IReadOnlyList<ShaderMember> Variables { get; }
 
         internal ConstantBufferInfo(string name, ConstantBufferMap map)
         {
@@ -38,14 +41,24 @@ namespace SharpShader.Result
 
             foreach(MappedField mField in map.Fields)
             {
+                List<int> elementDimensions = new List<int>(mField.Type.Dimensions);
+
                 ShaderMember e = new ShaderMember()
                 {
-                    Dimensions = new List<int>(mField.ArrayDimensions).AsReadOnly(),
-                    ElementCount = mField.GetTotalElements(),
+                    ArrayDimensions = new List<int>(mField.ArrayDimensions).AsReadOnly(),
+                    ElementCount = mField.GetTotalArrayElements(),
                     StartOffset = mField.PackOffsetBytes.Value,
-                    ElementStride = mField.Type.SizeOf,
                     StructureType = mField.StructureType,
-                    DataType = mField.Type.DataType,
+                    ElementInfo = new ShaderElementInfo()
+                    {
+                        DataType = mField.Type.DataType,
+                        Dimensions = elementDimensions.AsReadOnly(),
+                        SizeOf = mField.Type.SizeOf,
+                        SubElementCount = mField.Type.SubElementCount,
+                        SubElementSizeOf = mField.Type.SubElementSizeOf,                        
+                    },
+                    SizeOf = mField.GetTotalSizeOf(),
+                    Name = mField.Name,
                 };
 
                 variables.Add(e);

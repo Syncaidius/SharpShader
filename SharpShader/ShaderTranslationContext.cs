@@ -48,7 +48,6 @@ namespace SharpShader
         [NonSerialized]
         internal readonly Dictionary<string, Type> Structures;
 
-        [NonSerialized]
         internal readonly Dictionary<string, ConstantBufferMap> ConstantBuffers;
 
         [NonSerialized]

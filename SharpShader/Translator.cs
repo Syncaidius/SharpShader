@@ -6,6 +6,7 @@ using SharpShader.Result;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -115,7 +116,8 @@ namespace SharpShader
                 _domain.Load(an);
 
             Type t = typeof(TranslationRunner);
-            _runner = (TranslationRunner)_domain.CreateInstanceAndUnwrap(t.Assembly.FullName, t.FullName);
+            _runner = (TranslationRunner)_domain.CreateInstanceAndUnwrap(t.Assembly.FullName, t.FullName, false, 
+                BindingFlags.NonPublic | BindingFlags.Instance, null, null, CultureInfo.InvariantCulture, null);
         }
 
         /// <summary>

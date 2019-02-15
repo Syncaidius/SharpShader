@@ -14,10 +14,15 @@ namespace SharpShader.Result
         /// </summary>
         public ReadOnlyDictionary<string, ShaderTranslationResult> Includes { get; }
 
+        /// <summary>
+        /// Gets a list of <see cref="ConstantBufferInfo"/>, which contain the details of each constant buffer found in the shader.
+        /// </summary>
         public IReadOnlyList<ConstantBufferInfo> ConstantBuffers { get; }
 
-        public IReadOnlyList<ShaderInputOutput> Inputs { get; } 
+        // TODO move this into an EntryPointInfo instance.
+        public IReadOnlyList<ShaderInputOutput> Inputs { get; }
 
+        // TODO move this into an EntryPointInfo instance.
         public ShaderInputOutput Output { get; }
 
         /// <summary>
@@ -39,6 +44,9 @@ namespace SharpShader.Result
 
             _inputs = new List<ShaderInputOutput>();
             Inputs = _inputs.AsReadOnly();
+
+            foreach (KeyValuePair<string, ConstantBufferMap> p in context.ConstantBuffers)
+                _constBuffers.Add(new ConstantBufferInfo(p.Key, p.Value));
 
             /* TODO:
              *  - Produce constant buffer information.

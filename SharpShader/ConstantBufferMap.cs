@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    [Serializable]
     internal class ConstantBufferMap : IPoolable
     {
         /// <summary>
@@ -21,6 +22,7 @@ namespace SharpShader
         /// <summary>
         /// The type of the constant buffer.
         /// </summary>
+        [NonSerialized]
         internal Type TypeInfo;
 
         internal int SizeOf { get; private set; }
