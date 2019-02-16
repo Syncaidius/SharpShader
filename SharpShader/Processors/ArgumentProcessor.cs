@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SharpShader.Processors
 {
@@ -29,7 +23,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderTranslationContext sc, ArgumentSyntax syntax, ScopeInfo scope)
         {
-            if(scope.Type == ScopeType.Parentheses)
+            if (scope.Type == ScopeType.Parentheses)
             {
                 if (scope.Items.Last() != syntax)
                     sc.Source.OpenScope(ScopeType.ParenthesesItem);

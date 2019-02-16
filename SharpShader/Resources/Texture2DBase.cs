@@ -10,9 +10,10 @@ namespace SharpShader
     /// <typeparam name="T">The texture's template type (it's structural type).</typeparam>
     /// <typeparam name="LOC">The location data type.</typeparam>
     [RegisteredType]
-    public abstract class Texture2DBase<T, LOC> : TextureBase
+    public abstract class Texture2DBase<T, LOC, ILOC> : TextureBaseSampled<T, LOC, ILOC, Int2>
         where T: struct
         where LOC : struct
+        where ILOC : struct
     {
         internal Texture2DBase() { }
 
@@ -186,39 +187,6 @@ namespace SharpShader
         public T GatherCmpAlpha(TextureSampler sampler, LOC location, float compareValue, Int2 offset, out uint status) { status = 0; return default(T); }
 
         public T GatherCmpAlpha(TextureSampler sampler, LOC location, float compareValue, Int2 offset1, Int2 offset2, Int2 offset3, Int2 offset4, out uint status) { status = 0; return default(T); }
-
-        /// <summary>
-        /// Gets the dimensions of a mipmap.
-        /// </summary>
-        /// <param name="mipLevel">The mipmap level.</param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="numberOfLevels">The number of mipmap levels (requires mipLevel also).</param>
-        public void GetDimensions(uint mipLevel, out uint width, out uint height, out uint numberOfLevels) { width = 0; height = 0; numberOfLevels = 0; }
-
-        /// <summary>
-        /// Gets the 
-        /// </summary>
-        /// <param name="mipLevel"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void GetDimensions(uint mipLevel, out uint width, out uint height) { width = 0; height = 0; }
-
-        /// <summary>
-        /// Gets the dimensions of the texture's first mipmap (usually the highest-resolution mipmap).
-        /// </summary>
-        /// <param name="mipLevel"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void GetDimensions(out uint width, out uint height) { width = 0; height = 0; }
-
-        public T Sample(TextureSampler sampler, LOC location) { return default(T); }
-
-        public T Sample(TextureSampler sampler, LOC location, Int2 offset) { return default(T); }
-
-        public T Sample(TextureSampler sampler, LOC location, Int2 offset, float clamp) { return default(T); }
-
-        public T Sample(TextureSampler sampler, LOC location, Int2 offset, float clamp, out uint status) { status = 0;  return default(T); }
 
         public T SampleBias(TextureSampler sampler, LOC location, float bias) { return default(T); }
 

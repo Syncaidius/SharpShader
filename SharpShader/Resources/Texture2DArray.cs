@@ -14,36 +14,46 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-texture2d
     /// </summary>
     [RegisteredType]
-    public class Texture2DArray<T>  : Texture2DBase<T, Vector3>
+    public class Texture2DArray<T>  : Texture2DBase<T, Vector3, Int3>
         where T : struct
     {
-        /// <summary>Returns a read-only resource variable. <para/>
-        /// Indexed as follows: [mip][x,y]</summary>
-        public MipMapReadOnlyAccessor<T, UInt3>[] Mips;
+        /// <summary>
+        /// Gets the dimensions of a mipmap.
+        /// </summary>
+        /// <param name="mipLevel">The mip-map level to retrieve dimensions from.</param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="elements">An output for the number of elements.</param>
+        /// <param name="numberOfLevels">The number of mipmap levels (requires mipLevel also).</param>
+        public void GetDimensions(uint mipLevel, out uint width, out uint height, out uint elements, out uint numberOfLevels)
+        { width = height = elements = numberOfLevels = 0; }
 
         /// <summary>
-        /// This method always accesses the first mip level. To specify other mip levels, use <see cref="Mips"/> method instead.
+        /// Gets the dimensions of a mipmap.
         /// </summary>
-        /// <param name="pos">The index position. The first and second components contain the (x, y) coordinates. The third component indicates the desired array slice.</param>
-        /// <returns></returns>
-        public T this[UInt3 pos] => Mips[0][pos];
-
-        internal Texture2DArray() { }
-
-        /// <summary>
-        /// Reads texel data without any filtering or sampling.
-        /// </summary>
-        /// <param name="location">The location of the texture to read. Location is comprised of U, V and mipLevel.</param>
-        /// <returns></returns>
-        public T Load(Int3 location) { return default(T); }
+        /// <param name="mipLevel">The mip-map level to retrieve dimensions from.</param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="elements">An output for the number of elements.</param>
+        /// <param name="numberOfLevels">The number of mipmap levels (requires mipLevel also).</param>
+        public void GetDimensions(uint mipLevel, out float width, out float height, out float elements, out float numberOfLevels)
+        { width = height = elements = numberOfLevels = 0; }
 
         /// <summary>
-        /// Reads texel data without any filtering or sampling and returns status of the operation.
+        /// Gets the 
         /// </summary>
-        /// <param name="location">The location of the texture to read. Location is comprised of U, V and mipLevel.</param>
-        /// <param name="offset">An offset applied to the texture coordinates before sampling.</param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        public T Load(Int3 location, Int2 offset, uint status) { status = 0; return default(T); }
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="elements">An output for the number of elements.</param>
+        public void GetDimensions(out uint width, out float height, out float elements)
+        { width = 0; height = elements = 0f; }
+
+        /// <summary>
+        /// Gets the dimensions of the texture's first mipmap (usually the highest-resolution mipmap).
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="elements">An output for the number of elements.</param>
+        public void GetDimensions(out float width, out float height, out float elements) { width = height = elements = 0f; }
     }
 }
