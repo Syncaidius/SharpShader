@@ -302,8 +302,6 @@
     <Compile Include="Resources\Texture2DArray.cs" />
     <Compile Include="Resources\Texture2DBase.cs" />
     <Compile Include="Resources\TextureComparisonSampler.cs" />
-    <Compile Include="Resources\TextureSampler1D.cs" />
-    <Compile Include="Resources\TextureSampler2D.cs" />
     <Compile Include="Resources\TextureSampler.cs" />
     <Compile Include="Resources\TextureBase.cs" />
     <Compile Include="Resources\Texture2D.cs" />

@@ -7,20 +7,12 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     /// <summary>
-    /// The base for read/write (RW) Texture2D objects.
-    /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-rwtexture1d
-    /// </summary>
-    [RegisteredType]
-    [UnorderedAccessType]
-    public abstract class RWTexture1DBase<T> : ShaderResource{ }
-
-    /// <summary>
     /// A read/write (RW) Texture2D object.
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-rwtexture1d
     /// </summary>
     [RegisteredType]
     [UnorderedAccessType]
-    public class RWTexture1D<T> : RWTexture1DBase<T>
+    public class RWTexture1D<T> : ShaderResource
         where T : struct
     {
         public void GetDimensions(out uint width)
@@ -70,7 +62,7 @@ namespace SharpShader
     /// </summary>
     [RegisteredType]
     [UnorderedAccessType]
-    public class RWTexture1DArray<T> : RWTexture1DBase<T>
+    public class RWTexture1DArray<T> : ShaderResource
         where T : struct
     {
         public void GetDimensions(out uint width, out uint height, out uint elements)
@@ -105,7 +97,7 @@ namespace SharpShader
         }
 
         /// <summary></summary>
-        /// <param name="pos">The index position. The first and second components contain the X coordinate. The second component indicates the desired array slice.</param>
+        /// <param name="pos">The index position. The first component contain the X coordinate. The second component indicates the desired array slice.</param>
         /// <returns></returns>
         public T this[UInt2 pos]
         {

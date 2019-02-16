@@ -17,6 +17,13 @@ namespace SharpShader
             [typeof(Texture2DArray)] = ShaderResourceType.Texture2DArray,
             [typeof(TextureSampler)] = ShaderResourceType.TextureSampler,
             [typeof(TextureComparisonSampler)] = ShaderResourceType.ComparisonSampler,
+            [typeof(Texture2D<>)] = ShaderResourceType.Texture2D,
+            [typeof(RWTexture1D<>)] = ShaderResourceType.RWTexture1D,
+            [typeof(RWTexture1DArray<>)] = ShaderResourceType.RWTexture1DArray,
+            [typeof(RWTexture2D<>)] = ShaderResourceType.RWTexture2D,
+            [typeof(RWTexture2DArray<>)] = ShaderResourceType.RWTexture2DArray,
+            [typeof(StructuredBuffer<>)] = ShaderResourceType.StructuredBuffer,
+            [typeof(RWStructuredBuffer<>)] = ShaderResourceType.RWStructuredBuffer,
         };
 
         internal static ShaderResourceType GetResourceType(Type t)
@@ -24,6 +31,9 @@ namespace SharpShader
             Type curType = t;
             while (curType != null)
             {
+                if (curType.IsGenericType)
+                    curType = curType.GetGenericTypeDefinition();
+
                 if (_typeLookup.TryGetValue(curType, out ShaderResourceType resourceType))
                     return resourceType;
 
