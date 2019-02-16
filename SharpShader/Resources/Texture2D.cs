@@ -14,24 +14,12 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-texture2d
     /// </summary>
     [RegisteredType]
-    public class Texture2D<T>  : Texture2DBase<T, Vector2>
+    public class Texture2D<T>  : Texture2DBase<T, Vector2, Int2, Int2>
         where T : struct
     {
         /// <summary>Returns a read-only resource variable. <para/>
         /// Indexed as follows: [mip][x,y]</summary>
-        public T[][,] Mips;
-
-        /// <summary>
-        /// This method always accesses the first mip level. To specify other mip levels, use <see cref="Mips"/> method instead.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public T this[uint x, uint y]
-        {
-            get => Mips[0][x, y];
-            set => Mips[0][x, y] = value;
-        }
+        public MipMapReadOnlyAccessor<T, UInt2>[] Mips;
 
         /// <summary>
         /// This method always accesses the first mip level. To specify other mip levels, use <see cref="Mips"/> method instead.
@@ -41,8 +29,7 @@ namespace SharpShader
         /// <returns></returns>
         public T this[UInt2 pos]
         {
-            get => Mips[0][pos.X, pos.Y];
-            set => Mips[0][pos.X, pos.Y] = value;
+            get => Mips[0][pos];
         }
 
         internal Texture2D() { }

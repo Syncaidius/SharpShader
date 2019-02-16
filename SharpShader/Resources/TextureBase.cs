@@ -12,4 +12,31 @@ namespace SharpShader
     {
         internal TextureBase() { }
     }
+
+    public class MipMapReadOnlyAccessor<T, LOC> where T : struct
+        where LOC : struct
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
+        /// <returns></returns>
+        public T this[LOC pos] => default;
+    }
+
+    public class MipMapAccessor<T, LOC> 
+        where T : struct
+        where LOC : struct
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
+        /// <returns></returns>
+        public T this[LOC pos]
+        {
+            get => default;
+            set { }
+        }
+    }
 }

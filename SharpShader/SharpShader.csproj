@@ -204,6 +204,9 @@
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Resources\Texture1DBase.cs" />
+    <Compile Include="Resources\Texture1DArray.cs" />
+    <Compile Include="Resources\Texture1D.cs" />
     <Compile Include="Result\BindPointInfo.cs" />
     <Compile Include="Resources\StructuredBuffer.cs" />
     <Compile Include="MappedConstantBuffer.cs" />
@@ -305,7 +308,6 @@
     <Compile Include="Resources\TextureSampler.cs" />
     <Compile Include="Resources\TextureBase.cs" />
     <Compile Include="Resources\Texture2D.cs" />
-    <Compile Include="Resources\Texture.cs" />
     <Compile Include="TranslationRunner.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />

@@ -19,31 +19,14 @@ namespace SharpShader
     {
         /// <summary>Returns a read-only resource variable. <para/>
         /// Indexed as follows: [mip][x,y]</summary>
-        public T[][,] Mips;
+        public MipMapReadOnlyAccessor<T, UInt3>[] Mips;
 
         /// <summary>
         /// This method always accesses the first mip level. To specify other mip levels, use <see cref="Mips"/> method instead.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
+        /// <param name="pos">The index position. The first and second components contain the (x, y) coordinates. The third component indicates the desired array slice.</param>
         /// <returns></returns>
-        public T this[uint x, uint y]
-        {
-            get => Mips[0][x, y];
-            set => Mips[0][x, y] = value;
-        }
-
-        /// <summary>
-        /// This method always accesses the first mip level. To specify other mip levels, use <see cref="Mips"/> method instead.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public T this[UInt2 pos]
-        {
-            get => Mips[0][pos.X, pos.Y];
-            set => Mips[0][pos.X, pos.Y] = value;
-        }
+        public T this[UInt3 pos] => Mips[0][pos];
 
         internal Texture2DArray() { }
 

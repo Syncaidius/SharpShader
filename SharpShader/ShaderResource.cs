@@ -13,7 +13,8 @@ namespace SharpShader
     {
         static Dictionary<Type, ShaderResourceType> _typeLookup = new Dictionary<Type, ShaderResourceType>()
         {
-            [typeof(Texture2D)] = ShaderResourceType.Texture2D,
+            [typeof(Texture1D)] = ShaderResourceType.Texture1D,
+            [typeof(Texture1DArray<>)] = ShaderResourceType.Texture1DArray,
             [typeof(Texture2DArray)] = ShaderResourceType.Texture2DArray,
             [typeof(TextureSampler)] = ShaderResourceType.TextureSampler,
             [typeof(TextureComparisonSampler)] = ShaderResourceType.ComparisonSampler,

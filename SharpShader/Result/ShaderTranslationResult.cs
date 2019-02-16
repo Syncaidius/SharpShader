@@ -26,7 +26,6 @@ namespace SharpShader.Result
 
         Dictionary<string, ShaderTranslationResult> _includes;
         List<ConstantBufferInfo> _constBuffers;
-        List<ShaderInputOutput> _inputs;
 
         internal ShaderTranslationResult(ShaderTranslationContext context)
         {
