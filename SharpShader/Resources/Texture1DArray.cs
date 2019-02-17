@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    public interface Texture1DArray : Texture1DArray<float> { }
+
     public interface Texture1DArray<T> : ITexture1DBase<T, Vector2, UInt3>
         where T : struct
     {
