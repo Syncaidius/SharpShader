@@ -189,11 +189,11 @@ namespace SharpShader
                     }
                     else
                     {
-                        if (typeof(TextureBase).IsAssignableFrom(fi.FieldType))
+                        if (typeof(ITextureBase).IsAssignableFrom(fi.FieldType))
                             Textures.Add(fi.Name, fi);
                         else if (typeof(TextureSampler).IsAssignableFrom(fi.FieldType))
                             Samplers.Add(fi.Name, fi);
-                        else if (typeof(IStructureBuffer).IsAssignableFrom(fi.FieldType))
+                        else if (typeof(IStructuredBuffer).IsAssignableFrom(fi.FieldType))
                             Buffers.Add(fi.Name, fi);
                     }
                 }

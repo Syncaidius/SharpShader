@@ -8,32 +8,53 @@ namespace SharpShader
 {
     /// <summary>A base class for SharpShader's texture types.</summary>
     [RegisteredType]
-    public abstract class TextureBase : ShaderResource
-    {
-        internal TextureBase() { }
-    }
+    public interface ITextureBase : IShaderResource
+    { }
 
-    public abstract class TextureBaseSampled<T, LOC, ILOC, OFFSET>
+    public interface ITextureBaseSampled<T, LOC, ILOC, OFFSET>
         where T : struct
         where LOC : struct
         where ILOC : struct
         where OFFSET : struct
     {
-        public T Sample(TextureSampler sampler, LOC location) { return default(T); }
+        T Sample(TextureSampler sampler, LOC location) ;
 
-        public T Sample(TextureSampler sampler, LOC location, OFFSET offset) { return default(T); }
+        T Sample(TextureSampler sampler, LOC location, OFFSET offset) ;
 
-        public T Sample(TextureSampler sampler, LOC location, OFFSET offset, float clamp) { return default(T); }
+        T Sample(TextureSampler sampler, LOC location, OFFSET offset, float clamp) ;
 
-        public T Sample(TextureSampler sampler, LOC location, OFFSET offset, float clamp, out uint status) { status = 0; return default(T); }
+        T Sample(TextureSampler sampler, LOC location, OFFSET offset, float clamp, out uint status);
 
+        T SampleBias(TextureSampler sampler, LOC location, float bias) ;
+
+        T SampleBias(TextureSampler sampler, LOC location, float bias, OFFSET offset) ;
+
+        T SampleBias(TextureSampler sampler, LOC location, float bias, OFFSET offset, float clamp) ;
+
+        T SampleBias(TextureSampler sampler, LOC location, float bias, OFFSET offset, float clamp, out uint status);
+
+        T SampleGrad(TextureSampler sampler, LOC location, float ddx, float ddy) ;
+
+        T SampleGrad(TextureSampler sampler, LOC location, float ddx, float ddy, OFFSET offset) ;
+
+        T SampleGrad(TextureSampler sampler, LOC location, float ddx, float ddy, OFFSET offset, float clamp) ;
+
+        T SampleGrad(TextureSampler sampler, LOC location, float ddx, float ddy, OFFSET offset, float clamp, out uint status);
+
+        T SampleLevel(TextureSampler sampler, LOC location, float lod) ;
+
+        T SampleLevel(TextureSampler sampler, LOC location, float lod, OFFSET offset) ;
+
+        T SampleLevel(TextureSampler sampler, LOC location, float lod, OFFSET offset, float clamp);
+
+        T SampleLevel(TextureSampler sampler, LOC location, float lod, OFFSET offset, float clamp, out uint status);
 
         /// <summary>
         /// Reads texel data without any filtering or sampling.
         /// </summary>
         /// <param name="location">The first two components (X,Y) contain the location. The third component (Z) contains the mipmap level.</param>
         /// <returns></returns>
-        public T Load(ILOC location) { return default; }
+        T Load(ILOC location);
 
         /// <summary>
         /// Reads texel data without any filtering or sampling.
@@ -44,26 +65,22 @@ namespace SharpShader
         /// CheckAccessFullyMapped returns TRUE if all values from the corresponding Sample, Gather, or Load operation accessed mapped tiles in a tiled resource
         /// If any values were taken from an unmapped tile, CheckAccessFullyMapped returns FALSE.</param>
         /// <returns></returns>
-        public T Load(ILOC location, OFFSET offset, out uint status)
-        {
-            status = 0;
-            return default;
-        }
+        T Load(ILOC location, OFFSET offset, out uint status);
 
         /// <summary>
         /// 
         /// </summary>
-        public MipMapReadOnlyAccessor<T, ILOC>[] Mips { get; }
+        IMipMapReadOnlyAccessor<T, ILOC>[] Mips { get; }
 
         /// <summary>
         /// Returns a read-only value. Always accesses the first mipmap level (0).
         /// </summary>
         /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
         /// <returns></returns>
-        public T this[ILOC pos] => Mips[0][pos];
+        T this[ILOC pos] { get; }
     }
 
-    public class MipMapReadOnlyAccessor<T, LOC> where T : struct
+    public interface IMipMapReadOnlyAccessor<T, LOC> where T : struct
         where LOC : struct
     {
         /// <summary>
@@ -71,10 +88,10 @@ namespace SharpShader
         /// </summary>
         /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
         /// <returns></returns>
-        public T this[LOC pos] => default;
+        T this[LOC pos] { get; }
     }
 
-    public class MipMapAccessor<T, LOC> 
+    public interface IMipMapAccessor<T, LOC> 
         where T : struct
         where LOC : struct
     {
@@ -83,10 +100,6 @@ namespace SharpShader
         /// </summary>
         /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
         /// <returns></returns>
-        public T this[LOC pos]
-        {
-            get => default;
-            set { }
-        }
+        T this[LOC pos] { get; set; }
     }
 }

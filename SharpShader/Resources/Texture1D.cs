@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public class Texture1D : Texture1D<float>{}
+    public interface Texture1D : Texture1D<float>{}
 
-    public class Texture1D<T> : Texture1DBase<T, float, uint>
+    public interface Texture1D<T> : ITexture1DBase<T, float, uint>
         where T : struct
     {
-        public void GetDimensions(out uint mipMapLevel, out uint width, out uint numberOfLevels) { mipMapLevel = width = numberOfLevels = 0; }
+        void GetDimensions(out uint mipMapLevel, out uint width, out uint numberOfLevels);
 
-        public void GetDimensions(out uint width) { width = 0; }
+        void GetDimensions(out uint width);
 
-        public void GetDimensions(out float mipMapLevel, out float width, out float numberOfLevels) { mipMapLevel = width = numberOfLevels = 0; }
+        void GetDimensions(out float mipMapLevel, out float width, out float numberOfLevels);
 
-        public void GetDimensions(out float width) { width = 0; }
+        void GetDimensions(out float width);
     }
 }

@@ -9,7 +9,7 @@ namespace SharpShader
     /// <summary>
     /// A base for all types of shader resource, such as textures, buffers and samplers.
     /// </summary>
-    public abstract class ShaderResource
+    internal static class ShaderResource
     {
         static Dictionary<Type, ShaderResourceType> _typeLookup = new Dictionary<Type, ShaderResourceType>()
         {
@@ -30,18 +30,15 @@ namespace SharpShader
         internal static ShaderResourceType GetResourceType(Type t)
         {
             Type curType = t;
-            while (curType != null)
-            {
-                if (curType.IsGenericType)
-                    curType = curType.GetGenericTypeDefinition();
+            if (curType.IsGenericType)
+                curType = curType.GetGenericTypeDefinition();
 
-                if (_typeLookup.TryGetValue(curType, out ShaderResourceType resourceType))
-                    return resourceType;
-
-                curType = curType.BaseType;
-            }
+            if (_typeLookup.TryGetValue(curType, out ShaderResourceType resourceType))
+                return resourceType;
 
             return ShaderResourceType.Unknown;
         }
     }
+
+    public interface IShaderResource { }
 }

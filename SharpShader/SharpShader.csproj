@@ -204,6 +204,7 @@
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Resources\RWStructuredBuffer.cs" />
     <Compile Include="Resources\RWTexture1DArray.cs" />
     <Compile Include="Resources\RWTexture2DArray.cs" />
     <Compile Include="Resources\Texture3D.cs" />

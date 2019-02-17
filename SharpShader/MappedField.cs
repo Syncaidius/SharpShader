@@ -63,7 +63,7 @@ namespace SharpShader
             {
                 // TODO Improve this
                 StructureType = ShaderStructureType.Class;
-                if (typeof(ShaderResource).IsAssignableFrom(type.OriginalType))
+                if (typeof(IShaderResource).IsAssignableFrom(type.OriginalType))
                     ResourceType = ShaderResource.GetResourceType(type.OriginalType);
             }
         }

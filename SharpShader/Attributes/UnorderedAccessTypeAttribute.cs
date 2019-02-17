@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Interface)]
     internal class UnorderedAccessTypeAttribute : SharpShaderAttribute
     {
     }
