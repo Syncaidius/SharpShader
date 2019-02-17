@@ -25,6 +25,8 @@ namespace SharpShader
             [typeof(RWTexture2DArray<>)] = ShaderResourceType.RWTexture2DArray,
             [typeof(StructuredBuffer<>)] = ShaderResourceType.StructuredBuffer,
             [typeof(RWStructuredBuffer<>)] = ShaderResourceType.RWStructuredBuffer,
+            [typeof(RWBuffer<>)] = ShaderResourceType.RWBuffer,
+            [typeof(RWByteAddressBuffer)] = ShaderResourceType.RWByteAddressBuffer,
         };
 
         internal static ShaderResourceType GetResourceType(Type t)

@@ -16,9 +16,7 @@
     <Generic type="System.Boolean" name="bool" />
   </Word>
   <Word type="SharpShader.TextureSampler" name="SamplerState" />
-  <Word type="SharpShader.TextureSampler1D" name="SamplerState" />
-  <Word type="SharpShader.TextureSampler2D" name="SamplerState" />
-  <Word type="SharpShader.TextureSampler3D" name="SamplerState" />
+  <Word type="SharpShader.TextureComparisonSampler" name="SamplerComparisonState" />
 
   
   <!-- Modifiers-->
