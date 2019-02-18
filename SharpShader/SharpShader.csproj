@@ -204,6 +204,8 @@
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Resources\ByteAddressBuffer.cs" />
+    <Compile Include="Resources\Buffer.cs" />
     <Compile Include="Resources\RWByteAddressBuffer.cs" />
     <Compile Include="Resources\RWBuffer.cs" />
     <Compile Include="Resources\RWStructuredBuffer.cs" />
