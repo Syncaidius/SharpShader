@@ -12,30 +12,11 @@ namespace SharpShader
     /// </summary>
     [RegisteredType]
     [UnorderedAccessType]
-    public interface RWTexture1DArray<T> : IShaderResource
+    public interface RWTexture1DArray<T> : IRWTextureBase<T, Int3, UInt2>
         where T : struct
     {
         void GetDimensions(out uint width, out uint height, out uint elements);
 
         void GetDimensions(out float width, out float height, out float elements);
-
-        /// <summary>
-        /// Reads texture data from a RWTexture2D.
-        /// </summary>
-        /// <param name="location">The texel to load. Contains the X coordinate. Y contains the mip map level and Z contains the slice index. 0 is the highest resolution mip-map.</param>
-        /// <returns></returns>
-        T Load(Int3 location);
-
-        /// <summary>
-        /// Reads texture data from a RWTexture2D.
-        /// </summary>
-        /// <param name="location">The texel to load. Contains the X coordinate, the element ID (Y) and mip map level (Z), where 0 is the highest resolution mip-map.</param>
-        /// <returns></returns>
-        T Load(Int3 location, out uint status);
-
-        /// <summary></summary>
-        /// <param name="pos">The index position. The first component contain the X coordinate. The second component indicates the desired array slice.</param>
-        /// <returns></returns>
-        T this[UInt2 pos] { get; set; }
     }
 }
