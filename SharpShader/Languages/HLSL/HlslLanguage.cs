@@ -109,10 +109,13 @@ namespace SharpShader
 
         internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
-            if (field.StructureType == ShaderStructureType.MatrixRowMajor)
-                sc.Source.Append("row_major ");
-            if (field.StructureType == ShaderStructureType.MatrixColumnMajor)
-                sc.Source.Append("column_Major ");
+            if (typeof(IMatrix).IsAssignableFrom(field.Info.FieldType))
+            {
+                if (field.StructureType == ShaderStructureType.MatrixRowMajor)
+                    sc.Source.Append("row_major ");
+                if (field.StructureType == ShaderStructureType.MatrixColumnMajor)
+                    sc.Source.Append("column_Major ");
+            }
 
             foreach(Attribute at in field.Attributes)
             {
