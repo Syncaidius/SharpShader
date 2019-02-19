@@ -223,6 +223,7 @@
     <Compile Include="Interlocker.cs" />
     <Compile Include="Result\ShaderElementInfo.cs" />
     <Compile Include="Result\ShaderResourceInfo.cs" />
+    <Compile Include="ShaderResourceBaseType.cs" />
     <Compile Include="ShaderResourceType.cs" />
     <Compile Include="ShaderResource.cs" />
     <Compile Include="ThreadSafeList.cs" />

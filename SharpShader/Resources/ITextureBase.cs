@@ -11,7 +11,7 @@ namespace SharpShader
     public interface ITextureBase : IShaderResource
     { }
 
-    public interface ITextureBaseSampled<T, LOC, ILOC, OFFSET>
+    public interface ITextureBaseSampled<T, LOC, ILOC, OFFSET> : ITextureBase
         where T : struct
         where LOC : struct
         where ILOC : struct

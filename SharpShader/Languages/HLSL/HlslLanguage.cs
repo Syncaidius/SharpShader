@@ -146,11 +146,11 @@ namespace SharpShader
             // Constant buffer fields do not have registers assigned to them.
             if (cBufferMap == null)
             {
-                if (sc.Samplers.ContainsKey(field.Info.Name))
+                if (field.ResourceBaseType == ShaderResourceBaseType.Sampler)
                     regName = 's';
-                else if (sc.Textures.ContainsKey(field.Info.Name) || sc.Buffers.ContainsKey(field.Info.Name))
+                else if (field.ResourceBaseType == ShaderResourceBaseType.Texture || field.ResourceBaseType == ShaderResourceBaseType.Buffer)
                     regName = 't';
-                else if (sc.UAVs.ContainsKey(field.Info.Name))
+                else if (field.Type.IsUnorderedAccessType)
                     regName = 'u';
             }
 

@@ -11,42 +11,50 @@ namespace SharpShader
     /// </summary>
     internal static class ShaderResource
     {
-        static Dictionary<Type, ShaderResourceType> _typeLookup = new Dictionary<Type, ShaderResourceType>()
+        static Dictionary<Type, (ShaderResourceType, ShaderResourceBaseType)> _typeLookup = new Dictionary<Type, (ShaderResourceType, ShaderResourceBaseType)>()
         {
-            [typeof(Texture1D)] = ShaderResourceType.Texture1D,
-            [typeof(Texture1D<>)] = ShaderResourceType.Texture1D,
-            [typeof(Texture1DArray)] = ShaderResourceType.Texture1DArray,
-            [typeof(Texture1DArray<>)] = ShaderResourceType.Texture1DArray,
-            [typeof(Texture2DArray)] = ShaderResourceType.Texture2DArray,
-            [typeof(Texture2DArray<>)] = ShaderResourceType.Texture2DArray,
-            [typeof(Texture3D)] = ShaderResourceType.Texture3D,
-            [typeof(Texture3D<>)] = ShaderResourceType.Texture3D,
-            [typeof(TextureSampler)] = ShaderResourceType.TextureSampler,
-            [typeof(TextureComparisonSampler)] = ShaderResourceType.ComparisonSampler,
-            [typeof(Texture2D<>)] = ShaderResourceType.Texture2D,
-            [typeof(RWTexture1D<>)] = ShaderResourceType.RWTexture1D,
-            [typeof(RWTexture1DArray<>)] = ShaderResourceType.RWTexture1DArray,
-            [typeof(RWTexture2D<>)] = ShaderResourceType.RWTexture2D,
-            [typeof(RWTexture2DArray<>)] = ShaderResourceType.RWTexture2DArray,
-            [typeof(RWTexture3D<>)] = ShaderResourceType.RWTexture3D,
-            [typeof(StructuredBuffer<>)] = ShaderResourceType.StructuredBuffer,
-            [typeof(RWStructuredBuffer<>)] = ShaderResourceType.RWStructuredBuffer,
-            [typeof(Buffer<>)] = ShaderResourceType.Buffer,
-            [typeof(RWBuffer<>)] = ShaderResourceType.RWBuffer,
-            [typeof(RWByteAddressBuffer)] = ShaderResourceType.RWByteAddressBuffer,
-            [typeof(ByteAddressBuffer)] = ShaderResourceType.ByteAddressBuffer,
+            // Textures
+            [typeof(Texture1D)] = (ShaderResourceType.Texture1D, ShaderResourceBaseType.Texture),
+            [typeof(Texture1D<>)] = (ShaderResourceType.Texture1D, ShaderResourceBaseType.Texture),
+            [typeof(Texture1DArray)] = (ShaderResourceType.Texture1DArray, ShaderResourceBaseType.Texture),
+            [typeof(Texture1DArray<>)] = (ShaderResourceType.Texture1DArray, ShaderResourceBaseType.Texture),
+            [typeof(Texture2D)] = (ShaderResourceType.Texture2D, ShaderResourceBaseType.Texture),
+            [typeof(Texture2D<>)] = (ShaderResourceType.Texture2D, ShaderResourceBaseType.Texture),
+            [typeof(Texture2DArray)] = (ShaderResourceType.Texture2DArray, ShaderResourceBaseType.Texture),
+            [typeof(Texture2DArray<>)] = (ShaderResourceType.Texture2DArray, ShaderResourceBaseType.Texture),
+            [typeof(Texture3D)] = (ShaderResourceType.Texture3D, ShaderResourceBaseType.Texture),
+            [typeof(Texture3D<>)] = (ShaderResourceType.Texture3D, ShaderResourceBaseType.Texture),
+
+            // Samplers
+            [typeof(TextureSampler)] = (ShaderResourceType.TextureSampler, ShaderResourceBaseType.Sampler),
+            [typeof(TextureComparisonSampler)] = (ShaderResourceType.ComparisonSampler, ShaderResourceBaseType.Sampler),
+
+            // Read-Write Textures
+            [typeof(RWTexture1D<>)] = (ShaderResourceType.RWTexture1D, ShaderResourceBaseType.RWTexture),
+            [typeof(RWTexture1DArray<>)] = (ShaderResourceType.RWTexture1DArray, ShaderResourceBaseType.RWTexture),
+            [typeof(RWTexture2D<>)] = (ShaderResourceType.RWTexture2D, ShaderResourceBaseType.RWTexture),
+            [typeof(RWTexture2DArray<>)] = (ShaderResourceType.RWTexture2DArray, ShaderResourceBaseType.RWTexture),
+            [typeof(RWTexture3D<>)] = (ShaderResourceType.RWTexture3D, ShaderResourceBaseType.RWTexture),
+
+            // Buffers
+            [typeof(StructuredBuffer<>)] = (ShaderResourceType.StructuredBuffer, ShaderResourceBaseType.Buffer),
+            [typeof(RWStructuredBuffer<>)] = (ShaderResourceType.RWStructuredBuffer, ShaderResourceBaseType.RWBuffer),
+            [typeof(Buffer<>)] = (ShaderResourceType.Buffer, ShaderResourceBaseType.Buffer),
+            [typeof(RWBuffer<>)] = (ShaderResourceType.RWBuffer, ShaderResourceBaseType.RWBuffer),
+            [typeof(ByteAddressBuffer)] = (ShaderResourceType.ByteAddressBuffer, ShaderResourceBaseType.Buffer),
+            [typeof(RWByteAddressBuffer)] = (ShaderResourceType.RWByteAddressBuffer, ShaderResourceBaseType.RWBuffer),
         };
 
-        internal static ShaderResourceType GetResourceType(Type t)
+        internal static (ShaderResourceType type, ShaderResourceBaseType baseType) GetResourceType(Type t)
         {
             Type curType = t;
             if (curType.IsGenericType)
                 curType = curType.GetGenericTypeDefinition();
 
-            if (_typeLookup.TryGetValue(curType, out ShaderResourceType resourceType))
+            if (_typeLookup.TryGetValue(curType, out (ShaderResourceType, ShaderResourceBaseType) resourceType))
                 return resourceType;
 
-            return ShaderResourceType.Unknown;
+            return (ShaderResourceType.Unknown, ShaderResourceBaseType.Unknown);
         }
     }
 

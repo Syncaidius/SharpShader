@@ -34,12 +34,6 @@ namespace SharpShader
         internal readonly Dictionary<MethodInfo, MappedEntryPoint> EntryPoints;
 
         /// <summary>
-        /// All fields that are to be treated as standard 'fields' in the output source.
-        /// </summary>
-        [NonSerialized]
-        internal readonly Dictionary<string, MappedField> ShaderFields;
-
-        /// <summary>
         /// All C#-based fields contained within the shader class.
         /// </summary>
         [NonSerialized]
@@ -49,18 +43,6 @@ namespace SharpShader
         internal readonly Dictionary<string, Type> Structures;
 
         internal readonly Dictionary<string, MappedConstantBuffer> ConstantBuffers;
-
-        [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> Textures;
-
-        [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> Samplers;
-
-        [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> Buffers;
-
-        [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> UAVs;
 
         /// <summary>
         /// A hashset containing all nodes that have or will be skipped during translation. The children of skipped nodes are also recursively skipped.
@@ -82,14 +64,9 @@ namespace SharpShader
 
             EntryPoints = new Dictionary<MethodInfo, MappedEntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
-            ShaderFields = new Dictionary<string, MappedField>();
             AllFields = new Dictionary<string, FieldInfo>();
             Structures = new Dictionary<string, Type>();
             ConstantBuffers = new Dictionary<string, MappedConstantBuffer>();
-            Textures = new Dictionary<string, FieldInfo>();
-            Samplers = new Dictionary<string, FieldInfo>();
-            Buffers = new Dictionary<string, FieldInfo>();
-            UAVs = new Dictionary<string, FieldInfo>();
         }
 
         internal void Initialize(TranslationContext parent, ClassDeclarationSyntax syntax, Type shaderType)
@@ -133,14 +110,9 @@ namespace SharpShader
             _methods.Clear();
             _completedNodes.Clear();
             EntryPoints.Clear();
-            ShaderFields.Clear();
             AllFields.Clear();
             Structures.Clear();
             ConstantBuffers.Clear();
-            Textures.Clear();
-            Samplers.Clear();
-            Buffers.Clear();
-            UAVs.Clear();
         }
 
         private void PopulateMethodInfo(Type classType, BindingFlags bFlags)
@@ -174,30 +146,7 @@ namespace SharpShader
         {
             FieldInfo[] fInfo = classType.GetFields(bFlags);
             foreach (FieldInfo fi in fInfo)
-            {
                 AllFields.Add(fi.Name, fi);
-
-                RegisteredTypeAttribute regTypeAttribute = fi.FieldType.GetCustomAttribute<RegisteredTypeAttribute>();
-
-                if (regTypeAttribute != null)
-                {
-                    UnorderedAccessTypeAttribute uav = fi.FieldType.GetCustomAttribute<UnorderedAccessTypeAttribute>();
-
-                    if (uav != null)
-                    {
-                        UAVs.Add(fi.Name, fi);
-                    }
-                    else
-                    {
-                        if (typeof(ITextureBase).IsAssignableFrom(fi.FieldType))
-                            Textures.Add(fi.Name, fi);
-                        else if (typeof(TextureSampler).IsAssignableFrom(fi.FieldType))
-                            Samplers.Add(fi.Name, fi);
-                        else if (typeof(IStructuredBuffer).IsAssignableFrom(fi.FieldType))
-                            Buffers.Add(fi.Name, fi);
-                    }
-                }
-            }
         }
 
         private void PopulateStructInfo(Type classType, BindingFlags bFlags)

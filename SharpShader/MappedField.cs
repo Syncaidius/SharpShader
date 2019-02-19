@@ -16,6 +16,8 @@ namespace SharpShader
 
         internal ShaderResourceType ResourceType { get; private set; }
 
+        internal ShaderResourceBaseType ResourceBaseType { get; private set; }
+
         internal ShaderType Type { get; private set; }
 
         internal string Name { get; private set; }
@@ -64,7 +66,9 @@ namespace SharpShader
                 // TODO Improve this
                 StructureType = ShaderStructureType.Class;
                 if (typeof(IShaderResource).IsAssignableFrom(type.OriginalType))
-                    ResourceType = ShaderResource.GetResourceType(type.OriginalType);
+                    (ResourceType, ResourceBaseType) = ShaderResource.GetResourceType(type.OriginalType);
+                else
+                    return;
             }
         }
 
