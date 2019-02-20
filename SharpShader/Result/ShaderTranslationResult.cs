@@ -45,14 +45,10 @@ namespace SharpShader.Result
             List<ShaderMember> variables = new List<ShaderMember>();
             Variables = variables.AsReadOnly();
 
-            foreach(MappedField f in sc.MappedFields)
-            {
-
-            }
+            foreach (MappedField mField in sc.MappedFields)
+                variables.Add(new ShaderMember(mField));
             /* TODO:
-             *  - Produce constant buffer information.
              *  - Produce info for a SINGLE entry point
-             *  - Produce resource variable information (textures, samplers, UAVs, etc)
              *  - If a ShaderResult is used as an include, flag a boolean property as such (e.g. IsInclude).
              *  - Produce input and output layout information (ShaderInputOuput).
              */

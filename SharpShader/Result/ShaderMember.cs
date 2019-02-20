@@ -8,8 +8,6 @@ namespace SharpShader.Result
 {
     public class ShaderMember
     {
-        internal ShaderMember() { }
-
         /// <summary>
         /// Gets information about an individual element within the current <see cref="ShaderMember"/>.
         /// </summary>
@@ -39,5 +37,25 @@ namespace SharpShader.Result
         /// Gets the number of values expected by the current <see cref="ShaderMember"/>. This may be for example, the length of an array, or the number of components in a vector.
         /// </summary>
         public int ElementCount { get; internal set; }
+
+        internal ShaderMember(MappedField mField)
+        {
+            List<int> elementDimensions = new List<int>(mField.Type.Dimensions);
+            ArrayDimensions = new List<int>(mField.ArrayDimensions).AsReadOnly();
+
+            ElementCount = mField.GetTotalArrayElements();
+            StartOffset = mField.PackOffsetBytes.Value;
+            ElementInfo = new ShaderElementInfo()
+            {
+                DataType = mField.Type.DataType,
+                Dimensions = elementDimensions.AsReadOnly(),
+                SizeOf = mField.Type.SizeOf,
+                SubElementCount = mField.Type.SubElementCount,
+                SubElementSizeOf = mField.Type.SubElementSizeOf,
+                StructureType = mField.StructureType,
+            };
+            SizeOf = mField.GetTotalSizeOf();
+            Name = mField.Name;
+        }
     }
 }

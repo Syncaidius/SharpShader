@@ -27,26 +27,7 @@ namespace SharpShader.Result
 
             foreach(MappedField mField in map.Fields)
             {
-                List<int> elementDimensions = new List<int>(mField.Type.Dimensions);
-
-                ShaderMember e = new ShaderMember()
-                {
-                    ArrayDimensions = new List<int>(mField.ArrayDimensions).AsReadOnly(),
-                    ElementCount = mField.GetTotalArrayElements(),
-                    StartOffset = mField.PackOffsetBytes.Value,
-                    ElementInfo = new ShaderElementInfo()
-                    {
-                        DataType = mField.Type.DataType,
-                        Dimensions = elementDimensions.AsReadOnly(),
-                        SizeOf = mField.Type.SizeOf,
-                        SubElementCount = mField.Type.SubElementCount,
-                        SubElementSizeOf = mField.Type.SubElementSizeOf,
-                        StructureType = mField.StructureType,
-                    },
-                    SizeOf = mField.GetTotalSizeOf(),
-                    Name = mField.Name,
-                };
-
+                ShaderMember e = new ShaderMember(mField);
                 variables.Add(e);
                 SizeOf += e.SizeOf;
             }
