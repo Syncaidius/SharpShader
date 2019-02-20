@@ -16,6 +16,7 @@ namespace SharpShader
     {
         const int COMPONENTS_PER_REGISTER = 4;
         const int COMPONENT_BYTE_SIZE = 4; // A register component is the size of a 32-bit floating-point value (i.e. C# float).
+        const string GLOBAL_CBUFFER_NAME = "$Global";
 
         static readonly Dictionary<EntryPointType, string> _profileNames = new Dictionary<EntryPointType, string>()
         {
@@ -109,12 +110,32 @@ namespace SharpShader
 
         internal override void TranslateFieldPrefix(ShaderTranslationContext sc, VariableDeclaratorSyntax syntax, MappedField field, int fieldIndex, MappedConstantBuffer cBufferMap)
         {
-            if (typeof(IMatrix).IsAssignableFrom(field.Info.FieldType))
+            if (typeof(IShaderResource).IsAssignableFrom(field.Info.FieldType))
             {
-                if (field.StructureType == ShaderStructureType.MatrixRowMajor)
-                    sc.Source.Append("row_major ");
-                if (field.StructureType == ShaderStructureType.MatrixColumnMajor)
-                    sc.Source.Append("column_Major ");
+                sc.MappedFields.Add(field);
+            }
+            else
+            {
+                // HLSL puts all global, non-const static variables into the $Global constant buffer.
+                if (cBufferMap == null && field.Info.FieldType.DeclaringType == sc.ShaderType)
+                {
+                    MappedConstantBuffer cBufferGlobal = null;
+                    if (!sc.ConstantBuffers.TryGetValue(GLOBAL_CBUFFER_NAME, out cBufferGlobal))
+                    {
+                        cBufferGlobal = Pooling.MappedConstBuffers.Get();
+                        sc.ConstantBuffers.Add(GLOBAL_CBUFFER_NAME, cBufferGlobal);
+                    }
+
+                    cBufferGlobal.AddField(field);
+                }
+
+                if (typeof(IMatrix).IsAssignableFrom(field.Info.FieldType))
+                {
+                    if (field.StructureType == ShaderStructureType.MatrixRowMajor)
+                        sc.Source.Append("row_major ");
+                    if (field.StructureType == ShaderStructureType.MatrixColumnMajor)
+                        sc.Source.Append("column_Major ");
+                }
             }
 
             foreach(Attribute at in field.Attributes)

@@ -37,7 +37,12 @@ namespace SharpShader
         /// All C#-based fields contained within the shader class.
         /// </summary>
         [NonSerialized]
-        internal readonly Dictionary<string, FieldInfo> AllFields;
+        internal readonly Dictionary<string, FieldInfo> Fields;
+
+        /// <summary>
+        /// A list of mapped shader fields. These are not struct members.
+        /// </summary>
+        internal readonly List<MappedField> MappedFields;
 
         [NonSerialized]
         internal readonly Dictionary<string, Type> Structures;
@@ -64,7 +69,8 @@ namespace SharpShader
 
             EntryPoints = new Dictionary<MethodInfo, MappedEntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
-            AllFields = new Dictionary<string, FieldInfo>();
+            Fields = new Dictionary<string, FieldInfo>();
+            MappedFields = new List<MappedField>();
             Structures = new Dictionary<string, Type>();
             ConstantBuffers = new Dictionary<string, MappedConstantBuffer>();
         }
@@ -110,7 +116,8 @@ namespace SharpShader
             _methods.Clear();
             _completedNodes.Clear();
             EntryPoints.Clear();
-            AllFields.Clear();
+            Fields.Clear();
+            MappedFields.Clear();
             Structures.Clear();
             ConstantBuffers.Clear();
         }
@@ -146,7 +153,7 @@ namespace SharpShader
         {
             FieldInfo[] fInfo = classType.GetFields(bFlags);
             foreach (FieldInfo fi in fInfo)
-                AllFields.Add(fi.Name, fi);
+                Fields.Add(fi.Name, fi);
         }
 
         private void PopulateStructInfo(Type classType, BindingFlags bFlags)

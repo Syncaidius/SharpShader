@@ -45,7 +45,7 @@ namespace SharpShader.Processors
                 }
 
                 if (fInfo == null)
-                    sc.AllFields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
+                    sc.Fields.TryGetValue(syntax.Identifier.ValueText, out fInfo);
 
                 
                 if (fInfo != null)
