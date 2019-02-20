@@ -24,6 +24,10 @@ namespace SharpShader
             [typeof(Texture2DArray<>)] = (ShaderResourceType.Texture2DArray, ShaderResourceBaseType.Texture),
             [typeof(Texture3D)] = (ShaderResourceType.Texture3D, ShaderResourceBaseType.Texture),
             [typeof(Texture3D<>)] = (ShaderResourceType.Texture3D, ShaderResourceBaseType.Texture),
+            [typeof(TextureCube)] = (ShaderResourceType.TextureCube, ShaderResourceBaseType.Texture),
+            [typeof(TextureCube<>)] = (ShaderResourceType.TextureCube, ShaderResourceBaseType.Texture),
+            [typeof(TextureCubeArray)] = (ShaderResourceType.TextureCubeArray, ShaderResourceBaseType.Texture),
+            [typeof(TextureCubeArray<>)] = (ShaderResourceType.TextureCubeArray, ShaderResourceBaseType.Texture),
 
             // Samplers
             [typeof(TextureSampler)] = (ShaderResourceType.TextureSampler, ShaderResourceBaseType.Sampler),
