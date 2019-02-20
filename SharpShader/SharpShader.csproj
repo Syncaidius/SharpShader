@@ -192,6 +192,7 @@
     <Compile Include="Attributes\InputPatchAttribute.cs" />
     <Compile Include="Attributes\OutputPatchAttribute.cs" />
     <Compile Include="Attributes\ColumnMajorAttribute.cs" />
+    <Compile Include="Attributes\GloballyCoherentAttribute.cs" />
     <Compile Include="Attributes\RowMajorAttribute.cs" />
     <Compile Include="Attributes\UnorderedAccessTypeAttribute.cs" />
     <Compile Include="Attributes\RegisterAttribute.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
     <Compile Include="Resources\ByteAddressBuffer.cs" />
     <Compile Include="Resources\Buffer.cs" />
+    <Compile Include="Resources\ITextureCubeBase.cs" />
     <Compile Include="Resources\RWByteAddressBuffer.cs" />
     <Compile Include="Resources\RWBuffer.cs" />
     <Compile Include="Resources\RWStructuredBuffer.cs" />
@@ -213,6 +215,8 @@
     <Compile Include="Resources\RWTexture3D.cs" />
     <Compile Include="Resources\RWTexture2DArray.cs" />
     <Compile Include="Resources\IRWTextureBase.cs" />
+    <Compile Include="Resources\TextureCubeArray.cs" />
+    <Compile Include="Resources\TextureCube.cs" />
     <Compile Include="Resources\Texture3D.cs" />
     <Compile Include="Resources\ITexture1DBase.cs" />
     <Compile Include="Resources\Texture1DArray.cs" />

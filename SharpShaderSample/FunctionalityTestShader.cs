@@ -129,7 +129,7 @@ namespace SharpShaderSample
         StructuredBuffer<Light> LightData;
         DownScaleConstants dScale;
 
-        [Register(0)]
+        [Register(0), GloballyCoherent]
         RWStructuredBuffer<float> AverageLum;
 
         [Register(1)]

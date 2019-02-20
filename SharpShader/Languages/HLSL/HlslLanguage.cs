@@ -154,7 +154,12 @@ namespace SharpShader
                         break;
 
                     case ComputeGroupSharedAttribute attGroupShared:
-                        sc.Source.Append($" groupshared ");
+                        sc.Source.Append(" groupshared ");
+                        break;
+
+                    case GloballyCoherentAttribute attGlobCoherent:
+                        if (field.ResourceBaseType == ShaderResourceBaseType.RWBuffer || field.ResourceBaseType == ShaderResourceBaseType.RWTexture)
+                            sc.Source.Append(" globallycoherent ");
                         break;
                 }
             }
