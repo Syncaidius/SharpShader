@@ -205,6 +205,7 @@
     <Compile Include="Attributes\SharpShaderAttribute.cs" />
     <Compile Include="Attributes\Interpolation.cs" />
     <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Resources\AppendStructuredBuffer.cs" />
     <Compile Include="Resources\ByteAddressBuffer.cs" />
     <Compile Include="Resources\Buffer.cs" />
     <Compile Include="Resources\ITextureCubeBase.cs" />

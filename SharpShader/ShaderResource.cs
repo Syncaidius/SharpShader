@@ -47,6 +47,7 @@ namespace SharpShader
             [typeof(RWBuffer<>)] = (ShaderResourceType.RWBuffer, ShaderResourceBaseType.RWBuffer),
             [typeof(ByteAddressBuffer)] = (ShaderResourceType.ByteAddressBuffer, ShaderResourceBaseType.Buffer),
             [typeof(RWByteAddressBuffer)] = (ShaderResourceType.RWByteAddressBuffer, ShaderResourceBaseType.RWBuffer),
+            [typeof(AppendStructuredBuffer<>)] = (ShaderResourceType.AppendStructuredBuffer, ShaderResourceBaseType.Buffer)
         };
 
         internal static (ShaderResourceType type, ShaderResourceBaseType baseType) GetResourceType(Type t)

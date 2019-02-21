@@ -106,6 +106,8 @@ namespace SharpShader
 
         RWStructuredBuffer = 24,
 
-        RWByteAddressBuffer = 25
+        RWByteAddressBuffer = 25,
+
+        AppendStructuredBuffer = 26,
     }
 }
