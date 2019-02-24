@@ -25,5 +25,6 @@
   <files>
     <file src="bin\Release\SharpShader.dll" target="lib"/>
     <file src="bin\Release\SharpShader.xml" target="lib"/>
+    <file src="logo.png" target=""/>
   </files>
 </package>
