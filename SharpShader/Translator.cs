@@ -53,7 +53,7 @@ namespace SharpShader
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
         /// <returns></returns>
-        public TranslationResult Convert(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, TranslationFlags flags = TranslationFlags.None, List<string> preprocessorSymbols = null)
+        public TranslationResult Translate(string fileOrFriendlyName, string cSharpSource, OutputLanguage outputLanguage, TranslationFlags flags = TranslationFlags.None, List<string> preprocessorSymbols = null)
         {
             return Translate(new Dictionary<string, string>()
             {
