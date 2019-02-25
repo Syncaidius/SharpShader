@@ -144,7 +144,7 @@ namespace SharpShader
 
         private static void ParseWord(ShaderLanguage foundation, XmlNode wordNode)
         {
-            Type translatedType = Type.GetType(wordNode.Attributes["type"].InnerText);
+            Type translatedType = ShaderType.RetrieveType(wordNode.Attributes["type"].InnerText);
             if (translatedType == null)
                 return;
 
@@ -164,7 +164,7 @@ namespace SharpShader
 
                     if (!string.IsNullOrWhiteSpace(generic) && !string.IsNullOrWhiteSpace(nativeName))
                     {
-                        Type genericType = Type.GetType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {foundation.Language} lexicon.");
+                        Type genericType = ShaderType.RetrieveType(generic) ?? throw new TypeAccessException($"The type {generic} is not valid in {foundation.Language} lexicon.");
                         Type finalType = translatedType.MakeGenericType(genericType);
 
                         foundation._keywords.Add(finalType, new Translation()

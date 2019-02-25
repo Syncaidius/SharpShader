@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>SharpShader</id>
+    <id>SharpShader.Core</id>
     <version>0.0.3-alpha</version>
     <authors>James Yarwood</authors>
     <owners>James Yarwood</owners>
@@ -9,24 +9,18 @@
     <projectUrl>https://github.com/Syncaidius/SharpShader</projectUrl>
     <iconUrl>https://github.com/Syncaidius/SharpShader/blob/master/SharpShader/logo.png?raw=true</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description> Write your cross-platform shaders in C#. 
+    <description>The core types for SharpShader.
     
-    SharpShader is a source-to-source translator which lets you translate C# shaders into your preferred shader language.</description>
-    <releaseNotes>Still no GLSL support yet.</releaseNotes>
+    Contains everything you need to read a SharpShader translation result, without requiring all of the extra dependencies.</description>
+    <releaseNotes>Initial release after package separation.</releaseNotes>
     <copyright>Copyright © 2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Xml"/>
     </frameworkAssemblies>
-    <dependencies>
-      <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
-      <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
-      <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
-      <dependency id="SharpShader.Core" version="0.0.3-alpha" />
-    </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\SharpShader.dll" target="lib"/>
-    <file src="bin\Release\SharpShader.xml" target="lib"/>
+    <file src="bin\Release\SharpShader.Core.dll" target="lib"/>
+    <file src="bin\Release\SharpShader.Core.xml" target="lib"/>
   </files>
 </package>

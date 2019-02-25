@@ -12,7 +12,7 @@ namespace SharpShader
         /// <summary>
         /// A list of mapped variables contained within the constant buffer.
         /// </summary>
-        internal readonly List<MappedField> Fields = new List<MappedField>();
+        internal readonly List<MappedField> Variables = new List<MappedField>();
 
         /// <summary>
         /// Bind spots organised by shader model.
@@ -42,15 +42,15 @@ namespace SharpShader
                 SizeOf += size;
             }
 
-            Fields.Add(field);
+            Variables.Add(field);
         }
 
         void IPoolable.Clear()
         {
-            foreach (MappedField mField in Fields)
+            foreach (MappedField mField in Variables)
                 Pooling.MappedFields.Put(mField);
 
-            Fields.Clear();
+            Variables.Clear();
             BindSlots.Clear();
         }
     }

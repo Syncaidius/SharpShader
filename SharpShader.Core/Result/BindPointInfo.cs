@@ -27,7 +27,7 @@ namespace SharpShader
         /// </summary>
         public readonly int BindPoint;
 
-        internal BindPointInfo(ShaderModel model, EntryPointType epType, int bindPoint)
+        public BindPointInfo(ShaderModel model, EntryPointType epType, int bindPoint)
         {
             Model = model;
             EntryPoint = epType;

@@ -30,21 +30,4 @@ namespace SharpShader
             return EntryType.ToString();
         }
     }
-
-    public enum EntryPointType
-    {
-        AnyOrNone = 0,
-
-        VertexShader = 1,
-
-        FragmentShader = 2,
-
-        GeometryShader = 3,
-
-        HullShader = 4,
-
-        DomainShader = 5,
-
-        ComputeShader = 6,
-    }
 }

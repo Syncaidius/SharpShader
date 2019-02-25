@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpShader.Core", "SharpShader.Core\SharpShader.Core.csproj", "{4648B160-6149-4308-AA40-A229C7B9C1CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3A108BB1-55D8-456C-8431-1BE3053F7AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A108BB1-55D8-456C-8431-1BE3053F7AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A108BB1-55D8-456C-8431-1BE3053F7AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4648B160-6149-4308-AA40-A229C7B9C1CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4648B160-6149-4308-AA40-A229C7B9C1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4648B160-6149-4308-AA40-A229C7B9C1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4648B160-6149-4308-AA40-A229C7B9C1CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

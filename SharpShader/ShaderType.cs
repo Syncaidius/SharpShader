@@ -17,6 +17,20 @@ namespace SharpShader
     [Serializable]
     internal class ShaderType
     {
+        internal class SupportedNamespace
+        {
+            internal AssemblyName[] Assemblies { get; }
+            internal string Name { get; }
+
+            internal SupportedNamespace(string name, params Type[] typesFromAssemblies)
+            {
+                Name = name;
+                Assemblies = new AssemblyName[typesFromAssemblies.Length];
+                for (int i = 0; i < Assemblies.Length; i++)
+                    Assemblies[i] = typesFromAssemblies[i].Assembly.GetName();
+            }
+        }
+
         #region Static Members
         /// <summary>
         /// The name of the Sharp Shader namespace.
@@ -60,10 +74,10 @@ namespace SharpShader
             [typeof(bool)] = ShaderDataType.Boolean,
         };
 
-        internal static readonly string[] SupportedNamespaces = { NAMESPACE, "System" };
-        internal static readonly AssemblyName[] SupportedAssemblies = {
-            typeof(CSharpShader).Assembly.GetName(),
-            typeof(float).Assembly.GetName(),
+        internal static readonly SupportedNamespace[] SupportedNamespaces =
+        {
+            new SupportedNamespace(NAMESPACE, typeof(IIntrinsicValue), typeof(CSharpShader)),
+            new SupportedNamespace("System", typeof(float)),
         };
 
         class LanguageMethodInfo
@@ -159,18 +173,7 @@ namespace SharpShader
 
             PostModifierCheck:
             if (!_baseTypeAliases.TryGetValue(typeName, out t))
-            {
-                string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length > 0)
-                {
-                    for (int i = 0; i < SupportedNamespaces.Length; i++)
-                    {
-                        t = Type.GetType($"{SupportedNamespaces[i]}.{parts[parts.Length - 1]}");
-                        if (t != null)
-                            return t;
-                    }
-                }
-            }
+                t = RetrieveType(typeName);
 
             if (t == null)
             {
@@ -179,6 +182,26 @@ namespace SharpShader
 
                 if (t == null)
                     t = ResolveGeneric(sc, typeName);
+            }
+
+            return t;
+        }
+
+        internal static Type RetrieveType(string typeName)
+        {
+            Type t = null;
+            string[] parts = typeName.Split(_namespaceDelimiters, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0)
+            {
+                foreach (SupportedNamespace sn in SupportedNamespaces)
+                {
+                    foreach (AssemblyName aName in sn.Assemblies)
+                    {
+                        t = Type.GetType($"{sn.Name}.{parts[parts.Length - 1]}, {aName.FullName}");
+                        if (t != null)
+                            return t;
+                    }
+                }
             }
 
             return t;

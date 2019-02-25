@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpShader.Result
+namespace SharpShader
 {
     public class ShaderMember
     {
@@ -48,26 +48,16 @@ namespace SharpShader.Result
         /// </summary>
         public int ElementCount { get; internal set; }
 
-        internal ShaderMember(MappedField mField)
+        public ShaderMember(string name, List<int> arrayDimensions, int elementCount, int startOffset, ShaderElementInfo elementInfo, int sizeOf, ShaderResourceType resType, ShaderResourceBaseType resBaseType)
         {
-            List<int> elementDimensions = new List<int>(mField.Type.Dimensions);
-            ArrayDimensions = new List<int>(mField.ArrayDimensions).AsReadOnly();
-
-            ElementCount = mField.GetTotalArrayElements();
-            StartOffset = mField.PackOffsetBytes.HasValue ? mField.PackOffsetBytes.Value : 0;
-            ElementInfo = new ShaderElementInfo()
-            {
-                DataType = mField.Type.DataType,
-                Dimensions = elementDimensions.AsReadOnly(),
-                SizeOf = mField.Type.SizeOf,
-                SubElementCount = mField.Type.SubElementCount,
-                SubElementSizeOf = mField.Type.SubElementSizeOf,
-                StructureType = mField.StructureType,
-            };
-            SizeOf = mField.GetTotalSizeOf();
-            Name = mField.Name;
-            ResourceType = mField.ResourceType;
-            ResourceBaseType = mField.ResourceBaseType;
+            Name = name;
+            ArrayDimensions = arrayDimensions.AsReadOnly();
+            ElementCount = elementCount;
+            StartOffset = startOffset;
+            ElementInfo = elementInfo;
+            SizeOf = sizeOf;
+            ResourceType = resType;
+            ResourceBaseType = resBaseType;
         }
     }
 }

@@ -118,6 +118,7 @@ namespace SharpShader
             List<MetadataReference> references = new List<MetadataReference>();
             references.Add(MetadataReference.CreateFromFile(typeof(Single).Assembly.Location));
             references.Add(MetadataReference.CreateFromFile(typeof(Vector4).Assembly.Location));
+            references.Add(MetadataReference.CreateFromFile(typeof(CSharpShader).Assembly.Location));
 
             CSharpCompilationOptions options = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,

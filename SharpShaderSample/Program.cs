@@ -1,5 +1,4 @@
 ﻿using SharpShader;
-using SharpShader.Result;
 using System;
 using System.Collections.Generic;
 using System.IO;

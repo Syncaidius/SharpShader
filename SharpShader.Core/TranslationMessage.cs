@@ -12,19 +12,19 @@ namespace SharpShader
         /// <summary>
         /// The error message.
         /// </summary>
-        public string Text { get; internal set; }
+        public string Text { get; set; }
 
         /// <summary>
         /// The line number of the error.
         /// </summary>
-        public int LineNumber { get; internal set; }
+        public int LineNumber { get; set; }
 
         /// <summary>
         /// The character position along the <see cref="LineNumber"/> at which the error is located.
         /// </summary>
-        public int LinePosition { get; internal set; }
+        public int LinePosition { get; set; }
 
-        public TranslationMessageType MessageType { get; internal set; }
+        public TranslationMessageType MessageType { get; set; }
     }
 
     public enum TranslationMessageType

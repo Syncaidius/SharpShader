@@ -14,7 +14,7 @@ namespace SharpShader
         /// <summary>
         /// Gets the expected resource type.
         /// </summary>
-        internal ShaderResourceType ResourceType { get; }
+        public ShaderResourceType ResourceType { get; }
 
         /// <summary>
         /// Gets the model-specific bind points (slots) for the constant buffer.

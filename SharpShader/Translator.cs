@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
-using SharpShader.Result;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -87,10 +86,80 @@ namespace SharpShader
             };
 
             TranslationContext context = _runner.Run(tArgs);
-            TranslationResult result = new TranslationResult(context, flags);
+            TranslationResult result = BuildResult(context, flags);
 
             context.Recycle();
             return result;
+        }
+
+        private TranslationResult BuildResult(TranslationContext context, TranslationFlags flags)
+        {
+            var msg = new List<TranslationMessage>(context.Messages);
+            var output = new Dictionary<string, ShaderTranslationResult>();
+
+            foreach (ShaderTranslationContext sc in context.Shaders)
+            {
+                var cBuffers = new List<ConstantBufferInfo>();
+                var includes = new Dictionary<string, ShaderTranslationResult>();
+                var variables = new List<ShaderMember>();
+
+                foreach (KeyValuePair<string, MappedConstantBuffer> p in sc.ConstantBuffers)
+                {
+                    List<ShaderMember> cBufferVariables = new List<ShaderMember>();
+
+                    foreach (MappedField mField in p.Value.Variables)
+                        cBufferVariables.Add(PopulateMember(mField));
+
+                    cBuffers.Add(new ConstantBufferInfo(p.Key, cBufferVariables, p.Value.BindSlots));
+                }
+
+                foreach (MappedField mField in sc.MappedFields)
+                    variables.Add(PopulateMember(mField));
+
+                /* TODO:
+                 *  - Produce info for a SINGLE entry point
+                 *  - If a ShaderResult is used as an include, flag a boolean property as such (e.g. IsInclude).
+                 *  - Produce input and output layout information (ShaderInputOuput).
+                 */
+
+
+                string strSourceResult = sc.Source.ToString();
+
+                if ((flags & TranslationFlags.SkipFormatting) != TranslationFlags.SkipFormatting)
+                {
+                    if ((flags & TranslationFlags.RemoveWhitespace) == TranslationFlags.RemoveWhitespace)
+                        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
+                    else
+                        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
+                }
+                ShaderTranslationResult shader = new ShaderTranslationResult(strSourceResult, includes, cBuffers, variables);
+                output.Add(sc.Name, shader);
+            }
+
+            return new TranslationResult(msg, output);
+        }
+
+        private ShaderMember PopulateMember(MappedField mField)
+        {
+            ShaderElementInfo eInfo = new ShaderElementInfo(
+                dataType: mField.Type.DataType,
+                dimensions: new List<int>(mField.Type.Dimensions),
+                size: mField.Type.SizeOf,
+                subElementCount: mField.Type.SubElementCount,
+                subElementSize: mField.Type.SubElementSizeOf,
+                strucType: mField.StructureType
+            );
+
+            return new ShaderMember(
+                name: mField.Name,
+                arrayDimensions: new List<int>(mField.ArrayDimensions),
+                elementCount: mField.GetTotalArrayElements(),
+                startOffset: mField.PackOffsetBytes.HasValue ? mField.PackOffsetBytes.Value : 0,
+                elementInfo: eInfo,
+                sizeOf: mField.GetTotalSizeOf(),
+                resType: mField.ResourceType,
+                resBaseType: mField.ResourceBaseType
+            );
         }
 
         /// <summary>
@@ -112,8 +181,11 @@ namespace SharpShader
             int id = Interlocked.Increment(ref _nextDomainID);
             _domain = AppDomain.CreateDomain($"{_domainName}_{id}");
 
-            foreach (AssemblyName an in ShaderType.SupportedAssemblies)
-                _domain.Load(an);
+            foreach (ShaderType.SupportedNamespace sn in ShaderType.SupportedNamespaces)
+            {
+                foreach(AssemblyName aName in sn.Assemblies)
+                    _domain.Load(aName);
+            }
 
             Type t = typeof(TranslationRunner);
             _runner = (TranslationRunner)_domain.CreateInstanceAndUnwrap(t.Assembly.FullName, t.FullName, false, 

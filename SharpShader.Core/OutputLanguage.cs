@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
+    /// <summary>
+    /// Represents the shader languages which SharpShader supports when translating from C# shader source.
+    /// </summary>
     public enum OutputLanguage
     {
         Invalid = 0,

@@ -72,6 +72,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpShader.Core\SharpShader.Core.csproj">
+      <Project>{4648b160-6149-4308-aa40-a229c7b9c1ce}</Project>
+      <Name>SharpShader.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpShader\SharpShader.csproj">
       <Project>{50309a0e-f5e6-4bb4-bf59-e66cb9c90d2f}</Project>
       <Name>SharpShader</Name>

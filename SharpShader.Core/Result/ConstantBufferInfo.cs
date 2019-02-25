@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpShader.Result
+namespace SharpShader
 {
     public class ConstantBufferInfo : ShaderResourceInfo
     {
@@ -19,18 +19,14 @@ namespace SharpShader.Result
         /// </summary>
         public IReadOnlyList<ShaderMember> Variables { get; }
 
-        internal ConstantBufferInfo(string name, MappedConstantBuffer map) :
-            base(name, ShaderResourceType.ConstantBuffer, map.BindSlots)
+        public ConstantBufferInfo(string name, List<ShaderMember> variables, HashSet<BindPointInfo> bindPoints) :
+            base(name, ShaderResourceType.ConstantBuffer, bindPoints)
         {
-            List<ShaderMember> variables = new List<ShaderMember>();
             Variables = variables.AsReadOnly();
+            SizeOf = 0;
 
-            foreach(MappedField mField in map.Fields)
-            {
-                ShaderMember e = new ShaderMember(mField);
-                variables.Add(e);
-                SizeOf += e.SizeOf;
-            }
+            foreach(ShaderMember m in variables)
+                SizeOf += m.SizeOf;
         }
     }
 }
