@@ -9,10 +9,10 @@
     <projectUrl>https://github.com/Syncaidius/SharpShader</projectUrl>
     <iconUrl>https://github.com/Syncaidius/SharpShader/blob/master/SharpShader/logo.png?raw=true</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description> Write all of your cross-platform shaders in a single language. 
+    <description> Write your cross-platform shaders in C#. 
     
-    Use C# as an intermediate language for writing HLSL and GLSL shaders, saving you valuable development time.</description>
-    <releaseNotes>Initial test release.</releaseNotes>
+    SharpShader is a source-to-source translator which lets you translate C# shaders into your preferred shader language.</description>
+    <releaseNotes>Still no GLSL support yet.</releaseNotes>
     <copyright>Copyright © 2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
     <frameworkAssemblies>

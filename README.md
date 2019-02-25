@@ -1,5 +1,6 @@
 # Sharp Shader
 [![Build Status](https://dev.azure.com/jyarwood/SharpShader/_apis/build/status/SharpShader-.NET%20Desktop-CI?branchName=master)](https://dev.azure.com/jyarwood/SharpShader/_build/latest?definitionId=4?branchName=master)
+[![Nuget](	https://img.shields.io/nuget/v/SharpShader.svg)](https://www.nuget.org/packages/SharpShader/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Syncaidius/SharpShader/blob/master/LICENSE)  
 Write all of your cross-platform shaders in a single language. Use C# as an intermediate language for writing HLSL and GLSL shaders, saving you valuable development time.
 
