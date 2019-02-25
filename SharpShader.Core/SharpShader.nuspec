@@ -9,9 +9,9 @@
     <projectUrl>https://github.com/Syncaidius/SharpShader</projectUrl>
     <iconUrl>https://github.com/Syncaidius/SharpShader/blob/master/SharpShader/logo.png?raw=true</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>The core types for SharpShader.
+    <description>All of the core types for SharpShader.
     
-    Contains everything you need to read a SharpShader translation result, without requiring all of the extra dependencies.</description>
+    Contains everything you need to read SharpShader translation results, without requiring all of the extra dependencies.</description>
     <releaseNotes>Initial release after package separation.</releaseNotes>
     <copyright>Copyright © 2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
