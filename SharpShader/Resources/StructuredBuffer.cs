@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace SharpShader
 {
-    public interface IStructuredBuffer { }
-
     /// <summary>
     /// A read-only structured buffer.
     /// </summary>
     /// <typeparam name="T">The type of data to store in the buffer.</typeparam>
-    [RegisteredType]
-    public interface StructuredBuffer<T> : IStructuredBuffer where T : struct
+    public interface StructuredBuffer<T> : IShaderResource where T : struct
     {
         /// <summary>
         /// Gets the value at the specified index.
