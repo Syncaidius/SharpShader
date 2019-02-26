@@ -343,6 +343,12 @@ namespace SharpShaderSample
                     X = value.X,
                     Y = value.Y
                 };
+
+                Vector2 test2 = new Vector2(value.X, value.Y)
+                {
+                    X = value.X,
+                    Y = value.Y
+                };
             }
         }
 

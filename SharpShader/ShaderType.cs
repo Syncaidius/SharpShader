@@ -475,6 +475,11 @@ namespace SharpShader
 
             return elements;
         }
+
+        public override string ToString()
+        {
+            return $"{OriginalType.Name} -- {Translation ?? $"{OriginalType.Name}"}";
+        }
         #endregion
     }
 }

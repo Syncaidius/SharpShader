@@ -198,7 +198,6 @@ namespace SharpShader
                 return;
 
             Type t = syntax.GetType();
-            IEnumerable<SyntaxNode> children = syntax.ChildNodes();
             ScopeInfo lastScope = sc.Source.CurrentScope;
 
             if (_processors.TryGetValue(t, out NodeProcessor processor))
@@ -208,6 +207,7 @@ namespace SharpShader
 
             sc.Complete(syntax);
 
+            IEnumerable<SyntaxNode> children = syntax.ChildNodes();
             foreach (SyntaxNode child in children)
                 Translate(sc, child, depth + 1);
 

@@ -17,6 +17,11 @@ namespace SharpShader.Processors
                 ScopeInfo iScope = sc.Source.OpenScope(ScopeType.ArrayInitializer);
                 iScope.Items = syntax.Expressions;
             }
+            else if (scope.Type == ScopeType.Variable)
+            {
+                ScopeInfo iScope = sc.Source.OpenScope(ScopeType.ExpandedInitializer);
+                iScope.Identifier = scope.Identifier;
+            }
         }
     }
 }

@@ -98,8 +98,43 @@ namespace SharpShader.Processors
                 }
 
                 bool isForInitializer = (syntax.Parent is VariableDeclarationSyntax varDecSyntax && varDecSyntax.Parent is ForStatementSyntax forSyntax);
-                if(!isForInitializer)
-                    sc.Source.OpenScope(ScopeType.Variable);
+                if (!isForInitializer)
+                {
+                    if (syntax.Initializer != null && syntax.Initializer.Value is ObjectCreationExpressionSyntax objSyntax && objSyntax.Initializer != null)
+                    {
+                        ScopeInfo si = sc.Source.OpenScope(ScopeType.ExpandedInitializer);
+                        si.Identifier = syntax.Identifier.ValueText;
+                        sc.Source.Append(" = ");
+
+                        // Are we instantiating a new struct value with no args?
+                        if (objSyntax.ArgumentList.Arguments.Count == 0 && scope.TypeInfo.OriginalType.IsValueType)
+                        {
+                            sc.Source.Append($"({scope.TypeInfo.Translation})0;"); // TODO does GLSL allow this? Do we abstract or add a language property to check against?
+                            sc.Source.AppendLineBreak();
+                            sc.Complete(objSyntax.ArgumentList);
+                            sc.Complete(objSyntax.Type);
+                        }
+                        else
+                        {
+                            sc.Source.Append(scope.TypeInfo.Translation);
+                            sc.Runner.Translate(sc, objSyntax.ArgumentList);
+                            sc.Source.Append(";");
+                            sc.Source.AppendLineBreak();
+                            sc.Runner.Translate(sc, objSyntax.Initializer);
+                            sc.Complete(objSyntax.ArgumentList);
+                            sc.Complete(objSyntax.Type);
+                        }
+
+                        // We no longer need to translate the object creation syntax, but we still want it's initializer.
+                        sc.Complete(syntax.Initializer);
+                        sc.Runner.Translate(sc, objSyntax.Initializer);
+                    }
+                    else
+                    {
+                        ScopeInfo si = sc.Source.OpenScope(ScopeType.Variable);
+                        si.Identifier = syntax.Identifier.ValueText;
+                    }
+                }
             }
         }
     }
