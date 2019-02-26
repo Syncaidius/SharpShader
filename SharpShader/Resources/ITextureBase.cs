@@ -59,6 +59,14 @@ namespace SharpShader
         /// <summary>
         /// Reads texel data without any filtering or sampling.
         /// </summary>
+        /// <param name="location">The first two components (X,Y) contain the location. The third component (Z) contains the mipmap level.</param>
+        /// <param name="offset">An offset applied to the texture coordinates before sampling.</param>
+        /// <returns></returns>
+        T Load(ILOC location, OFFSET offset);
+
+        /// <summary>
+        /// Reads texel data without any filtering or sampling.
+        /// </summary>
         /// <param name="location">Components are usually ordered by UV, array slice and mipmap level where each applicable.</param>
         /// <param name="offset">An offset applied to the texture coordinates before sampling.</param>
         /// <param name="status">The status of the operation. You can't access the status directly; instead, pass the status to the CheckAccessFullyMapped intrinsic function. 
@@ -75,7 +83,7 @@ namespace SharpShader
         /// <summary>
         /// Returns a read-only value. Always accesses the first mipmap level (0).
         /// </summary>
-        /// <param name="pos">The index position. The first component contains the x-coordinate. The second component indicates the desired array slice.</param>
+        /// <param name="pos">The index position. Components are ordered as follows: location | mipmap level | array slize.</param>
         /// <returns></returns>
         T this[ILOC pos] { get; }
     }

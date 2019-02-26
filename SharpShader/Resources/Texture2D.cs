@@ -14,7 +14,7 @@ namespace SharpShader
     /// Based on HLSL syntax: https://docs.microsoft.com/en-us/windows/desktop/direct3dhlsl/sm5-object-texture2d
     /// </summary>
     [RegisteredType]
-    public interface Texture2D<T>  : ITexture2DBase<T, Vector2, UInt2>
+    public interface Texture2D<T>  : ITexture2DBase<T, Vector2, Int3>
         where T : struct
     {
         /// <summary>
