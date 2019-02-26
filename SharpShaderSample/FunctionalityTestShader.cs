@@ -426,104 +426,104 @@ namespace SharpShaderSample
             [Semantic(SemanticType.SV_GroupThreadID)] UInt3 groupThreadId,
             [Semantic(SemanticType.SV_DispatchThreadID)] UInt3 dispatchThreadId)
         {
-            //UInt2 CurPixel = new UInt2((uint)(dispatchThreadId.X % dScale.Res.X), (uint)(dispatchThreadId.X / dScale.Res.X));
+            UInt2 CurPixel = new UInt2((uint)(dispatchThreadId.X % dScale.Res.X), (uint)(dispatchThreadId.X / dScale.Res.X));
 
-            //// Skip out of bound pixels
-            //float avgLum = 0.0f;
-            //if (CurPixel.Y < dScale.Res.Y)
-            //{
-            //    Int3 nFullResPos = new Int3((Int2)CurPixel * 4, 0); // TODO add explicit casts for vector types.
-            //    Vector4 downScaled = new Vector4();
+            // Skip out of bound pixels
+            float avgLum = 0.0f;
+            if (CurPixel.Y < dScale.Res.Y)
+            {
+                Int3 nFullResPos = new Int3((Int2)CurPixel * 4, 0); // TODO add explicit casts for vector types.
+                Vector4 downScaled = new Vector4();
 
-            //    for (int i = 0; i < 4; i++)
-            //    {
-            //        for (int j = 0; j < 4; j++)
-            //            downScaled += HDRTex.Load(nFullResPos, new Int2(j, i));
-            //    }
-            //    downScaled /= 16.0; // Average
-            //    HDRDownScale[CurPixel.XY] = downScaled; // Store the quarter resolution image
-            //    avgLum = Dot(downScaled, LUM_FACTOR); // Calculate the lumenace value for this pixel
-            //}
-            //SharedPositions[groupThreadId.X] = avgLum; // Store in the group memory for further reduction
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                        downScaled += HDRTex.Load(nFullResPos, new Int2(j, i));
+                }
+                downScaled /= 16.0; // Average
+                HDRDownScale[CurPixel.XY] = downScaled; // Store the quarter resolution image
+                avgLum = Dot(downScaled, LUM_FACTOR); // Calculate the lumenace value for this pixel
+            }
+            SharedPositions[groupThreadId.X] = avgLum; // Store in the group memory for further reduction
 
-            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+            GroupMemoryBarrierWithGroupSync(); // Sync before next step
 
-            //// Down scale from 1024 to 256
-            //if (groupThreadId.X % 4 == 0)
-            //{
-            //    // Calculate the luminance sum for this step
-            //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 1 < dScale.Domain ? SharedPositions[groupThreadId.X + 1] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 2 < dScale.Domain ? SharedPositions[groupThreadId.X + 2] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 3 < dScale.Domain ? SharedPositions[groupThreadId.X + 3] : avgLum;
+            // Down scale from 1024 to 256
+            if (groupThreadId.X % 4 == 0)
+            {
+                // Calculate the luminance sum for this step
+                float stepAvgLum = avgLum;
+                stepAvgLum += dispatchThreadId.X + 1 < dScale.Domain ? SharedPositions[groupThreadId.X + 1] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 2 < dScale.Domain ? SharedPositions[groupThreadId.X + 2] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 3 < dScale.Domain ? SharedPositions[groupThreadId.X + 3] : avgLum;
 
-            //    // Store the results
-            //    avgLum = stepAvgLum;
-            //    SharedPositions[groupThreadId.X] = stepAvgLum;
-            //}
+                // Store the results
+                avgLum = stepAvgLum;
+                SharedPositions[groupThreadId.X] = stepAvgLum;
+            }
 
-            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+            GroupMemoryBarrierWithGroupSync(); // Sync before next step
 
-            //// Downscale from 256 to 64
-            //if (groupThreadId.X % 16 == 0)
-            //{
-            //    // Calculate the luminance sum for this step
-            //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 4 < dScale.Domain ? SharedPositions[groupThreadId.X + 4] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 8 < dScale.Domain ? SharedPositions[groupThreadId.X + 8] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 12 < dScale.Domain ? SharedPositions[groupThreadId.X + 12] : avgLum;
+            // Downscale from 256 to 64
+            if (groupThreadId.X % 16 == 0)
+            {
+                // Calculate the luminance sum for this step
+                float stepAvgLum = avgLum;
+                stepAvgLum += dispatchThreadId.X + 4 < dScale.Domain ? SharedPositions[groupThreadId.X + 4] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 8 < dScale.Domain ? SharedPositions[groupThreadId.X + 8] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 12 < dScale.Domain ? SharedPositions[groupThreadId.X + 12] : avgLum;
 
-            //    // Store the results
-            //    avgLum = stepAvgLum;
-            //    SharedPositions[groupThreadId.X] = stepAvgLum;
-            //}
+                // Store the results
+                avgLum = stepAvgLum;
+                SharedPositions[groupThreadId.X] = stepAvgLum;
+            }
 
-            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+            GroupMemoryBarrierWithGroupSync(); // Sync before next step
 
-            //// Downscale from 64 to 16
-            //if (groupThreadId.X % 64 == 0)
-            //{
-            //    // Calculate the luminance sum for this step
-            //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 16 < dScale.Domain ? SharedPositions[groupThreadId.X + 16] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 32 < dScale.Domain ? SharedPositions[groupThreadId.X + 32] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 48 < dScale.Domain ? SharedPositions[groupThreadId.X + 48] : avgLum;
+            // Downscale from 64 to 16
+            if (groupThreadId.X % 64 == 0)
+            {
+                // Calculate the luminance sum for this step
+                float stepAvgLum = avgLum;
+                stepAvgLum += dispatchThreadId.X + 16 < dScale.Domain ? SharedPositions[groupThreadId.X + 16] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 32 < dScale.Domain ? SharedPositions[groupThreadId.X + 32] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 48 < dScale.Domain ? SharedPositions[groupThreadId.X + 48] : avgLum;
 
-            //    // Store the results
-            //    avgLum = stepAvgLum;
-            //    SharedPositions[groupThreadId.X] = stepAvgLum;
-            //}
+                // Store the results
+                avgLum = stepAvgLum;
+                SharedPositions[groupThreadId.X] = stepAvgLum;
+            }
 
-            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+            GroupMemoryBarrierWithGroupSync(); // Sync before next step
 
-            //// Downscale from 16 to 4
-            //if (groupThreadId.X % 256 == 0)
-            //{
-            //    // Calculate the luminance sum for this step
-            //    float stepAvgLum = avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 64 < dScale.Domain ? SharedPositions[groupThreadId.X + 64] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 128 < dScale.Domain ? SharedPositions[groupThreadId.X + 128] : avgLum;
-            //    stepAvgLum += dispatchThreadId.X + 192 < dScale.Domain ? SharedPositions[groupThreadId.X + 192] : avgLum;
+            // Downscale from 16 to 4
+            if (groupThreadId.X % 256 == 0)
+            {
+                // Calculate the luminance sum for this step
+                float stepAvgLum = avgLum;
+                stepAvgLum += dispatchThreadId.X + 64 < dScale.Domain ? SharedPositions[groupThreadId.X + 64] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 128 < dScale.Domain ? SharedPositions[groupThreadId.X + 128] : avgLum;
+                stepAvgLum += dispatchThreadId.X + 192 < dScale.Domain ? SharedPositions[groupThreadId.X + 192] : avgLum;
 
-            //    // Store the results
-            //    avgLum = stepAvgLum;
-            //    SharedPositions[groupThreadId.X] = stepAvgLum;
-            //}
+                // Store the results
+                avgLum = stepAvgLum;
+                SharedPositions[groupThreadId.X] = stepAvgLum;
+            }
 
-            //GroupMemoryBarrierWithGroupSync(); // Sync before next step
+            GroupMemoryBarrierWithGroupSync(); // Sync before next step
 
-            //// Downscale from 4 to 1
-            //if (groupThreadId.X == 0)
-            //{
-            //    // Calculate the average lumenance for this thread group
-            //    float fFinalAvgLum = avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 256 < dScale.Domain ? SharedPositions[groupThreadId.X + 256] : avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 512 < dScale.Domain ? SharedPositions[groupThreadId.X + 512] : avgLum;
-            //    fFinalAvgLum += dispatchThreadId.X + 768 < dScale.Domain ? SharedPositions[groupThreadId.X + 768] : avgLum;
-            //    fFinalAvgLum /= 1024.0f;
+            // Downscale from 4 to 1
+            if (groupThreadId.X == 0)
+            {
+                // Calculate the average lumenance for this thread group
+                float fFinalAvgLum = avgLum;
+                fFinalAvgLum += dispatchThreadId.X + 256 < dScale.Domain ? SharedPositions[groupThreadId.X + 256] : avgLum;
+                fFinalAvgLum += dispatchThreadId.X + 512 < dScale.Domain ? SharedPositions[groupThreadId.X + 512] : avgLum;
+                fFinalAvgLum += dispatchThreadId.X + 768 < dScale.Domain ? SharedPositions[groupThreadId.X + 768] : avgLum;
+                fFinalAvgLum /= 1024.0f;
 
-            //    AverageLum[groupId.X] = fFinalAvgLum; // Write the final value into the 1D UAV which will be used on the next step
-            //}
+                AverageLum[groupId.X] = fFinalAvgLum; // Write the final value into the 1D UAV which will be used on the next step
+            }
         }
         #endregion
     }

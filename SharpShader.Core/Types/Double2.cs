@@ -620,5 +620,32 @@ namespace SharpShader
 				Y = (a / b.Y),
 			};
 		}
+		public static explicit operator Vector2(Double2 val)
+		{
+			return new Vector2()
+			{
+				X = (float)val.X,
+				Y = (float)val.Y,
+			};
+		}
+
+		public static explicit operator UInt2(Double2 val)
+		{
+			return new UInt2()
+			{
+				X = (uint)val.X,
+				Y = (uint)val.Y,
+			};
+		}
+
+		public static explicit operator Int2(Double2 val)
+		{
+			return new Int2()
+			{
+				X = (int)val.X,
+				Y = (int)val.Y,
+			};
+		}
+
 	}
 }

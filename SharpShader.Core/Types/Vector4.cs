@@ -4909,5 +4909,38 @@ namespace SharpShader
 				W = (float)(a / b.W),
 			};
 		}
+		public static explicit operator UInt4(Vector4 val)
+		{
+			return new UInt4()
+			{
+				X = (uint)val.X,
+				Y = (uint)val.Y,
+				Z = (uint)val.Z,
+				W = (uint)val.W,
+			};
+		}
+
+		public static explicit operator Int4(Vector4 val)
+		{
+			return new Int4()
+			{
+				X = (int)val.X,
+				Y = (int)val.Y,
+				Z = (int)val.Z,
+				W = (int)val.W,
+			};
+		}
+
+		public static explicit operator Double4(Vector4 val)
+		{
+			return new Double4()
+			{
+				X = (double)val.X,
+				Y = (double)val.Y,
+				Z = (double)val.Z,
+				W = (double)val.W,
+			};
+		}
+
 	}
 }

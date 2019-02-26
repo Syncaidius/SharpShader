@@ -12,7 +12,7 @@ namespace SharpShader
     /// </summary>
     [RegisteredType]
     [UnorderedAccessType]
-    public interface RWTexture2D<T> : IRWTextureBase<T, Int3, Int2>
+    public interface RWTexture2D<T> : IRWTextureBase<T, Int3, UInt2>
         where T : struct
     {
         void GetDimensions(out uint width, out uint height);

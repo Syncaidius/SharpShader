@@ -12,6 +12,7 @@
 
 	string[] vectorNames = {"Vector", "UInt", "Int", "Bool", "Double"};
 	string[] vectorTypes = {"float", "uint", "int", "bool", "double"};
+	bool[] castable = {true, true, true, false, true};
 	bool[] isIntrinsic = {true, false, true, false, false};
 	bool[]  vectorOperators = {true, true, true, false, true};
 	string[] operatorScalarTypes = {"int", "float", "double"};
@@ -333,6 +334,32 @@ namespace SharpShader
 		}
 <#
 		}
+		}
+
+		// Generate explict cast operators
+		for(int ca = 0; ca < castable.Length; ca++)
+		{
+			if(!castable[ca] || !castable[t] || t == ca)
+				continue;
+
+			string castToName = vectorNames[ca] + i;
+#>
+		public static explicit operator <#=castToName#>(<#=name#> val)
+		{
+			return new <#=castToName#>()
+			{
+<#
+			for(int j = 0; j < i; j++)
+			{
+#>
+				<#=componentNames[j]#> = (<#=vectorTypes[ca]#>)<#=$"val.{componentNames[j]}"#>,
+<#
+			}
+#>
+			};
+		}
+
+<#
 		}
 		}
 #>
