@@ -22,7 +22,7 @@
       <dependency id="Microsoft.CodeAnalysis.Analyzers" version="2.6.1" />
       <dependency id="Microsoft.CodeAnalysis.Common" version="2.9.0" />
       <dependency id="Microsoft.CodeAnalysis.CSharp" version="2.9.0" />
-      <dependency id="SharpShader.Core" version="0.0.3-alpha" />
+      <dependency id="SharpShader.Core" version="0.0.3-alpha2" />
     </dependencies>
   </metadata>
   <files>
