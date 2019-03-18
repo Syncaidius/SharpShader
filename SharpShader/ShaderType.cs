@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SharpShader.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -105,8 +106,7 @@ namespace SharpShader
             IEnumerable<Type> allTypes = t.Assembly.GetTypes();
             foreach (Type type in allTypes)
             {
-                RegisteredTypeAttribute rta = type.GetCustomAttribute<RegisteredTypeAttribute>();
-                if (rta != null)
+                if (TypeHelper.IsRegisteredType(type))
                     _registerTypes.Add(type);
             }
 
@@ -415,11 +415,8 @@ namespace SharpShader
         /// <param name="lang">The shader language which the type belongs to.</param>
         internal ShaderType(ShaderLanguage lang, string translation, Type originalType)
         {
-            object[] attributes = originalType.GetCustomAttributes(typeof(RegisteredTypeAttribute), false);
-            IsRegisteredType = attributes.Length > 0;
-
-            attributes = originalType.GetCustomAttributes(typeof(UnorderedAccessTypeAttribute), false);
-            IsUnorderedAccessType = attributes.Length > 0;
+            IsRegisteredType = TypeHelper.IsRegisteredType(originalType);
+            IsUnorderedAccessType = TypeHelper.IsUnorderedAccessType(originalType);
 
             _dimensions = new List<int>();
             Dimensions = _dimensions.AsReadOnly();

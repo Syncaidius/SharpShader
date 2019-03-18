@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,10 +41,4 @@ namespace SharpShader
             ApplicableEntryPoint = EntryPointType.AnyOrNone;
         }
     }
-
-    /// <summary>
-    /// Used for tagging types as compatible with <see cref="RegisterAttribute"/>.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Interface, Inherited = true)]
-    internal class RegisteredTypeAttribute : SharpShaderAttribute { }
 }

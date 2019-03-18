@@ -9,8 +9,8 @@ namespace SharpShader
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Method)]
     public class SemanticAttribute : SharpShaderAttribute
     {
-        internal SemanticType Semantic { get; }
-        internal int Slot { get; }
+        public SemanticType Semantic { get; }
+        public int Slot { get; }
 
         public SemanticAttribute(SemanticType semantic, int slot = -1)
         {

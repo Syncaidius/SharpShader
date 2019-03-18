@@ -9,9 +9,9 @@ namespace SharpShader
     [AttributeUsage(AttributeTargets.Field)]
     public class PackOffsetAttribute : SharpShaderAttribute
     {
-        internal PackOffsetComponent OffsetComponent { get; }
+        public PackOffsetComponent OffsetComponent { get; }
 
-        internal int OffsetRegister { get; }
+        public int OffsetRegister { get; }
 
         public PackOffsetAttribute(int offsetRegister, PackOffsetComponent offsetComponent = PackOffsetComponent.X)
         {

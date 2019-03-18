@@ -43,8 +43,63 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ColumnMajorAttribute.cs" />
+    <Compile Include="Attributes\ComputeGroupSharedAttribute.cs" />
+    <Compile Include="Attributes\ComputeShaderAttribute.cs" />
+    <Compile Include="Attributes\ConstantBufferAttribute.cs" />
+    <Compile Include="Attributes\DomainShaderAttribute.cs" />
+    <Compile Include="Attributes\EntryPointAttribute.cs" />
+    <Compile Include="Attributes\FragmentShaderAttribute.cs" />
+    <Compile Include="Attributes\GeometryShaderAttribute.cs" />
+    <Compile Include="Attributes\GloballyCoherentAttribute.cs" />
+    <Compile Include="Attributes\HullShaderAttribute.cs" />
+    <Compile Include="Attributes\InputPatchAttribute.cs" />
+    <Compile Include="Attributes\Interpolation.cs" />
+    <Compile Include="Attributes\IntrinsicVersionAttribute.cs" />
+    <Compile Include="Attributes\OutputPatchAttribute.cs" />
+    <Compile Include="Attributes\PackOffsetAttribute.cs" />
+    <Compile Include="Attributes\RegisterAttribute.cs" />
+    <Compile Include="Attributes\RegisteredTypeAttribute.cs" />
+    <Compile Include="Attributes\RowMajorAttribute.cs" />
+    <Compile Include="Attributes\SemanticAttribute.cs" />
+    <Compile Include="Attributes\ShaderIntrinsicAttribute.cs" />
+    <Compile Include="Attributes\SharpShaderAttribute.cs" />
+    <Compile Include="Attributes\UnorderedAccessTypeAttribute.cs" />
+    <Compile Include="Attributes\VertexShaderAttribute.cs" />
+    <Compile Include="CSharpShader.cs">
+      <DependentUpon>CSharpShader.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="IIntrinsicValue.cs" />
+    <Compile Include="IShaderResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppendStructuredBuffer.cs" />
+    <Compile Include="Resources\Buffer.cs" />
+    <Compile Include="Resources\ByteAddressBuffer.cs" />
+    <Compile Include="Resources\IRWTextureBase.cs" />
+    <Compile Include="Resources\ITexture1DBase.cs" />
+    <Compile Include="Resources\ITexture2DBase.cs" />
+    <Compile Include="Resources\ITextureBase.cs" />
+    <Compile Include="Resources\ITextureCubeBase.cs" />
+    <Compile Include="Resources\RWBuffer.cs" />
+    <Compile Include="Resources\RWByteAddressBuffer.cs" />
+    <Compile Include="Resources\RWStructuredBuffer.cs" />
+    <Compile Include="Resources\RWTexture1D.cs" />
+    <Compile Include="Resources\RWTexture1DArray.cs" />
+    <Compile Include="Resources\RWTexture2D.cs" />
+    <Compile Include="Resources\RWTexture2DArray.cs" />
+    <Compile Include="Resources\RWTexture3D.cs" />
+    <Compile Include="Resources\StructuredBuffer.cs" />
+    <Compile Include="Resources\Texture1D.cs" />
+    <Compile Include="Resources\Texture1DArray.cs" />
+    <Compile Include="Resources\Texture2D.cs" />
+    <Compile Include="Resources\Texture2DArray.cs" />
+    <Compile Include="Resources\Texture3D.cs" />
+    <Compile Include="Resources\TextureComparisonSampler.cs" />
+    <Compile Include="Resources\TextureCube.cs" />
+    <Compile Include="Resources\TextureCubeArray.cs" />
+    <Compile Include="Resources\TextureSampler.cs" />
     <Compile Include="Result\BindPointInfo.cs" />
     <Compile Include="Result\ConstantBufferInfo.cs" />
     <Compile Include="Result\ShaderElementInfo.cs" />
@@ -52,10 +107,14 @@
     <Compile Include="Result\ShaderResourceInfo.cs" />
     <Compile Include="Result\ShaderTranslationResult.cs" />
     <Compile Include="Result\TranslationResult.cs" />
+    <Compile Include="SemanticType.cs" />
+    <Compile Include="Shader.Geometry.Streams.cs" />
+    <Compile Include="Shader.HullDomain.Enums.cs" />
     <Compile Include="ShaderDataType.cs" />
     <Compile Include="EntryPointType.cs" />
     <Compile Include="ShaderModel.cs" />
     <Compile Include="TranslationMessage.cs" />
+    <Compile Include="TypeHelper.cs" />
     <Compile Include="Types\Bool1x1.cs" />
     <Compile Include="Types\Bool1x2.cs" />
     <Compile Include="Types\Bool1x3.cs" />
@@ -177,6 +236,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSharpShader.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CSharpShader.cs</LastGenOutput>
+    </Content>
     <Content Include="Types\Matrices.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrices1.cs</LastGenOutput>

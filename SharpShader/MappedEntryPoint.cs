@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SharpShader.Languages;
+﻿using SharpShader.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

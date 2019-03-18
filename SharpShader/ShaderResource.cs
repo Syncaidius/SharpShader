@@ -62,6 +62,4 @@ namespace SharpShader
             return (ShaderResourceType.Unknown, ShaderResourceBaseType.Unknown);
         }
     }
-
-    public interface IShaderResource { }
 }

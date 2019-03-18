@@ -9,7 +9,8 @@ namespace SharpShader
     [AttributeUsage(AttributeTargets.Field)]
     public class InterpolationAttribute : SharpShaderAttribute
     {
-        internal static readonly InterpolationMode[] ModeValues;
+        public static readonly InterpolationMode[] ModeValues;
+
         static InterpolationAttribute()
         {
             ModeValues = (InterpolationMode[])Enum.GetValues(typeof(InterpolationMode));
