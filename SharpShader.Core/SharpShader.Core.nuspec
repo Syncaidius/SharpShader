@@ -12,7 +12,7 @@
     <description>All of the core types for SharpShader.
     
     Contains everything you need to read SharpShader translation results, without requiring all of the extra dependencies.</description>
-    <releaseNotes>Initial release after package separation.</releaseNotes>
+    <releaseNotes>Moved all shader-related types from SharpShader to SharpShader.Core.</releaseNotes>
     <copyright>Copyright © 2019 James Yarwood</copyright>
     <tags>Shaders HLSL GLSL Translator Source Game Shader C# CSharp Intermediate Converter</tags>
     <frameworkAssemblies>
