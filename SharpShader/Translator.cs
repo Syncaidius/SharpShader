@@ -132,7 +132,7 @@ namespace SharpShader
                     else
                         FormattingHelper.CorrectIndents(ref strSourceResult, flags);
                 }
-                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Namespace, strSourceResult, includes, cBuffers, variables);
+                ShaderTranslationResult shader = new ShaderTranslationResult(strSourceResult, includes, cBuffers, variables);
                 output.Add(sc.Name, shader);
             }
 

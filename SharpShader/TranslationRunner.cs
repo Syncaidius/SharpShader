@@ -72,7 +72,7 @@ namespace SharpShader
                     Stopwatch timer = new Stopwatch();
                     timer.Start();
 
-                    Message("Translating to {context.Language.Language}");
+                    Message($"Translating to {context.Language.Language}");
                     Translate(sc, sc.RootNode);
 
                     timer.Stop();

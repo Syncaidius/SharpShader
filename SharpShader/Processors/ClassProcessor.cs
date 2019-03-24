@@ -12,7 +12,7 @@ namespace SharpShader.Processors
     {
         protected override void OnTranslate(ShaderTranslationContext sc, ClassDeclarationSyntax syntax, ScopeInfo scope)
         {            
-            if (syntax.Identifier.ValueText != sc.Name)
+            if ($"{sc.ShaderType.Namespace}.{syntax.Identifier.ValueText}" != sc.Name)
             {
                 // TODO does the shader language support classes?
                 //      If not, we need a system to translate the class into another form of usable output source.
