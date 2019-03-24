@@ -28,9 +28,21 @@ namespace SharpShader
         /// Gets the translated shader-language source code.
         /// </summary>
         public string SourceCode { get; }
+
+        /// <summary>
+        /// Gets the original namespace of the shader class.
+        /// </summary>
+        public string Namespace { get; }
         
-        public ShaderTranslationResult(string src, Dictionary<string, ShaderTranslationResult> includes, List<ConstantBufferInfo> cBuffers, List<ShaderMember> variables)
+        /// <summary>Creates a new instance of <see cref="ShaderTranslationResult"/>.</summary>
+        /// <param name="nSpace">The original namespace.</param>
+        /// <param name="src">The translated sourcecode.</param>
+        /// <param name="includes">A list of #include shader translations.</param>
+        /// <param name="cBuffers">A list of constant buffers.</param>
+        /// <param name="variables">A list of variables.</param>
+        public ShaderTranslationResult(string nSpace, string src, Dictionary<string, ShaderTranslationResult> includes, List<ConstantBufferInfo> cBuffers, List<ShaderMember> variables)
         {
+            Namespace = nSpace;
             SourceCode = src;
             Includes = new ReadOnlyDictionary<string, ShaderTranslationResult>(includes);
             ConstantBuffers = cBuffers.AsReadOnly();

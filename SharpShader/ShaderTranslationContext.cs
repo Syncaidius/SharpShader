@@ -60,6 +60,8 @@ namespace SharpShader
 
         internal string Name { get; private set; }
 
+        internal string Namespace { get; private set; }
+
         internal OutputSource Source { get; }
 
         public ShaderTranslationContext()
@@ -79,6 +81,7 @@ namespace SharpShader
         {
             Parent = parent;
             Name = syntax.Identifier.ValueText;
+            Namespace = shaderType.Namespace;
             ShaderType = shaderType;
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
