@@ -46,7 +46,7 @@ namespace SharpShader
         /// <summary>
         /// Converts the provided C# source code to the specified shader language.
         /// </summary>
-        /// <param name="fileOrFriendlyName">The filename or friendly name to assign to the source code.</param>
+        /// <param name="fileOrFriendlyName">The filename or friendly name to assign to identify the source code in message logs.</param>
         /// <param name="cSharpSource">The C# source code to be converted.</param>
         /// <param name="outputLanguage">The output shader language.</param>
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
@@ -64,7 +64,7 @@ namespace SharpShader
         /// <summary>
         /// Converts the provided C# source code to the specified shader language.
         /// </summary>
-        /// <param name="cSharpSources">A dictionary containing source code by file or friendly name.</param>
+        /// <param name="cSharpSources">A dictionary containing source code by file or friendly name. The name is used to identify the source code in message logs.</param>
         /// <param name="outputLanguage">The language that the input source code should be translated to.</param>
         /// <param name="flags">A set of flags to change the default behaviour of the converter.</param>
         /// <param name="preprocessorSymbols">A list of defined preprocessor symbols.</param>
@@ -102,7 +102,9 @@ namespace SharpShader
                 var cBuffers = new List<ConstantBufferInfo>();
                 var includes = new Dictionary<string, ShaderTranslationResult>();
                 var variables = new List<ShaderMember>();
+                string strSourceResult = sc.Source.ToString();
 
+                // Constant Buffers
                 foreach (KeyValuePair<string, MappedConstantBuffer> p in sc.ConstantBuffers)
                 {
                     List<ShaderMember> cBufferVariables = new List<ShaderMember>();
@@ -113,18 +115,11 @@ namespace SharpShader
                     cBuffers.Add(new ConstantBufferInfo(p.Key, cBufferVariables, p.Value.BindSlots));
                 }
 
+                // Fields
                 foreach (MappedField mField in sc.MappedFields)
                     variables.Add(PopulateMember(mField));
 
-                /* TODO:
-                 *  - Produce info for a SINGLE entry point
-                 *  - If a ShaderResult is used as an include, flag a boolean property as such (e.g. IsInclude).
-                 *  - Produce input and output layout information (ShaderInputOuput).
-                 */
-
-
-                string strSourceResult = sc.Source.ToString();
-
+                // Formatting
                 if ((flags & TranslationFlags.SkipFormatting) != TranslationFlags.SkipFormatting)
                 {
                     if ((flags & TranslationFlags.RemoveWhitespace) == TranslationFlags.RemoveWhitespace)
@@ -132,7 +127,12 @@ namespace SharpShader
                     else
                         FormattingHelper.CorrectIndents(ref strSourceResult, flags);
                 }
-                ShaderTranslationResult shader = new ShaderTranslationResult(strSourceResult, includes, cBuffers, variables);
+
+                Dictionary<string, EntryPointInfo> epInfo = new Dictionary<string, EntryPointInfo>();
+                foreach (KeyValuePair<string, MappedEntryPoint> ep in sc.EntryPointsByName)
+                    epInfo.Add(ep.Key, new EntryPointInfo(ep.Key, ep.Value.EntryType, ep.Value.StartIndex, ep.Value.EndIndex));
+
+                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Name, strSourceResult, epInfo, includes, cBuffers, variables);
                 output.Add(sc.Name, shader);
             }
 

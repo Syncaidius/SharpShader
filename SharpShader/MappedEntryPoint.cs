@@ -9,13 +9,19 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal class MappedEntryPoint
+    internal class MappedEntryPoint : IScopeTracker
     {
         internal EntryPointType EntryType;
 
+        [NonSerialized]
         internal EntryPointAttribute Attribute;
 
+        [NonSerialized]
         internal IEntryPointTranslator Translator;
+
+        public int StartIndex { get; set; }
+
+        public int EndIndex { get; set; }
 
         internal MappedEntryPoint(IEntryPointTranslator translator, EntryPointAttribute attribute)
         {

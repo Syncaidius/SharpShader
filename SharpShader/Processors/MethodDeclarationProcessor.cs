@@ -16,15 +16,14 @@ namespace SharpShader.Processors
             MethodInfo info = sc.GetMethodInfo(syntax);
             if (info != null)
             {
-                sc.Source.AppendLineBreak();
+                MappedEntryPoint ep = null;
+                sc.EntryPointsByMethod.TryGetValue(info, out ep);
 
-                ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method);
+                sc.Source.AppendLineBreak();
+                ScopeInfo mScope = sc.Source.OpenScope(ScopeType.Method, null, ep);
                 mScope.Method = info;
 
                 ShaderType returnType = ShaderType.TranslateType(sc, syntax.ReturnType.ToString());
-
-                MappedEntryPoint ep = null;
-                sc.EntryPoints.TryGetValue(info, out ep);
 
                 ep?.Translator?.TranslatePrefix(sc, info, syntax, ep);
                 sc.Source.Append($"{returnType.Translation} {syntax.Identifier.ValueText}");

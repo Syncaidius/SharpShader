@@ -66,6 +66,7 @@ namespace SharpShader
             IsLocal = false;
             InsertionPoint = -1;
             StructType = StructScopeType.None;
+            Tracker = null;
         }
 
         internal ScopeInfo Parent;
@@ -114,6 +115,11 @@ namespace SharpShader
         /// The identifier/name of a scope object.
         /// </summary>
         internal string Identifier;
+
+        /// <summary>
+        /// An optional scope tracker to be updated when the scope is opened and closed.
+        /// </summary>
+        internal IScopeTracker Tracker;
     }
 
     internal enum StructScopeType
@@ -134,5 +140,12 @@ namespace SharpShader
         LocalVariables = 2,
 
         Fields = 3,
+    }
+
+    internal interface IScopeTracker
+    {
+        int StartIndex { get; set; }
+
+        int EndIndex { get; set; }
     }
 }

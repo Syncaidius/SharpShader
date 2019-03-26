@@ -92,7 +92,7 @@ namespace SharpShader
             return OpenScope(type, new ShaderType(_language, tInfo.Name, tInfo));
         }
 
-        internal ScopeInfo OpenScope(ScopeType type, ShaderType tInfo = null)
+        internal ScopeInfo OpenScope(ScopeType type, ShaderType tInfo = null, IScopeTracker tracker = null)
         {
             ScopeInfo newScope = Pooling.Scopes.Get();
             newScope.Parent = _currentScope;
@@ -100,6 +100,12 @@ namespace SharpShader
             newScope.Type = type;
             newScope.TypeInfo = tInfo;
             newScope.Settings = ScopeSettings.Settings[type];
+
+            if (tracker != null)
+            {
+                newScope.Tracker = tracker;
+                newScope.Tracker.StartIndex = _pos;
+            }
 
             // Track namespace path
             if ((type == ScopeType.Class || type == ScopeType.Struct) && tInfo != null)
@@ -138,6 +144,9 @@ namespace SharpShader
 
             if ((_currentScope.Settings.ClosingSyntax.NewLine & NewLineFlags.After) == NewLineFlags.After)
                 AppendLineBreak();
+
+            if (_currentScope.Tracker != null)
+                _currentScope.Tracker.EndIndex = _pos;
 
             Pooling.Scopes.Put(_currentScope);
             _currentScope = _scopes.Pop();

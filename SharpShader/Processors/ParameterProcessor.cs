@@ -36,7 +36,7 @@ namespace SharpShader.Processors
             if (methodScope != null)
             {
                 methodInfo = methodScope.Method;
-                sc.EntryPoints.TryGetValue(methodInfo, out ep);
+                sc.EntryPointsByMethod.TryGetValue(methodInfo, out ep);
             }
 
             // TODO pass to language variable translation, since parameters can have attributes

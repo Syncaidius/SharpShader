@@ -31,7 +31,9 @@ namespace SharpShader
         internal TranslationContext Parent { get; private set; }
 
         [NonSerialized]
-        internal readonly Dictionary<MethodInfo, MappedEntryPoint> EntryPoints;
+        internal readonly Dictionary<MethodInfo, MappedEntryPoint> EntryPointsByMethod;
+
+        internal readonly Dictionary<string, MappedEntryPoint> EntryPointsByName;
 
         /// <summary>
         /// All C#-based fields contained within the shader class.
@@ -67,7 +69,8 @@ namespace SharpShader
             _completedNodes = new HashSet<SyntaxNode>();
             Source = new OutputSource();
 
-            EntryPoints = new Dictionary<MethodInfo, MappedEntryPoint>();
+            EntryPointsByMethod = new Dictionary<MethodInfo, MappedEntryPoint>();
+            EntryPointsByName = new Dictionary<string, MappedEntryPoint>();
             _methods = new Dictionary<string, MethodBucket>();
             Fields = new Dictionary<string, FieldInfo>();
             MappedFields = new List<MappedField>();
@@ -115,7 +118,8 @@ namespace SharpShader
 
             _methods.Clear();
             _completedNodes.Clear();
-            EntryPoints.Clear();
+            EntryPointsByMethod.Clear();
+            EntryPointsByName.Clear();
             Fields.Clear();
             MappedFields.Clear();
             Structures.Clear();
@@ -135,7 +139,10 @@ namespace SharpShader
                         Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, TranslationMessageType.Warning);
 
                     IEntryPointTranslator epTranslator = Language.GetEntryPoinTranslator(epAttribute.EntryType);
-                    EntryPoints.Add(mi, new MappedEntryPoint(epTranslator, epAttribute));
+                    MappedEntryPoint ep = new MappedEntryPoint(epTranslator, epAttribute);
+
+                    EntryPointsByMethod.Add(mi, ep);
+                    EntryPointsByName.Add(mi.Name, ep);
                 }
 
                 MethodBucket bucket;

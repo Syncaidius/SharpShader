@@ -102,6 +102,7 @@
     <Compile Include="Resources\TextureSampler.cs" />
     <Compile Include="Result\BindPointInfo.cs" />
     <Compile Include="Result\ConstantBufferInfo.cs" />
+    <Compile Include="Result\EntryPointInfo.cs" />
     <Compile Include="Result\ShaderElementInfo.cs" />
     <Compile Include="Result\ShaderMember.cs" />
     <Compile Include="Result\ShaderResourceInfo.cs" />
