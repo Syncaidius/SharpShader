@@ -189,6 +189,7 @@
     <Compile Include="MappedConstantBuffer.cs" />
     <Compile Include="Interlocker.cs" />
     <Compile Include="ShaderResource.cs" />
+    <Compile Include="SourceSegment.cs" />
     <Compile Include="ThreadSafeList.cs" />
     <Compile Include="TranslationArgs.cs" />
     <Compile Include="TranslationContext.ReflectionInfo.cs" />
@@ -231,8 +232,6 @@
     <Compile Include="Processors\PredefinedTypeProcessor.cs" />
     <Compile Include="ScopeSettings.cs" />
     <Compile Include="Exceptions\ScopeException.cs" />
-    <Compile Include="Languages\HLSL\GeometryEntryPointTranslator.cs" />
-    <Compile Include="Languages\HLSL\DomainEntryPointTranslator.cs" />
     <Compile Include="Languages\GLSL\GlslLanguage.cs" />
     <Compile Include="Languages\HLSL\HlslLanguage.cs" />
     <Compile Include="Languages\ShaderLanguage.cs" />

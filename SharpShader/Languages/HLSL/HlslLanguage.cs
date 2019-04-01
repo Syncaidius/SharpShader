@@ -104,7 +104,8 @@ namespace SharpShader
 
         internal override void TranslateConstBufferHeader(ShaderTranslationContext sc, StructDeclarationSyntax syntax, MappedConstantBuffer cBufferMap, IEnumerable<Attribute> attributes)
         {
-            sc.Source.Append($"{Environment.NewLine}cbuffer {cBufferMap.TypeInfo.Name}");
+            sc.Source.AppendLineBreak();
+            sc.Source.Append($"cbuffer {cBufferMap.TypeInfo.Name}");
             TranslatePostfixAttributes(sc, attributes, 'b', 0, 0, cBufferMap);
         }
 

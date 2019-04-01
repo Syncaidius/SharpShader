@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SharpShader
 {
     [Serializable]
-    internal class MappedEntryPoint : IScopeTracker
+    internal class MappedEntryPoint : ISegmentTracker
     {
         internal EntryPointType EntryType;
 

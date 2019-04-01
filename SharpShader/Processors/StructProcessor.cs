@@ -29,7 +29,8 @@ namespace SharpShader.Processors
                 //IEnumerable<Attribute> cBufferAttributes = structInfo.GetCustomAttributes(false).Cast<Attribute>();
                 // TODO Add translation of struct attributes (e.g. [InputStructure] or [OutputStructure]).
 
-                sc.Source.Append($"{Environment.NewLine}struct {syntax.Identifier}");
+                sc.Source.AppendLineBreak();
+                sc.Source.Append($"struct {syntax.Identifier}");
                 scopeType = StructScopeType.Struct;
             }
 

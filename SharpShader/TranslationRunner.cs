@@ -47,7 +47,7 @@ namespace SharpShader
 
             ShaderLanguage foundation = ShaderLanguage.Get(args.Language);
             TranslationContext context = Pooling.Contexts.Get();
-            context.Initialize(this, foundation, preprocessorSymbols);
+            context.Initialize(this, foundation, preprocessorSymbols, args.Flags);
 
             Message("Analyzing", TranslationMessageType.Status);
             AnalysisInfo analysis = Analyze(context, args.CSharpSources);
@@ -74,6 +74,7 @@ namespace SharpShader
 
                     Message($"Translating to {context.Language.Language}");
                     Translate(sc, sc.RootNode);
+                    sc.FinalSource = sc.Source.ToString();
 
                     timer.Stop();
                     Message($"  Finished '{sc.Name}' in {timer.Elapsed.TotalMilliseconds:N2} milliseconds");

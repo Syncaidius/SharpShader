@@ -31,13 +31,17 @@ namespace SharpShader
         [field: NonSerialized]
         internal TranslationRunner Runner { get; private set; }
 
+        [field: NonSerialized]
+        internal TranslationFlags Flags { get; private set; }
+
         internal List<ShaderTranslationContext> Shaders { get; } = new List<ShaderTranslationContext>();
 
         [NonSerialized]
         int _nextVariable = 0;
 
-        internal void Initialize(TranslationRunner runner, ShaderLanguage language, List<string> preprocessorSymbols)
+        internal void Initialize(TranslationRunner runner, ShaderLanguage language, List<string> preprocessorSymbols, TranslationFlags flags)
         {
+            Flags = flags;
             Runner = runner;
             Language = language;
             ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7_3, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols);
@@ -82,6 +86,7 @@ namespace SharpShader
             ParseOptions = null;
             Language = null;
             Runner = null;
+            Flags = TranslationFlags.None;
             _nextVariable = 0;
         }
 

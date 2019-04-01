@@ -9,18 +9,15 @@ namespace SharpShader
     [Flags]
     public enum TranslationFlags
     {
+        /// <summary>
+        /// No flags.
+        /// </summary>
         None = 0,
 
         /// <summary>
-        /// Removes all whitespace from the translated shader code. This is ignored if the <see cref="SkipFormatting"/> flag is present.
+        /// Avoids adding whitespace for formatting, to the translated shader code.
         /// </summary>
-        RemoveWhitespace = 1,
-
-        /// <summary>
-        /// Skips the formatting correction stage, which usually fixes indentation and trims excess whitespace from the start and end of translated shader code. <para/>
-        /// This will also cause other formatting-related flags to be ignored, such as <see cref="RemoveWhitespace"/>.
-        /// </summary>
-        SkipFormatting = 2,
+        NoWhitespace = 1,
 
         /// <summary>
         /// Strips code comments and summaries from the translated shader code.

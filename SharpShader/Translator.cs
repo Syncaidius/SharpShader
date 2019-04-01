@@ -102,7 +102,6 @@ namespace SharpShader
                 var cBuffers = new List<ConstantBufferInfo>();
                 var includes = new Dictionary<string, ShaderTranslationResult>();
                 var variables = new List<ShaderMember>();
-                string strSourceResult = sc.Source.ToString();
 
                 // Constant Buffers
                 foreach (KeyValuePair<string, MappedConstantBuffer> p in sc.ConstantBuffers)
@@ -119,20 +118,11 @@ namespace SharpShader
                 foreach (MappedField mField in sc.MappedFields)
                     variables.Add(PopulateMember(mField));
 
-                // Formatting
-                if ((flags & TranslationFlags.SkipFormatting) != TranslationFlags.SkipFormatting)
-                {
-                    if ((flags & TranslationFlags.RemoveWhitespace) == TranslationFlags.RemoveWhitespace)
-                        FormattingHelper.RemoveWhitespace(ref strSourceResult, flags);
-                    else
-                        FormattingHelper.CorrectIndents(ref strSourceResult, flags);
-                }
-
                 Dictionary<string, EntryPointInfo> epInfo = new Dictionary<string, EntryPointInfo>();
                 foreach (KeyValuePair<string, MappedEntryPoint> ep in sc.EntryPointsByName)
                     epInfo.Add(ep.Key, new EntryPointInfo(ep.Key, ep.Value.EntryType, ep.Value.StartIndex, ep.Value.EndIndex));
 
-                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Name, strSourceResult, epInfo, includes, cBuffers, variables);
+                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Name, sc.FinalSource, epInfo, includes, cBuffers, variables);
                 output.Add(sc.Name, shader);
             }
 

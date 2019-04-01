@@ -62,7 +62,10 @@ namespace SharpShader
 
         internal string Name { get; private set; }
 
+        [field:NonSerialized]
         internal OutputSource Source { get; }
+
+        internal string FinalSource { get; set; }
 
         public ShaderTranslationContext()
         {
@@ -85,7 +88,7 @@ namespace SharpShader
             ShaderType = shaderType;
             SyntaxTree tree = CSharpSyntaxTree.ParseText(syntax.ToString(), Parent.ParseOptions);
             RootNode = tree.GetRoot();
-            Source.Initialize(this);
+            Source.Initialize(this, parent.Flags);
 
             BindingFlags bFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
 
@@ -105,6 +108,7 @@ namespace SharpShader
         void IPoolable.Clear()
         {
             Source.Clear();
+            FinalSource = null;
             Parent = null;
             Name = null;
             ShaderType = null;

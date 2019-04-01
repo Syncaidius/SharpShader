@@ -31,26 +31,29 @@ namespace SharpShader
 
         internal readonly OpenCloseSyntax ClosingSyntax;
 
-        internal ScopeSettings() : this("", NewLineFlags.None, "", NewLineFlags.None) { }
+        internal readonly bool Indent;
 
-        internal ScopeSettings(string openingString, NewLineFlags openingFlags, string closingString, NewLineFlags closingFlags)
+        internal ScopeSettings() : this("", NewLineFlags.None, "", NewLineFlags.None, false) { }
+
+        internal ScopeSettings(string openingString, NewLineFlags openingFlags, string closingString, NewLineFlags closingFlags, bool indent)
         {
             OpeningSyntax = new OpenCloseSyntax(openingString, openingFlags);
             ClosingSyntax = new OpenCloseSyntax(closingString, closingFlags);
+            Indent = indent;
         }
 
         internal static readonly Dictionary<ScopeType, ScopeSettings> Settings = new Dictionary<ScopeType, ScopeSettings>()
         {
             [ScopeType.Class] = new ScopeSettings(),
-            [ScopeType.Block] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.After),
-            [ScopeType.Indexer] = new ScopeSettings("[", NewLineFlags.None, "]", NewLineFlags.None),
-            [ScopeType.ArrayElement] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After),
-            [ScopeType.ArrayInitializer] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.Before),
+            [ScopeType.Block] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.After, true),
+            [ScopeType.Indexer] = new ScopeSettings("[", NewLineFlags.None, "]", NewLineFlags.None, false),
+            [ScopeType.ArrayElement] = new ScopeSettings("", NewLineFlags.None, ",", NewLineFlags.After, false),
+            [ScopeType.ArrayInitializer] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "}", NewLineFlags.Before, true),
             [ScopeType.ExpandedInitializer] = new ScopeSettings(),
-            [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After),
-            [ScopeType.ParenthesesItem] = new ScopeSettings("", NewLineFlags.None, ", ", NewLineFlags.None),
-            [ScopeType.Parentheses] = new ScopeSettings("(", NewLineFlags.None, ")", NewLineFlags.None),
-            [ScopeType.Struct] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "};", NewLineFlags.After),
+            [ScopeType.Variable] = new ScopeSettings("", NewLineFlags.None, ";", NewLineFlags.After, false),
+            [ScopeType.ParenthesesItem] = new ScopeSettings("", NewLineFlags.None, ", ", NewLineFlags.None, false),
+            [ScopeType.Parentheses] = new ScopeSettings("(", NewLineFlags.None, ")", NewLineFlags.None, false),
+            [ScopeType.Struct] = new ScopeSettings("{", NewLineFlags.Before | NewLineFlags.After, "};", NewLineFlags.After, true),
             [ScopeType.Typed] = new ScopeSettings(),
             [ScopeType.Method] = new ScopeSettings(),
             [ScopeType.Property] = new ScopeSettings(),

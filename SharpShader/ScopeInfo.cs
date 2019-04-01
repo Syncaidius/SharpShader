@@ -23,11 +23,11 @@ namespace SharpShader
             ScopeInfo si = this;
             while(si != null)
             {
-                if(si.InsertionPoint > -1)
+                if (si.Type == ScopeType.Block && si.Parent.Type == ScopeType.Method)
                 {
-                    sc.Source.SetPosition(si.InsertionPoint);
+                    sc.Source.GoToSegment(si.OpeningSegment);
                     callback();
-                    sc.Source.SetPositionToEnd();
+                    sc.Source.GoToEnd();
                     return;
                 }
 
@@ -57,6 +57,7 @@ namespace SharpShader
         public void Clear()
         {
             Parent = null;
+            OpeningSegment = null;
             Settings = null;
             Method = null;
             Items = default;
@@ -64,19 +65,14 @@ namespace SharpShader
             TranslatedModifiers = "";
             Namespace = "";
             IsLocal = false;
-            InsertionPoint = -1;
             StructType = StructScopeType.None;
-            Tracker = null;
         }
 
         internal ScopeInfo Parent;
 
-        internal int IndentationDepth;
+        internal SourceSegment OpeningSegment;
 
-        /// <summary>
-        /// The location at which any declarations are inserted. This is ignored if <see cref="IsDeclarative"/> is false.
-        /// </summary>
-        internal int InsertionPoint;
+        internal int IndentationDepth;
 
         internal ScopeSettings Settings;
 
@@ -115,11 +111,6 @@ namespace SharpShader
         /// The identifier/name of a scope object.
         /// </summary>
         internal string Identifier;
-
-        /// <summary>
-        /// An optional scope tracker to be updated when the scope is opened and closed.
-        /// </summary>
-        internal IScopeTracker Tracker;
     }
 
     internal enum StructScopeType
@@ -129,23 +120,5 @@ namespace SharpShader
         ConstantBuffer = 1,
 
         Struct = 2,
-    }
-
-    internal enum AcceptedDeclarations
-    {
-        None = 0,
-
-        Types = 1,
-
-        LocalVariables = 2,
-
-        Fields = 3,
-    }
-
-    internal interface IScopeTracker
-    {
-        int StartIndex { get; set; }
-
-        int EndIndex { get; set; }
     }
 }
