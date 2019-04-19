@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace SharpShader
 {
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct Vector4 : IVector<float>, IIntrinsicValue<float>
 	{
 		/// <summary>
@@ -4593,11 +4594,13 @@ namespace SharpShader
 		/// </summary>
 		public Vector4 AAAA => new Vector4(A, A, A, A);
 
+
 		public float R
 		{
 			get => X;
 			set => X = value;
 		}
+
 
 		public float G
 		{
@@ -4605,11 +4608,13 @@ namespace SharpShader
 			set => Y = value;
 		}
 
+
 		public float B
 		{
 			get => Z;
 			set => Z = value;
 		}
+
 
 		public float A
 		{

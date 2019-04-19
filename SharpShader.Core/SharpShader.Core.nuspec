@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>SharpShader.Core</id>
-    <version>0.0.5-alpha</version>
+    <version>0.0.6-alpha</version>
     <authors>James Yarwood</authors>
     <owners>James Yarwood</owners>
     <licenseUrl>https://github.com/Syncaidius/SharpShader/blob/master/LICENSE</licenseUrl>

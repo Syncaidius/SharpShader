@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace SharpShader
 {
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct Double2 : IVector<double>
 	{
 		/// <summary>
@@ -372,11 +373,13 @@ namespace SharpShader
 		/// </summary>
 		public Double4 GGGG => new Double4(G, G, G, G);
 
+
 		public double R
 		{
 			get => X;
 			set => X = value;
 		}
+
 
 		public double G
 		{

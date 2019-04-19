@@ -118,11 +118,28 @@ namespace SharpShader
                 foreach (MappedField mField in sc.MappedFields)
                     variables.Add(PopulateMember(mField));
 
-                Dictionary<string, EntryPointInfo> epInfo = new Dictionary<string, EntryPointInfo>();
-                foreach (KeyValuePair<string, MappedEntryPoint> ep in sc.EntryPointsByName)
-                    epInfo.Add(ep.Key, new EntryPointInfo(ep.Key, ep.Value.EntryType, ep.Value.StartIndex, ep.Value.EndIndex));
+                Dictionary<string, EntryPointInfo> epDict = new Dictionary<string, EntryPointInfo>();
+                foreach (KeyValuePair<string, MappedEntryPoint> pair in sc.EntryPointsByName)
+                {
+                    EntryPointInfo info = pair.Value.Info;
+                    epDict.Add(pair.Key, new EntryPointInfo()
+                    {
+                        StartIndex = info.StartIndex,
+                        EndIndex = info.EndIndex,
+                        GeometryMaxVertexOut = info.GeometryMaxVertexOut,
+                        GeometryType = info.GeometryType,
+                        HullControlPoints = info.HullControlPoints,
+                        HullPartitioning = info.HullPartitioning,
+                        HullPatchConstantCallback = info.HullPatchConstantCallback,
+                        HullTopology = info.HullTopology,
+                        Name = info.Name,
+                        PatchType = info.PatchType,
+                        ThreadGroupSize = info.ThreadGroupSize,
+                        Type = info.Type,
+                    });
+                }
 
-                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Name, sc.FinalSource, epInfo, includes, cBuffers, variables);
+                ShaderTranslationResult shader = new ShaderTranslationResult(sc.Name, sc.FinalSource, epDict, includes, cBuffers, variables);
                 output.Add(sc.Name, shader);
             }
 

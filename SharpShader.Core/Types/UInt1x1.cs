@@ -7,6 +7,7 @@ namespace SharpShader
 	///	A 1 row, 1 column matrix.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct UInt1x1 : IMatrix<uint>, UniformDimensions
 	{
 		/// <summary>

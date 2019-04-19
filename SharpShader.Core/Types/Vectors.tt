@@ -38,6 +38,7 @@ namespace SharpShader
 	}
 #>
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct <#=name#> : IVector<<#=vectorTypes[t]#>><#=(isIntrinsic[t] ? $", IIntrinsicValue<{vectorTypes[t]}>" : "")#>
 	{
 		/// <summary>
@@ -267,6 +268,7 @@ namespace SharpShader
 		for(int j = 0; j < i; j++)
 		{
 #>
+
 		public <#=vectorTypes[t]#> <#=channelNames[j]#>
 		{
 			get => <#=componentNames[j]#>;

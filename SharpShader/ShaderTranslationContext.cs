@@ -143,7 +143,7 @@ namespace SharpShader
                         Parent.AddMessage($"Method '{mi.Name}' has multiple entry-point attributes. Using '{epAttribute.GetType().Name}'.", 0, 0, TranslationMessageType.Warning);
 
                     IEntryPointTranslator epTranslator = Language.GetEntryPoinTranslator(epAttribute.EntryType);
-                    MappedEntryPoint ep = new MappedEntryPoint(epTranslator, epAttribute);
+                    MappedEntryPoint ep = new MappedEntryPoint(mi.Name, epTranslator, epAttribute);
 
                     EntryPointsByMethod.Add(mi, ep);
                     EntryPointsByName.Add(mi.Name, ep);

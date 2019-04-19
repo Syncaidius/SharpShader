@@ -7,6 +7,7 @@ namespace SharpShader
 	///	A 4 row, 1 column matrix.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct Double4x1 : IMatrix<double>
 	{
 		/// <summary>

@@ -11,28 +11,64 @@ namespace SharpShader
     [Serializable]
     internal class MappedEntryPoint : ISegmentTracker
     {
-        internal EntryPointType EntryType;
-
         [NonSerialized]
         internal EntryPointAttribute Attribute;
 
         [NonSerialized]
         internal IEntryPointTranslator Translator;
 
-        public int StartIndex { get; set; }
+        public EntryPointInfo Info;
 
-        public int EndIndex { get; set; }
+        public int StartIndex
+        {
+            get => Info.StartIndex;
+            set => Info.StartIndex = value;
+        }
 
-        internal MappedEntryPoint(IEntryPointTranslator translator, EntryPointAttribute attribute)
+        public int EndIndex
+        {
+            get => Info.EndIndex;
+            set => Info.EndIndex = value;
+        }
+
+        internal MappedEntryPoint(string name, IEntryPointTranslator translator, EntryPointAttribute attribute)
         {
             Attribute = attribute;
-            EntryType = attribute.EntryType;
             Translator = translator;
+            Info = new EntryPointInfo()
+            {
+                Name = name,
+                Type = attribute.EntryType,
+            };
+
+            switch (attribute)
+            {
+                case ComputeShaderAttribute epCompute:
+                    Info.ThreadGroupSize = new Int3(epCompute.ThreadsX, epCompute.ThreadsY, epCompute.ThreadsZ);
+                    break;
+
+                case DomainShaderAttribute epDomain:
+                    Info.PatchType = epDomain.PatchType;
+                    break;
+
+                case HullShaderAttribute epHull:
+                    Info.PatchType = epHull.PatchType;
+                    Info.HullControlPoints = epHull.OutputControlPoints;
+                    Info.HullTopology = epHull.Topology;
+                    Info.HullPartitioning = epHull.Partitioning;
+                    Info.HullPatchConstantCallback = epHull.PatchConstantCallback;
+                    break;
+
+                case GeometryShaderAttribute epGeo:
+                    Info.GeometryType = epGeo.InputType;
+                    Info.GeometryMaxVertexOut = epGeo.MaxVertexOutCount;
+                    break;
+            }
         }
 
         public override string ToString()
         {
-            return EntryType.ToString();
+            return Info.Type.ToString();
         }
     }
 }

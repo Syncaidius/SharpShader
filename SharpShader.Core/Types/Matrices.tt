@@ -35,6 +35,7 @@ namespace SharpShader
 	///	A <#=$"{rowCount} row, {colCount} column matrix."#>
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct <#=name#> : IMatrix<<#=matTypes[t]#>><#=(intrinsic + uniformDimensions)#>
 	{
 		/// <summary>

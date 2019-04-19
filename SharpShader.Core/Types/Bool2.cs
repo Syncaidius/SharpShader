@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 namespace SharpShader
 {
 	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
 	public struct Bool2 : IVector<bool>
 	{
 		/// <summary>
@@ -372,11 +373,13 @@ namespace SharpShader
 		/// </summary>
 		public Bool4 GGGG => new Bool4(G, G, G, G);
 
+
 		public bool R
 		{
 			get => X;
 			set => X = value;
 		}
+
 
 		public bool G
 		{
