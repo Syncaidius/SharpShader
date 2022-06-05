@@ -375,13 +375,11 @@ namespace SharpShader
 		/// </summary>
 		public Vector4 GGGG => new Vector4(G, G, G, G);
 
-
 		public float R
 		{
 			get => X;
 			set => X = value;
 		}
-
 
 		public float G
 		{

@@ -373,13 +373,11 @@ namespace SharpShader
 		/// </summary>
 		public Bool4 GGGG => new Bool4(G, G, G, G);
 
-
 		public bool R
 		{
 			get => X;
 			set => X = value;
 		}
-
 
 		public bool G
 		{

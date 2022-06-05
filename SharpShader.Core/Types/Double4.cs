@@ -4594,13 +4594,11 @@ namespace SharpShader
 		/// </summary>
 		public Double4 AAAA => new Double4(A, A, A, A);
 
-
 		public double R
 		{
 			get => X;
 			set => X = value;
 		}
-
 
 		public double G
 		{
@@ -4608,13 +4606,11 @@ namespace SharpShader
 			set => Y = value;
 		}
 
-
 		public double B
 		{
 			get => Z;
 			set => Z = value;
 		}
-
 
 		public double A
 		{

@@ -373,13 +373,11 @@ namespace SharpShader
 		/// </summary>
 		public UInt4 GGGG => new UInt4(G, G, G, G);
 
-
 		public uint R
 		{
 			get => X;
 			set => X = value;
 		}
-
 
 		public uint G
 		{

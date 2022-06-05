@@ -1462,20 +1462,17 @@ namespace SharpShader
 		/// </summary>
 		public Double4 BBBB => new Double4(B, B, B, B);
 
-
 		public double R
 		{
 			get => X;
 			set => X = value;
 		}
 
-
 		public double G
 		{
 			get => Y;
 			set => Y = value;
 		}
-
 
 		public double B
 		{

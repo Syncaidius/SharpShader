@@ -4594,13 +4594,11 @@ namespace SharpShader
 		/// </summary>
 		public Int4 AAAA => new Int4(A, A, A, A);
 
-
 		public int R
 		{
 			get => X;
 			set => X = value;
 		}
-
 
 		public int G
 		{
@@ -4608,13 +4606,11 @@ namespace SharpShader
 			set => Y = value;
 		}
 
-
 		public int B
 		{
 			get => Z;
 			set => Z = value;
 		}
-
 
 		public int A
 		{
